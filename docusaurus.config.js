@@ -67,11 +67,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 								},
 								{
 									label: 'Rest',
-									to: '/docs/rest',
+									to: '/docs/rest/clone-the-repo',
 								},
 								{
 									label: 'Websockets',
-									to: '/docs/websockets',
+									to: '/docs/websockets/clone-the-repo',
 								},
 							],
 						},
