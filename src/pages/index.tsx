@@ -26,7 +26,7 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
 	const { siteConfig } = useDocusaurusContext();
 	return (
-		<Layout title={`Hello from ${siteConfig.title}`} description='Lumia Stream Developer documentation'>
+		<Layout title={`${siteConfig.title}`} description="Documentation for Lumia Stream's developer API">
 			<HomepageHeader />
 			<main>
 				<HomepageFeatures />

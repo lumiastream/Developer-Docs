@@ -109,7 +109,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 								},
 								{
 									label: 'GitHub',
-									href: 'https://github.com/lumiastream/api',
+									href: 'https://github.com/lumiastream/Developer-Docs',
 								},
 							],
 						},
