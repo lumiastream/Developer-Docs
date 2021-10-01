@@ -22,8 +22,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 				({
 					api: {
 						sidebarPath: require.resolve('./sidebars.js'),
-						// Please change this to your repo.
-						editUrl: 'https://github.com/lumiastream/api',
+						editUrl: 'https://github.com/lumiastream/Developer-Docs',
 					},
 					theme: {
 						customCss: require.resolve('./src/css/custom.css'),
@@ -46,10 +45,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 							type: 'doc',
 							docId: 'intro',
 							position: 'left',
-							label: 'API',
+							label: 'API Docs',
 						},
 						{
-							href: 'https://github.com/lumiastream/api',
+							href: 'https://github.com/lumiastream/Developer-Docs',
 							label: 'GitHub',
 							position: 'right',
 						},
