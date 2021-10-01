@@ -113,7 +113,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 							],
 						},
 					],
-					copyright: `Copyright © ${new Date().getFullYear()} Lumia Stream, Inc. Built with Lights.`,
+					copyright: `Copyright © ${new Date().getFullYear()} Lumia Stream, LLC. Built with lots of Lights.`,
 				},
 				prism: {
 					theme: lightCodeTheme,
