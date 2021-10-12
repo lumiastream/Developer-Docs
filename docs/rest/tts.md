@@ -18,13 +18,13 @@ POST http://localhost:39231/api/send?token=your_token
 }
 ```
 
-*Make sure you replace **your_token** with your actual token*
+_Make sure you replace **your_token** with your actual token_
 
 ---
 
 ## Change The Speaker Voice
 
-You can select the voice based on the results you've retireved on the **[Getting Settings Page](./get-settings.md)** 
+You can select the voice based on the results you've retrieved on the **[Getting Settings Page](./get-settings.md)**
 
 The list of voices can be found in the `data.options.tts.voices parameter
 

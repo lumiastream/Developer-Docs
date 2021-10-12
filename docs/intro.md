@@ -14,7 +14,7 @@ Different light brands are hard, so let us do the heavy lifting while you just m
 
 ## Is the API free to use and develop for
 
-The API is avaialble to be used in both the free and premium version of Lumia Stream so fret not.
+The API is available to be used in both the free and premium version of Lumia Stream so fret not.
 
 ## What can I do with the developers API
 
@@ -27,7 +27,7 @@ Want to create your own light integration, new wireless plug, or just simply tri
 
 ## Can I upload my plugin
 
-At the moment we do not have a plugin system, but we're working on it every day to make it easier for users to download and start using what developers will create. We're also expanding the capabilities of what the API can do. Stay up to date by following us on [twitter](https://twitter.com/lumiastream) or joining our [Discord](https://discord.gg/R8rCaKb)
+At the moment we do not have a plugin system, but we're working on it every day to make it easier for users to download and start using what developers will create. We're also expanding the capabilities of what the API can do. Stay up to date by following us on [Twitter](https://twitter.com/lumiastream) or joining our [Discord](https://discord.gg/R8rCaKb)
 
 ## Getting Help
 

@@ -21,7 +21,7 @@ POST http://localhost:39231/api/send?token=your_token
 }
 ```
 
-*Make sure you replace **your_token** with your actual token*
+_Make sure you replace **your_token** with your actual token_
 
 the **params.value** can either be an object with parameters `R, G, and B`, or an array with `[number, number, number]`.
 
@@ -29,7 +29,7 @@ the **params.value** can either be an object with parameters `R, G, and B`, or a
 
 ## Color Temperature
 
-When using an object insted of R, G, B, you can also use `CT` which stands for Color Temperature.
+When using an object instead of R, G, B, you can also use `CT` which stands for Color Temperature.
 The values for Color Temperature can go between `2900 kelvin to 7000 kelvin` inclusive.
 
 ---
