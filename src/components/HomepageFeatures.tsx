@@ -21,9 +21,9 @@ const FeatureList: FeatureItem[] = [
 		description: <>Lumia Stream was designed to make development extremely easy to connect your games and apps to it in minutes</>,
 	},
 	{
-		title: 'Focus on What Matters',
+		title: 'Create what you want',
 		image: '/img/undraw_docusaurus_tree.svg',
-		description: <>Docusaurus lets you focus on your app, and we&apos;ll do the chores.</>,
+		description: <>The developers API gives you instant access to all 15+ light brands that we support instantly.</>,
 	},
 	{
 		title: 'Powered by Lights',
