@@ -14,7 +14,7 @@ POST http://localhost:39231/api/send?token=your_token
 	"type": "chatbot-message",
 	"params": {
 			"value": "Wow, this tutorial is just way too cool",
-			"**platform**": "twitch"
+			"platform": "twitch"
 	}
 }
 ```
