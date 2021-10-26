@@ -31,7 +31,7 @@ the **params.value.lights** is an array of objects that contains each light that
 
 ---
 
-## Receive list of valid lighs
+## Receive list of valid lights
 
 When getting your settings you will receive a list of valid lights that are connected to Lumia Stream for the user. It will be under `data.lights` and will look similar to this:
 
