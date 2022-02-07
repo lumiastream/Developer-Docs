@@ -1,6 +1,6 @@
 ---
 sidebar_position: 5
-title: track subscribers
+title: Track subscribers
 ---
 
 # Read/Write to a file to keep track of subscribers

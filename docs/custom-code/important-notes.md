@@ -1,9 +1,9 @@
 ---
 sidebar_position: 3
-title: Important Notes
+title: Important notes
 ---
 
-# Important Notes
+# Important notes
 
 - You can use variables inside of your script that are replaced with the variables before the script is even ran. So if you do `tts({ message: "{{username}}" })`, it will replace the `"{{username}}"` with whoever is calling the command before the script is even ran. Take note that the variable is wrapped in quotes to be used as a string since when it is replaced it does not automatically add the quotes.
 
