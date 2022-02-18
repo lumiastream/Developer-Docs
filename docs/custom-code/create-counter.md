@@ -15,7 +15,7 @@ async function() {
 
 	if (!redeemCount) {
 		// If variable does not exist it will create it
-		redeemCount = await setVariable('redeemCount', 10);
+		redeemCount = await setVariable({ name: 'redeemCount', value: 10 });
 	}
 
 	redeemCount++;
