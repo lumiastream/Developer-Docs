@@ -6,11 +6,21 @@ description: Helper functions are a premade code that helps you build your custo
 
 These helper functions are a premade code using it will help you build your custom code like you want you can use as many or as low as you want, also you'll find `use case examples` in the next section
 
-`done()`: Done tell Lumia Stream that the script is complete and that the thread is safe to close now
+`done({ shouldStop?: boolean; variables?: {[key: string]: string | number }}?)`: Done tell Lumia Stream that the script is complete and that the thread is safe to close now. You can also stop the command/alert in it's track by passing shouldStop true into the parameters.
+If you would like to modify/add variables that other actions could use, you can return them in the variables parameter.
 
 ```js
+// Baisc done
 async function() {
     done();
+}
+// Should stop
+async function() {
+    done({ shouldStop: true });
+}
+// Passing variables
+async function() {
+    done({ variables: { message: "Message changed" } });
 }
 ```
 
@@ -66,8 +76,8 @@ async function() {
 
 ```js
 async function() {
-	//this will call alert called 'police' and call the variation of it named 'policePurple' and change the variable named sieren to 3
-    callAlert({ name: 'police', variation: 'policePurple', variableValues: {'sieren': 3 } })
+	//this will call alert called 'police' and call the variation of it named 'policePurple' and change the variable named siren to 3
+    callAlert({ name: 'police', variation: 'policePurple', variableValues: {'siren': 3 } })
 }
 ```
 
@@ -107,7 +117,7 @@ async function() {
 }
 ```
 
-`readFile(filePath: string)`: Read from a file on your local computer to get the contents of it to be displayed in your code. This is useful for other Apps that write and read to files so you can combine the usage of them in Lumia. To keep things consistent, try to use an absolute file path
+`readFile(path: string)`: Read from a file on your local computer to get the contents of it to be displayed in your code. This is useful for other Apps that write and read to files so you can combine the usage of them in Lumia. To keep things consistent, try to use an absolute file path
 
 ```js
 async function() {
@@ -116,12 +126,12 @@ async function() {
 }
 ```
 
-`writeFile({ filePath: string; value: string | number; append?: boolean })`: Read from a file on your local computer to get the contents of it to be displayed in your code. This is useful for other Apps that write and read to files so you can combine the usage of them in Lumia. OBS Text source is a great exmaple of this. You can optionally pass in an `append` to append to a text file instead of overwriting the whole file. When using append you can create a new line by starting with a blank line
+`writeFile({ path: string; value: string | number; append?: boolean })`: Read from a file on your local computer to get the contents of it to be displayed in your code. This is useful for other Apps that write and read to files so you can combine the usage of them in Lumia. OBS Text source is a great exmaple of this. You can optionally pass in an `append` to append to a text file instead of overwriting the whole file. When using append you can create a new line by starting with a blank line
 
 ```js
 async function() {
 	//this will create a new file in the 'C:\Documents\Lumiastream\' named helper.txt and add the text "text inside this file" inside that file
-	writeFile({ filePath: 'C:\Documents\Lumiastream\helper.txt', value: 'text inside this file', append: true })
+	writeFile({ path: 'C:\Documents\Lumiastream\helper.txt', value: 'text inside this file', append: true })
 }
 ```
 
