@@ -47,6 +47,11 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               position: "left",
               label: "API Docs",
             },
+            {
+              label: "Custom code",
+              href: "/docs/custom-code/what-is-custom-javascript",
+              position: "left",
+            },
             // {
             //   type: "doc",
             //   docId: "intro",

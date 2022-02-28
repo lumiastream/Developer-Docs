@@ -22,13 +22,12 @@ async function() {
 		});
 		const clips = (await clipsRes.json())?.data;
 		const randomClip = clips[Math.floor(Math.random() * clips.length)];
-		showToast({ message: 'Random clip chosen: ' + randomClip.title });
 		chatbot({ message: `${randomClip.title}: ${randomClip.url}` });
 	} catch (err) {
 		showToast({ message: 'error: ' + err.message });
 	}
 
-	done();
+	done({ variables: { user_clip_title: randomClip.title, user_clip: randomClip.url } });
 }
 ```
 
