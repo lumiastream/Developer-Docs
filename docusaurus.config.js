@@ -15,6 +15,20 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     organizationName: "lumiastream", // Usually your GitHub org/user name.
     projectName: "lumiastream", // Usually your repo name.
 
+    plugins: [
+      [
+        "@docusaurus/plugin-client-redirects",
+        {
+          redirects: [
+            {
+              to: "/docs/custom-code/what-is-custom-javascript",
+              from: "/custom-code",
+            },
+          ],
+        },
+      ],
+    ],
+
     presets: [
       [
         "@docusaurus/preset-classic",
