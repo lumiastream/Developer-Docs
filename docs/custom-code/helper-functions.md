@@ -58,8 +58,8 @@ async function() {
 
 ```js
 async function() {
-	//so if you have a variable named "my variable" in the variable page this code will get it's value
-    getVariable('my variable')
+	//so if you have a variable named "my variable" in the variable page this code will get it's value. Notice that you need to await the result since getVariable returns a promise
+    const myVar = await getVariable('my variable')
 }
 ```
 
@@ -121,8 +121,8 @@ async function() {
 
 ```js
 async function() {
-	//this will read the file from this path
-    readFile('C:\Documents\Lumiastream\helper.txt')
+	//this will read the file from this path. Returns a promise so await is needed
+    const fileText = await readFile('C:\Documents\Lumiastream\helper.txt')
 }
 ```
 
@@ -131,7 +131,7 @@ async function() {
 ```js
 async function() {
 	//this will create a new file in the 'C:\Documents\Lumiastream\' named helper.txt and add the text "text inside this file" inside that file
-	writeFile({ path: 'C:\Documents\Lumiastream\helper.txt', value: 'text inside this file', append: true })
+	await writeFile({ path: 'C:\Documents\Lumiastream\helper.txt', value: 'text inside this file', append: true })
 }
 ```
 
@@ -157,8 +157,8 @@ async function() {
 
 ```js
 async function() {
-	//This will generate a Lumia access token
-    getToken('twitch')
+	//this will get the access token for your user on Twitch
+    const token = await getToken('twitch')
 }
 ```
 
@@ -166,7 +166,7 @@ async function() {
 
 ```js
 async function() {
-	//this will generate a client id
-    getClientId('twitch')
+	//this will get the client id for Twitch
+    const token = await getClientId('twitch')
 }
 ```
