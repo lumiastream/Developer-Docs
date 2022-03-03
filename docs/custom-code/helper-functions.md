@@ -38,10 +38,10 @@ async function() {
     showToast({ message: "command used", time: 200 })
 
 	// doing the same as the above but the popup does not close automaticaly
-    showToast({ message: "command used"; time: 0 })
+    showToast({ message: "command used", time: 0 })
 
 	// you can also just send the message which by default the popup does not close automaticaly
-    showToast({ message: "command used"})
+    showToast({ message: "command used" })
 }
 ```
 
@@ -68,7 +68,7 @@ async function() {
 ```js
 async function() {
 	//this creates a variable named "coins" with the value of 3
-    setVariable({ name: 'coins'; value: 3 })
+    setVariable({ name: 'coins', value: 3 })
 }
 ```
 
