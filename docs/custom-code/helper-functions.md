@@ -35,13 +35,13 @@ async function() {
 ```js
 async function() {
 	// shows a message popup saying command used for 200 milliseconds and the popup will close
-    showToast({ message: "command used", time: 200 })
+    showToast({ message: "command used", time: 200 });
 
 	// doing the same as the above but the popup does not close automaticaly
-    showToast({ message: "command used", time: 0 })
+    showToast({ message: "command used", time: 0 });
 
 	// you can also just send the message which by default the popup does not close automaticaly
-    showToast({ message: "command used" })
+    showToast({ message: "command used" });
 }
 ```
 
@@ -50,7 +50,7 @@ async function() {
 ```js
 async function() {
 	//shows in the logs section when this command is executed
-    addLog('log this command used')
+    addLog('log this command used');
 }
 ```
 
@@ -59,16 +59,51 @@ async function() {
 ```js
 async function() {
 	//so if you have a variable named "my variable" in the variable page this code will get it's value. Notice that you need to await the result since getVariable returns a promise
-    const myVar = await getVariable('my variable')
+    const myVar = await getVariable('my variable');
 }
 ```
 
-`setVariable({ name: string; value: string | number })`: creates a variable with name and value provided
+`setVariable({ name: string; value: string | number })`: Creates/Updates a variable with name and value provided. If the variable doesn't exist it will create it
 
 ```js
 async function() {
 	//this creates a variable named "coins" with the value of 3
-    setVariable({ name: 'coins', value: 3 })
+    setVariable({ name: 'coins', value: 3 });
+}
+```
+
+`getStore()`: Retrieves the complete custom code store. This store is a persisted storage throughout all of your custom code and can assign any data type like string, numbers, arrays, and objects
+
+```js
+async function() {
+	//Notice that you need to await the result since getStore returns a promise
+    const store = await getStore();
+}
+```
+
+`getStoreItem(name: string)`: Get's one item from the custom code store
+
+```js
+async function() {
+	//Notice that you need to await the result since getStoreItem returns a promise
+    const users = await getStoreItem('users');
+}
+```
+
+`setStore({ name: string; value: any })`: Sets an item in the store. You can use any data type as your value
+
+```js
+async function() {
+    await setStore({ name: 'users', value: [] });
+}
+```
+
+`resetStore()`: Resets the store removing all items inside of it
+
+```js
+async function() {
+	//Notice that you need to await the result since resetStore returns a promise
+    await resetStore();
 }
 ```
 
@@ -95,7 +130,7 @@ async function() {
 ```js
 async function() {
 	//this will call Twitch Point called 'point' and change the variable named "message" to the value "you are awesome"
-    callTwitchPoint({ name: 'point', variableValues: {'message': "you are awesome" } })
+    callTwitchPoint({ name: 'point', variableValues: {'message': "you are awesome" } });
 }
 ```
 
@@ -104,7 +139,7 @@ async function() {
 ```js
 async function() {
 	//this will call Twitch Extension called 'point' and change the variable named "message" to the value "you are awesome"
-    callTwitchExtension({ name: 'point', variableValues: {'message': "you are awesome" } })
+    callTwitchExtension({ name: 'point', variableValues: {'message': "you are awesome" } });
 }
 ```
 
@@ -113,7 +148,7 @@ async function() {
 ```js
 async function() {
 	//this will call trovo spell called 'patronus' and change the variable named "message" to the value "you are awesome"
-    callTrovoSpell({ name: 'patronus', variableValues: {'message': "you are awesome" } })
+    callTrovoSpell({ name: 'patronus', variableValues: {'message': "you are awesome" } });
 }
 ```
 
@@ -122,7 +157,7 @@ async function() {
 ```js
 async function() {
 	//this will read the file from this path. Returns a promise so await is needed
-    const fileText = await readFile('C:\Documents\Lumiastream\helper.txt')
+    const fileText = await readFile('C:\Documents\Lumiastream\helper.txt');
 }
 ```
 
@@ -131,7 +166,7 @@ async function() {
 ```js
 async function() {
 	//this will create a new file in the 'C:\Documents\Lumiastream\' named helper.txt and add the text "text inside this file" inside that file
-	await writeFile({ path: 'C:\Documents\Lumiastream\helper.txt', value: 'text inside this file', append: true })
+	await writeFile({ path: 'C:\Documents\Lumiastream\helper.txt', value: 'text inside this file', append: true });
 }
 ```
 
@@ -140,7 +175,7 @@ async function() {
 ```js
 async function() {
 	//this will read the message with text to speach using the voice that you added with the volume 60%
-    tts({ message: 'Lumia stream loves you',voice: 'Brian', volume: 60 })
+    tts({ message: 'Lumia stream loves you',voice: 'Brian', volume: 60 });
 }
 ```
 
@@ -149,7 +184,7 @@ async function() {
 ```js
 async function() {
 	//this will send a custom chatbot message "hello from Lumia Stream" to twitch colored with this hex code "#F57FAE" shown in the chat as your self
-    chatbot({ message: 'hello from Lumia Stream', site: "twitch",color:"#F57FAE",chatAsSelf:true })
+    chatbot({ message: 'hello from Lumia Stream', site: "twitch",color:"#F57FAE",chatAsSelf:true });
 }
 ```
 
@@ -158,7 +193,7 @@ async function() {
 ```js
 async function() {
 	//this will get the access token for your user on Twitch
-    const token = await getToken('twitch')
+    const token = await getToken('twitch');
 }
 ```
 
@@ -167,6 +202,6 @@ async function() {
 ```js
 async function() {
 	//this will get the client id for Twitch
-    const token = await getClientId('twitch')
+    const token = await getClientId('twitch');
 }
 ```
