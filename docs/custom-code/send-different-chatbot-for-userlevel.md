@@ -13,7 +13,9 @@ async function() {
 	// {{userLevelsRaw}} returns an object with the various user levels on it. Since we want the original object here we're using getVariable instead of using template variables
 	const userLevels = await getVariable('userLevelsRaw');
 
-	if (userLevels.subscriber || userLevels.tier3 || userLevels.tier2 || userLevel.tier1) {
+	if (!userLevels) {
+		chatbot({ message: `Thanks for lurking in my stream {{username}}. You triggered {{command}}!` });
+	} else if (userLevels.subscriber || userLevels.tier3 || userLevels.tier2 || userLevel.tier1) {
 		chatbot({ message: "Wow, you're a subscriber? Thanks for triggering {{command}}. Have a nice day!" });
 	} else if (userLevels.mod) {
 		chatbot({ message: 'Thank you for being a wonderful mod. My mod {{username}} triggered {{command}}!' });
@@ -21,6 +23,8 @@ async function() {
 		chatbot({ message: 'VIPS raise the roof! {{username}}, the real VIP, triggered {{command}}!' });
 	} else if (userLevels.follower) {
 		chatbot({ message: `Thanks for being a loyal follower {{username}}. You triggered {{command}}!` });
+	} else {
+		chatbot({ message: `Thanks for lurking in my stream {{username}}. You triggered {{command}}!` });
 	}
 
 	// always make sure this is the last line in the code otherwise your computer may get slower due to memory leaks
