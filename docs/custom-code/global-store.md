@@ -18,16 +18,14 @@ There are 4 different functions that you can use with the Store:
 
 ```js
 async function() {
-		async function() {
-			const tempUsers = await getStoreItem('users');
-			if (!tempUsers) {
-				tempUsers = [];
-			}
-			tempUsers.push("{{username}}");
-			await setStore({ name: 'users', value: tempUsers });
-			showToast({ message: users.length, time: 10000 });
-			done();
-		}
+	let tempUsers = await getStoreItem('users');
+	if (!tempUsers) {
+		tempUsers = [];
+	}
+	tempUsers.push("{{username}}");
+	await setStore({ name: 'users', value: tempUsers });
+	showToast({ message: tempUsers.length, time: 10000 });
+	done();
 }
 ```
 
