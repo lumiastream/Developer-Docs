@@ -15,7 +15,9 @@ async function() {
 
 	if (!userLevels) {
 		chatbot({ message: `Thanks for lurking in my stream {{username}}. You triggered {{command}}!` });
-	} else if (userLevels.subscriber || userLevels.tier3 || userLevels.tier2 || userLevel.tier1) {
+	} else if (userLevels.isSelf) {
+		chatbot({ message: "Don't worry it's just me triggering a command named !{{command}}" });
+	} else if (userLevels.subscriber || userLevels.tier3 || userLevels.tier2 || userLevels.tier1) {
 		chatbot({ message: "Wow, you're a subscriber? Thanks for triggering {{command}}. Have a nice day!" });
 	} else if (userLevels.mod) {
 		chatbot({ message: 'Thank you for being a wonderful mod. My mod {{username}} triggered {{command}}!' });
