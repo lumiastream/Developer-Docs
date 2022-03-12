@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 title: Global Store (Persistent Storage)
 ---
 
@@ -10,10 +10,10 @@ We expose a global store that you can use with your custom code to store any dat
 There are 4 different functions that you can use with the Store:
 
 ```md
--   getStore()
--   getStoreItem(name: string)
--   setStore({ name: string; value: any })
--   resetStore()
+- getStore()
+- getStoreItem(name: string)
+- setStore({ name: string; value: any })
+- resetStore()
 ```
 
 ```js

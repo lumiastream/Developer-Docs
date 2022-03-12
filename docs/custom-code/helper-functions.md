@@ -72,6 +72,18 @@ async function() {
 }
 ```
 
+`getVariables()`: Ability to get all local and global variables with one easy call
+
+```js
+async function() {
+    let variables = await getAllVariables();
+    showToast({ message: JSON.stringify(variables) , time: 10000});
+
+    // always make sure this is the last line in the code otherwise your computer may get slower due to memory leaks
+    done();
+}
+```
+
 `getStore()`: Retrieves the complete custom code store. This store is a persisted storage throughout all of your custom code and can assign any data type like string, numbers, arrays, and objects
 
 ```js
