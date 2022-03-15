@@ -12,7 +12,9 @@ async function() {
 	const diceRoll = Math.ceil(Math.random()*6);
 
 	if (diceRoll === 3) {
-			tts({ message: "Congratulations {{username}}! You rolled a 3", voice: "Brian", volume: 100 })
+			tts({ message: "Congratulations {{username}}! You rolled a 3", voice: "default", volume: 100 })
+			// you can switch between all the tts option that we support
+			// tts({ message: "Congratulations {{username}}! You rolled a 3", voice: "Brian", volume: 100 })
 	}
 
 	// always make sure this is the last line in the code otherwise your computer may get slower due to memory leaks
