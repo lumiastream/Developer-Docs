@@ -54,6 +54,15 @@ async function() {
 }
 ```
 
+`delay(time: number)`: You can delay your code with our helper function that returns a promise. The time is in miliseconds.
+
+```js
+async function() {
+    // Waits for 2 seconds
+    await delay(2000);
+}
+```
+
 `getVariable(name: string)`: Retrieve a variables value based on it's name
 
 ```js
@@ -169,7 +178,7 @@ async function() {
 ```js
 async function() {
 	//this will read the file from this path. Returns a promise so await is needed
-    const fileText = await readFile('C:\Documents\Lumiastream\helper.txt');
+    const fileText = await readFile('C:/Documents/Lumiastream/helper.txt');
 }
 ```
 
@@ -177,8 +186,8 @@ async function() {
 
 ```js
 async function() {
-	//this will create a new file in the 'C:\Documents\Lumiastream\' named helper.txt and add the text "text inside this file" inside that file
-	await writeFile({ path: 'C:\Documents\Lumiastream\helper.txt', value: 'text inside this file', append: true });
+	//this will create a new file in the 'C:/Documents/Lumiastream/' named helper.txt and add the text "text inside this file" inside that file
+	await writeFile({ path: 'C:/Documents/Lumiastream/helper.txt', value: 'text inside this file', append: true });
 }
 ```
 
@@ -197,6 +206,30 @@ async function() {
 async function() {
 	//this will send a custom chatbot message "hello from Lumia Stream" to twitch colored with this hex code "#F57FAE" shown in the chat as your self
     chatbot({ message: 'hello from Lumia Stream', site: "twitch",color:"#F57FAE",chatAsSelf:true });
+}
+```
+
+`playSound({ path: string; volume?: number; waitForAudioToStop?: boolean })`: You can play an audio file from either a URL or from a local path on your computer inside of your code. You can even wait for the audio to stop playing before the code continues by setting an await before while also setting waitForAudioToStop to true.
+
+```js
+async function() {
+	playSound({ path: "C:\\Documents\\Lumiastream\\lumiajam.mp3", volume: 100, waitForAudioToStop: false });
+
+    // Or you can await the sound to stop playing first
+    await playSound({ path: "C:\\Documents\\Lumiastream\\lumiajam.mp3", volume: 100, waitForAudioToStop: true });
+}
+```
+
+`sendRawObsJson(value: { request-type: string; sceneName?: string; sceneItemId?: number; [key: string]: any })`: You can send raw JSON to OBS that will automatically handle the context id. Just send end the request type and your other parameters and Lumia Stream will take care of the rest
+
+```js
+async function() {
+    sendRawObsJson({
+        "request-type": "SetSceneItemEnabled",
+        "sceneItemEnabled": true,
+        "sceneItemId": 1,
+        "sceneName": "Scene 1"
+    });
 }
 ```
 
