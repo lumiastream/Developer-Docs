@@ -37,10 +37,10 @@ async function() {
 	// shows a message popup saying command used for 200 milliseconds and the popup will close
     showToast({ message: "command used", time: 200 });
 
-	// doing the same as the above but the popup does not close automaticaly
+	// doing the same as the above but the popup does not close automatically
     showToast({ message: "command used", time: 0 });
 
-	// you can also just send the message which by default the popup does not close automaticaly
+	// you can also just send the message which by default the popup does not close automatically
     showToast({ message: "command used" });
 }
 ```
@@ -76,7 +76,7 @@ async function() {
 
 ```js
 async function() {
-	//this creates a variable named "coins" with the value of 3
+	// This creates a variable named "coins" with the value of 3
     setVariable({ name: 'coins', value: 3 });
 }
 ```
@@ -128,11 +128,48 @@ async function() {
 }
 ```
 
+`getLights()`: Get the list of lights the streamer has along with it's type and id. The type and id is required to send color or power to specific lights
+
+```js
+async function() {
+    const lights = await getLights()
+}
+```
+
+`sendColor({ color?: string | { r: number; g: number; b: number }; power?: boolean; brightness?: number; transition?: number; lights?: Array<{ id: tring; type: string }> })`: Send a color or power to either all lights or a set of lights. Do not send the `lights` array when you want to target every lights. Every parameter is optional. The type and id is required to send color or power to specific lights
+
+```js
+async function() {
+    // Send hex color to all lights
+    sendColor({ color: "#ff00ff", brightness: 100 });
+
+    // Send rgb color to all lights
+    sendColor({ color: { r: 0, g: 0, b: 255 }, brightness: 100 });
+
+    // Send power to all lights
+    sendColor({ power: true });
+
+    // Send to specific lights
+    sendColor({ color: "#ff00ff", brightness: 100, transition: 0, lights: [{ type: "hue", id: "1" }, { type: "lifx", id: "abc" }] });
+
+    // Send to an overlay virtuallight
+    sendColor({ color: "#ff00ff", brightness: 100, lights: [{ type: "virtuallight", id: "abc-123-520" }] });
+}
+```
+
+`getApiOptions()`: Contains information like commands, types, connections, and more
+
+```js
+async function() {
+    const lights = await getApiOptions()
+}
+```
+
 `callAlert({ name: string; variation?: string; variableValues?: {[key: string]: string|number } })`: Call an alert based on your conditions. You can also call a variation given it's name. When calling an alert/command from custom code the variableValues will be inherited from the parent, but you can also override variable values by passing it in to the call function.
 
 ```js
 async function() {
-	//this will call alert called 'police' and call the variation of it named 'policePurple' and change the variable named siren to 3
+	// This will call alert called 'police' and call the variation of it named 'policePurple' and change the variable named siren to 3
     callAlert({ name: 'police', variation: 'policePurple', variableValues: {'siren': 3 } })
 }
 ```
@@ -141,7 +178,7 @@ async function() {
 
 ```js
 async function() {
-	//this will call command called 'cheers' and change the variable named "message" to the value "you are awesome"
+	// This will call command called 'cheers' and change the variable named "message" to the value "you are awesome"
     callCommand({ name: 'cheers', variableValues: {'message': 'you are awesome' } })
 }
 ```
@@ -150,7 +187,7 @@ async function() {
 
 ```js
 async function() {
-	//this will call Twitch Point called 'point' and change the variable named "message" to the value "you are awesome"
+	// This will call Twitch Point called 'point' and change the variable named "message" to the value "you are awesome"
     callTwitchPoint({ name: 'point', variableValues: {'message': "you are awesome" } });
 }
 ```
@@ -159,7 +196,7 @@ async function() {
 
 ```js
 async function() {
-	//this will call Twitch Extension called 'point' and change the variable named "message" to the value "you are awesome"
+	// This will call Twitch Extension called 'point' and change the variable named "message" to the value "you are awesome"
     callTwitchExtension({ name: 'point', variableValues: {'message': "you are awesome" } });
 }
 ```
@@ -168,7 +205,7 @@ async function() {
 
 ```js
 async function() {
-	//this will call trovo spell called 'patronus' and change the variable named "message" to the value "you are awesome"
+	// This will call trovo spell called 'patronus' and change the variable named "message" to the value "you are awesome"
     callTrovoSpell({ name: 'patronus', variableValues: {'message': "you are awesome" } });
 }
 ```
@@ -177,8 +214,8 @@ async function() {
 
 ```js
 async function() {
-	//this will read the file from this path. Returns a promise so await is needed
-    const fileText = await readFile('C:/Documents/Lumiastream/helper.txt');
+	// This will read the file from this path. Returns a promise so await is needed
+    const fileText = await readFile('C:\\Documents\\Lumiastream\\helper.txt');
 }
 ```
 
@@ -186,8 +223,8 @@ async function() {
 
 ```js
 async function() {
-	//this will create a new file in the 'C:/Documents/Lumiastream/' named helper.txt and add the text "text inside this file" inside that file
-	await writeFile({ path: 'C:/Documents/Lumiastream/helper.txt', value: 'text inside this file', append: true });
+	// This will create a new file in the 'C:\Documents\Lumiastream\' named helper.txt and add the text "text inside this file" inside that file
+	await writeFile({ path: 'C:\\Documents\\Lumiastream\\helper.txt', value: 'text inside this file', append: true });
 }
 ```
 
@@ -195,7 +232,7 @@ async function() {
 
 ```js
 async function() {
-	//this will read the message with text to speach using the voice that you added with the volume 60%
+	// This will read the message with text to speach using the voice that you added with the volume 60%
     tts({ message: 'Lumia stream loves you',voice: 'Brian', volume: 60 });
 }
 ```
@@ -204,7 +241,7 @@ async function() {
 
 ```js
 async function() {
-	//this will send a custom chatbot message "hello from Lumia Stream" to twitch colored with this hex code "#F57FAE" shown in the chat as your self
+	// This will send a custom chatbot message "hello from Lumia Stream" to twitch colored with this hex code "#F57FAE" shown in the chat as your self
     chatbot({ message: 'hello from Lumia Stream', site: "twitch",color:"#F57FAE",chatAsSelf:true });
 }
 ```
@@ -237,7 +274,7 @@ async function() {
 
 ```js
 async function() {
-	//this will get the access token for your user on Twitch
+	// This will get the access token for your user on Twitch
     const token = await getToken('twitch');
 }
 ```
@@ -246,7 +283,7 @@ async function() {
 
 ```js
 async function() {
-	//this will get the client id for Twitch
+	// This will get the client id for Twitch
     const token = await getClientId('twitch');
 }
 ```
