@@ -246,14 +246,17 @@ async function() {
 }
 ```
 
-`playSound({ path: string; volume?: number; waitForAudioToStop?: boolean })`: You can play an audio file from either a URL or from a local path on your computer inside of your code. You can even wait for the audio to stop playing before the code continues by setting an await before while also setting waitForAudioToStop to true.
+`playAudio({ path: string | string[]; volume?: number; waitForAudioToStop?: boolean })`: You can play an audio file from either a URL or from a local path on your computer inside of your code. You can even wait for the audio to stop playing before the code continues by setting an await before while also setting waitForAudioToStop to true. You can also allow Lumia Stream to randomly play an audio file from a selection by passing an array of strings to path
 
 ```js
 async function() {
-	playSound({ path: "C:\\Documents\\Lumiastream\\lumiajam.mp3", volume: 100, waitForAudioToStop: false });
+	playAudio({ path: "C:\\Documents\\Lumiastream\\lumiajam.mp3", volume: 100, waitForAudioToStop: false });
 
     // Or you can await the sound to stop playing first
-    await playSound({ path: "C:\\Documents\\Lumiastream\\lumiajam.mp3", volume: 100, waitForAudioToStop: true });
+    await playAudio({ path: "C:\\Documents\\Lumiastream\\lumiajam.mp3", volume: 100, waitForAudioToStop: true });
+
+    // You can also play multiple files by passing an array to path
+    await playAudio({ path: ["C:\\Documents\\Lumiastream\\lumiajam.mp3", "C:\\Documents\\Lumiastream\\lumiasecond.mp3"], volume: 100 });
 }
 ```
 
