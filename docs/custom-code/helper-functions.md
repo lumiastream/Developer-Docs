@@ -200,12 +200,15 @@ async function() {
 }
 ```
 
-`chatbot({ message: string; site?: 'twitch' | 'youtube' | 'facebook' | 'trovo' | 'glimesh'; color?: string; chatAsSelf?: boolean })`: You can trigger a Chat bot directly inside of your code. You can even change the color of the message, whether to chat as your self or the bot, and the ability to change the site.
+`chatbot({ message: string; site?: 'twitch' | 'youtube' | 'facebook' | 'trovo' | 'glimesh'; color?: string; chatAsSelf?: boolean })`: You can trigger a Chat bot directly inside of your code. You can even change the color of the message, whether to chat as your self or the bot, and the ability to change the site. Site can now be an array or a regular string.
 
 ```js
 async function() {
 	//this will send a custom chatbot message "hello from Lumia Stream" to twitch colored with this hex code "#F57FAE" shown in the chat as your self
-    chatbot({ message: 'hello from Lumia Stream', site: "twitch",color:"#F57FAE",chatAsSelf:true });
+    chatbot({ message: 'hello from Lumia Stream', site: "twitch", color:"#F57FAE", chatAsSelf:true });
+
+    // Send to multiple sites at once
+    chatbot({ message: 'hello from Lumia Stream', site: ["twitch", "youtube", "facebook"], color:"#F57FAE",chatAsSelf:true });
 }
 ```
 
