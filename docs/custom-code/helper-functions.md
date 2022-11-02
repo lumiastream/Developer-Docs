@@ -16,7 +16,7 @@ The different actionsToStop keys relate to the action. The keys are:
 `devices, tts, chatbot, hfx, lumia, overlay, voicemod, streamerbot, obs, slobs, midi, osc, mqtt, serial, broadlink, websocket, twitter, twitch, spotify, vlc, artnet, api, commandRunner, inputEvent`
 
 ```js
-// Baisc done
+// Basic done
 async function() {
     done();
 }
