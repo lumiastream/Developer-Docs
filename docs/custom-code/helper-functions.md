@@ -371,3 +371,180 @@ async function() {
     const token = await getClientId('twitch');
 }
 ```
+
+## Overlay Actions
+
+Note: When using layers you can call them by the layers name. But if you have multiple layers named the same thing in different overlays it may not trigger on the correct overlay. Make sure you give your layers a unique name so that you do not have any issues triggering the correct layer. We do not check for unique Overlay names and unique Layer names at this time since under the hood we use ID's
+
+### Overlay Alert Trigger
+
+`overlayAlertTrigger({ layer: string, firstMessage: string" })`: You can trigger a generic alert layer that you've created on your overlays. This will only trigger the generic alert though. To fire an alert that isn't the generic one you will need to use `callAlert`.
+`firstMessage` is the message that will show for the alert
+
+```js
+async function() {
+    overlayAlertTrigger({ layer: "my unique layer name", firstMessage: "{{message}}" });
+}
+```
+
+### Overlay Set Visibility
+
+`overlaySetVisibility({ overlay: string, on: boolean })`: You can set the visibility of the full overlay using this function. You should make sure all of your overlays have unique names. We do not check for unique names since under the hood we use ID's
+
+```js
+async function() {
+    overlaySetVisibility({ overlay: "my cool overlay", on: false });
+}
+```
+
+### Overlay Set Layer Visibility
+
+`overlaySetLayerVisibility({ layer: string, on: boolean })`: You can set the visibility of an overlay layer using this function. You should make sure all of your layers have unique names. We do not check for unique names since under the hood we use ID's
+
+```js
+async function() {
+    overlaySetLayerVisibility({ layer: "My layer", on: false });
+}
+```
+
+### Overlay Set Layer Position (X and Y)
+
+`overlaySetLayerPosition({ layer: string, content: string })`: You can set the x and y position of an overlay layer using this function. `content` is just a string that will correspond to the x and y position separated by a comma. Our overlay is also fast enough to handle interpolation in case you want to move things in a smooth way.
+
+```js
+async function() {
+    overlaySetLayerPosition({ layer: "My layer", content: "100,100" });
+}
+```
+
+### Overlay Set Text Content
+
+`overlaySetTextContent({ layer: string, content: string })`: You can set the text content of a text layer using this function. `content` is just a string that will correspond to the text that you want to set it to.
+
+```js
+async function() {
+    overlaySetTextContent({ layer: "My layer", content: "" });
+}
+```
+
+### Overlay Set Image Content
+
+`overlaySetImageContent({ layer: string, content: string })`: You can set the image content of an image layer using this function. `content` is just a string that will correspond to the image name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_logo.gif` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a {{message}} variable. After the content is changed it will automatically make the layer visibile and start playing
+
+```js
+async function() {
+    overlaySetImageContent({ layer: "My layer", content: "lumia_logo.gif" });
+    // Without file extension
+    overlaySetImageContent({ layer: "My layer", content: "lumia_logo" });
+    // Or using a url
+    overlaySetImageContent({ layer: "My layer", content: "https://lumiastream.com/favicon.ico" });
+}
+```
+
+### Overlay Set Video Content
+
+`overlaySetVideoContent({ layer: string, content: string })`: You can set the video content of an video layer using this function. `content` is just a string that will correspond to the video name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_video.webm` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a {{message}} variable. After the content is changed it will automatically make the layer visibile and start playing
+
+```js
+async function() {
+    overlaySetVideoContent({ layer: "My layer", content: "lumia_video.webm" });
+    // Without file extension
+    overlaySetVideoContent({ layer: "My layer", content: "lumia_video" });
+    // Or using a url
+    overlaySetVideoContent({ layer: "My layer", content: "https://lumiastream.com/video.webm" });
+}
+```
+
+### Overlay Set Audio Content
+
+`overlaySetAudioContent({ layer: string, content: string })`: You can set the audio content of an audio layer using this function. `content` is just a string that will correspond to the audio name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_land.mp3` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a {{message}} variable. After the content is changed it will automatically make the layer visibile and start playing
+
+```js
+async function() {
+    overlaySetAudioContent({ layer: "My layer", content: "lumia_land.mp3" });
+    // Without file extension
+    overlaySetAudioContent({ layer: "My layer", content: "lumia_land" });
+    // Or using a url
+    overlaySetAudioContent({ layer: "My layer", content: "https://lumiastream.com/lumia_land.mp3" });
+}
+```
+
+### Overlay Set Media Volume
+
+`overlaySetVolume({ layer: string, volume: number })`: You can set the volume of a media layer using this function. `volume` is a number between 0 and 1 that will correspond to the volume url that you want to set it to. 1 is equal to 100, 0.5 is equal to 50%, and 0 is equal to 0%.
+
+```js
+async function() {
+    overlaySetVolume({ layer: "My layer", volume: .5 });
+}
+```
+
+### Overlay Play/Pause Media
+
+`overlayPlayPauseMedia({ layer: string, volume: number })`: You can play/pause a media layer using this function. `on` is a boolean that will correspond to the state of the media. `true` plays the media and `false` pauses the media.
+
+```js
+async function() {
+    overlayPlayPauseMedia({ layer: "My layer", on: false });
+}
+```
+
+### Overlay Send HFX
+
+`overlaySendHfx({ content: string, playAudio: boolean })`: You can directly trigger a HFX as well as play the audio or not using this function. No layer is needed here since HFX is always meant to have only one layer per overlay and will trigger any and all HFX video layers. `content` is a string that will correspond to the HFX name that you want to trigger. To see the list of names, please visit the HUDFX tab in the sidebar of Lumia Stream. Since these are updated weekly we will not store them in the documentation.
+
+```js
+async function() {
+    overlaySendHfx({ content: "ghost-talk", playAudio: true });
+}
+```
+
+### Overlay Set Timer
+
+`overlayTimer({ layer: string, content: string })`: You can update a timer layer using this function. `content` is a string that will correspond to the time to set the timer to. After the timer is changed it will automatically make the layer visibile and start playing. You can use math here and short wording. The operators can all be used: `(+, -, /, *)` followed by the number and then the unit of time `(s, m, h, d)`.
+You can also combine multiple values as well. Like `+1m10s` would increase the timer by 1 minute and 10 seconds. `=5m` would set the timer exactly at 5 minutes and will start running immediately.
+
+```js
+async function() {
+    overlayTimer({ layer: "My layer", content: "+5s" });
+}
+```
+
+### Overlay Shoutout
+
+`overlayShoutout({ layer: string, clipType: "clipFromTarget" | "clipFromSender" | "clipFromStreamer", clipRandom: boolean, clipLimit: number, clipMaxTime: string })`: You can send a shoutout directly to a shoutout layer using this function. `clipType` has three types. `clipFromTarget` will take a clip from the user who was tagged in the {{message}} variable. So you can use @lumiastream in the message and it will take a clip from that channel. `clipFromSender` will take a clip from the person who triggered the command. This normally corresponds to the {{user}} variable. `clipFromStreamer` will take a clip from your channel and send it over. You can decide to take a random clip by setting `clipRandom` to true. Or if you would like to take the first clip that matched the `clipMaxTime` given in miliseconds then you can set `clipRandom` to false. `clipLimit` will determing how many of the newest clips should be brought in to determine which clip should be selected. After a clip is selected it will start running immediately
+
+```js
+async function() {
+    // A random clip from the person who was tagged in the message that has a max clip time of 60 seconds and will only take in the newest 100 clips
+    overlayShoutout({ layer: "My layer", clipType: "clipFromTarget", clipRandom: true, clipLimit: 100, clipMaxTime: "60000" });
+
+    // The newest clip from the person who was tagged in the message that is under 20 seconds and will only take in the newest 20 clips
+    overlayShoutout({ layer: "My layer", clipType: "clipFromTarget", clipRandom: false, clipLimit: 20, clipMaxTime: "20000" });
+
+    // The newest clip from the person who triggered the command that is under 20 seconds and will only take in the newest 20 clips
+    overlayShoutout({ layer: "My layer", clipType: "clipFromSender", clipRandom: false, clipLimit: 20, clipMaxTime: "20000" });
+}
+```
+
+### Get Token
+
+`getToken(connection: "twitch" | "twitchChatbot" | "youtube" | "facebook" | "glimesh" | "trovo" | "streamlabs" | "streamelements" | "treatstream" | "tipeeestream" | "tiltify" | "patreon" | "woocommerce" | "discord" | "twitter" | "spotify" | "pulsoid" | "wyze" | "homeassistant" | "govee" | "wled" )`: When you need to call a request that we don't directly support you can get the access token from Lumia before making the call. This is helpful for things where you need to call for instance the Twitch API, but you don't want to handle tokens and refreshing inside of your scripts. More examples of this below
+
+```js
+async function() {
+	// This will get the access token for your user on Twitch
+    const token = await getToken('twitch');
+}
+```
+
+### Get Client ID For Twitch
+
+`getClientId(connection: "twitch")`: When calling requests with Twitch's API you will need to pass in a Client-ID to the headers. We provide a Client ID that you can use to call the different api's with the permissions the user has selected. Check out [Twitch's developers docs](https://dev.twitch.tv/docs/api/reference) to learn what you can do
+
+```js
+async function() {
+	// This will get the client id for Twitch
+    const token = await getClientId('twitch');
+}
+```
