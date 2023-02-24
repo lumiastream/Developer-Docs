@@ -40,6 +40,18 @@ async function() {
 
 :::
 
+### Add Log to both Toast and Dashboard
+
+`log(message: any)`: The best way to log what's going on is to either use `log` or `console.log`. These will show a toast as well as add a log to the dashboard in case you need to reference it later.
+
+```js
+async function() {
+    log({ data: "my data" });
+    // Or using console.log
+    console.log({ data: "my data" });
+}
+```
+
 ### Show Toast
 
 `showToast({ message: string; time?: number })`: Show toast will show a popup message notification in Lumia. The time for how long it shows is in milliseconds. Leave it 0 to show forever
@@ -101,9 +113,21 @@ async function() {
 }
 ```
 
+### Delete Variable
+
+`deleteVariable(name: string | Array<string>)`: Delete a variable or multiple variables. If the variable doesn't exist it will still return as successful
+
+```js
+async function() {
+    deleteVariable('coins');
+    // Or you can pass in an array of variables
+    deleteVariable(['coins', 'myVar', 'other variable']);
+}
+```
+
 ### Get All Variables
 
-`getVariables()`: Ability to get all local and global variables with one easy call
+`getAllVariables()`: Ability to get all local and global variables with one easy call
 
 ```js
 async function() {
