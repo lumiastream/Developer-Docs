@@ -31,3 +31,5 @@ To find the list of types that each base has below. Check in the side bar to qui
 `variables`: allows you to send in different variables for each action. But do note that the variables that are already on the command/alert will also be spread on to this variables object. Variables are not required
 
 There are more fields that are sometimes used in actions. We will try to list out as many common examples down below along with the schema for them
+
+#### More documentation coming soon
