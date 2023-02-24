@@ -550,25 +550,3 @@ async function() {
     overlayShoutout({ layer: "My layer", clipType: "clipFromSender", clipRandom: false, clipLimit: 20, clipMaxTime: "20000" });
 }
 ```
-
-### Get Token
-
-`getToken(connection: "twitch" | "twitchChatbot" | "youtube" | "facebook" | "glimesh" | "trovo" | "streamlabs" | "streamelements" | "treatstream" | "tipeeestream" | "tiltify" | "patreon" | "woocommerce" | "discord" | "twitter" | "spotify" | "pulsoid" | "wyze" | "homeassistant" | "govee" | "wled" )`: When you need to call a request that we don't directly support you can get the access token from Lumia before making the call. This is helpful for things where you need to call for instance the Twitch API, but you don't want to handle tokens and refreshing inside of your scripts. More examples of this below
-
-```js
-async function() {
-	// This will get the access token for your user on Twitch
-    const token = await getToken('twitch');
-}
-```
-
-### Get Client ID For Twitch
-
-`getClientId(connection: "twitch")`: When calling requests with Twitch's API you will need to pass in a Client-ID to the headers. We provide a Client ID that you can use to call the different api's with the permissions the user has selected. Check out [Twitch's developers docs](https://dev.twitch.tv/docs/api/reference) to learn what you can do
-
-```js
-async function() {
-	// This will get the client id for Twitch
-    const token = await getClientId('twitch');
-}
-```
