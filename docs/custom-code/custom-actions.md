@@ -1,19 +1,36 @@
 ---
-sidebar_position: 2
-title: Helper functions
-description: Helper functions are a premade code that helps you build your custom scripts
+sidebar_position: 3
+title: Custom actions
+description: Custom Actions allow you to tap into how Lumia Stream calls actions from the inside
 ---
 
-These helper functions are premade code that we setup that you can use to help you build your custom code. You will find `use case examples` in the each section as well.
+`Custom Actions` allow you to tap into how Lumia Stream calls actions from the inside.
+`Custom Actions` are mainly meant for things that we haven't added as a `Helper function` yet. For instance, actions for Spotify, Twitch, Streamer.Bot etc are all actions that we do not have a have helper functions for. This is where an action will step in.
 
-### Done
+You can use actions by just passing in one object, or an array of objects.
+If you pass in an array of actions then any action that can be awaited will be wait until the promise has been resolved.
 
-`done({ shouldStop?: boolean; actionsToStop?: Array<string>; variables?: {[key: string]: string | number }}?)`: Done tell Lumia Stream that the script is complete and that the thread is safe to close now. You can also stop the command/alert in it's track by passing shouldStop true into the parameters.
-If you would like to modify/add variables that other actions could use, you can return them in the variables parameter.
+This documentation for every action we use in Lumia can get extremely broad, so we will give examples for different actions, but if you get stuck please visit our [**Discord**](https://discord.gg/R8rCaKb) to ask us any questions.
 
-You can also choose to only stop some actions rather than stopping the whole command by using actionsToStop.
-The different actionsToStop keys relate to the action. The keys are:
-`devices, tts, chatbot, hfx, lumia, overlay, voicemod, streamerbot, obs, slobs, midi, osc, mqtt, serial, broadlink, websocket, twitter, twitch, spotify, vlc, artnet, api, commandRunner, inputEvent`
+Let's get started:
+
+### Generic Action
+
+`actions([ { base: "lumia", type: "tts", value: { message: "Hello" }, variables: {} } ]);`:
+
+#### Before we begin, let's dissect this.
+
+`base`: will be the base of actions that can be used with Custom Code. The different bases are:
+`delay, lumia, overlay, api, websocket, commandRunner, inputEvent, obs, slobs, twitch, twitter, streamerbot, midi, osc, artnet, mqtt, serial, broadlink, spotify, vlc, voicemod`
+
+`type`: Every base has different action types. For instance, the base `lumia` has: `chatbot, tts, setStreamMode, toggleStreamMode` and much more.
+To find the list of types that each base has below. Check in the side bar to quickly get to the base you're interested in.
+
+`value`: can sometimes be an object and sometimes a string, it all depends on the `base` and `type`
+
+`variables`: allows you to send in different variables for each action. But do note that the variables that are already on the command/alert will also be spread on to this variables object. Variables are not required
+
+There are more fields that are sometimes used in actions. We will try to list out as many common examples down below along with the schema for them
 
 ```js
 // Basic done
@@ -39,18 +56,6 @@ async function() {
 **code blocks** like the one above 👆 have a copy button on the **top right corner** click it then paste in Lumia stream
 
 :::
-
-### Add Log to both Toast and Dashboard
-
-`log(message: any)`: The best way to log what's going on is to either use `log` or `console.log`. These will show a toast as well as add a log to the dashboard in case you need to reference it later.
-
-```js
-async function() {
-    log({ data: "my data" });
-    // Or using console.log
-    console.log({ data: "my data" });
-}
-```
 
 ### Show Toast
 
@@ -113,21 +118,9 @@ async function() {
 }
 ```
 
-### Delete Variable
-
-`deleteVariable(name: string | Array<string>)`: Delete a variable or multiple variables. If the variable doesn't exist it will still return as successful
-
-```js
-async function() {
-    deleteVariable('coins');
-    // Or you can pass in an array of variables
-    deleteVariable(['coins', 'myVar', 'other variable']);
-}
-```
-
 ### Get All Variables
 
-`getAllVariables()`: Ability to get all local and global variables with one easy call
+`getVariables()`: Ability to get all local and global variables with one easy call
 
 ```js
 async function() {
