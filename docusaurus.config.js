@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 (
   module.exports = {
     title: "Lumia Stream Developer Documentation",
-    tagline: "Connect your app to your smart lights seamlessly",
+    tagline: "Connect your app to your stream exactly how you want",
     url: "https://dev.lumiastream.com",
     baseUrl: "/",
     onBrokenLinks: "throw",
@@ -22,7 +22,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           redirects: [
             {
               to: "/docs/custom-code/what-is-custom-javascript",
-              from: "/custom-code",
+              from: ["/custom-code", "/docs/custom-code"],
             },
           ],
         },
