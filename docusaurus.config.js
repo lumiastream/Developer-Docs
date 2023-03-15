@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 (
   module.exports = {
     title: "Lumia Stream Developer Documentation",
-    tagline: "Connect your app to your exactly how you want",
+    tagline: "Connect your app to your stream exactly how you want",
     url: "https://dev.lumiastream.com",
     baseUrl: "/",
     onBrokenLinks: "throw",
