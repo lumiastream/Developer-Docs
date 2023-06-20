@@ -11,9 +11,9 @@ A sample event will look like this:
 
 ```json
 {
-	"origin": "twitch",
-	"type": "chat/commands/twitch",
-	"data": { "username": "lumiastream", "command": "blue" }
+  "origin": "twitch",
+  "type": "chat/commands/twitch",
+  "data": { "username": "lumiastream", "command": "blue" }
 }
 ```
 
@@ -25,57 +25,52 @@ Using Websockets you can do things that are beyond the scope of Lumia or just tr
 
 ## Valid Event Types
 
-* chat/twitch
-* chat/facebook
-* chat/youtube
-* chat/glimesh
-* chat/trovo
-* chat/commands
-* chat/commands/twitch
-* chat/commands/facebook
-* chat/commands/youtube
-* chat/commands/glimesh
-* chat/commands/trovo
-* time-of-use
-* live
-* twitch/points
-* twitch/extensions
-* pulse/rate/max
-* pulse/rate/min
-* pulse/calories/max
-* pulse/calories/min
-* alerts/twitch/followers
-* alerts/twitch/subscribers
-* alerts/twitch/bits
-* alerts/twitch/hosts
-* alerts/twitch/raids
-* alerts/youtube/subscribers
-* alerts/youtube/members
-* alerts/youtube/superchats
-* alerts/youtube/superstickers
-* alerts/facebook/followers
-* alerts/facebook/reactions
-* alerts/facebook/stars
-* alerts/facebook/supports
-* alerts/facebook/shares
-* alerts/facebook/fans
-* alerts/glimesh/followers
-* alerts/glimesh/subscribers
-* alerts/streamlabs/donations
-* alerts/streamlabs/charity
-* alerts/streamlabs/merch
-* alerts/streamlabs/redemptions
-* alerts/streamlabs/primegifts
-* alerts/streamelements/donations
-* alerts/streamelements/merch
-* alerts/streamelements/redemptions
-* alerts/extralife/donations
-* alerts/donordrive/donations
-* alerts/tipeestream/donations
-* alerts/tiltify/campaigndonations
-* alerts/patreon/campaignpledges
-* alerts/treatstream/treats
-* alerts/tipeeestream/donations
-* alerts/pulse/rate
-* alerts/pulse/calories
-
+- chat/twitch
+- chat/facebook
+- chat/youtube
+- chat/trovo
+- chat/commands
+- chat/commands/twitch
+- chat/commands/facebook
+- chat/commands/youtube
+- chat/commands/trovo
+- time-of-use
+- live
+- twitch/points
+- twitch/extensions
+- pulse/rate/max
+- pulse/rate/min
+- pulse/calories/max
+- pulse/calories/min
+- alerts/twitch/followers
+- alerts/twitch/subscribers
+- alerts/twitch/bits
+- alerts/twitch/hosts
+- alerts/twitch/raids
+- alerts/youtube/subscribers
+- alerts/youtube/members
+- alerts/youtube/superchats
+- alerts/youtube/superstickers
+- alerts/facebook/followers
+- alerts/facebook/reactions
+- alerts/facebook/stars
+- alerts/facebook/supports
+- alerts/facebook/shares
+- alerts/facebook/fans
+- alerts/streamlabs/donations
+- alerts/streamlabs/charity
+- alerts/streamlabs/merch
+- alerts/streamlabs/redemptions
+- alerts/streamlabs/primegifts
+- alerts/streamelements/donations
+- alerts/streamelements/merch
+- alerts/streamelements/redemptions
+- alerts/extralife/donations
+- alerts/donordrive/donations
+- alerts/tipeestream/donations
+- alerts/tiltify/campaigndonations
+- alerts/patreon/campaignpledges
+- alerts/treatstream/treats
+- alerts/tipeeestream/donations
+- alerts/pulse/rate
+- alerts/pulse/calories
