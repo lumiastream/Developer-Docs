@@ -1,7 +1,3 @@
----
-sidebar_position: 10
----
-
 # Congratulations!
 
 You have just learned the **basics of the REST API** we're interested in seeing what you can make with this and excited to hear your feedback

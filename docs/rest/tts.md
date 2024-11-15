@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 15
 ---
 
 # Text To Speech
@@ -8,19 +8,24 @@ Lumia Stream has a built in Text To Speech Engine inside of it that developers a
 
 You can trigger the TTS system by sending a POST request like this:
 
-```
+```bash
 POST http://localhost:39231/api/send?token=your_token
+```
+
+```json
 {
-	"type": "tts",
-	"params": {
-			"value": "Wow, this tutorial is just way too cool"
-	}
+  "type": "tts",
+  "params": {
+    "value": "Wow, this tutorial is just way too cool"
+  }
 }
 ```
 
-_Make sure you replace **your_token** with your actual token_
+:::tip
 
----
+Make sure you replace **your_token** with your actual token
+
+:::
 
 ## Change The Speaker Voice
 
@@ -28,14 +33,13 @@ You can select the voice based on the results you've retrieved on the **[Getting
 
 The list of voices can be found in the `data.options.tts.voices parameter
 
-```
-POST http://localhost:39231/api/send?token=your_token
+```json
 {
-	"type": "tts",
-	"params": {
-			"value": "Wow, this tutorial is just way too cool",
-			"voice": "Agnes"
-	}
+  "type": "tts",
+  "params": {
+    "value": "Wow, this tutorial is just way too cool",
+    "voice": "Brian"
+  }
 }
 ```
 
@@ -43,15 +47,14 @@ POST http://localhost:39231/api/send?token=your_token
 
 ## Setting The Volume
 
-On `Windows only` you will have the option to also se the volume with how loud the TTS is spoken:
+On `Windows only` you will have the option to also set the volume with how loud the TTS is spoken:
 
-```
-POST http://localhost:39231/api/send?token=your_token
+```json
 {
-	"type": "tts",
-	"params": {
-			"value": "Wow, this tutorial is just way too cool",
-			"volume": 20
-	}
+  "type": "tts",
+  "params": {
+    "value": "Wow, this tutorial is just way too cool",
+    "volume": 20
+  }
 }
 ```
