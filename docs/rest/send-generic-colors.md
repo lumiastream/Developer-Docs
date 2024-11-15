@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # Sending Colors and Brightness
@@ -8,20 +8,29 @@ Sending Generic Colors and Brightness is the most powerful way to use Lumia. You
 
 A sample POST request would look like:
 
-```
+```bash
 POST http://localhost:39231/api/send?token=your_token
+```
+
+Raw JSON to send:
+
+```json
 {
-	"type": "rgb-color",
-	"params": {
-			"value": { "r": 20, "g": 100, "b": 10 },
-			"brightness": 100,
-			"transition": 0,
-			"duration": 5000
-	}
+  "type": "rgb-color",
+  "params": {
+    "value": { "r": 20, "g": 100, "b": 10 },
+    "brightness": 100,
+    "transition": 0,
+    "duration": 5000
+  }
 }
 ```
 
-_Make sure you replace **your_token** with your actual token_
+:::tip
+
+Make sure you replace **your_token** with your actual token
+
+:::
 
 the **params.value** can either be an object with parameters `R, G, and B`, or an array with `[number, number, number]`.
 
@@ -38,16 +47,15 @@ The values for Color Temperature can go between `2900 kelvin to 7000 kelvin` inc
 
 You will also have the ability to send hex colors instead of RGB Colors by sending a POST request with the type `hex-color`:
 
-```
-POST http://localhost:39231/api/send?token=your_token
+```json
 {
-	"type": "hex-color",
-	"params": {
-			"value": "#ff00ff",
-			"brightness": 100,
-			"transition": 0,
-			"duration": 5000
-	}
+  "type": "hex-color",
+  "params": {
+    "value": "#FF4076",
+    "brightness": 100,
+    "transition": 0,
+    "duration": 5000
+  }
 }
 ```
 
@@ -66,16 +74,15 @@ Brightness will default to 100, transition defaults to 0, and duration defaults 
 
 You will also have the ability to set that command as your new default by adding the parameter hold inside the post request:
 
-```
-POST http://localhost:39231/api/send?token=your_token
+```json
 {
-	"type": "rgb-color",
-	"params": {
-			"value": { "r": 20, "g": 100, "b": 10 },
-			"brightness": 100,
-			"transition": 0,
-			"duration": 5000,
-			"hold": true
-	}
+  "type": "rgb-color",
+  "params": {
+    "value": { "r": 20, "g": 100, "b": 10 },
+    "brightness": 100,
+    "transition": 0,
+    "duration": 5000,
+    "hold": true
+  }
 }
 ```
