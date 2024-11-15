@@ -11,6 +11,6 @@ Then you'll be brought to the `Dashboard`.
 Once here you can head to `Settings` on the sidebar and scroll all the way down.
 Here you'll find the `API` section where you will be able to copy your token as well as having the ability to turn the API off or on.
 
-![Api Settings](/img/tutorial/api-docs-location.jpg)
+![Api Settings](/img/tutorial/get-api-token-from-lumiastream-settings.webp)
 
 Store this token as we will be using it later
