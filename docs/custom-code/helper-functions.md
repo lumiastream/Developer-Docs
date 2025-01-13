@@ -194,12 +194,12 @@ async function() {
 
 ### Send Color To Lights
 
-`sendColor({ color?: string | { r: number; g: number; b: number }; power?: boolean; brightness?: number; transition?: number; lights?: Array<{ id: tring; type: string }> })`: Send a color or power to either all lights or a set of lights. Do not send the `lights` array when you want to target every lights. Every parameter is optional. The type and id is required to send color or power to specific lights
+`sendColor({ color?: string | { r: number; g: number; b: number }; power?: boolean; brightness?: number; transition?: number; lights?: Array<{ id: string | number; type: string }> })`: Send a color or power to either all lights or a set of lights. Do not send the `lights` array when you want to target every lights. Every parameter is optional. The type and id is required to send color or power to specific lights
 
 ```js
 async function() {
     // Send hex color to all lights
-    sendColor({ color: "#ff00ff", brightness: 100 });
+    sendColor({ color: "#FF4076", brightness: 100 });
 
     // Send rgb color to all lights
     sendColor({ color: { r: 0, g: 0, b: 255 }, brightness: 100 });
@@ -208,10 +208,14 @@ async function() {
     sendColor({ power: true });
 
     // Send to specific lights
-    sendColor({ color: "#ff00ff", brightness: 100, transition: 0, lights: [{ type: "hue", id: "1" }, { type: "lifx", id: "abc" }] });
+    sendColor({ color: "#FF4076", brightness: 100, transition: 0, lights: [{ type: "hue", id: "1" }, { type: "lifx", id: "abc" }] });
+
+    // For Nanoleaf lights, ensure id values are integers without quotation marks (e.g., 14608). Quoted string IDs will not work for Nanoleaf
+    sendColor({ color: "#FF4076", brightness: 100, transition: 0, lights: [{ type: "nanoleaf", id: 14608 }] });
+
 
     // Send to an overlay virtuallight
-    sendColor({ color: "#ff00ff", brightness: 100, lights: [{ type: "virtuallight", id: "abc-123-520" }] });
+    sendColor({ color: "#FF4076", brightness: 100, lights: [{ type: "virtuallight", id: "abc-123-520" }] });
 }
 ```
 
