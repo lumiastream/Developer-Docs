@@ -214,7 +214,7 @@ async function() {
     sendColor({ color: "#FF4076", brightness: 100, transition: 0, lights: [{ type: "nanoleaf", id: 14608 }] });
 
 
-    // Send to an overlay virtuallight
+    // Send to an overlay virtual light
     sendColor({ color: "#FF4076", brightness: 100, lights: [{ type: "virtuallight", id: "abc-123-520" }] });
 }
 ```
