@@ -11,7 +11,7 @@ This can be very useful if other apps are reading and writing to a text file. An
 ```js
 async function() {
 	// You have the ability to overwrite the whole file by setting append to false, or appending to the file in case you would like to keep a log of things
-	await writeFile({ path: 'C:\\Users\\Lumia\\Desktop\\lastSubscriber.txt', message: '{{username}}\n', append: true });
+	await writeFile({ path: 'C:	\\Users\\Lumia\\Desktop\\lastSubscriber.txt', message: '{{username}}\n', append: true });
 
 	// You can get your variable's value that you just set here
 	const lastSubscribers = await readFile('C:\\Users\\Lumia\\Desktop\\lastSubscriber.txt');

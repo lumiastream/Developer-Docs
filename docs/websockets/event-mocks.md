@@ -10,9 +10,9 @@ Here are a list of mocks that can be retrieved using our Websocket events
 
 ```json
 {
-	"origin": "twitch",
-	"type": "chat/commands/twitch",
-	"data": { "username": "lumiastream", "command": "blue" }
+  "origin": "twitch",
+  "type": "chat/commands/twitch",
+  "data": { "username": "lumiastream", "command": "blue" }
 }
 ```
 
@@ -47,6 +47,7 @@ Here are a list of mocks that can be retrieved using our Websocket events
     "ogMessage": "is here",
     "self": false
   }
+}
 ```
 
 ### Twitch Follow

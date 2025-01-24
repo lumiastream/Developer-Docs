@@ -17,8 +17,6 @@ title: Important notes
 
 - Everything ran is in a safe JavaScript worker thread away from the Lumia Stream thread so no need to worry about scripts slowing down the app. Make sure you do avoid memory leaks by calling `done()` when you're done with your script
 
-<!-- Come to our [**Discord**](https://discord.gg/R8rCaKb) to **share your code** with others to **extend Lumia's functionality** in a variety of ways -->
-
 **Share your code** with our community in [**Discord**](https://discord.gg/R8rCaKb) and help **extending Lumia's functionality**
 
 **Checkout the use case examples in the next section**

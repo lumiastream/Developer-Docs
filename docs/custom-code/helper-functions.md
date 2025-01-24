@@ -82,7 +82,7 @@ async function() {
 
 ### Delay
 
-`delay(time: number)`: You can delay your code with our helper function that returns a promise. The time is in miliseconds.
+`delay(time: number)`: You can delay your code with our helper function that returns a promise. The time is in milliseconds.
 
 ```js
 async function() {
@@ -215,7 +215,7 @@ async function() {
 
 
     // Send to an overlay virtual light
-    sendColor({ color: "#FF4076", brightness: 100, lights: [{ type: "virtuallight", id: "abc-123-520" }] });
+    sendColor({ color: "#FF4076", brightness: 100, lights: [{ type: "virtuallights", id: "abc-123-520" }] });
 }
 ```
 
@@ -457,7 +457,7 @@ async function() {
 
 ### Overlay Set Image Content
 
-`overlaySetImageContent({ layer: string, content: string })`: You can set the image content of an image layer using this function. `content` is just a string that will correspond to the image name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_logo.gif` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a {{message}} variable. After the content is changed it will automatically make the layer visibile and start playing
+`overlaySetImageContent({ layer: string, content: string })`: You can set the image content of an image layer using this function. `content` is just a string that will correspond to the image name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_logo.gif` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a \{\{message\}\} variable. After the content is changed it will automatically make the layer visibile and start playing
 
 ```js
 async function() {
@@ -471,7 +471,7 @@ async function() {
 
 ### Overlay Set Video Content
 
-`overlaySetVideoContent({ layer: string, content: string })`: You can set the video content of an video layer using this function. `content` is just a string that will correspond to the video name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_video.webm` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a {{message}} variable. After the content is changed it will automatically make the layer visibile and start playing
+`overlaySetVideoContent({ layer: string, content: string })`: You can set the video content of an video layer using this function. `content` is just a string that will correspond to the video name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_video.webm` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a \{\{message\}\} variable. After the content is changed it will automatically make the layer visibile and start playing
 
 ```js
 async function() {
@@ -485,7 +485,7 @@ async function() {
 
 ### Overlay Set Audio Content
 
-`overlaySetAudioContent({ layer: string, content: string })`: You can set the audio content of an audio layer using this function. `content` is just a string that will correspond to the audio name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_land.mp3` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a {{message}} variable. After the content is changed it will automatically make the layer visibile and start playing
+`overlaySetAudioContent({ layer: string, content: string })`: You can set the audio content of an audio layer using this function. `content` is just a string that will correspond to the audio name or url that you want to set it to. If you use a name it will try to find the name of an asset that you have in your overlay library. So if you have an asset named `lumia_land.mp3` you can set the content to the exact name with or without the file extension. This can be useful to allow chat to change the media using a \{\{message\}\} variable. After the content is changed it will automatically make the layer visibile and start playing
 
 ```js
 async function() {
@@ -540,7 +540,7 @@ async function() {
 
 ### Overlay Shoutout
 
-`overlayShoutout({ layer: string, clipType: "clipFromTarget" | "clipFromSender" | "clipFromStreamer", clipRandom: boolean, clipLimit: number, clipMaxTime: string })`: You can send a shoutout directly to a shoutout layer using this function. `clipType` has three types. `clipFromTarget` will take a clip from the user who was tagged in the {{message}} variable. So you can use @lumiastream in the message and it will take a clip from that channel. `clipFromSender` will take a clip from the person who triggered the command. This normally corresponds to the {{user}} variable. `clipFromStreamer` will take a clip from your channel and send it over. You can decide to take a random clip by setting `clipRandom` to true. Or if you would like to take the first clip that matched the `clipMaxTime` given in miliseconds then you can set `clipRandom` to false. `clipLimit` will determing how many of the newest clips should be brought in to determine which clip should be selected. After a clip is selected it will start running immediately
+`overlayShoutout({ layer: string, clipType: "clipFromTarget" | "clipFromSender" | "clipFromStreamer", clipRandom: boolean, clipLimit: number, clipMaxTime: string })`: You can send a shoutout directly to a shoutout layer using this function. `clipType` has three types. `clipFromTarget` will take a clip from the user who was tagged in the \{\{message\}\} variable. So you can use @lumiastream in the message and it will take a clip from that channel. `clipFromSender` will take a clip from the person who triggered the command. This normally corresponds to the \{\{user\}\} variable. `clipFromStreamer` will take a clip from your channel and send it over. You can decide to take a random clip by setting `clipRandom` to true. Or if you would like to take the first clip that matched the `clipMaxTime` given in milliseconds then you can set `clipRandom` to false. `clipLimit` will determing how many of the newest clips should be brought in to determine which clip should be selected. After a clip is selected it will start running immediately
 
 ```js
 async function() {
