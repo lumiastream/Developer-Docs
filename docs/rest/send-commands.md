@@ -87,8 +87,8 @@ Certain commands normally take in extra variables to determine the TTS, as well 
 }
 ```
 
-Local variables, such as {{username}}, can be used within commands like a TTS message, e.g., "{{username}} used {{command}}".
+Local variables, such as \{\{username\}\}, can be used within commands like a TTS message, e.g., "\{\{username\}\} used \{\{command\}\}".
 
-By passing extraSettings, you can modify the value of {{username}} or introduce new variables like {{customVariable}}.
+By passing extraSettings, you can modify the value of \{\{username\}\} or introduce new variables like \{\{customVariable\}\}.
 
 Simply provide the desired values in extraSettings to set or update these variables.
