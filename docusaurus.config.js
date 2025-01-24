@@ -1,11 +1,13 @@
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const { themes } = require("prism-react-renderer");
+const lightCodeTheme = themes.github;
+const darkCodeTheme = themes.dracula;
 
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (
   module.exports = {
     title: "Lumia Stream Developer Documentation",
+    staticDirectories: ["static"],
     tagline: "Connect your app to your stream exactly how you want",
     url: "https://dev.lumiastream.com",
     baseUrl: "/",
@@ -27,6 +29,12 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           ],
         },
       ],
+      [
+        require.resolve("docusaurus-lunr-search"),
+        {
+          highlightResult: true,
+        },
+      ],
     ],
 
     presets: [
@@ -34,7 +42,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
         "@docusaurus/preset-classic",
         /** @type {import('@docusaurus/preset-classic').Options} */
         ({
-          api: {
+          docs: {
             sidebarPath: require.resolve("./sidebars.js"),
             editUrl: "https://github.com/lumiastream/Developer-Docs",
           },
