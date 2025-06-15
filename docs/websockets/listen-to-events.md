@@ -11,9 +11,9 @@ A sample event will look like this:
 
 ```json
 {
-  "origin": "twitch",
-  "type": "chat/commands/twitch",
-  "data": { "username": "lumiastream", "command": "blue" }
+	"origin": "twitch",
+	"type": "chat/commands/twitch",
+	"data": { "username": "lumiastream", "command": "blue" }
 }
 ```
 
@@ -63,8 +63,6 @@ Using Websockets you can do things that are beyond the scope of Lumia or just tr
 - alerts/streamlabs/redemptions
 - alerts/streamlabs/primegifts
 - alerts/streamelements/donations
-- alerts/streamelements/merch
-- alerts/streamelements/redemptions
 - alerts/extralife/donations
 - alerts/donordrive/donations
 - alerts/tipeestream/donations

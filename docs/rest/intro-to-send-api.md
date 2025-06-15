@@ -16,10 +16,10 @@ Raw JSON to send:
 
 ```json
 {
-  "type": "chat-command",
-  "params": {
-    "value": "blue"
-  }
+	"type": "chat-command",
+	"params": {
+		"value": "blue"
+	}
 }
 ```
 
@@ -57,6 +57,7 @@ The valid types for using the send api:
 - resume-queue
 - pause-queue
 - clear-queue
+- clear-cooldowns
 - set-command-state
 - set-folder-state
 - tts

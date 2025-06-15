@@ -236,7 +236,7 @@ async function() {
 The valid alert keys are:
 
 ```
-lumia-redemption, twitch-streamLive, twitch-streamOffline, twitch-follower, twitch-subscriber, twitch-giftSubscription, twitch-host, twitch-raid, twitch-bits, twitch-redemption, twitch-hypetrainStarted, twitch-hypetrainProgressed, twitch-hypetrainLevelProgressed, twitch-hypetrainEnded, twitch-pollStarted, twitch-pollProgressed, twitch-pollEnded, twitch-predictionStarted, twitch-predictionProgressed, twitch-predictionLocked, twitch-predictionEnded, twitch-goalStarted, twitch-goalProgressed, twitch-goalEnded, twitch-categoryChanged, twitch-clip, youtube-member, youtube-subscriber, youtube-superchat, youtube-supersticker, facebook-follower, facebook-reaction, facebook-star, facebook-support, facebook-subscriptionGift, facebook-share, facebook-fan,  trovo-streamLive, trovo-streamOffline, trovo-channelJoin, trovo-subscriber, trovo-follower, trovo-spell, trovo-giftSubscription, trovo-raid, tiktok-follower, tiktok-like, tiktok-gift, tiktok-subscriber, tiktok-share, tiktok-streamEnd, streamlabs-donation, streamlabs-charity, streamlabs-merch, streamlabs-redemption, streamlabs-primegift, streamelements-donation, streamelements-merch, streamelements-redemption, extralife-donation, donordrive-donation, tiltify-campaignDonation, tipeeestream-donation, treatstream-treat, patreon-pledge, obs-switchProfile, obs-switchScene, obs-sceneItemVisibility, obs-sceneItemHidden, obs-switch-transition, obs-transitionBegin, obs-transitionEnd, obs-streamStarting, obs-streamStopping, obs-recordingStarting, obs-recordingStopping, slobs-switchSceneCollection, slobs-switchScene, slobs-sceneItemVisibility, slobs-sceneItemHidden, spotify-switchSong, spotify-songPlayed, spotify-songPaused, vlc-switchSong, vlc-songPlayed, vlc-songPaused, pulse-heartrate, pulse-calories, twitter-follower, twitter-like, twitter-retweet, woocommerce-order, kofi-donation, kofi-subscription, kofi-commission, kofi-shopOrder, streamerbot-action
+lumia-redemption, twitch-streamLive, twitch-streamOffline, twitch-follower, twitch-subscriber, twitch-giftSubscription, twitch-host, twitch-raid, twitch-bits, twitch-redemption, twitch-hypetrainStarted, twitch-hypetrainProgressed, twitch-hypetrainLevelProgressed, twitch-hypetrainEnded, twitch-pollStarted, twitch-pollProgressed, twitch-pollEnded, twitch-predictionStarted, twitch-predictionProgressed, twitch-predictionLocked, twitch-predictionEnded, twitch-goalStarted, twitch-goalProgressed, twitch-goalEnded, twitch-categoryChanged, twitch-clip, youtube-member, youtube-subscriber, youtube-superchat, youtube-supersticker, facebook-follower, facebook-reaction, facebook-star, facebook-support, facebook-subscriptionGift, facebook-share, facebook-fan,  trovo-streamLive, trovo-streamOffline, trovo-channelJoin, trovo-subscriber, trovo-follower, trovo-spell, trovo-giftSubscription, trovo-raid, tiktok-follower, tiktok-like, tiktok-gift, tiktok-subscriber, tiktok-share, tiktok-streamEnd, streamlabs-donation, streamlabs-charity, streamlabs-merch, streamlabs-redemption, streamlabs-primegift, streamelements-donation,  extralife-donation, donordrive-donation, tiltify-campaignDonation, tipeeestream-donation, treatstream-treat, patreon-pledge, obs-switchProfile, obs-switchScene, obs-sceneItemVisibility, obs-sceneItemHidden, obs-switch-transition, obs-transitionBegin, obs-transitionEnd, obs-streamStarting, obs-streamStopping, obs-recordingStarting, obs-recordingStopping, slobs-switchSceneCollection, slobs-switchScene, slobs-sceneItemVisibility, slobs-sceneItemHidden, spotify-switchSong, spotify-songPlayed, spotify-songPaused, vlc-switchSong, vlc-songPlayed, vlc-songPaused, pulse-heartrate, pulse-calories, twitter-follower, twitter-like, twitter-retweet, woocommerce-order, kofi-donation, kofi-subscription, kofi-commission, kofi-shopOrder, streamerbot-action
 ```
 
 ```js
@@ -552,5 +552,20 @@ async function() {
 
     // The newest clip from the person who triggered the command that is under 20 seconds and will only take in the newest 20 clips
     overlayShoutout({ layer: "My layer", clipType: "clipFromSender", clipRandom: false, clipLimit: 20, clipMaxTime: "20000" });
+}
+```
+
+### Overlay Send To Custom Overlay
+
+`overlaySendCustomOverlayContent({ layer?: string, content: string })`: You can send a content directly to custom overlays. `content` is a string, but you can also pass in strigified json and then parse it in the custom overlay js code.
+This function is useful for sending messages from a command or alert to your custom overlay without needing to rely on listening to events like chat and alerts. Layer is not requred. It will send to all custom overlays if it does not exist.
+
+```js
+async function() {
+    // A regular string message that can be sent to your custom overlay
+    overlaySendCustomOverlayContent({ layer: "My layer", content: "blue" });
+
+    // A strigified json string that can then be parsed on the custom overlay js side. Add a key to your json so you konw this data belongs to your overlay
+    overlaySendCustomOverlayContent({ layer: "", content: '{"key": "myoverlay", "color":"blue","age":5,"name":"user"}' });
 }
 ```

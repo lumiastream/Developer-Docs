@@ -14,10 +14,10 @@ Raw JSON to send:
 
 ```json
 {
-  "type": "alert",
-  "params": {
-    "value": "twitch-follower"
-  }
+	"type": "alert",
+	"params": {
+		"value": "twitch-follower"
+	}
 }
 ```
 
@@ -140,8 +140,6 @@ The valid types for sending an alert are:
 - streamlabs-redemption
 - streamlabs-primegift
 - streamelements-donation
-- streamelements-merch
-- streamelements-redemption
 - extralife-donation
 - donordrive-donation
 - tiltify-campaignDonation
@@ -210,13 +208,13 @@ Certain alerts normally take in extra variables to determine the variation, the 
 
 ```json
 {
-  "type": "alert",
-  "params": {
-    "value": "twitch-bits",
-    "extraSettings": {
-      "username": "lumia",
-      "bits": 1000
-    }
-  }
+	"type": "alert",
+	"params": {
+		"value": "twitch-bits",
+		"extraSettings": {
+			"username": "lumia",
+			"bits": 1000
+		}
+	}
 }
 ```
