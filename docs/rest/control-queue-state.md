@@ -14,7 +14,7 @@ Raw JSON to **pause queue**
 
 ```json
 {
-  "type": "pause-queue"
+	"type": "pause-queue"
 }
 ```
 
@@ -22,7 +22,7 @@ Raw JSON to **resume queue**
 
 ```json
 {
-  "type": "resume-queue"
+	"type": "resume-queue"
 }
 ```
 
@@ -30,7 +30,15 @@ Raw JSON to **clear queue**
 
 ```json
 {
-  "type": "clear-queue"
+	"type": "clear-queue"
+}
+```
+
+Raw JSON to **clear cooldowns**
+
+```json
+{
+	"type": "clear-cooldowns"
 }
 ```
 
