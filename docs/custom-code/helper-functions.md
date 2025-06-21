@@ -557,15 +557,15 @@ async function() {
 
 ### Overlay Send To Custom Overlay
 
-`overlaySendCustomOverlayContent({ layer?: string, content: string })`: You can send a content directly to custom overlays. `content` is a string, but you can also pass in strigified json and then parse it in the custom overlay js code.
-This function is useful for sending messages from a command or alert to your custom overlay without needing to rely on listening to events like chat and alerts. Layer is not requred. It will send to all custom overlays if it does not exist.
+`overlaySendCustomContent({ codeId: string, content: string, layer?: string })`: You can send a content directly to custom overlays. `codeId` is the id of the code that created the custom overlay and will only send to overlays with this codeId. `content` is a string, but you can also pass in strigified json and then parse it in the custom overlay js code.
+This function is useful for sending messages from a command or alert to your custom overlay without needing to rely on listening to events like chat and alerts. `layer` is not requred nor is it recommended to use if you will be sharing this command with your custom code.
 
 ```js
 async function() {
     // A regular string message that can be sent to your custom overlay
-    overlaySendCustomOverlayContent({ layer: "My layer", content: "blue" });
+    overlaySendCustomContent({ codeId: "myoverlay", content: "blue" });
 
     // A strigified json string that can then be parsed on the custom overlay js side. Add a key to your json so you konw this data belongs to your overlay
-    overlaySendCustomOverlayContent({ layer: "", content: '{"key": "myoverlay", "color":"blue","age":5,"name":"user"}' });
+    overlaySendCustomContent({ codeId: "myoverlay", content: '{"key": "myoverlay", "color":"blue","age":5,"name":"user"}' });
 }
 ```
