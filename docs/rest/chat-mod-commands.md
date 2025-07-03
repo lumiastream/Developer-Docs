@@ -21,6 +21,7 @@ POST http://localhost:39231/api/send?token=your_token
 	"type": "translate-message",
 	"params": {
 		"value": "我非常喜欢 Lumia Stream",
+    "username" "anyusername",
 		"platform": "twitch"
 	}
 }
@@ -88,7 +89,7 @@ POST http://localhost:39231/api/send?token=your_token
 
 ---
 
-## Ban User (Twitch Only)
+## Ban User (Twitch and Youtube)
 
 Ban a user from the channel
 
@@ -108,7 +109,7 @@ POST http://localhost:39231/api/send?token=your_token
 
 ---
 
-## Unban User (Twitch Only)
+## Unban User (Twitch and Youtube)
 
 Unban a user on the channel
 
@@ -128,7 +129,7 @@ POST http://localhost:39231/api/send?token=your_token
 
 ---
 
-## Timeout User (Twitch Only)
+## Timeout User (Twitch and Youtube)
 
 Timeout a user on the channel
 
