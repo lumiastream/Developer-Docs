@@ -48,26 +48,6 @@ POST http://localhost:39231/api/send?token=your_token
 
 ---
 
-## Shoutout a user
-
-Shoutout will find a clip of a user if possible, display it on the overlays and message in Chatbot
-
-```bash
-POST http://localhost:39231/api/send?token=your_token
-```
-
-```json
-{
-	"type": "shoutout",
-	"params": {
-		"value": "anyusername",
-		"platform": "twitch"
-	}
-}
-```
-
----
-
 ## Add VIP (Twitch Only)
 
 Add a user as a VIP of the channel
