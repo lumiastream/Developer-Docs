@@ -10,7 +10,8 @@ Lumia Stream has various Chat Mod Commands for each of our platforms that can be
 
 ## Translate any message
 
-You can translate a message and post it directly to chat using:
+You can translate a message and post it directly to chat.
+The language is the language code: `en,es,ar,zh,de,fr,etc.`
 
 ```bash
 POST http://localhost:39231/api/send?token=your_token
@@ -21,7 +22,8 @@ POST http://localhost:39231/api/send?token=your_token
 	"type": "translate-message",
 	"params": {
 		"value": "我非常喜欢 Lumia Stream",
-    "username" "anyusername",
+		"username": "anyusername",
+		"language": "en",
 		"platform": "twitch"
 	}
 }
