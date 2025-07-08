@@ -23,6 +23,10 @@ const darkCodeTheme = themes.dracula;
 				{
 					redirects: [
 						{
+							to: "/docs/variables",
+							from: ["/variables", "/docs/variables"],
+						},
+						{
 							to: "/docs/custom-code/what-is-custom-javascript",
 							from: ["/custom-code", "/docs/custom-code"],
 						},
@@ -72,6 +76,12 @@ const darkCodeTheme = themes.dracula;
 							docId: "intro",
 							position: "left",
 							label: "API Docs",
+						},
+						{
+							type: "doc",
+							docId: "variables",
+							position: "left",
+							label: "Variables",
 						},
 						{
 							label: "Custom code",

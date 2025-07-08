@@ -1,0 +1,230 @@
+---
+sidebar_position: 2
+id: variables
+title: Platform Variables
+---
+
+import React from "react";
+import Link from "@docusaurus/Link";
+import { AllVariables } from "@lumiastream/lumia-types";
+import { enTrans } from "@lumiastream/lumia-translations";
+
+export const chatCommandTypes = [
+  "command",
+  "chatbotCommand",
+  "twitchPoints",
+  "kickPoints",
+  "trovoSpells",
+  "twitchExtensions",
+  "chatmatch",
+];
+
+export default function VariablesDoc() {
+  // helper to generate URL-friendly IDs
+  const slugify = (s) =>
+    s
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+return (
+
+<>
+<h1>Platform Variables</h1>
+
+      {Object.entries(AllVariables).map(([platform, cfg]) => {
+        const h2Id = slugify(platform);
+        const alertsBase = slugify(`${platform}-alerts-variables`);
+
+        return (
+          <section key={platform}>
+            {/* Platform header */}
+            <h2
+              id={h2Id}
+              style={{
+                scrollMarginTop: "4rem",
+                color: "#ff4076",
+                textTransform: "capitalize",
+              }}
+            >
+              <Link to={`#${h2Id}`}>{platform}</Link>
+            </h2>
+
+            {/* Global Variables */}
+            {cfg.variables?.length > 0 && (() => {
+              const text =
+                platform === "lumiastream"
+                  ? "Global Variables"
+                  : `${platform} Global Variables`;
+              const h3Id = slugify(`${platform} ${text}`);
+              return (
+                <>
+                  <h3
+                    id={h3Id}
+                    style={{
+                      scrollMarginTop: "4rem",
+                      marginLeft: "20px",
+                      color: "#701c34",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    <Link to={`#${h3Id}`}>{text}</Link>
+                  </h3>
+                  <ul
+                    style={{
+                      marginLeft: "20px",
+                      backgroundColor: "#fafafa",
+                      padding: "10px",
+                      borderRadius: "4px",
+                      listStyle: "disc inside",
+                    }}
+                  >
+                    {cfg.variables.map((v) => (
+                      <li key={v} style={{ padding: "4px 0" }}>
+                        <code>{v}</code>
+                        {enTrans?.variables?.[v] && (
+                          <div style={{ marginLeft: "8px", color: "#555" }}>
+                            {enTrans.variables[v]}
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              );
+            })()}
+
+            {/* Chat Command Types */}
+            {cfg.chat && Object.keys(cfg.chat).length > 0 && (
+              <>
+                {Object.entries(cfg.chat)
+                  .sort(([a], [b]) => {
+                    const aIs = chatCommandTypes.includes(a);
+                    const bIs = chatCommandTypes.includes(b);
+                    if (aIs !== bIs) return aIs ? -1 : 1;
+                    return a.localeCompare(b);
+                  })
+                  .map(([type, vars]) => {
+                    const label = chatCommandTypes.includes(type)
+                      ? `${type} [Chat Type]`
+                      : `${type} [Chatbot Command Type]`;
+                    const h3Id = slugify(`${platform} ${type}`);
+                    return (
+                      <React.Fragment key={type}>
+                        <h3
+                          id={h3Id}
+                          style={{
+                            scrollMarginTop: "4rem",
+                            marginLeft: "20px",
+                            color: "#701c34",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <Link to={`#${h3Id}`}>{label}</Link>
+                        </h3>
+                        {vars.length > 0 ? (
+                          <ul
+                            style={{
+                              marginLeft: "20px",
+                              backgroundColor: "#f3f3f3",
+                              padding: "10px",
+                              borderRadius: "4px",
+                              listStyle: "circle inside",
+                            }}
+                          >
+                            {vars.map((a) => (
+                              <li key={a} style={{ padding: "4px 0" }}>
+                                <code>{a}</code>
+                                {enTrans?.variables?.[a] && (
+                                  <div style={{ marginLeft: "8px", color: "#555" }}>
+                                    {enTrans.variables[a]}
+                                  </div>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <em style={{ marginLeft: "20px" }}>none</em>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+              </>
+            )}
+
+            {/* Alerts */}
+            {cfg.alerts && Object.keys(cfg.alerts).length > 0 && (
+              <>
+                {(() => {
+                  const text = `${platform} Alerts Variables`;
+                  const h3Id = slugify(`${platform} alerts variables`);
+                  return (
+                    <h3
+                      id={h3Id}
+                      style={{
+                        scrollMarginTop: "4rem",
+                        marginLeft: "20px",
+                        color: "#701c34",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      <Link to={`#${h3Id}`}>{text}</Link>
+                    </h3>
+                  );
+                })()}
+                <ul
+                  style={{
+                    marginLeft: "20px",
+                    backgroundColor: "#ececec",
+                    padding: "10px",
+                    borderRadius: "4px",
+                    listStyle: "square inside",
+                  }}
+                >
+                  {Object.entries(cfg.alerts).map(([alert, vars]) => {
+                    const alertId = `${alertsBase}-${slugify(alert)}`;
+                    return (
+                      <li key={alert} id={alertId} style={{ padding: "4px 0" }}>
+                        <Link to={`#${alertId}`}>
+                          <strong style={{ textTransform: "capitalize" }}>
+                            {alert}
+                          </strong>
+                        </Link>
+                        :{" "}
+                        {vars.length > 0 ? (
+                          <ul
+                            style={{
+                              marginLeft: "20px",
+                              backgroundColor: "#e5e5e5",
+                              padding: "10px",
+                              borderRadius: "4px",
+                              listStyle: "disc inside",
+                            }}
+                          >
+                            {vars.map((a) => (
+                              <li key={a} style={{ padding: "4px 0" }}>
+                                <code>{a}</code>
+                                {enTrans?.variables?.[a] && (
+                                  <div style={{ marginLeft: "8px", color: "#555" }}>
+                                    {enTrans.variables[a]}
+                                  </div>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <em>none</em>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
+          </section>
+        );
+      })}
+    </>
+
+);
+}
