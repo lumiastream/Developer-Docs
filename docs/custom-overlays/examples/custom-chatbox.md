@@ -111,18 +111,6 @@ window.addEventListener("onEventReceived", (ev) => {
 	"rounded": {
 		"type": "input",
 		"label": "Rounded corners:"
-	},
-	"events": {
-		"type": "multiselect",
-		"label": "Events to listen to:",
-		"hidden": true,
-		"value": ["alert.chat"],
-		"options": {
-			"alert.chat": "Chat messages",
-			"alert.trigger": "Alerts",
-			"alert.hfx": "HFX",
-			"light.virtual": "Virtual lights"
-		}
 	}
 }
 ```

@@ -148,18 +148,6 @@ window.addEventListener("onEventReceived", (ev) => {
 	"alertImage": {
 		"type": "input",
 		"label": "Alert image:"
-	},
-	"events": {
-		"type": "multiselect",
-		"label": "Events to listen to:",
-		"hidden": true,
-		"value": ["alert.trigger"],
-		"options": {
-			"alert.chat": "Chat messages",
-			"alert.trigger": "Alerts",
-			"alert.hfx": "HFX",
-			"light.virtual": "Virtual lights"
-		}
 	}
 }
 ```

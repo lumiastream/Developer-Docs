@@ -226,15 +226,6 @@ window.addEventListener("onEventReceived", (ev) => {
 		"min": 5000,
 		"step": 1000
 	},
-	"events": {
-		"type": "multiselect",
-		"label": "Events to listen to",
-		"hidden": true,
-		"value": ["custom.overlay-content"],
-		"options": {
-			"custom.overlay-content": "Custom overlay content"
-		}
-	},
 	"ttsVoice": {
 		"type": "input",
 		"label": "TTS Voice",

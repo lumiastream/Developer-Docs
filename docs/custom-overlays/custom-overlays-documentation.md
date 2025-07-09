@@ -1,10 +1,9 @@
 ---
-sidebar_position: 3
-title: What is custom overlays?
-description: Custom Overlays allows you to extend Lumia Stream functionality by adding your own scenarios to commands and alerts with code all using JavaScript
+title: Documentation
+sidebar_position: 2
 ---
 
-# Custom Overlay Layer
+# 🧩 Custom Overlay Layer
 
 This layer is a real-time, configurable overlay component with support for dynamic events. It includes five main tabs:
 
@@ -24,7 +23,7 @@ Access it here: [Chat GPT Lumia Overlay Assistant](https://chatgpt.com/g/g-6760d
 
 ---
 
-## HTML Tab
+## 🖼️ HTML Tab
 
 Defines the layout of the overlay visible to users:
 
@@ -38,7 +37,7 @@ Defines the layout of the overlay visible to users:
 
 ---
 
-## CSS Tab
+## 🎨 CSS Tab
 
 Customize the visual style of your overlay:
 
@@ -51,7 +50,7 @@ Customize the visual style of your overlay:
 
 ---
 
-## JS Tab
+## 🧠 JS Tab
 
 Javascript handles initialization and real-time event updates for your overlay:
 
@@ -59,19 +58,17 @@ Javascript handles initialization and real-time event updates for your overlay:
 // CODE_ID is used to filter the custom.overlay-content to ignore data intended for other custom code from Lumia Stream
 const CODE_ID = window.CODE_ID || "mycode";
 const configs = window.DATA || {};
-document.getElementById("msg").textContent =
-	"Got configs: " + JSON.stringify(configs);
 
 window.addEventListener("onEventReceived", (ev) => {
 	const type = ev.detail.type;
 	const payload = ev.detail.data;
-	document.getElementById("data").innerHTML += `<p>${type}: ${JSON.stringify(
-		payload
-	)}</p>`;
 
-	// Check for codeId when the type is custom.overlay-content
-	if (type === "custom.overlay-content") {
-		console.log("This is for my code");
+	if (type === "alert.chat") {
+		log("New chat message", payload);
+	}
+	// Check for codeId when the type is custom.overlay-content. This is only needed if Lumia Stream needs to send information to your overlays
+	else if (type === "custom.overlay-content") {
+		log("This is for my code");
 	}
 });
 ```
@@ -81,18 +78,34 @@ window.addEventListener("onEventReceived", (ev) => {
 - Displays the initial configs data provided via `window.DATA`
 - Appends incoming events to the screen in real time
 
-### Event Handling
+### 📡 Event Handling
 
-Only events selected in the **"Events to listen to"** multiselect will be received by the overlay.
+Only events selected in the data tab **"events": []** array will be received by the overlay.
 
 ### Example Event
 
-If an event with type `alert.chat` is dispatched:
+If an event with type `alert.chat` is dispatched, first make sure in the data tab it has
+
+```json
+{
+	"event": ["alert.chat"]
+}
+```
+
+And then in JS
 
 ```js
 window.addEventListener("onEventReceived", (ev) => {
 	const type = ev.detail.type;
 	const payload = ev.detail.data;
+
+	if (type === "alert.chat") {
+		const username = ev.detail?.data?.info?.username;
+		const avatar = ev.detail?.data?.info?.avatar;
+		const message = ev.detail?.data?.info?.message;
+
+		toast(`New chat message received from ${username}. They said ${message}`);
+	}
 });
 ```
 
@@ -217,23 +230,41 @@ When building custom overlays, you have several options for storing and sharing 
 
 ---
 
-## Configs Tab
+## 📋 Configs Tab
 
 The Configs fields define what users can customize in the layer.
 They appear on the right-hand side of the UI under the `Configuration` section unless a field is marked `hidden: true`.
 
 A field object can now contain up to five useful properties:
 
-### Keys vs. Field Objects
+| Property        | Required | Purpose                                                                                                                                                                                                                                                                                           | Example                                                           |
+| --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| **`type`**      | ✅       | UI control to render. Must be one of the `FieldType` enum values (`input`, `number`, `checkbox`, `dropdown`, `multiselect`, `colorpicker`).                                                                                                                                                       | `"type": "dropdown"`                                              |
+| **`label`**     | ✅       | Human-readable name shown in the sidebar.                                                                                                                                                                                                                                                         | `"label": "Favorite Color:"`                                      |
+| **`value`**     | ❌       | Default value that appears the first time the user opens the overlay (also pre populates `window.DATA`). Omit it to leave the field blank/unchecked on first load.                                                                                                                                | `"value": 18`                                                     |
+| **`options`**   | ☑️\*     | Key value map of selectable choices. Required **only** for `dropdown` and `multiselect`; ignored for other types.                                                                                                                                                                                 | `"options": { "twitch": "Twitch", "youtube": "YouTube" }`         |
+| **`visibleIf`** | ❌       | **Conditional render rule**. Field is shown **only if** `window.DATA[visibleIf.key]` strictly equals one of the values in `visibleIf.equals`.                                                                                                                                                     | `"visibleIf": { "key": "targetKey", "equals": ["yes", "maybe"] }` |
+| **`hidden`**    | ❌       | **Hard-hide rule.** When set to `true`, the field is **never displayed** in the Configs sidebar, preventing end users from altering it. The value still flows into `window.DATA`, so the overlay can rely on it internally.<br>Useful for locking event subscriptions or other advanced settings. | `"hidden": true`                                                  |
+
+### 🔑 Keys vs. Field Objects
 
 Before looking at the individual properties (type, label, value, options), remember that the JSON key itself is critical:
 
-```json
+```jsonc
 {
-	"age": {},
-	"platform": {}
+	"age": {
+		/* field object */
+	},
+	"platform": {
+		/* field object */
+	}
 }
 ```
+
+| Concept                             | What it is                                       | Where it shows up                                                                                  |
+| ----------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| **Key** (`"age"`, `"platform"`, …)  | The property name that wraps a field object      | Becomes `window.DATA.age`, `window.DATA.platform`, etc. — this is what your JS code reads & writes |
+| **Label** (`"Age:"`, `"Platform:"`) | UI text shown in the sidebar next to the control | **Only** visible to the user; never appears in `window.DATA`                                       |
 
 > Rule of thumb: Choose short, machine-friendly keys (no spaces, camelCase is fine). Use labels for anything human-readable.
 
@@ -291,17 +322,6 @@ Before looking at the individual properties (type, label, value, options), remem
 			"youtube": "Youtube",
 			"kick": "Kick"
 		}
-	},
-	"events": {
-		"type": "multiselect",
-		"label": "Events to listen to:",
-		"hidden": true,
-		"options": {
-			"alert.chat": "Chat messages",
-			"alert.event": "Alerts",
-			"light.virtual": "Virtual lights",
-			"alert.hfx": "HFX"
-		}
 	}
 }
 ```
@@ -352,7 +372,7 @@ The `equals` key is a string, number, boolean, or an array that represents the v
 }
 ```
 
-### Events Multiselect
+### 🧩 Events Multiselect
 
 The `events` field is a **multiselect** input, typically rendered as a list of checkboxes or a dropdown. It allows users to select which event types the overlay should listen to.
 
@@ -365,25 +385,25 @@ The `events` field is a **multiselect** input, typically rendered as a list of c
 | alert.event   | Alerts         |
 | light.virtual | Virtual lights |
 
-> Performance Tip: Only the selected events will be delivered to the overlay. Unselected event types are ignored, improving efficiency.
-> The typescript types for each alert is down below: under Event Types
-> There is another default event that all custom overlays are automatically subscribed to. This is the `custom.overlay-content` event. This is a special event that allows you to send custom content to the overlay from Lumia Stream and will only send to your specific codeId.
+> 💡 Performance Tip: Only the selected events will be delivered to the overlay. Unselected event types are ignored, improving efficiency.
+> 💡 The typescript types for each alert is down below: under Event Types
+> 💡 There is another default event that all custom overlays are automatically subscribed to. This is the `custom.overlay-content` event. This is a special event that allows you to send custom content to the overlay from Lumia Stream and will only send to your specific codeId.
 
 ---
 
-## Data Tab
+## 📊 Data Tab
 
 The `data` fields are the current values that the user has selected. These can have default values by adding them in to the initial Data Tab. This data is passed to your Javascript code that can be accessed under `window.DATA`.
 
 ---
 
-## Use Cases
+## ✅ Use Cases
 
 - Custom stream overlays for Twitch, YouTube, or other platforms
 - Real-time dashboards for alerts and interactions
 - Interactive visuals triggered by chat or external events
 
-## Sending Data from Lumia Stream
+## 📤 Sending Data from Lumia Stream
 
 Lumia Stream allows you to send data from your application to the overlay. This can be used to allow communication from Lumia Stream without needing variables. The way to do this is through either the `Send Custom Overlay Content` Overlay action or by using the `overlaySendCustomContent` action in your Custom Javascript code within a command. When using `Send Custom Overlay Content` Overlay action or `overlaySendCustomContent` it is required that you include the `codeId` otherwise there is no way the overlay will receive your content. The overlay will always only send to custom overlay layers with your `codeId`. An example of this would be in a command custom javascript code send:
 
@@ -408,7 +428,7 @@ window.addEventListener("onEventReceived", (ev) => {
 
 	if (type === "custom.overlay-content") {
 		const content = JSON.parse(payload.content);
-		console.log("This is for my code", content);
+		log("This is for my code", content);
 	}
 });
 ```
@@ -473,7 +493,7 @@ const myvar = "{{myvar}}";
 
 Our Overlays will work with various Game Engines including, but not limited to Phaser.js, Pixi.js, Three.js, and more.
 
-## Tips
+## 🧪 Tips
 
 - Use the **Events** multiselect to limit which events trigger updates—great for debugging or focus.
 - Always sanitize HTML content if displaying user-generated input.
@@ -573,7 +593,7 @@ export interface AlertHfxEvent {
 }
 ```
 
-## Templates
+## 📦 Templates
 
 You can get started quickly with one of the two built-in templates:
 

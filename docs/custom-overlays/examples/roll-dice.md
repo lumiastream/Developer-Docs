@@ -106,15 +106,6 @@ die.classList.add("hidden");
 
 ```json
 {
-	"events": {
-		"type": "multiselect",
-		"label": "Events to listen to:",
-		"value": ["alert.chat"],
-		"hidden": true,
-		"options": {
-			"alert.chat": "Chat messages"
-		}
-	},
 	"dotColor": {
 		"type": "colorpicker",
 		"label": "Dice text colour",

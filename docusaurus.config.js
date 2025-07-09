@@ -16,7 +16,9 @@ const darkCodeTheme = themes.dracula;
 		favicon: "img/favicon.ico",
 		organizationName: "lumiastream", // Usually your GitHub org/user name.
 		projectName: "lumiastream", // Usually your repo name.
-
+		markdown: {
+			format: "detect",
+		},
 		plugins: [
 			[
 				"@docusaurus/plugin-client-redirects",
@@ -72,33 +74,29 @@ const darkCodeTheme = themes.dracula;
 					},
 					items: [
 						{
-							type: "doc",
-							docId: "intro",
+							to: "/docs/intro",
 							position: "left",
 							label: "API Docs",
+							activeBaseRegex: "docs/(intro)?$",
 						},
 						{
-							type: "doc",
-							docId: "variables",
+							to: "/docs/variables",
 							position: "left",
 							label: "Variables",
+							activeBaseRegex: "docs/(variables)?$",
 						},
 						{
+							to: "/docs/custom-code/what-is-custom-javascript",
 							label: "Custom code",
-							href: "/docs/custom-code/what-is-custom-javascript",
 							position: "left",
+							activeBasePath: "docs/custom-code",
 						},
 						{
+							to: "/docs/custom-overlays/custom-overlays-documentation",
 							label: "Custom overlays",
-							href: "/docs/custom-overlays/custom-overlays-documentation",
 							position: "left",
+							activeBasePath: "docs/custom-overlays",
 						},
-						// {
-						//   type: "doc",
-						//   docId: "intro",
-						//   position: "left",
-						//   label: "Custom code",
-						// },
 						{
 							href: "https://github.com/lumiastream/Developer-Docs",
 							label: "GitHub",
