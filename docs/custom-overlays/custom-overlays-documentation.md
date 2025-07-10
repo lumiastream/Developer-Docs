@@ -97,20 +97,20 @@ Overlay.on('alert', (data) => {
 
 	if (data.alert === 'twitch-subscriber') {
 		if (data.dynamic.isGift) {
-			console.log(`${usernmae} sent ${data.dynamic.giftAmount} with a tier ${settings.subPlan} sub to ${settings.recipients ?? settings.recipient}`);
+			console.log(`${username} sent ${data.dynamic.giftAmount} with a tier ${settings.subPlan} sub to ${settings.recipients ?? settings.recipient}`);
 		} else if (data.dynamic.isResub) {
-			console.log(`${usernmae} shared their ${settings.subPlan} sub. They've been subscribed for ${data.dynamic.subMonths} months`);
+			console.log(`${username} shared their ${settings.subPlan} sub. They've been subscribed for ${data.dynamic.subMonths} months`);
 		} else {
-			console.log(`${usernmae} subscribed with a tier ${settings.subPlan} sub`);
+			console.log(`${username} subscribed with a tier ${settings.subPlan} sub`);
 		}
 	}
 
 	if (data.alert === 'twitch-raid') {
-		console.log(`${usernmae} just raided with ${data.dynamic.value} viewers`);
+		console.log(`${username} just raided with ${data.dynamic.value} viewers`);
 	}
 
 	if (data.alert === 'kick-follower') {
-		console.log(`${usernmae} just followed on Kick`);
+		console.log(`${username} just followed on Kick`);
 	}
 });
 Overlay.on('hfx', (data) => {
@@ -119,7 +119,7 @@ Overlay.on('hfx', (data) => {
 	const message = data.message; // If the HFX was triggered with a message
 	const avatar = data.avatar;
 
-	console.log(`${usernmae} just triggered HFX ${command}`);
+	console.log(`${username} just triggered HFX ${command}`);
 });
 Overlay.on('virtuallight', (data) => {
 	console.log('virtuallight', data);
