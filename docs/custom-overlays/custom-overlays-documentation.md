@@ -32,6 +32,8 @@ Defines the layout of the overlay visible to users:
 	<h3 id="msg">Waiting for data…</h3>
 	<h4>Data:</h4>
 	<div id="data"></div>
+	<!-- You can use variables directly within HTML -->
+	<div>{{myvar}}</div>
 </div>
 ```
 
@@ -44,7 +46,8 @@ Customize the visual style of your overlay:
 ```css
 #msg {
 	font-weight: bold;
-	color: #ff3b88;
+	/* You can use variables directly within CSS */
+	color: "{{mycolor}}";
 }
 ```
 
@@ -55,13 +58,87 @@ Customize the visual style of your overlay:
 Javascript handles initialization and real-time event updates for your overlay:
 
 ```js
+// window.Overlay is our primary api, you can use it with window.Overlay or just Overlay
+
+// Overlay.data contains he data that's submitted from the user using your overlay that they're allowed to fill out based on the fields in the config tab
 console.log(Overlay.data);
-Overlay.on("chat", (data) => {
-	console.log("New chat message", data);
+
+// Call a command in Lumia Stream and pass variables for the command to use. In the command you can reference {{secret}} since that's what we're passing in
+Overlay.callCommand('mycommand', { secret: 'password' });
+
+// If the variables isn't already created it will create one.
+Overlay.setVariable('myvar', 'this works');
+
+// If the variable was not previously created it may not automatically be replaced in your code until after the code is saved and reopened. If the overlay was previously made then it will update immediately. It may be helpful to add a check in your code to see if variable is already auto updating or not and toast the user to refresh the overlay
+const usedMyVar = "{{myvar}}";
+
+// You can call await without an async function since an async function is already wrapped around all the JS code
+
+// Save an item to storage
+await Overlay.saveStorage('mydata', 151);
+
+// Get an item from stoage
+const pokemonCaught = await Overlay.getStorage('mydata');
+
+// Delete an item from stoage
+await Overlay.deleteStorage('mydata');
+
+Overlay.on('chat', (data) => {
+	const username = data.username;
+	const avatar = data.avatar;
+	const message = data.message;
+	toast(`New chat message received from ${username}. They said ${message}`);
+});
+Overlay.on('alert', (data) => {
+	console.log('alert', data);
+	const settings = data.extraSettings;
+	const username = settings?.username || 'unknown';
+	const amount = data.dynamic.value;
+
+	if (data.alert === 'twitch-subscriber') {
+		if (data.dynamic.isGift) {
+			console.log(`${usernmae} sent ${data.dynamic.giftAmount} with a tier ${settings.subPlan} sub to ${settings.recipients ?? settings.recipient}`);
+		} else if (data.dynamic.isResub) {
+			console.log(`${usernmae} shared their ${settings.subPlan} sub. They've been subscribed for ${data.dynamic.subMonths} months`);
+		} else {
+			console.log(`${usernmae} subscribed with a tier ${settings.subPlan} sub`);
+		}
+	}
+
+	if (data.alert === 'twitch-raid') {
+		console.log(`${usernmae} just raided with ${data.dynamic.value} viewers`);
+	}
+
+	if (data.alert === 'kick-follower') {
+		console.log(`${usernmae} just followed on Kick`);
+	}
+});
+Overlay.on('hfx', (data) => {
+	const username = data.username;
+	const command = data.command;
+	const message = data.message; // If the HFX was triggered with a message
+	const avatar = data.avatar;
+
+	console.log(`${usernmae} just triggered HFX ${command}`);
+});
+Overlay.on('virtuallight', (data) => {
+	console.log('virtuallight', data);
+	const viratlLightId = data.uuid;
+	const brightness = data.brightness;
+
+	// Power sometimes does not come through if the light is just changing colors
+	if (data.color && (data.power || data.power === 'undefined')) {
+		const { r, g, b} = data.color;
+		console.log(`Light is changing to the color to rgb(${r},${g},${b})`);
+	} else if (data.power === false) {
+		console.log(`Light is turning off`);
+	}
+	const
 });
 // Only codeId that matches on both Overlays and Lumia will trigger this listener
-Overlay.on("overlaycontent", (data) => {
-	console.log("This is for my overlay only", data);
+Overlay.on('overlaycontent', (data) => {
+	const content = data.content;
+	console.log(`Content has been sent from Lumia Stream ${content}`);
 });
 ```
 
@@ -87,10 +164,19 @@ If an event with type `chat` is dispatched and you have Overlay.on('chat') withi
 
 ```js
 Overlay.on("chat", (data) => {
-	const username = data.username;
-	const avatar = data.avatar;
-	const message = data.message;
-	toast(`New chat message received from ${username}. They said ${message}`);
+	console.log("chat", data);
+});
+Overlay.on("alert", (data) => {
+	console.log("alert", data);
+});
+Overlay.on("hfx", (data) => {
+	console.log("hfx", data);
+});
+Overlay.on("virtuallight", (data) => {
+	console.log("virtuallight", data);
+});
+Overlay.on("overlaycontent", (data) => {
+	console.log("overlaycontent", data);
 });
 ```
 
@@ -114,12 +200,6 @@ You can display log information in your console
 
 ```js
 console.log("Message");
-
-// Or you can pass in the type of log to show
-console.log("Message", "log");
-console.log("Message", "info");
-console.log("Message", "debug");
-console.log("Message", "error");
 ```
 
 ### Calling Commands in Lumia Stream using the Overlay

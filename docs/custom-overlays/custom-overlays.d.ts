@@ -78,20 +78,17 @@ export interface AlertEvent {
 
 // hfx
 export interface HfxEvent {
-	listener: 'hfx';
-	data: {
-		layer: string;
-		content: string;   // asset UUID
-		command: string;
-		origin: string;    // "hudfx" | "command"
-		playAudio: boolean;
-		volume: number;    // 0-1
-		duration: number;  // ms
-		username: string;
-		message: string;
-		avatar: string;    // URL
-		commandDuration: number; // ms, usually same as duration
-	};
+	layer: string;
+	content: string;   // asset UUID
+	command: string;
+	origin: string;    // "hudfx" | "command"
+	playAudio: boolean;
+	volume: number;    // 0-1
+	duration: number;  // ms
+	username: string;
+	message: string;
+	avatar: string;    // URL
+	commandDuration: number; // ms, usually same as duration
 }
 
 // virtuallight
@@ -99,6 +96,7 @@ export interface VirtualLightEvent {
 	uuid: string;
 	brightness: number;                 // 0-100
 	color: { r: number; g: number; b: number };
+	power?: boolean; // true if the light is on, false if it's off
 	transition: number;                 // ms
 	delay: number;                      // ms
 	duration: number;                   // ms
