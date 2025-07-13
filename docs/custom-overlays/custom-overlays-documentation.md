@@ -67,7 +67,10 @@ console.log(Overlay.data);
 Overlay.callCommand('mycommand', { secret: 'password' });
 
 // If the variables isn't already created it will create one.
-Overlay.setVariable('myvar', 'this works');
+await Overlay.setVariable('myvar', 'this works');
+
+// Retrieves a variable
+await Overlay.getVariable('myvar');
 
 // If the variable was not previously created it may not automatically be replaced in your code until after the code is saved and reopened. If the overlay was previously made then it will update immediately. It may be helpful to add a check in your code to see if variable is already auto updating or not and toast the user to refresh the overlay
 const usedMyVar = "{{myvar}}";

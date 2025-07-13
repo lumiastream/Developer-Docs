@@ -123,7 +123,8 @@ export type OverlayEventHandler = (ev: CustomEvent<OverlayEvent>) => void;
 export interface Overlay {
 	on: (event: OverlayListener, handler: OverlayEventHandler) => void;
 	callCommand: (command: string, extraSettings?: Record<string, string | number>) => void;
-	setVariable: (variable: string, value: string) => void;
+	setVariable: (variable: string, value: unknown) => void;
+	getVariable: (variable: string) => unknown;
 	saveStorage: (key: string, value: string) => void;
 	getStorage: (key: string) => string;
 	removeStorage: (key: string) => void;
