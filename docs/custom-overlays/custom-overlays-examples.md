@@ -643,7 +643,7 @@ die.classList.add("hidden");
 }
 ```
 
-## Pokemon Alert
+## Pokemon Catch Mini-Game Overlay
 
 ### JS Code
 
