@@ -731,7 +731,7 @@ async function save(data) {
 }
 
 async function incrementUser(user, pokeName, isShiny) {
-	board = await load();
+	const board = await load();
 	if (!board[user]) board[user] = { total: 0, shiny: 0, list: [] };
 
 	board[user].total++;
@@ -886,7 +886,7 @@ async function tryCatch({ username, origin = "twitch", ballType = "regular" }) {
 		sfxCatch.volume = Math.min(1, Math.max(0, cfg.volume));
 		sfxCatch.play().catch(() => {});
 		showMessage(`Gotcha! ${username} caught ${game.cur.name}! 🎉`, 3000);
-		Overlay.callCommand("pokemon-caught", {
+		Overlay.callCommand("pokemon-chatbot", {
 			platform: origin,
 			pokemon_message: `Gotcha! ${username} caught ${game.cur.name}! 🎉`,
 		});
@@ -997,7 +997,7 @@ async function showLeaderboard() {
 const handleListener = ({ command, username, ballType, origin }) => {
 	if (command === cfg.catchCommand) tryCatch({ username, origin, ballType });
 	if (command === cfg.leaderboardCommand) showLeaderboard();
-	if (command === cfg.pokedexCommand) showPokedex(user);
+	if (command === cfg.pokedexCommand) showPokedex(username);
 };
 
 if (!cfg.disableChat) {
@@ -1047,7 +1047,7 @@ if (cfg.devMode) {
 		tryCatch,
 		showPokedex,
 		showLeaderboard,
-		state: () => ({ game, board }),
+		state: async () => ({ game, board: await load() }),
 	};
 
 	window.addEventListener("keydown", (e) => {
