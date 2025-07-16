@@ -138,7 +138,7 @@ Overlay.on('virtuallight', (data) => {
 	}
 	const
 });
-// Only codeId that matches on both Overlays and Lumia will trigger this listener
+// Only codeId that matches on both Overlays and Lumia will trigger this listener. codeId can only contain letters, numbers, hyphens, and underscores. Max 25 characters.
 Overlay.on('overlaycontent', (data) => {
 	const content = data.content;
 	console.log(`Content has been sent from Lumia Stream ${content}`);
@@ -464,11 +464,19 @@ When using Overlay.on the data tab must have the corresponding OverlayListener t
 
 ---
 
+## Code ID
+
+The codeId is primarily meant to be used when talking to Lumia Stream. It is used to store storage data, it is used when calling send overlay content that will only send to overlays with that specific code id. It can be retrieved within the overlay using `Overlay.on('overlaycontent', (data) => {...})`
+
+The codeId can only contain letters, numbers, hyphens, and underscores with a max of 25 characters.
+
 ## ✅ Use Cases
 
 - Custom stream overlays for Twitch, YouTube, or other platforms
 - Real-time dashboards for alerts and interactions
 - Interactive visuals triggered by chat or external events
+- Pokemon Catching Mini Game
+- Duel Overlay to show matches on stream with your viewers
 
 ## Persisting Data
 
