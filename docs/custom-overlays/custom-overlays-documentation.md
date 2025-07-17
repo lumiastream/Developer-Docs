@@ -446,6 +446,23 @@ The `equals` key is a string, number, boolean, or an array that represents the v
 
 The `data` fields are the current values that the user has selected. These can have default values by adding them in to the initial Data Tab. This data is passed to your Javascript code that can be accessed under `Overlay.data`.
 
+Data Tab Example
+
+```json
+{
+	"userSelectedColor": "#FF00FF"
+}
+```
+
+Then in your JS Tab you can access the color with `Overlay.data.userSelectedColor`
+
+JS Tab
+
+```js
+const userColor = Overlay.data.userSelectedColor;
+console.log("User Color is", userColor);
+```
+
 When using Overlay.on the data tab must have the corresponding OverlayListener types:
 
 ### OverlayListener types

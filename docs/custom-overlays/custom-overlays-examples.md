@@ -11,18 +11,19 @@ sidebar_position: 3
 
 ```js
 // Overlay.data is fetched from the sidebar input values
-const data = Overlay.data || {};
 const container = document.getElementById("container");
 
 // Pass data to css variable to use it easily inside css
-if (data?.primaryColor)
-	container.style.setProperty("--primary", data?.primaryColor);
-if (data?.backgroundColor)
-	container.style.setProperty("--secondary", data?.backgroundColor);
-if (data?.messageBgColor)
-	container.style.setProperty("--bg", data?.messageBgColor);
-if (data?.textColor) container.style.setProperty("--text", data?.textColor);
-if (data?.rounded) container.style.setProperty("--rounded", data?.rounded);
+if (Overlay.data?.primaryColor)
+	container.style.setProperty("--primary", Overlay.data?.primaryColor);
+if (Overlay.data?.backgroundColor)
+	container.style.setProperty("--secondary", Overlay.data?.backgroundColor);
+if (Overlay.data?.messageBgColor)
+	container.style.setProperty("--bg", Overlay.data?.messageBgColor);
+if (Overlay.data?.textColor)
+	container.style.setProperty("--text", Overlay.data?.textColor);
+if (Overlay.data?.rounded)
+	container.style.setProperty("--rounded", Overlay.data?.rounded);
 
 // Listen for alerts
 Overlay.on("alert", (data) => {
@@ -163,20 +164,22 @@ Overlay.on("alert", (data) => {
 
 ```js
 // Overlay.data is fetched from the sidebar input values
-const data = Overlay.data || {};
 const messageContainer = document.getElementById("container");
 
 // Pass data to css variable to use it easily inside css
-if (data?.primaryColor)
-	messageContainer.style.setProperty("--primary", data?.primaryColor);
-if (data?.backgroundColor)
-	messageContainer.style.setProperty("--secondary", data?.backgroundColor);
-if (data?.messageBgColor)
-	messageContainer.style.setProperty("--bg", data?.messageBgColor);
-if (data?.textColor)
-	messageContainer.style.setProperty("--text", data?.textColor);
-if (data?.rounded)
-	messageContainer.style.setProperty("--rounded", data?.rounded);
+if (Overlay.data?.primaryColor)
+	messageContainer.style.setProperty("--primary", Overlay.data?.primaryColor);
+if (Overlay.data?.backgroundColor)
+	messageContainer.style.setProperty(
+		"--secondary",
+		Overlay.data?.backgroundColor
+	);
+if (Overlay.data?.messageBgColor)
+	messageContainer.style.setProperty("--bg", Overlay.data?.messageBgColor);
+if (Overlay.data?.textColor)
+	messageContainer.style.setProperty("--text", Overlay.data?.textColor);
+if (Overlay.data?.rounded)
+	messageContainer.style.setProperty("--rounded", Overlay.data?.rounded);
 
 // Listen for chat messages
 Overlay.on("chat", (data) => {
@@ -294,7 +297,6 @@ async function() {
 ### JS Code
 
 ```js
-const data = Overlay.data || {};
 const calcEl = document.getElementById("calc-container");
 const exprEl = document.getElementById("expression");
 const resultEl = document.getElementById("result");
@@ -522,7 +524,6 @@ Overlay.on("overlaycontent", (data) => {
 ### JS Code
 
 ```js
-const data = Overlay.data || {};
 const die = document.getElementById("die");
 const HIDE_MS = data.hideDelay ?? 5000;
 let hideT = null;
