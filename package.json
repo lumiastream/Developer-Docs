@@ -15,11 +15,11 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.7.0",
-    "@docusaurus/plugin-client-redirects": "^3.7.0",
-    "@docusaurus/preset-classic": "^3.7.0",
+    "@docusaurus/core": "^3.8.1",
+    "@docusaurus/plugin-client-redirects": "^3.8.1",
+    "@docusaurus/preset-classic": "^3.8.1",
     "@lumiastream/lumia-translations": "^1.1.19",
-    "@lumiastream/lumia-types": "^2.0.0",
+    "@lumiastream/lumia-types": "2.0.8",
     "@mdx-js/react": "^3.1.0",
     "@svgr/webpack": "^5.5.0",
     "clsx": "^1.1.1",
@@ -29,12 +29,13 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.7.0",
-    "@docusaurus/tsconfig": "^3.7.0",
-    "@docusaurus/types": "^3.7.0",
+    "@docusaurus/module-type-aliases": "^3.8.1",
+    "@docusaurus/tsconfig": "^3.8.1",
+    "@docusaurus/types": "^3.8.1",
     "@types/react": "^18.2.29",
     "@types/react-helmet": "^6.1.2",
     "@types/react-router-dom": "^5.1.8",
+    "raw-loader": "^4.0.2",
     "typescript": "~5.2.2"
   },
   "engines": {
