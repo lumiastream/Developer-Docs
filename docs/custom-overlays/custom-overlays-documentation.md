@@ -97,6 +97,7 @@ Overlay.on('alert', (data) => {
 	const settings = data.extraSettings;
 	const username = settings?.username || 'unknown';
 	const amount = data.dynamic.value;
+	const avatar = settings?.avatar;
 
 	if (data.alert === 'twitch-subscriber') {
 		if (data.dynamic.isGift) {
@@ -182,6 +183,22 @@ Overlay.on("overlaycontent", (data) => {
 	console.log("overlaycontent", data);
 });
 ```
+
+When using Overlay.on the data tab must have the corresponding OverlayListener types:
+
+### OverlayListener types
+
+| Value          | Label                  |
+| -------------- | ---------------------- |
+| chat           | Chat messages          |
+| alert          | Alerts                 |
+| hfx            | HFX                    |
+| virtuallight   | Virtual lights         |
+| overlaycontent | Custom Overlay Content |
+
+> 💡 Performance Tip: Only the selected events will be delivered to the overlay.
+> 💡 The typescript types for each alert is within the types tab
+> 💡 `overlaycontent` is a default event that will always be on for all custom overlays that are automatically subscribed to whether it's in the data tab or not. This is a special event that allows you to send custom content to the overlay from Lumia Stream and will only send to your specific codeId.
 
 ### Showing Toasts
 
@@ -455,29 +472,16 @@ Data Tab Example
 ```
 
 Then in your JS Tab you can access the color with `Overlay.data.userSelectedColor`
+Or you can even just use it directly with variable replacement using double curly braces
 
 JS Tab
 
 ```js
 const userColor = Overlay.data.userSelectedColor;
 console.log("User Color is", userColor);
+// Or use it with variable replacing
+const myUserColor = "{{userSelectedColor}}";
 ```
-
-When using Overlay.on the data tab must have the corresponding OverlayListener types:
-
-### OverlayListener types
-
-| Value          | Label                  |
-| -------------- | ---------------------- |
-| chat           | Chat messages          |
-| alert          | Alerts                 |
-| hfx            | HFX                    |
-| virtuallight   | Virtual lights         |
-| overlaycontent | Custom Overlay Content |
-
-> 💡 Performance Tip: Only the selected events will be delivered to the overlay.
-> 💡 The typescript types for each alert is within the types tab
-> 💡 `overlaycontent` is a default event that will always be on for all custom overlays that are automatically subscribed to whether it's in the data tab or not. This is a special event that allows you to send custom content to the overlay from Lumia Stream and will only send to your specific codeId.
 
 ---
 
@@ -537,9 +541,13 @@ You can display the value of a variable or storage item in your overlay by direc
 
 Variables can be used in these examples
 
+HTML Tab
+
 ```html
 <div>{{myvar}}</div>
 ```
+
+CSS Tab
 
 ```css
 div {
@@ -547,8 +555,58 @@ div {
 }
 ```
 
+JS Tab
+
 ```js
 const myvar = "{{myvar}}";
+```
+
+### Using variables from data tab
+
+You can also use variables in the same way as Lumia variables from your data tab.
+
+So if you wanted to allow changing of your background color you would set it up like this:
+
+Configs Tab
+
+```json
+{
+	"background": {
+		"type": "input",
+		"label": "background",
+		"value": "blue"
+	}
+}
+```
+
+Data Tab
+
+```json
+{
+	"background": "blue"
+}
+```
+
+CSS Tab
+
+```css
+body {
+	background: {{background}};
+}
+```
+
+You can also use the same data variables in your JS, HTML, and CSS Tabs
+
+JS Tab
+
+```js
+const myBg = "{{background}}";
+```
+
+HTML Tab
+
+```html
+<div>User selected background {{background}}</div>
 ```
 
 ## 📤 Sending Data from Lumia Stream
