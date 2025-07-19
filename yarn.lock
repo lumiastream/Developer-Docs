@@ -1968,10 +1968,10 @@
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz"
   integrity sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==
 
-"@lumiastream/lumia-translations@^1.1.19":
-  version "1.1.19"
-  resolved "https://registry.npmjs.org/@lumiastream/lumia-translations/-/lumia-translations-1.1.19.tgz"
-  integrity sha512-rexsSkMsPkiOZSeLfTXAxTKg3u01ApZ8aYjRr14sj/k6Abq28kdeLh+sqQMY7bakiZ26DxATqaIXYzHxJm4mQg==
+"@lumiastream/lumia-translations@^1.1.32":
+  version "1.1.32"
+  resolved "https://registry.npmjs.org/@lumiastream/lumia-translations/-/lumia-translations-1.1.32.tgz"
+  integrity sha512-k9sV6l/b+SBnpe+IOxsBw+Roxs2Xf1wVFN6pYog/wF0zSR4GiYGzcuLHEntD9b770Rkqlc5szZ1GgSXsF0tYWQ==
 
 "@lumiastream/lumia-types@2.0.8":
   version "2.0.8"
