@@ -887,9 +887,10 @@ async function tryCatch({ username, origin = "twitch", ballType = "regular" }) {
 		sfxCatch.volume = Math.min(1, Math.max(0, cfg.volume));
 		sfxCatch.play().catch(() => {});
 		showMessage(`Gotcha! ${username} caught ${game.cur.name}! 🎉`, 3000);
-		Overlay.callCommand("pokemon-chatbot", {
+		Overlay.chatbot({
+			message: `Gotcha! ${username} caught ${game.cur.name}! 🎉`,
 			platform: origin,
-			pokemon_message: `Gotcha! ${username} caught ${game.cur.name}! 🎉`,
+			chatAsSelf: false,
 		});
 
 		await incrementUser(username.toLowerCase(), game.cur.name, game.cur.shiny);

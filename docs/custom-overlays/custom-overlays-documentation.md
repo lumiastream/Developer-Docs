@@ -66,6 +66,9 @@ console.log(Overlay.data);
 // Call a command in Lumia Stream and pass variables for the command to use. In the command you can reference {{secret}} since that's what we're passing in
 Overlay.callCommand('mycommand', { secret: 'password' });
 
+// Send a chatbot message to the corresponding platform either as the streamer or the bot. Leave the platform as null to trigger on all connected platforms
+Overlay.chatbot({ message: 'This works', platform: 'twitch', chatAsSelf: false  });
+
 // If the variables isn't already created it will create one.
 await Overlay.setVariable('myvar', 'this works');
 

@@ -126,6 +126,15 @@ export interface Overlay {
 		command: string,
 		extraSettings?: Record<string, string | number>
 	) => void;
+	chatbot: ({
+		message,
+		platform,
+		chatAsSelf,
+	}: {
+		message: string;
+		platform?: string;
+		chatAsSelf?: boolean;
+	}) => Promise<void>;
 	setVariable: (variable: string, value: unknown) => void;
 	getVariable: (variable: string) => unknown;
 	saveStorage: (key: string, value: string) => void;
