@@ -2,6 +2,7 @@
 sidebar_position: 2
 id: variables
 title: Platform Variables
+description: All available Lumia Stream variables that you can use inside the app and inside overlays
 ---
 
 import React from "react";
@@ -12,20 +13,20 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 export const chatCommandTypes = [
-	"command",
-	"chatbotCommand",
-	"twitchPoints",
-	"kickPoints",
-	"trovoSpells",
-	"twitchExtensions",
-	"chatmatch",
+  "command",
+  "chatbotCommand",
+  "twitchPoints",
+  "kickPoints",
+  "trovoSpells",
+  "twitchExtensions",
+  "chatmatch",
 ];
 
 export const slugify = (s) =>
-	s
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/^-+|-+$/g, "");
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
 # Platform Variables
 

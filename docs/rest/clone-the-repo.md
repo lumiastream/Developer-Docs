@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: To get started as fast as possible we're going to clone the example git repo that we have setup that can be found at https://github.com/lumiastream/lumiastream-api-demo-js
 ---
 
 # Clone the repo
