@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: Learn how to securely generate and use your Lumia Stream API token to connect third-party apps, bots, or integrations with your streaming setup
 ---
 
 # Get a token
