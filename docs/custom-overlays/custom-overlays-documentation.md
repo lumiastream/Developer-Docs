@@ -19,7 +19,7 @@ We offer a Chat GPT Lumia overlay assistant that can help you with your custom o
 Ask it a question like Create an overlay that changes color every time a new chat command comes in.
 It knows our documentation and can help out a ton
 
-Access it here: [Chat GPT Lumia Overlay Assistant](https://chatgpt.com/g/g-6760d2a59b048191b17812250884971b-lumia-custom-code-and-custom-overlays-assistant/c/684d9156-b394-8004-82ef-313b88b6d85f)
+Access it here: [Chat GPT Lumia Overlay Assistant](https://chatgpt.com/g/g-6760d2a59b048191b17812250884971b-lumia-custom-overlays-assistant)
 
 ---
 
