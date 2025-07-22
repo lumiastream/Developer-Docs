@@ -1467,3 +1467,330 @@ body {
 	"leaderboardCommand": "!leader"
 }
 ```
+
+## Anime Facts using Fetch
+
+### JS Code
+
+```js
+/* ---------- Config ---------- */
+const DEFAULT_SECS = Number(Overlay.data.displaySecs) || 30;
+
+/* ---------- DOM handles ---------- */
+const wrapEl = document.getElementById("wrap");
+const coverEl = document.getElementById("cover");
+const quoteEl = document.getElementById("quote");
+const animeEl = document.getElementById("anime");
+const episodeEl = document.getElementById("episode");
+
+let hideTimer;
+
+/* ---------- Core ---------- */
+async function fetchQuote() {
+	// 1- Get random quote
+	const res = await fetch("https://api.animechan.io/v1/quotes/random");
+	const {
+		content,
+		anime: { id: animeId, name: animeName },
+		character: { name: charName },
+		episode,
+	} = (await res.json()).data;
+
+	quoteEl.textContent = `"${content}" — ${charName}`;
+	animeEl.textContent = animeName;
+
+	// 2- Episode info
+	if (episode) {
+		episodeEl.textContent = `Episode ${episode}`;
+	} else {
+		// fallback: total episode count from Animechan’s /anime/<id>
+		try {
+			const info = await fetch(
+				`https://api.animechan.io/v1/anime/${animeId}`
+			).then((r) => r.json());
+			episodeEl.textContent = `${info.data.episodeCount} eps`;
+		} catch {
+			episodeEl.textContent = "Episode ?";
+		}
+	}
+
+	// 3- Cover via Jikan
+	try {
+		const jikan = await fetch(
+			`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(
+				animeName
+			)}&limit=1`
+		).then((r) => r.json());
+		coverEl.src =
+			jikan.data?.[0]?.images?.jpg?.large_image_url ||
+			jikan.data?.[0]?.images?.jpg?.image_url ||
+			"https://storage.lumiastream.com/placeholderLogo.png";
+	} catch {
+		coverEl.src = "https://storage.lumiastream.com/placeholderLogo.png";
+	}
+}
+
+function showOverlay() {
+	clearTimeout(hideTimer);
+	wrapEl.classList.remove("hidden");
+	fetchQuote();
+	hideTimer = setTimeout(
+		() => wrapEl.classList.add("hidden"),
+		DEFAULT_SECS * 1000
+	);
+}
+
+/* ---------- Event bridge from Lumia ---------- */
+Overlay.on("chat", (data) => {
+	console.log("Chat");
+	if (data.message === "!fact") {
+		showOverlay();
+	}
+});
+
+showOverlay();
+```
+
+### HTML
+
+```html
+<div id="wrap" class="hidden">
+	<img id="cover" />
+	<blockquote id="quote"></blockquote>
+	<p id="meta"><span id="anime"></span> • <span id="episode"></span></p>
+</div>
+```
+
+### CSS Styling
+
+```css
+#wrap {
+  --bg: {{backgroundColor}};
+  --primary: {{primaryColor}};
+  --text: {{textColor}};
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 1rem;
+  border-radius: 10px;
+  max-width: 480px;
+  text-align: center;
+}
+
+#wrap.hidden { display: none; }
+
+#cover {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
+}
+
+blockquote {
+  font-size: 1.1rem;
+  margin: .5rem 0;
+  color: var(--primary);
+}
+
+#meta { font-size: .9rem; opacity: .8; }
+```
+
+### Configs
+
+```json
+{
+	"textColor": {
+		"type": "colorpicker",
+		"label": "Text colour",
+		"value": "#ffffff"
+	},
+	"displaySecs": {
+		"max": 120,
+		"min": 5,
+		"type": "number",
+		"label": "Display time (sec)",
+		"value": 30
+	},
+	"primaryColor": {
+		"type": "colorpicker",
+		"label": "Accent colour",
+		"value": "#ff577f"
+	},
+	"backgroundColor": {
+		"type": "colorpicker",
+		"label": "Background",
+		"value": "#1e1e2f"
+	}
+}
+```
+
+### Data
+
+```json
+{
+	"textColor": "#ffffff",
+	"displaySecs": 30,
+	"primaryColor": "#ff577f",
+	"backgroundColor": "#1e1e2f"
+}
+```
+
+## Pet Cam Random Dog/Cat Images using Fetch
+
+### JS Code
+
+```js
+/* ---------- Config ---------- */
+const DEFAULT_SECS = Number(Overlay.data.displaySecs) || 30;
+
+/* ---------- DOM ---------- */
+const wrapEl = document.getElementById("pet-wrap");
+const imgEl = document.getElementById("pet-img");
+const nameEl = document.getElementById("pet-name");
+const factEl = document.getElementById("pet-fact");
+
+let hideTimer;
+
+/* ---------- Helpers ---------- */
+async function getDog() {
+	const [pic, fact] = await Promise.all([
+		fetch("https://dog.ceo/api/breeds/image/random")
+			.then((r) => r.json())
+			.then((d) => d.message),
+		fetch("https://dog-api.kinduff.com/api/facts")
+			.then((r) => r.json())
+			.then((d) => d.facts?.[0] || "Dogs are awesome!"),
+	]);
+	return { img: pic, name: "Random Dog", fact };
+}
+
+async function getCat() {
+	const [imgPath, fact] = await Promise.all([
+		fetch("https://cataas.com/cat?json=true")
+			.then((r) => r.json())
+			.then((d) => `https://cataas.com${d.url}`),
+		fetch("https://catfact.ninja/fact")
+			.then((r) => r.json())
+			.then((d) => d.fact),
+	]);
+	return { img: imgPath, name: "Random Cat", fact };
+}
+
+async function fetchPet(animal) {
+	switch (animal.toLowerCase()) {
+		case "cat":
+			return getCat();
+		default:
+			return getDog(); // fallback = dog
+	}
+}
+
+async function showOverlay(animal) {
+	const { img, name, fact } = await fetchPet(animal || "dog");
+
+	clearTimeout(hideTimer);
+	imgEl.src = img;
+	nameEl.textContent = name;
+	factEl.textContent = fact;
+
+	wrapEl.classList.remove("hidden");
+	hideTimer = setTimeout(
+		() => wrapEl.classList.add("hidden"),
+		DEFAULT_SECS * 1000
+	);
+}
+
+/* ---------- Chat Listener ---------- */
+Overlay.on("chat", async (data) => {
+	if (data.message.startsWith("!pet")) {
+		const animal = data.message.split(" ")[1];
+		showOverlay(animal);
+	}
+});
+
+showOverlay();
+```
+
+### HTML
+
+```html
+<div id="pet-wrap" class="hidden">
+	<img id="pet-img" />
+	<h3 id="pet-name"></h3>
+	<p id="pet-fact"></p>
+</div>
+```
+
+### CSS Styling
+
+```css
+#pet-wrap {
+  --bg: {{bgColor}};
+  --accent: {{accentColor}};
+  --text: {{textColor}};
+
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 1rem;
+  border-radius: 10px;
+  max-width: 100%;
+  text-align: center;
+  overflow: hidden;
+  height: 100%;
+}
+
+#pet-wrap.hidden { display: none; }
+
+#pet-img {
+  width: 100%;
+  max-height: 85%;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+#pet-name   { margin: 0.25rem 0; color: var(--accent); }
+#pet-fact   { font-size: 0.95rem; line-height: 1.3; }
+```
+
+### Configs
+
+```json
+{
+	"bgColor": {
+		"type": "colorpicker",
+		"label": "Background",
+		"value": "#1e1e2f"
+	},
+	"textColor": {
+		"type": "colorpicker",
+		"label": "Text colour",
+		"value": "#ffffff"
+	},
+	"accentColor": {
+		"type": "colorpicker",
+		"label": "Accent colour",
+		"value": "#ffb347"
+	},
+	"displaySecs": {
+		"max": 120,
+		"min": 5,
+		"type": "number",
+		"label": "Display time (sec)",
+		"value": 30
+	}
+}
+```
+
+### Data
+
+```json
+{
+	"bgColor": "transparent",
+	"textColor": "#ffffff",
+	"accentColor": "#ffb347",
+	"displaySecs": 30
+}
+```

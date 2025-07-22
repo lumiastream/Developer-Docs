@@ -651,3 +651,14 @@ You can get started quickly with one of the two built-in templates:
 
 - **Custom Chatbox** – A base template for building a chatbox overlay that listens to messages.
 - **Custom Alert** – A template for creating a fully custom alert layer that responds to selected events.
+
+## Using API requests with Fetch
+
+You can 100% use fetch api requests from within Overlays to call any API you need.
+Here is an example:
+
+```js
+const url = `https://api.adviceslip.com/advice`;
+const slip = await fetch(url).then((r) => r.json());
+const advice = slip.slip?.advice || "Take life one step at a time.";
+```
