@@ -235,6 +235,7 @@ export enum LumiaAlertValues {
 	TIKTOK_ENTRANCE = "tiktok-entrance",
 	TIKTOK_FOLLOWER = "tiktok-follower",
 	TIKTOK_LIKE = "tiktok-like",
+	TIKTOK_TOTAL_LIKES = "tiktok-totalLikes",
 	TIKTOK_GIFT = "tiktok-gift",
 	TIKTOK_SUBSCRIBER = "tiktok-subscriber",
 	TIKTOK_SHARE = "tiktok-share",
