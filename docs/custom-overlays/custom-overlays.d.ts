@@ -135,6 +135,22 @@ export interface Overlay {
 		platform?: string;
 		chatAsSelf?: boolean;
 	}) => Promise<void>;
+	addLoyaltyPoints: ({
+		value,
+		username,
+		platform,
+	}: {
+		value: number;
+		username: string;
+		platform: string;
+	}) => Promise<number>;
+	getLoyaltyPoints: ({
+		username,
+		platform,
+	}: {
+		username: string;
+		platform: string;
+	}) => Promise<number>;
 	setVariable: (variable: string, value: unknown) => void;
 	getVariable: (variable: string) => unknown;
 	saveStorage: (key: string, value: string) => void;
@@ -235,7 +251,6 @@ export enum LumiaAlertValues {
 	TIKTOK_ENTRANCE = "tiktok-entrance",
 	TIKTOK_FOLLOWER = "tiktok-follower",
 	TIKTOK_LIKE = "tiktok-like",
-	TIKTOK_TOTAL_LIKES = "tiktok-totalLikes",
 	TIKTOK_GIFT = "tiktok-gift",
 	TIKTOK_SUBSCRIBER = "tiktok-subscriber",
 	TIKTOK_SHARE = "tiktok-share",

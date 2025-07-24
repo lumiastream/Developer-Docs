@@ -1,6 +1,7 @@
 ---
 title: Documentation
 sidebar_position: 2
+description: Custom Overlays allow you to create your own custom Overlays using Javascript
 ---
 
 # 🧩 Custom Overlay Layer
@@ -69,10 +70,17 @@ Overlay.callCommand('mycommand', { secret: 'password' });
 // Send a chatbot message to the corresponding platform either as the streamer or the bot. Leave the platform as null to trigger on all connected platforms
 Overlay.chatbot({ message: 'This works', platform: 'twitch', chatAsSelf: false  });
 
+// Give/Take Loyalty Points from a user
+Overlay.loyaltyPoints({ value: 100, username: 'lumiastream', platform: 'twitch' });
+Overlay.loyaltyPoints({ value: -100, username: 'lumiastream', platform: 'twitch' });
+
+// Gets the amount of loyalty points that a user has
+await Overlay.checkLoyaltyPoints({ username: 'lumiastream', platform: 'twitch' });
+
 // If the variables isn't already created it will create one.
 await Overlay.setVariable('myvar', 'this works');
 
-// Retrieves a variable
+// Retrieves a variable, always use a string for getVariable, do not use a reference to a string so that the code can extract out the variables it needs to listen to
 await Overlay.getVariable('myvar');
 
 // If the variable was not previously created it may not automatically be replaced in your code until after the code is saved and reopened. If the overlay was previously made then it will update immediately. It may be helpful to add a check in your code to see if variable is already auto updating or not and toast the user to refresh the overlay
