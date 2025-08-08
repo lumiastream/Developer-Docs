@@ -124,23 +124,28 @@ Overlay.on("alert", (data) => {
 {
 	"primaryColor": {
 		"type": "colorpicker",
-		"label": "Primary color:"
+		"label": "Primary color:",
+		"order": 1
 	},
 	"backgroundColor": {
 		"type": "colorpicker",
-		"label": "Background color:"
+		"label": "Background color:",
+		"order": 2
 	},
 	"textColor": {
 		"type": "colorpicker",
-		"label": "Text color:"
+		"label": "Text color:",
+		"order": 3
 	},
 	"rounded": {
 		"type": "input",
-		"label": "Rounded corners:"
+		"label": "Rounded corners:",
+		"order": 4
 	},
 	"alertImage": {
 		"type": "input",
-		"label": "Alert image:"
+		"label": "Alert image URL:",
+		"order": 5
 	}
 }
 ```
@@ -243,23 +248,28 @@ Overlay.on("chat", (data) => {
 {
 	"primaryColor": {
 		"type": "colorpicker",
-		"label": "Primary color:"
+		"label": "Primary color:",
+		"order": 1
 	},
 	"backgroundColor": {
 		"type": "colorpicker",
-		"label": "Background color:"
+		"label": "Background color:",
+		"order": 2
 	},
 	"textColor": {
 		"type": "colorpicker",
-		"label": "Text color:"
+		"label": "Text color:",
+		"order": 3
 	},
 	"messageBgColor": {
 		"type": "colorpicker",
-		"label": "Message background color:"
+		"label": "Message background color:",
+		"order": 4
 	},
 	"rounded": {
 		"type": "input",
-		"label": "Rounded corners:"
+		"label": "Rounded corners:",
+		"order": 5
 	}
 }
 ```
@@ -478,31 +488,36 @@ Overlay.on("overlaycontent", (data) => {
 	"tts": {
 		"type": "checkbox",
 		"label": "TTS",
+		"order": 1,
 		"value": false
-	},
-	"idleTimeout": {
-		"type": "number",
-		"label": "Auto-clear after (ms)",
-		"default": 20000,
-		"min": 5000,
-		"step": 1000
 	},
 	"ttsVoice": {
 		"type": "input",
 		"label": "TTS Voice",
+		"order": 2,
 		"visibleIf": {
 			"key": "tts",
 			"equals": true
 		}
 	},
+	"idleTimeout": {
+		"type": "number",
+		"label": "Auto-clear after (ms)",
+		"order": 3,
+		"value": 20000,
+		"min": 5000,
+		"step": 1000
+	},
 	"primaryColor": {
 		"type": "colorpicker",
 		"label": "Text / border colour",
+		"order": 4,
 		"value": "#ffffff"
 	},
 	"backgroundColor": {
 		"type": "colorpicker",
 		"label": "Background colour",
+		"order": 5,
 		"value": "#00000080"
 	}
 }
@@ -619,17 +634,20 @@ die.classList.add("hidden");
 	"dotColor": {
 		"type": "colorpicker",
 		"label": "Dice text colour",
-		"default": "#ffffff"
-	},
-	"hideDelay": {
-		"type": "number",
-		"label": "Auto-hide after (ms)",
-		"default": 5000
+		"order": 1,
+		"value": "#ffffff"
 	},
 	"rollDuration": {
 		"type": "number",
 		"label": "Spin time (ms)",
-		"default": 900
+		"order": 2,
+		"value": 900
+	},
+	"hideDelay": {
+		"type": "number",
+		"label": "Auto-hide after (ms)",
+		"order": 3,
+		"value": 5000
 	}
 }
 ```
@@ -1380,70 +1398,83 @@ body {
 
 ```json
 {
-	"maxDex": {
-		"type": "number",
-		"label": "Highest Pokédex #",
-		"value": 151
-	},
-	"volume": {
-		"type": "number",
-		"label": "Volume (0-1)",
-		"value": 0.3
-	},
-	"devMode": {
-		"type": "checkbox",
-		"label": "Developer mode (keyboard + console helpers)",
-		"value": false
-	},
-	"fleePct": {
-		"type": "number",
-		"label": "Flee chance %",
-		"value": 15
-	},
-	"idleSec": {
-		"type": "number",
-		"label": "Flee time (seconds)",
-		"value": 30
-	},
-	"catchPct": {
-		"type": "number",
-		"label": "Catch success %",
-		"value": 40
-	},
-	"maxSpawn": {
-		"type": "number",
-		"label": "Spawn delay (max s)",
-		"value": 60
-	},
-	"minSpawn": {
-		"type": "number",
-		"label": "Spawn delay (min s)",
-		"value": 40
-	},
-	"shinyRate": {
-		"type": "number",
-		"label": "Shiny rate %",
-		"value": 2
-	},
-	"disableChat": {
-		"type": "checkbox",
-		"label": "Disable Chat from Overlays to allow manual control from Lumia",
-		"value": false
-	},
 	"catchCommand": {
 		"type": "input",
 		"label": "Catch command",
+		"order": 1,
 		"value": "!catch"
 	},
 	"pokedexCommand": {
 		"type": "input",
 		"label": "Pokedex command",
+		"order": 2,
 		"value": "!pokedex"
 	},
 	"leaderboardCommand": {
 		"type": "input",
 		"label": "Leaderboard command",
+		"order": 3,
 		"value": "!leader"
+	},
+	"disableChat": {
+		"type": "checkbox",
+		"label": "Disable chat input (Lumia only)",
+		"order": 4,
+		"value": false
+	},
+	"devMode": {
+		"type": "checkbox",
+		"label": "Developer mode (keyboard helpers)",
+		"order": 5,
+		"value": false
+	},
+	"minSpawn": {
+		"type": "number",
+		"label": "Spawn delay (min s)",
+		"order": 6,
+		"value": 40
+	},
+	"maxSpawn": {
+		"type": "number",
+		"label": "Spawn delay (max s)",
+		"order": 7,
+		"value": 60
+	},
+	"idleSec": {
+		"type": "number",
+		"label": "Flee time (s)",
+		"order": 8,
+		"value": 30
+	},
+	"fleePct": {
+		"type": "number",
+		"label": "Flee chance %",
+		"order": 9,
+		"value": 15
+	},
+	"catchPct": {
+		"type": "number",
+		"label": "Catch success %",
+		"order": 10,
+		"value": 40
+	},
+	"shinyRate": {
+		"type": "number",
+		"label": "Shiny rate %",
+		"order": 11,
+		"value": 2
+	},
+	"maxDex": {
+		"type": "number",
+		"label": "Highest Pokédex #",
+		"order": 12,
+		"value": 151
+	},
+	"volume": {
+		"type": "number",
+		"label": "SFX volume (0-1)",
+		"order": 13,
+		"value": 0.3
 	}
 }
 ```
@@ -1600,26 +1631,30 @@ blockquote {
 
 ```json
 {
-	"textColor": {
-		"type": "colorpicker",
-		"label": "Text colour",
-		"value": "#ffffff"
-	},
 	"displaySecs": {
-		"max": 120,
-		"min": 5,
 		"type": "number",
 		"label": "Display time (sec)",
-		"value": 30
+		"order": 1,
+		"value": 30,
+		"min": 5,
+		"max": 120
 	},
 	"primaryColor": {
 		"type": "colorpicker",
 		"label": "Accent colour",
+		"order": 2,
 		"value": "#ff577f"
+	},
+	"textColor": {
+		"type": "colorpicker",
+		"label": "Text colour",
+		"order": 3,
+		"value": "#ffffff"
 	},
 	"backgroundColor": {
 		"type": "colorpicker",
 		"label": "Background",
+		"order": 4,
 		"value": "#1e1e2f"
 	}
 }
@@ -1759,27 +1794,31 @@ showOverlay();
 
 ```json
 {
-	"bgColor": {
-		"type": "colorpicker",
-		"label": "Background",
-		"value": "#1e1e2f"
-	},
-	"textColor": {
-		"type": "colorpicker",
-		"label": "Text colour",
-		"value": "#ffffff"
+	"displaySecs": {
+		"type": "number",
+		"label": "Display time (sec)",
+		"order": 1,
+		"value": 30,
+		"min": 5,
+		"max": 120
 	},
 	"accentColor": {
 		"type": "colorpicker",
 		"label": "Accent colour",
+		"order": 2,
 		"value": "#ffb347"
 	},
-	"displaySecs": {
-		"max": 120,
-		"min": 5,
-		"type": "number",
-		"label": "Display time (sec)",
-		"value": 30
+	"textColor": {
+		"type": "colorpicker",
+		"label": "Text colour",
+		"order": 3,
+		"value": "#ffffff"
+	},
+	"bgColor": {
+		"type": "colorpicker",
+		"label": "Background colour",
+		"order": 4,
+		"value": "#1e1e2f"
 	}
 }
 ```
@@ -1792,5 +1831,599 @@ showOverlay();
 	"textColor": "#ffffff",
 	"accentColor": "#ffb347",
 	"displaySecs": 30
+}
+```
+
+## Art Canvas
+
+### JS Code
+
+```js
+/* ------------------------------------------------------------------ */
+/* 0.  Responsive transparent canvas setup                            */
+/* ------------------------------------------------------------------ */
+const cvs = document.getElementById("canvas");
+const list = document.getElementById("chat-list");
+const ctx = cvs.getContext("2d");
+
+function fitCanvas() {
+	const dpr = window.devicePixelRatio || 1;
+	const rect = cvs.getBoundingClientRect();
+	const w = Math.round(rect.width * dpr);
+	const h = Math.round(rect.height * dpr);
+	if (w === cvs.width && h === cvs.height) return; // size unchanged
+	cvs.width = w;
+	cvs.height = h;
+	ctx.scale(dpr, dpr);
+}
+fitCanvas();
+window.addEventListener("resize", fitCanvas);
+
+/* ------------------------------------------------------------------ */
+/* 1.  Drawing helpers                                                */
+/* ------------------------------------------------------------------ */
+const defaultColor = Overlay.data?.penColor || "#000000";
+const defaultSize = Number(Overlay.data?.penSize) || 3;
+
+function drawLine(x1, y1, x2, y2, color = defaultColor, size = defaultSize) {
+	ctx.strokeStyle = color;
+	ctx.lineWidth = size;
+	ctx.lineCap = "round";
+	ctx.beginPath();
+	ctx.moveTo(x1, y1);
+	ctx.lineTo(x2, y2);
+	ctx.stroke();
+}
+
+function drawCurve(
+	x1,
+	y1,
+	cx,
+	cy,
+	x2,
+	y2,
+	color = defaultColor,
+	size = defaultSize
+) {
+	ctx.strokeStyle = color;
+	ctx.lineWidth = size;
+	ctx.lineCap = "round";
+	ctx.beginPath();
+	ctx.moveTo(x1, y1);
+	ctx.quadraticCurveTo(cx, cy, x2, y2);
+	ctx.stroke();
+}
+
+function drawStroke(pts, color = defaultColor, size = defaultSize) {
+	if (pts.length < 2) return;
+	ctx.strokeStyle = color;
+	ctx.lineWidth = size;
+	ctx.lineCap = "round";
+	ctx.beginPath();
+	ctx.moveTo(pts[0][0], pts[0][1]);
+	for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+	ctx.stroke();
+}
+
+/* ------------------------------------------------------------------ */
+/* 2.  Runtime config & helpers                                       */
+/* ------------------------------------------------------------------ */
+const cfg = Overlay.data ?? {};
+
+/* ------------------------------------------------------------------ */
+/*  Startup “how-to” message                                          */
+/* ------------------------------------------------------------------ */
+if (cfg.showStartupMessage !== false) {
+	const help =
+		"👋 Art Canvas active!  Draw with " +
+		"`!line x1 y1 x2 y2 [#hex] [size]`,  " +
+		"`!stroke x1,y1 x2,y2 …`,  " +
+		"`!curve x1 y1 cx cy x2 y2`,  " +
+		"and `!clear`.  Paste multiple commands in one chat line " +
+		"— each starting with `!`.  Mods can use `!subscribersonly`, " +
+		"`!followers`, `!modonly`, `!anyone`, `!chatoff`, `!chaton` " +
+		"to change who may draw.";
+	Overlay.chatbot({ message: `[Art Canvas] ${help}` });
+}
+
+/* Chat on/off & allowed levels can be changed at runtime (mod cmds)  */
+let chatEnabled = cfg.allowChat !== false;
+let allowedLevelsSet = new Set(cfg.userLevels ?? ["anyone"]);
+
+/* Map for quick check when userLevels is present in ChatEvent        */
+function userAllowed(userLevels) {
+	if (!chatEnabled) return false;
+	const L = allowedLevelsSet;
+	if (L.has("anyone")) return true;
+
+	if (userLevels.isSelf) return true; // streamer always allowed
+	if (L.has("mod") && userLevels.mod) return true;
+	if (L.has("vip") && userLevels.vip) return true;
+	if (L.has("subscriber") && userLevels.subscriber) return true;
+	if (L.has("tier2") && userLevels.tier2) return true;
+	if (L.has("tier3") && userLevels.tier3) return true;
+	if (L.has("follower") && userLevels.follower) return true;
+	return false;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3.  Command parser (multi-command, single-line)                    */
+/* ------------------------------------------------------------------ */
+function processCommands(raw) {
+	if (!raw) return;
+	const tokens = raw.trim().split(/\s+/);
+	let i = 0;
+
+	while (i < tokens.length) {
+		const cmd = tokens[i]?.toLowerCase();
+		if (!cmd?.startsWith("!")) {
+			i++;
+			continue;
+		}
+
+		/* ---------- drawing commands --------------------------- */
+		if (cmd === "!clear") {
+			ctx.clearRect(0, 0, cvs.width, cvs.height);
+			i++;
+			continue;
+		}
+
+		if (cmd === "!line" && i + 4 < tokens.length) {
+			const x1 = +tokens[i + 1],
+				y1 = +tokens[i + 2],
+				x2 = +tokens[i + 3],
+				y2 = +tokens[i + 4];
+			let color = defaultColor,
+				size = defaultSize,
+				next = i + 5;
+			if (tokens[next] && /^#[0-9a-f]{3,8}$/i.test(tokens[next])) {
+				color = tokens[next];
+				next++;
+			}
+			if (tokens[next] && /^\d+(\.\d+)?$/.test(tokens[next])) {
+				size = +tokens[next];
+				next++;
+			}
+			drawLine(x1, y1, x2, y2, color, size);
+			i = next;
+			continue;
+		}
+
+		if (cmd === "!curve" && i + 6 < tokens.length) {
+			const x1 = +tokens[i + 1],
+				y1 = +tokens[i + 2],
+				cx = +tokens[i + 3],
+				cy = +tokens[i + 4],
+				x2 = +tokens[i + 5],
+				y2 = +tokens[i + 6];
+			let color = defaultColor,
+				size = defaultSize,
+				next = i + 7;
+			if (tokens[next] && /^#[0-9a-f]{3,8}$/i.test(tokens[next])) {
+				color = tokens[next];
+				next++;
+			}
+			if (tokens[next] && /^\d+(\.\d+)?$/.test(tokens[next])) {
+				size = +tokens[next];
+				next++;
+			}
+			drawCurve(x1, y1, cx, cy, x2, y2, color, size);
+			i = next;
+			continue;
+		}
+
+		if (cmd === "!stroke" && i + 2 < tokens.length) {
+			let j = i + 1;
+			const pts = [];
+			while (j < tokens.length && !tokens[j].startsWith("!")) {
+				if (/^\d+,\d+$/.test(tokens[j]))
+					pts.push(tokens[j].split(",").map(Number));
+				else break;
+				j++;
+			}
+			if (pts.length >= 2) {
+				let color = defaultColor,
+					size = defaultSize;
+				if (tokens[j] && /^#[0-9a-f]{3,8}$/i.test(tokens[j])) {
+					color = tokens[j];
+					j++;
+				}
+				if (tokens[j] && /^\d+(\.\d+)?$/.test(tokens[j])) {
+					size = +tokens[j];
+					j++;
+				}
+				drawStroke(pts, color, size);
+			}
+			i = j;
+			continue;
+		}
+
+		/* ---------- unrecognised ------------------------------- */
+		i++;
+	}
+}
+
+/* ------------------------------------------------------------------ */
+/* 4.  Mod-only runtime commands (do NOT change Overlay.data)         */
+/* ------------------------------------------------------------------ */
+const allowModCommands = cfg.allowModCommands !== false;
+
+function tryHandleModCommand(evt) {
+	if (!allowModCommands) return false;
+
+	const isModOrBroad = evt.userLevels?.mod || evt.userLevels?.isSelf;
+
+	if (!isModOrBroad) return false;
+
+	const msg = evt.message.toLowerCase();
+	if (msg.startsWith("!chatoff")) {
+		chatEnabled = false;
+		return true;
+	}
+	if (msg.startsWith("!chaton")) {
+		chatEnabled = true;
+		return true;
+	}
+
+	if (msg.startsWith("!subscribersonly") || msg.startsWith("!subscriberonly")) {
+		allowedLevelsSet = new Set(["subscriber", "vip", "mod", "broadcaster"]);
+		return true;
+	}
+	if (msg.startsWith("!modonly")) {
+		allowedLevelsSet = new Set(["mod", "broadcaster"]);
+		return true;
+	}
+	if (msg.startsWith("!followers")) {
+		allowedLevelsSet = new Set([
+			"follower",
+			"subscriber",
+			"vip",
+			"mod",
+			"broadcaster",
+		]);
+		return true;
+	}
+	if (msg.startsWith("!anyone")) {
+		allowedLevelsSet = new Set(["anyone"]);
+		return true;
+	}
+	return false;
+}
+
+/* helper to print feedback in chat via overlay bot */
+function sys(msg) {
+	Overlay.chatbot({ message: `[Art Canvas] ${msg}` });
+}
+
+/* ------------------------------------------------------------------ */
+/* 5.  Listeners: Chat, Lumia, Alerts                                 */
+/* ------------------------------------------------------------------ */
+
+/* Chat ------------------------------------------------------------- */
+if (cfg.allowChat !== false) {
+	Overlay.on("chat", (e) => {
+		/* mod commands first */
+		if (tryHandleModCommand(e)) {
+			sys("Runtime chat rules updated.");
+			return;
+		}
+		if (
+			e.username?.toLowerCase() === "lumiastream" ||
+			e.username?.toLowerCase() === "@lumiastream"
+		)
+			return;
+		/* drawing commands */
+		if (userAllowed(e.userLevels ?? {})) processCommands(e.message);
+	});
+}
+
+/* Lumia overlaycontent --------------------------------------------- */
+if (cfg.allowLumia) {
+	Overlay.on("overlaycontent", (d) => {
+		processCommands(d.content);
+	});
+}
+
+/* Alerts (Bits & Points) ------------------------------------------- */
+Overlay.on("alert", (data) => {
+	const alert = data.alert;
+	const message = data.extraSettings?.message || "";
+
+	/* Bits */
+	if (alert === "twitch-bits" && cfg.allowBits) {
+		const bits = data.dynamic.value ?? 0;
+		if (bits >= (cfg.minBits ?? 1)) {
+			processCommands(message);
+		}
+		return;
+	}
+
+	/* Twitch Channel Points */
+	if (alert === "twitch-points" && cfg.allowTwitchPoints) {
+		const trig = cfg.twitchPointsCommand?.toLowerCase() || "";
+		const content = message.toLowerCase();
+		if (!trig || trig === data.extraSettings.command) processCommands(content);
+		return;
+	}
+
+	/* Kick Points */
+	if (alert === "kick-points" && cfg.allowKickPoints) {
+		const trig = cfg.kickPointsCommand?.toLowerCase() || "";
+		const content = message.toLowerCase();
+		if (!trig || trig === data.extraSettings.command) processCommands(content);
+		return;
+	}
+});
+
+/* ------------------------------------------------------------------ */
+/* 6.  Periodic drawing ideas / prompts                               */
+/* ------------------------------------------------------------------ */
+if (cfg.enableIdeas) {
+	const mins = Math.max(1, Number(cfg.ideaIntervalMinutes) || 5);
+
+	/** Each idea has:
+	 *  prompt  – a short description
+	 *  cmds    – ONE chat line (space- or ;-separated) ready to paste
+	 *  Co-ords assume 1920×1080 canvas; scale if you use another size
+	 */
+	const ideas = [
+		{
+			prompt: "Tiny yellow DUCK (3 squares):",
+			cmds: "!line 940 540 980 540 #ffff00 40 ; !line 940 580 980 580 #ffff00 40 ; !line 960 520 960 520 #000000 40",
+		},
+		{
+			prompt: "8-bit HEART:",
+			cmds: "!stroke 960,300 1040,380 1040,500 960,580 880,500 880,380 960,300 #ff66cc 12",
+		},
+		{
+			prompt: "POKÉ BALL:",
+			cmds: "!stroke 960,440 1120,540 960,640 800,540 960,440 #ffffff 10 !stroke 960,640 1120,540 960,440 800,540 960,640 #ff0000 10 !line 800 540 1120 540 #000000 12",
+		},
+		{
+			prompt: "Rainbow ARC with curves:",
+			cmds: "!curve 300 700 960 200 1620 700 #ff0000 12 !curve 300 760 960 260 1620 760 #ff7f00 12 !curve 300 820 960 320 1620 820 #ffff00 12",
+		},
+		{
+			prompt: "SMILEY face:",
+			cmds: "!stroke 960,300 1190,540 960,780 730,540 960,300 #ffff00 12 !stroke 860,460 900,460 900,500 860,500 860,460 #000000 10 !stroke 1020,460 1060,460 1060,500 1020,500 1020,460 #000000 10 !line 860 640 1060 640 #000000 10",
+		},
+		{
+			prompt: "Five-point STAR:",
+			cmds: "!stroke 960,200 1040,460 1300,460 1080,620 1160,880 960,720 760,880 840,620 620,460 880,460 960,200 #ffd700 8",
+		},
+		{
+			prompt: "TINY HOUSE:",
+			cmds: "!line 780 660 1140 660 #ffcc66 10 !line 780 660 780 880 #ffcc66 10 !line 1140 660 1140 880 #ffcc66 10 !line 780 880 1140 880 #ffcc66 10 !stroke 780,660 960,500 1140,660 #ff9966 10",
+		},
+		{
+			prompt: "COFFEE CUP with steam:",
+			cmds: "!line 900 700 1020 700 #a8734c 12 !line 900 700 900 780 #a8734c 12 !line 1020 700 1020 780 #a8734c 12 !line 900 780 1020 780 #a8734c 12 !curve 940 660 960 620 980 660 #ffffff 10 !curve 960 620 980 580 1000 620 #ffffff 10",
+		},
+		{
+			prompt: "LIGHTNING bolt (stroke):",
+			cmds: "!stroke 960,300 1040,500 880,500 1060,780 #ffff00 14",
+		},
+		{
+			prompt: "SPIRAL galaxy (3 curves):",
+			cmds: "!curve 960 540 1320 540 1320 200 #66ccff 10 !curve 960 540 600 540 600 880 #66ccff 10 !curve 960 540 1260 540 960 820 #66ccff 10",
+		},
+		{
+			prompt: "MARIO QUESTION BLOCK:",
+			cmds: "!line 860 400 1060 400 #ffcc00 40 !line 860 400 860 600 #ffcc00 40 !line 1060 400 1060 600 #ffcc00 40 !line 860 600 1060 600 #ffcc00 40 !line 920 480 1000 480 #ffffff 40 !line 920 480 920 520 #ffffff 40 !line 1000 480 1000 520 #ffffff 40 !line 920 520 1000 520 #ffffff 40",
+		},
+		{
+			prompt: "AMONG US crewmate:",
+			cmds: "!stroke 960,400 1180,400 1220,450 1220,820 700,820 700,450 740,400 960,400 #ff4141 12 !stroke 820,480 1040,480 1080,520 1080,620 780,620 780,520 820,480 #aeeffd 12 !stroke 1260,550 1340,550 1340,800 1260,800 1260,550 #ff4141 12",
+		},
+		{
+			prompt: "8-bit SWORD:",
+			cmds: "!line 960 300 960 780 #cccccc 40 !line 920 780 1000 780 #663300 40 !line 880 820 1040 820 #663300 40",
+		},
+		{
+			prompt: "CHERRY blossom branch (curves + lines):",
+			cmds: "!line 700 780 1220 780 #8b4513 12 !curve 800 760 850 700 900 760 #ffb6c1 12 !curve 1000 760 1050 700 1100 760 #ffb6c1 12",
+		},
+		{
+			prompt: "RAINBOW stripes (7 lines):",
+			cmds: "!line 0 200 1920 200 #ff0000 16 !line 0 240 1920 240 #ff7f00 16 !line 0 280 1920 280 #ffff00 16 !line 0 320 1920 320 #00ff00 16 !line 0 360 1920 360 #0000ff 16 !line 0 400 1920 400 #4b0082 16 !line 0 440 1920 440 #9400d3 16",
+		},
+	];
+
+	setInterval(() => {
+		const idea = ideas[Math.floor(Math.random() * ideas.length)];
+		Overlay.chatbot({
+			message: `[Art Canvas Idea] ${idea.prompt}\n${idea.cmds}`,
+		});
+	}, mins * 60_000);
+}
+```
+
+### HTML
+
+```html
+<div id="board">
+	<canvas id="canvas"></canvas>
+	<ul id="chat-list"></ul>
+</div>
+```
+
+### CSS Styling
+
+```css
+/* Make the whole overlay fill whatever size you give the browser-source */
+html,
+body,
+#board {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+/* Canvas covers the full area and stays transparent */
+#canvas {
+	width: 100%;
+	height: 100%;
+	display: block; /* removes stray inline-block gaps */
+	background: transparent; /* fully see-through */
+	touch-action: none;
+}
+
+/* Optional grid (still transparent behind the lines) */
+#canvas.grid {
+	background-image: repeating-linear-gradient(
+			0deg,
+			transparent 0 29px,
+			#d0d0d055 30px
+		), repeating-linear-gradient(90deg, transparent 0 29px, #d0d0d055 30px);
+}
+
+/* Chat history can stay the same — stretches to overlay width */
+#chat-list {
+	list-style: none;
+	margin: 0;
+	padding: 4px;
+	width: 100%;
+	max-height: 160px;
+	overflow-y: auto;
+	background: #ffffffc0; /* 75 % opaque white strip */
+	font-family: "Segoe UI", sans-serif;
+	font-size: 14px;
+	border: 1px solid #ccc;
+}
+#chat-list li {
+	margin: 2px 0;
+}
+.user {
+	font-weight: 600;
+	color: ;
+	margin-right: 4px;
+}
+```
+
+### Configs
+
+```json
+{
+	"showStartupMessage": {
+		"type": "checkbox",
+		"label": "Send a chatbot help message when the overlay loads",
+		"order": 1,
+		"value": true
+	},
+	"allowModCommands": {
+		"type": "checkbox",
+		"label": "Enable moderator runtime commands",
+		"order": 2,
+		"value": true
+	},
+	"enableIdeas": {
+		"type": "checkbox",
+		"label": "Send periodic drawing ideas",
+		"order": 3,
+		"value": false
+	},
+	"ideaIntervalMinutes": {
+		"min": 1,
+		"type": "number",
+		"label": "Minutes between ideas",
+		"order": 4,
+		"value": 5,
+		"visibleIf": {
+			"key": "enableIdeas",
+			"equals": true
+		}
+	},
+	"allowChat": {
+		"type": "checkbox",
+		"label": "Enable chat commands",
+		"order": 5,
+		"value": true
+	},
+	"userLevels": {
+		"type": "multiselect",
+		"label": "Allowed chat user-levels",
+		"order": 6,
+		"value": ["anyone"],
+		"options": [
+			"anyone",
+			"mod",
+			"vip",
+			"subscriber",
+			"tier2",
+			"tier3",
+			"follower"
+		]
+	},
+	"allowBits": {
+		"type": "checkbox",
+		"label": "Enable Bits (Twitch Cheer)",
+		"order": 7,
+		"value": false
+	},
+	"minBits": {
+		"min": 1,
+		"type": "number",
+		"label": "Minimum Bits to accept",
+		"order": 8,
+		"value": 100,
+		"visibleIf": {
+			"key": "allowBits",
+			"equals": true
+		}
+	},
+	"allowTwitchPoints": {
+		"type": "checkbox",
+		"label": "Enable Twitch Channel-Points",
+		"order": 9,
+		"value": false
+	},
+	"twitchPointsCommand": {
+		"type": "input",
+		"label": "Twitch Points trigger name (Must also create the point command in Lumia with the same name)",
+		"order": 10,
+		"value": "art",
+		"visibleIf": {
+			"key": "allowTwitchPoints",
+			"equals": true
+		}
+	},
+	"allowKickPoints": {
+		"type": "checkbox",
+		"label": "Enable Kick Points",
+		"order": 11,
+		"value": false
+	},
+	"kickPointsCommand": {
+		"type": "input",
+		"label": "Kick Points trigger name (Must also create the point command in Lumia with the same name)",
+		"order": 12,
+		"value": "art",
+		"visibleIf": {
+			"key": "allowKickPoints",
+			"equals": true
+		}
+	}
+}
+```
+
+### Data
+
+```json
+{
+	"minBits": 0,
+	"minBitss": 0,
+	"allowBits": true,
+	"allowChat": true,
+	"minBitss3": 0,
+	"allowLumia": true,
+	"userLevels": ["anyone"],
+	"enableIdeas": true,
+	"allowKickPoints": true,
+	"allowModCommands": true,
+	"allowTwitchPoints": true,
+	"kickPointsCommand": "art",
+	"showStartupMessage": true,
+	"ideaIntervalMinutes": 2,
+	"twitchPointsCommand": "art"
 }
 ```

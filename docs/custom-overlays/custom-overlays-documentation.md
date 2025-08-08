@@ -70,12 +70,15 @@ Overlay.callCommand('mycommand', { secret: 'password' });
 // Send a chatbot message to the corresponding platform either as the streamer or the bot. Leave the platform as null to trigger on all connected platforms
 Overlay.chatbot({ message: 'This works', platform: 'twitch', chatAsSelf: false  });
 
-// Give/Take Loyalty Points from a user
-Overlay.loyaltyPoints({ value: 100, username: 'lumiastream', platform: 'twitch' });
-Overlay.loyaltyPoints({ value: -100, username: 'lumiastream', platform: 'twitch' });
+// Add Loyalty Points for a user, also returns the new updated points value
+const points = await Overlay.addLoyaltyPoints({ value: 100, username: 'lumiastream', platform: 'twitch' });
+// Or if you don't care about the response
+Overlay.addLoyaltyPoints({ value: 100, username: 'lumiastream', platform: 'twitch' });
+// You can also subtract points
+Overlay.addLoyaltyPoints({ value: -100, username: 'lumiastream', platform: 'twitch' })
 
 // Gets the amount of loyalty points that a user has
-await Overlay.checkLoyaltyPoints({ username: 'lumiastream', platform: 'twitch' });
+const usersPoints = await Overlay.getLoyaltyPoints({ username: 'lumiastream', platform: 'twitch' });
 
 // If the variables isn't already created it will create one.
 await Overlay.setVariable('myvar', 'this works');
@@ -331,7 +334,7 @@ When building custom overlays, you have several options for storing and sharing 
 The Configs fields define what users can customize in the layer.
 They appear on the right-hand side of the UI under the `Configuration` section unless a field is marked `hidden: true`.
 
-A field object can now contain up to five useful properties:
+A field object can now contain up to six useful properties:
 
 | Property        | Required | Purpose                                                                                                                                                                                                                                                                                            | Example                                                           |
 | --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
@@ -339,6 +342,7 @@ A field object can now contain up to five useful properties:
 | **`label`**     | ✅       | Human-readable name shown in the sidebar.                                                                                                                                                                                                                                                          | `"label": "Favorite Color:"`                                      |
 | **`value`**     | ❌       | Default value that appears the first time the user opens the overlay (also pre populates `Overlay.data`). Omit it to leave the field blank/unchecked on first load.                                                                                                                                | `"value": 18`                                                     |
 | **`options`**   | ☑️\*     | Key value map of selectable choices. Required **only** for `dropdown` and `multiselect`; ignored for other types.                                                                                                                                                                                  | `"options": { "twitch": "Twitch", "youtube": "YouTube" }`         |
+| **`order`**     | ❌       | **Display order priority**. Fields with lower numbers appear first. Fields without `order` appear after ordered fields, sorted alphabetically by key.                                                                                                                                              | `"order": 1`                                                      |
 | **`visibleIf`** | ❌       | **Conditional render rule**. Field is shown **only if** `Overlay.data[visibleIf.key]` strictly equals one of the values in `visibleIf.equals`.                                                                                                                                                     | `"visibleIf": { "key": "targetKey", "equals": ["yes", "maybe"] }` |
 | **`hidden`**    | ❌       | **Hard-hide rule.** When set to `true`, the field is **never displayed** in the Configs sidebar, preventing end users from altering it. The value still flows into `Overlay.data`, so the overlay can rely on it internally.<br>Useful for locking event subscriptions or other advanced settings. | `"hidden": true`                                                  |
 
@@ -375,34 +379,82 @@ Before looking at the individual properties (type, label, value, options), remem
 | `"multiselect"` | Multi-select box      |
 | `"colorpicker"` | Color picker widget   |
 
+### Field Display Order
+
+By default, config fields are displayed in alphabetical order by their key names. You can override this behavior using the `order` property:
+
+- Fields with an `order` property are displayed first, sorted by their order value (ascending)
+- Fields without an `order` property appear after all ordered fields, sorted alphabetically by key
+- This allows you to prioritize important settings at the top of the configuration panel
+
+#### Order Example
+
+```json
+{
+	"showStartupMessage": {
+		"order": 1,
+		"type": "checkbox",
+		"label": "Send a chatbot help message when the overlay loads",
+		"value": true
+	},
+	"allowModCommands": {
+		"order": 2,
+		"type": "checkbox",
+		"label": "Enable moderator runtime commands",
+		"value": true
+	},
+	"backgroundColor": {
+		"type": "colorpicker",
+		"label": "Background Color"
+	},
+	"textColor": {
+		"type": "colorpicker",
+		"label": "Text Color"
+	}
+}
+```
+
+In this example, the fields would appear in this order:
+
+1. `showStartupMessage` (order: 1)
+2. `allowModCommands` (order: 2)
+3. `backgroundColor` (no order, alphabetically first)
+4. `textColor` (no order, alphabetically second)
+
 ### Sample Config fields
 
 ```json
 {
 	"txt": {
+		"order": 1,
 		"type": "input",
 		"label": "Name:"
 	},
 	"last": {
+		"order": 2,
 		"type": "input",
 		"label": "Last Name:",
 		"value": "Abc"
 	},
 	"partner": {
+		"order": 3,
 		"type": "checkbox",
 		"label": "Partner:",
 		"value": false
 	},
 	"age": {
+		"order": 4,
 		"type": "number",
 		"label": "Age:",
 		"value": 18
 	},
 	"color": {
+		"order": 5,
 		"type": "colorpicker",
 		"label": "Favorite Color:"
 	},
 	"subcolor": {
+		"order": 6,
 		"type": "colorpicker",
 		"label": "Sub-color:",
 		"visibleIf": {
@@ -411,6 +463,7 @@ Before looking at the individual properties (type, label, value, options), remem
 		}
 	},
 	"platform": {
+		"order": 7,
 		"type": "dropdown",
 		"label": "Platform:",
 		"options": {
@@ -430,7 +483,7 @@ The `visibleIf` field is a JSON object with two keys: `key` and `equals`.
 The `key` key is a string that represents the name of the field whose value should be used in the conditional statement.
 The `equals` key is a string, number, boolean, or an array that represents the value of the field whose value should be used in the conditional statement.
 
-#### Single Prmitive Equals Example
+#### Single Primitive Equals Example
 
 ```json
 {
@@ -449,7 +502,7 @@ The `equals` key is a string, number, boolean, or an array that represents the v
 }
 ```
 
-#### Multiple Prmitive Equals Example
+#### Multiple Primitive Equals Example
 
 ```json
 {
@@ -648,7 +701,6 @@ Our Overlays will work with various Game Engines including, but not limited to P
 
 ## 🧪 Tips
 
-- Use the **Events** multiselect to limit which events trigger updates—great for debugging or focus.
 - Always sanitize HTML content if displaying user-generated input.
 - Leverage custom CSS to match your stream or brand style.
 - In custom code or overlay actions prefer to send data directly to the overlay without the store or variables if you do not need to persist the data
