@@ -19,6 +19,7 @@ export enum ConfigsFieldType {
 	DROPDOWN = "dropdown",
 	MULTISELECT = "multiselect",
 	COLORPICKER = "colorpicker",
+	FONTPICKER = "fontpicker",
 }
 
 // Core discriminant for overlay events

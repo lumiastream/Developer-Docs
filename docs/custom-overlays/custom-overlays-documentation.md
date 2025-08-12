@@ -338,7 +338,7 @@ A field object can now contain up to six useful properties:
 
 | Property        | Required | Purpose                                                                                                                                                                                                                                                                                            | Example                                                           |
 | --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| **`type`**      | ✅       | UI control to render. Must be one of the `FieldType` enum values (`input`, `number`, `checkbox`, `dropdown`, `multiselect`, `colorpicker`).                                                                                                                                                        | `"type": "dropdown"`                                              |
+| **`type`**      | ✅       | UI control to render. Must be one of the `FieldType` enum values (`input`, `number`, `checkbox`, `dropdown`, `multiselect`, `colorpicker`, `fontpicker`).                                                                                                                                          | `"type": "dropdown"`                                              |
 | **`label`**     | ✅       | Human-readable name shown in the sidebar.                                                                                                                                                                                                                                                          | `"label": "Favorite Color:"`                                      |
 | **`value`**     | ❌       | Default value that appears the first time the user opens the overlay (also pre populates `Overlay.data`). Omit it to leave the field blank/unchecked on first load.                                                                                                                                | `"value": 18`                                                     |
 | **`options`**   | ☑️\*     | Key value map of selectable choices. Required **only** for `dropdown` and `multiselect`; ignored for other types.                                                                                                                                                                                  | `"options": { "twitch": "Twitch", "youtube": "YouTube" }`         |
@@ -378,6 +378,44 @@ Before looking at the individual properties (type, label, value, options), remem
 | `"dropdown"`    | Select menu           |
 | `"multiselect"` | Multi-select box      |
 | `"colorpicker"` | Color picker widget   |
+| `"fontpicker"`  | Font picker (Google)  |
+
+### Font Picker
+
+The font picker type will load Google fonts on the fly that allows a user to select their font. Just make sure you use the variable in the CSS.
+
+Example:
+
+Configs Tab
+
+```json
+{
+	"font": {
+		"type": "fontpicker",
+		"label": "Font"
+	}
+}
+```
+
+Data Tab
+
+```json
+{
+	"font": "Impact"
+}
+```
+
+Css Tab
+
+```css
+body {
+	font-family: "{{font}}";
+}
+```
+
+The key in the json an ddata must match the variable name used in the css
+
+> Note we're using variable replacement within the css.
 
 ### Field Display Order
 
@@ -410,6 +448,10 @@ By default, config fields are displayed in alphabetical order by their key names
 	"textColor": {
 		"type": "colorpicker",
 		"label": "Text Color"
+	},
+	"font": {
+		"type": "fontpicker",
+		"label": "Font"
 	}
 }
 ```
@@ -425,7 +467,7 @@ In this example, the fields would appear in this order:
 
 ```json
 {
-	"txt": {
+	"name": {
 		"order": 1,
 		"type": "input",
 		"label": "Name:"
@@ -446,6 +488,8 @@ In this example, the fields would appear in this order:
 		"order": 4,
 		"type": "number",
 		"label": "Age:",
+		"min": 0,
+		"max": 100,
 		"value": 18
 	},
 	"color": {
@@ -471,6 +515,22 @@ In this example, the fields would appear in this order:
 			"youtube": "Youtube",
 			"kick": "Kick"
 		}
+	},
+	"multiplatforms": {
+		"order": 8,
+		"type": "multiselect",
+		"label": "Multi Streaming Platforms:",
+		"options": {
+			"twitch": "Twitch",
+			"youtube": "Youtube",
+			"kick": "Kick",
+			"tiktok": "Tiktok"
+		}
+	},
+	"font": {
+		"order": 9,
+		"type": "fontpicker",
+		"label": "Font:"
 	}
 }
 ```
