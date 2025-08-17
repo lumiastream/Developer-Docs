@@ -187,6 +187,7 @@ export enum LumiaAlertValues {
 	TWITCH_SUBSCRIBER = "twitch-subscriber",
 	TWITCH_GIFT_SUBSCRIPTION = "twitch-giftSubscription",
 	TWITCH_RAID = "twitch-raid",
+	TWITCH_RAID_OUT = "twitch-raidOut",
 	TWITCH_BITS = "twitch-bits",
 	TWITCH_REDEMPTION = "twitch-redemption",
 	TWITCH_HYPETRAIN_STARTED = "twitch-hypetrainStarted",
