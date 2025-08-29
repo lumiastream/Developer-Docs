@@ -1004,6 +1004,8 @@ export enum SystemVariables {
 	TWITCH_TOTAL_SUBSCRIBER_COUNT = "twitch_total_subscriber_count",
 	/** Session subs count. Use as {{twitch_session_subscribers_count}}. */
 	TWITCH_SESSION_SUBSCRIBERS_COUNT = "twitch_session_subscribers_count",
+	/** Session gifts count. Use as {{twitch_session_gifts_count}}. */
+	TWITCH_SESSION_GIFTS_COUNT = "twitch_session_gifts_count",
 	/** Current moderators (comma-separated). Use as {{twitch_current_mods}}. */
 	TWITCH_CURRENT_MODS = "twitch_current_mods",
 	/** Last follower. Use as {{twitch_last_follower}}. */
@@ -1257,6 +1259,8 @@ export enum SystemVariables {
 	KICK_TOTAL_SUBSCRIBER_COUNT = "kick_total_subscriber_count",
 	/** Session subs count. Use as {{kick_session_subscriber_count}}. */
 	KICK_SESSION_SUBSCRIBER_COUNT = "kick_session_subscriber_count",
+	/** Session gifts count. Use as {{kick_session_gifts_count}}. */
+	KICK_SESSION_GIFTS_COUNT = "kick_session_gifts_count",
 	/** Session subscribers list. Use as {{kick_session_subscribers}}. */
 	KICK_SESSION_SUBSCRIBERS = "kick_session_subscribers",
 	/** Last follower. Use as {{kick_last_follower}}. */
