@@ -691,7 +691,7 @@ export enum LumiaAlertValues {
 	/** OBS scene item hidden */
 	OBS_SCENE_ITEM_HIDDEN = "obs-sceneItemHidden",
 	/** OBS transition switched */
-	OBS_SWITCH_TRANSITION = "obs-switch-transition",
+	OBS_SWITCH_TRANSITION = "obs-switchTransition",
 	/** OBS transition started */
 	OBS_TRANSITION_BEGIN = "obs-transitionBegin",
 	/** OBS transition ended */

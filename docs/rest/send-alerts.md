@@ -150,7 +150,7 @@ The valid types for sending an alert are:
 - obs-switchScene
 - obs-sceneItemVisibility
 - obs-sceneItemHidden
-- obs-switch-transition
+- obs-switchTransition
 - obs-transitionBegin
 - obs-transitionEnd
 - obs-streamStarting

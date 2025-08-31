@@ -73,7 +73,7 @@ An example response would look like this:
 					"streamelements-donation",
 					"obs-switchProfile",
 					"obs-switchScene",
-					"obs-switch-transition",
+					"obs-switchTransition",
 					"obs-streamStarting",
 					"obs-streamStopping",
 					"slobs-switchScene",
