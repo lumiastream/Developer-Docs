@@ -334,17 +334,45 @@ When building custom overlays, you have several options for storing and sharing 
 The Configs fields define what users can customize in the layer.
 They appear on the right-hand side of the UI under the `Configuration` section unless a field is marked `hidden: true`.
 
-A field object can now contain up to six useful properties:
+A field object can now contain these properties:
 
 | Property        | Required | Purpose                                                                                                                                                                                                                                                                                            | Example                                                           |
 | --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| **`type`**      | ✅       | UI control to render. Must be one of the `FieldType` enum values (`input`, `number`, `checkbox`, `dropdown`, `multiselect`, `colorpicker`, `fontpicker`).                                                                                                                                          | `"type": "dropdown"`                                              |
+| **`type`**      | ✅       | UI control to render. Must be one of the `FieldType` enum values (`input`, `number`, `checkbox`, `dropdown`, `multiselect`, `colorpicker`, `fontpicker`, `slider`).                                                                                                                                | `"type": "dropdown"`                                              |
 | **`label`**     | ✅       | Human-readable name shown in the sidebar.                                                                                                                                                                                                                                                          | `"label": "Favorite Color:"`                                      |
 | **`value`**     | ❌       | Default value that appears the first time the user opens the overlay (also pre populates `Overlay.data`). Omit it to leave the field blank/unchecked on first load.                                                                                                                                | `"value": 18`                                                     |
-| **`options`**   | ☑️\*     | Key value map of selectable choices. Required **only** for `dropdown` and `multiselect`; ignored for other types.                                                                                                                                                                                  | `"options": { "twitch": "Twitch", "youtube": "YouTube" }`         |
+| **`options`**   | ☑️\*     | Key value map of selectable choices. Required **only** for `dropdown`, `multiselect` and `slider`; ignored for other types. For `slider`, `options` supports `step`, `min`, `max`, `prefix`, `suffix`.                                                                                             | `"options": { "step": 5, "min": 0, "max": 100 }`                  |
 | **`order`**     | ❌       | **Display order priority**. Fields with lower numbers appear first. Fields without `order` appear after ordered fields, sorted alphabetically by key.                                                                                                                                              | `"order": 1`                                                      |
 | **`visibleIf`** | ❌       | **Conditional render rule**. Field is shown **only if** `Overlay.data[visibleIf.key]` strictly equals one of the values in `visibleIf.equals`.                                                                                                                                                     | `"visibleIf": { "key": "targetKey", "equals": ["yes", "maybe"] }` |
 | **`hidden`**    | ❌       | **Hard-hide rule.** When set to `true`, the field is **never displayed** in the Configs sidebar, preventing end users from altering it. The value still flows into `Overlay.data`, so the overlay can rely on it internally.<br>Useful for locking event subscriptions or other advanced settings. | `"hidden": true`                                                  |
+
+Additional properties for text inputs (`type: "input"`):
+
+| Property               | Required | Purpose                                                                                                                                    | Example                                       |
+| ---------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------- |
+| **`placeholder`**      | ❌       | Placeholder text inside the input.                                                                                                         | `"placeholder": "Enter title..."`             |
+| **`enableVariables`**  | ❌       | When `true`, renders a variable-enabled input that lets users insert variables (e.g., `{{username}}`) from a picker.                       | `"enableVariables": true`                     |
+| **`allowedVariables`** | ❌       | When present with `enableVariables: true`, limits the top of the picker to this list. System/function variables are still available below. | `"allowedVariables": ["username", "message"]` |
+
+### Variable-enabled Input Fields
+
+You can enable Lumia variables directly in text inputs by setting `enableVariables: true`. Optionally provide `allowedVariables` to surface a curated list first, and `placeholder` for UX.
+
+Example:
+
+```json
+{
+	"title": {
+		"type": "input",
+		"label": "Title",
+		"enableVariables": true,
+		"allowedVariables": ["username", "message"],
+		"placeholder": "Enter title or insert variables"
+	}
+}
+```
+
+Clicking the `{}` adornment opens the variables panel. Selecting an item inserts it at the cursor as `{{variable_name}}`.
 
 ### 🔑 Keys vs. Field Objects
 
@@ -379,6 +407,7 @@ Before looking at the individual properties (type, label, value, options), remem
 | `"multiselect"` | Multi-select box      |
 | `"colorpicker"` | Color picker widget   |
 | `"fontpicker"`  | Font picker (Google)  |
+| `"slider"`      | Number slider         |
 
 ### Font Picker
 
@@ -531,6 +560,18 @@ In this example, the fields would appear in this order:
 		"order": 9,
 		"type": "fontpicker",
 		"label": "Font:"
+	},
+	"fontSize": {
+		"order": 10,
+		"type": "slider",
+		"label": "Font Size:",
+		"options": {
+			"step": 10,
+			"min": 0,
+			"max": 200,
+			"prefix": "",
+			"suffix": "px"
+		}
 	}
 }
 ```
