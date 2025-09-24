@@ -1973,10 +1973,10 @@
   resolved "https://registry.npmjs.org/@lumiastream/lumia-translations/-/lumia-translations-1.1.32.tgz"
   integrity sha512-k9sV6l/b+SBnpe+IOxsBw+Roxs2Xf1wVFN6pYog/wF0zSR4GiYGzcuLHEntD9b770Rkqlc5szZ1GgSXsF0tYWQ==
 
-"@lumiastream/lumia-types@2.5.3":
-  version "2.5.3"
-  resolved "https://registry.npmjs.org/@lumiastream/lumia-types/-/lumia-types-2.5.3.tgz"
-  integrity sha512-ke4exFDRgKtaY6zxNXYfpjNvGzgMwNBCWdGJZftN4zzaLoY72OT0QniUz6rQKa2ku5iLC01aA0NM3DAnDofoDA==
+"@lumiastream/lumia-types@2.5.8":
+  version "2.5.8"
+  resolved "https://registry.npmjs.org/@lumiastream/lumia-types/-/lumia-types-2.5.8.tgz"
+  integrity sha512-H1b2Le5VE+D0x42NkwDWJ52nNKZ8IQpOXeOUWJU3WYIfWdxtjOdVLauCB2MBZOe9vj2RtvlINztNZzpXgdIucw==
 
 "@mdx-js/mdx@^3.0.0":
   version "3.1.0"
