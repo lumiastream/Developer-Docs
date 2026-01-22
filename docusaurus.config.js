@@ -135,6 +135,12 @@ const darkCodeTheme = themes.dracula;
               activeBasePath: "docs/custom-overlays",
             },
             {
+              to: "/docs/plugin-sdk/overview",
+              label: "Plugin SDK",
+              position: "left",
+              activeBasePath: "docs/plugin-sdk",
+            },
+            {
               href: "https://github.com/lumiastream/Developer-Docs",
               label: "GitHub",
               position: "right",
