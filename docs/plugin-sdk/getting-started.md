@@ -306,6 +306,6 @@ export default class EventPlugin extends Plugin {
 ## Next Steps
 
 - Review the [API Reference](./api-reference.md) for the full SDK surface area
-- Explore the [examples](../examples/) for implementation ideas (e.g., `weather`, and the more advanced `rumble` sample)
+- Explore the [examples](./overview.md#examples) for implementation ideas (e.g., `weather`, and the more advanced `rumble` sample)
 - Dive into the [manifest guide](./manifest-guide.md) for advanced configuration options
 - Join the [Lumia Stream community](https://discord.gg/lumiastream) for support and feedback
