@@ -30,7 +30,7 @@ The `manifest.json` file is the heart of your Lumia Stream plugin. It defines me
 
 ### Basic Information
 
-- **`id`** (string): Unique identifier for your plugin. Use letters, numbers, or underscores-no spaces or hyphens.
+- **`id`** (string): Unique identifier for your plugin. Use letters, numbers, or underscores—no spaces or hyphens.
 - **`name`** (string): Human-readable plugin name.
 - **`version`** (string): Semantic version (e.g., "1.0.0").
 - **`author`** (string): Plugin author name.
@@ -54,24 +54,24 @@ The `manifest.json` file is the heart of your Lumia Stream plugin. It defines me
 
 The Lumia marketplace recognises the following categories (strings are case-sensitive):
 
-- **`system`** - Core Lumia features and internal tooling
-- **`platforms`** - Streaming platform integrations (Twitch, YouTube, Kick, etc.)
-- **`apps`** - Third-party app integrations
-- **`lights`** - General lighting control providers
-- **`switch`** - Smart switch and relay integrations
-- **`deck`** - Control deck hardware and software
-- **`protocols`** - Network or automation protocols (OSC, MIDI, etc.)
-- **`keylight`** - Key light devices
-- **`devices`** - Miscellaneous hardware integrations
-- **`utilities`** - General purpose utilities and helpers
-- **`overlays`** - Overlay and visual experiences
-- **`audio`** - Audio processing and sound integrations
-- **`chat`** - Chat interaction tools
-- **`development`** - Development, testing, and debugging utilities
+- **`system`** – Core Lumia features and internal tooling
+- **`platforms`** – Streaming platform integrations (Twitch, YouTube, Kick, etc.)
+- **`apps`** – Third-party app integrations
+- **`lights`** – General lighting control providers
+- **`switch`** – Smart switch and relay integrations
+- **`deck`** – Control deck hardware and software
+- **`protocols`** – Network or automation protocols (OSC, MIDI, etc.)
+- **`keylight`** – Key light devices
+- **`devices`** – Miscellaneous hardware integrations
+- **`utilities`** – General purpose utilities and helpers
+- **`overlays`** – Overlay and visual experiences
+- **`audio`** – Audio processing and sound integrations
+- **`chat`** – Chat interaction tools
+- **`development`** – Development, testing, and debugging utilities
 
 ### Lights configuration (for lights category)
 
-If your plugin provides lights, add a `config.lights` block so the PluginAuth UI can render discovery/manual-add controls and a selection list. Lights are saved by the Lumia UI-plugins should not mutate light state directly.
+If your plugin provides lights, add a `config.lights` block so the PluginAuth UI can render discovery/manual-add controls and a selection list. Lights are saved by the Lumia UI—plugins should not mutate light state directly.
 
 ```json
 {
@@ -105,6 +105,7 @@ If your plugin provides lights, add a `config.lights` block so the PluginAuth UI
 ```
 
 Runtime hooks for lights plugins:
+
 - Implement `searchLights` to return an array of discovered lights for the UI to save.
 - Implement `addLight` to handle manual-add requests and return the updated array.
 - Implement `onLightChange` to receive color/brightness/power updates for your lights.
@@ -429,12 +430,12 @@ Alerts define events that your plugin can trigger:
 
 Use `variationConditions` when an alert can fire with multiple sub-types (for example, different tiers of a subscription or thresholds of a donation) and you want creators to configure each variation independently.
 
-- **`type`** - One of the condition identifiers exposed by `LumiaVariationConditions` (see `lumia-types/src/alert.types.ts:6`). Examples: `EQUAL_SELECTION`, `GIFT_SUB_EQUAL`, `GREATER_NUMBER`, `RANDOM`.
-- **`description`** _(optional)_ - Helper text shown in the Lumia UI.
-- **`selections`** _(optional)_ - Only used with `EQUAL_SELECTION`; supplies the dropdown values the creator can pick from.
-  - **`label`** - How the option appears in the Lumia UI.
-  - **`value`** - The literal tier/value you expect to receive at runtime (compared against `dynamic.value`).
-  - **`message`** _(optional)_ - Override for `defaultMessage` when this variation is active.
+- **`type`** – One of the condition identifiers exposed by `LumiaVariationConditions` (see `lumia-types/src/alert.types.ts:6`). Examples: `EQUAL_SELECTION`, `GIFT_SUB_EQUAL`, `GREATER_NUMBER`, `RANDOM`.
+- **`description`** _(optional)_ – Helper text shown in the Lumia UI.
+- **`selections`** _(optional)_ – Only used with `EQUAL_SELECTION`; supplies the dropdown values the creator can pick from.
+  - **`label`** – How the option appears in the Lumia UI.
+  - **`value`** – The literal tier/value you expect to receive at runtime (compared against `dynamic.value`).
+  - **`message`** _(optional)_ – Override for `defaultMessage` when this variation is active.
 
 Example manifest entry with variations:
 
@@ -491,6 +492,20 @@ await this.lumia.triggerAlert({
 ```
 
 If no matching selection is found for the provided condition values (or no `dynamic` payload is supplied), Lumia falls back to the base alert configuration and `defaultMessage`.
+
+To also show a plugin-triggered alert inside the Event List, opt in explicitly:
+
+```ts
+await this.lumia.triggerAlert({
+	alert: "giftedMembership",
+	showInEventList: true,
+	extraSettings: {
+		gifter: "StreamerFan42",
+		recipient: "LuckyViewer",
+		gift_count: 5,
+	},
+});
+```
 
 Tip: `LumiaDynamicCondition` in `lumia-types/src/alert.types.ts:99` lists every property (`value`, `currency`, `subMonths`, `giftAmount`, etc.) that variation checkers use.
 },
