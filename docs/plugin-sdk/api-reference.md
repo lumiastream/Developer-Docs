@@ -78,7 +78,7 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 
 ### Audio & Speech
 
-- **`playAudio(options: { path: string; volume?: number; waitForAudioToStop?: boolean }): Promise<boolean>`** – play an audio file.
+- **`playAudio(options: { path: string; volume?: number; waitForAudioToStop?: boolean }): Promise<boolean>`** – play an audio file. Await the promise if you need to wait for playback to finish.
 - **`tts(options: { message: string; voice?: string; volume?: number }): Promise<boolean>`** – trigger text-to-speech playback.
 
 ### Files & Persistence
@@ -142,8 +142,12 @@ interface PluginDisplayChatOptions {
 }
 ```
 
+`PluginActionField` supports `allowTyping` on `select` fields. When true, the UI allows entering custom values while still showing the dropdown options as suggestions.
+
 `dynamic` is the link between runtime alerts and the manifest's `variationConditions`. Provide the fields that the active condition needs—commonly `value` (for equality/greater checks), and optionally `currency`, `giftAmount`, `subMonths`, `isPrime`, etc.—so Lumia Stream can resolve the correct variation. `showInEventList` defaults to `false` and only records the alert in the Event List when set to `true`.
 
 For `displayChat`, `user` flags (e.g., `mod`, `subscriber`, `vip`) are used when evaluating chat command permissions. `emotesRaw` uses the Twitch-style emote index format, while `emotesPack` follows the Kick/Discord style payload used by the chat UI.
+
+`PluginIntegrationConfig` supports `actions_tutorial` (markdown) to display a guide alongside the Actions editor.
 
 Additional types such as `PluginManifest`, `PluginContext`, `PluginActionsConfig`, `PluginAuthConfig`, and the error classes `PluginError`, `PluginSecurityError`, and `PluginInstallError` are exported from the SDK entry point for convenience.
