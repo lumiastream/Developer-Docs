@@ -66,7 +66,7 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 ### Alerts & Chat
 
 - **`triggerAlert(options: PluginTriggerAlertOptions): Promise<boolean>`** – trigger an alert. Options include the alert identifier and optional payload. Set `showInEventList: true` to also record the alert in the Event List (default is `false`).
-- **`displayChat(options: PluginDisplayChatOptions): void`** – display chat content inside Lumia Stream chatboxes and overlays. Provide `platform` to match your integration key so the correct icon can render (unknown platforms fall back to the Lumia icon).
+- **`displayChat(options: PluginDisplayChatOptions): void`** – display chat content inside Lumia Stream chatboxes and overlays.
 - **`chatbot(options: { message: string; site?: string | string[]; color?: string; chatAsSelf?: boolean }): Promise<boolean>`** – send a message through the Lumia chatbot system.
 
 ### Overlay & Visuals
@@ -111,7 +111,6 @@ interface PluginTriggerAlertOptions {
 }
 
 interface PluginDisplayChatOptions {
-	platform?: string;
 	username: string;
 	displayname?: string;
 	message: string;
