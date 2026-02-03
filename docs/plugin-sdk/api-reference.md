@@ -53,6 +53,10 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 - **`setSettings(settings: Record<string, any>): void`** – replace all settings.
 - **`updateSettings(updates: Record<string, any>): void`** – merge changes into the existing settings.
 
+### OAuth
+
+- **`refreshOAuthToken(options: { refreshToken: string; applicationId?: number; secondaryAccount?: boolean }): Promise<{ accessToken?: string; refreshToken?: string; raw?: any }>`** – refresh an OAuth access token via Lumia's server. Provider is inferred from the plugin ID. Returns the new token payload.
+
 ### Variables
 
 - **`setVariable(name: string, value: any): Promise<void>`** – store a variable that other Lumia features can consume.
@@ -147,6 +151,6 @@ interface PluginDisplayChatOptions {
 
 For `displayChat`, `user` flags (e.g., `mod`, `subscriber`, `vip`) are used when evaluating chat command permissions. `emotesRaw` uses the Twitch-style emote index format, while `emotesPack` follows the Kick/Discord style payload used by the chat UI.
 
-`PluginIntegrationConfig` supports `actions_tutorial` (markdown) to display a guide alongside the Actions editor.
+`PluginIntegrationConfig` supports `actions_tutorial` (markdown) to display a guide alongside the Actions editor. It also supports `oauth` for Lumia-managed OAuth configuration (see the manifest guide for details).
 
-Additional types such as `PluginManifest`, `PluginContext`, `PluginActionsConfig`, `PluginAuthConfig`, and the error classes `PluginError`, `PluginSecurityError`, and `PluginInstallError` are exported from the SDK entry point for convenience.
+Additional types such as `PluginManifest`, `PluginContext`, `PluginActionsConfig`, `PluginAuthConfig`, `PluginOAuthConfig`, and the error classes `PluginError`, `PluginSecurityError`, and `PluginInstallError` are exported from the SDK entry point for convenience.
