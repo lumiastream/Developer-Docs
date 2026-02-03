@@ -37,7 +37,7 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 ### Helper Methods
 
 - **`updateSettings(updates: Record<string, any>): void`** – merge new settings values with the existing ones.
-- **`validateAuth(data: any): Promise<boolean>`** – override to validate custom authentication flows.
+- **`validateAuth(data: any): Promise<boolean | string | { ok: boolean; message?: string }>`** – override to validate custom authentication flows. Return `true` for success, `false` for failure, a string to show a failure message, or `{ ok, message }` for explicit status + message.
 - **`refreshAuth<T>(data: T): Promise<T>`** – override to refresh credentials when required.
 
 ## Lumia API (`ILumiaAPI`)
