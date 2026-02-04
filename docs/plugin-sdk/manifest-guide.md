@@ -157,6 +157,56 @@ If you provide `settings_tutorial` (markdown), it renders as a setup guide in th
 
 To provide a tutorial that is specific to actions, use `actions_tutorial`. When present, it renders in the Actions editor.
 
+#### Multi-Value Settings
+
+Use `text_list` when you need users to enter multiple values (stored as an array of strings).
+
+```json
+{
+	"config": {
+		"settings": [
+			{
+				"key": "lightIds",
+				"label": "Light IDs",
+				"type": "text_list",
+				"helperText": "Add one or more light identifiers",
+				"defaultValue": ["keylight-1", "keylight-2"]
+			}
+		]
+	}
+}
+```
+
+### OAuth (Lumia-managed)
+
+Plugins can request OAuth via Lumia's auth service so users can authorize in-app and store tokens in plugin settings. To enable this, add an `oauth` block under `config`.
+
+```json
+{
+	"config": {
+		"oauth": {
+			"buttonLabel": "Authorize Fitbit",
+			"helperText": "Connect your Fitbit account to pull health metrics.",
+			"openInBrowser": false,
+			"scopes": ["activity", "heartrate"],
+			"extraParams": "external=true",
+			"tokenKeys": {
+				"accessToken": "accessToken",
+				"refreshToken": "refreshToken",
+				"tokenSecret": "tokenSecret"
+			}
+		}
+	}
+}
+```
+
+Notes:
+
+- The OAuth provider is always the plugin ID within Lumia. If you need a new OAuth 2.0 integration, contact Lumia Stream support so we can enable it for your plugin.
+- `serviceUrl` can be provided to override the default auth URL entirely.
+- `scopes` are provider-specific. When set, they are sent to Lumia's OAuth service as a comma-separated list.
+- Tokens are stored into your plugin settings using the `tokenKeys` mapping and are available via `this.settings` in your plugin.
+
 #### Setting Types
 
 - **`text`** - Single-line text input
@@ -170,6 +220,8 @@ To provide a tutorial that is specific to actions, use `actions_tutorial`. When 
 - **`toggle`** - Toggle switch
 - **`color`** - Color picker
 - **`file`** - File upload
+
+Settings can also include **`disabled`** (boolean) to render a read-only field in the PluginAuth UI.
 
 #### Validation Options
 
@@ -245,11 +297,11 @@ Actions allow users to trigger plugin functionality manually:
 
 Action fields support the following input types:
 
-- **`text`** - Single-line text input. Supports variables.
-- **`email`** - Email address input with validation. Supports variables.
-- **`url`** - URL input with validation. Supports variables.
+- **`text`** - Single-line text input. Supports variables when `allowVariables` is true.
+- **`email`** - Email address input with validation. Supports variables when `allowVariables` is true.
+- **`url`** - URL input with validation. Supports variables when `allowVariables` is true.
 - **`number`** - Numeric input with optional min/max constraints.
-- **`textarea`** - Multi-line text input. Supports variables and configurable rows.
+- **`textarea`** - Multi-line text input. Supports variables when `allowVariables` is true and configurable rows.
 - **`color`** - Color picker that outputs hex color values (e.g., `#FF0000`).
 - **`select`** - Dropdown selection from predefined options.
 - **`checkbox`** - Boolean checkbox input.
@@ -342,6 +394,8 @@ Action fields support the following input types:
 
 Set `allowTyping` to let users type custom values in addition to the provided options. The dropdown list still appears as suggestions.
 
+Set `allowVariables: true` to enable template variables (e.g., `{{username}}`) for a specific action field. When omitted, variables are not enabled—even for `select` fields with `allowTyping`.
+
 **Checkbox**
 
 ```json
@@ -429,6 +483,19 @@ Alerts define events that your plugin can trigger:
 				"defaultMessage": "Stream is now live! Playing {{twitch_game}}"
 			}
 		]
+	}
+}
+```
+
+Optional alert defaults can be provided under `defaults` to control how Lumia initializes the base alert state. For example, `disableBaseAlert` can enforce variations-only behavior.
+
+```json
+{
+	"title": "High CPU Usage",
+	"key": "cpu_high",
+	"defaultMessage": "",
+	"defaults": {
+		"disableBaseAlert": true
 	}
 }
 ```

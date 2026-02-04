@@ -15,19 +15,21 @@ Both `settings` and `actions` in your plugin manifest support various field type
 ### Text Input Types
 
 #### `text`
-Single-line text input with variable support.
+
+Single-line text input with optional variable support (set `allowVariables: true`).
 
 ```json
 {
-  "key": "username",
-  "label": "Username",
-  "type": "text",
-  "placeholder": "Enter username",
-  "helperText": "Supports variables like {{username}}"
+	"key": "username",
+	"label": "Username",
+	"type": "text",
+	"placeholder": "Enter username",
+	"helperText": "Supports variables like {{username}}"
 }
 ```
 
 **Properties:**
+
 - `placeholder` - Placeholder text
 - `validation.pattern` - Regex pattern for validation
 - `validation.minLength` - Minimum character length
@@ -36,75 +38,83 @@ Single-line text input with variable support.
 ---
 
 #### `email`
-Email address input with built-in validation and variable support.
+
+Email address input with built-in validation and optional variable support (set `allowVariables: true`).
 
 ```json
 {
-  "key": "userEmail",
-  "label": "Email Address",
-  "type": "email",
-  "placeholder": "user@example.com",
-  "required": true
+	"key": "userEmail",
+	"label": "Email Address",
+	"type": "email",
+	"placeholder": "user@example.com",
+	"required": true
 }
 ```
 
 **Properties:**
+
 - Same as `text` with automatic email validation
 
 ---
 
 #### `url`
-URL input with built-in validation and variable support.
+
+URL input with built-in validation and optional variable support (set `allowVariables: true`).
 
 ```json
 {
-  "key": "webhookUrl",
-  "label": "Webhook URL",
-  "type": "url",
-  "placeholder": "https://example.com/webhook",
-  "required": true
+	"key": "webhookUrl",
+	"label": "Webhook URL",
+	"type": "url",
+	"placeholder": "https://example.com/webhook",
+	"required": true
 }
 ```
 
 **Properties:**
+
 - Same as `text` with automatic URL validation
 
 ---
 
 #### `password`
+
 Password input with hidden characters.
 
 ```json
 {
-  "key": "apiKey",
-  "label": "API Key",
-  "type": "password",
-  "placeholder": "Enter your API key",
-  "helperText": "Get this from your service dashboard",
-  "required": true
+	"key": "apiKey",
+	"label": "API Key",
+	"type": "password",
+	"placeholder": "Enter your API key",
+	"helperText": "Get this from your service dashboard",
+	"required": true
 }
 ```
 
 **Properties:**
+
 - Same as `text` but displays hidden characters
 
 ---
 
 #### `textarea`
-Multi-line text input with variable support and configurable rows.
+
+Multi-line text input with optional variable support (set `allowVariables: true`) and configurable rows.
 
 ```json
 {
-  "key": "message",
-  "label": "Message",
-  "type": "textarea",
-  "placeholder": "Enter your message",
-  "rows": 6,
-  "helperText": "Multi-line text with variable support"
+	"key": "message",
+	"label": "Message",
+	"type": "textarea",
+	"placeholder": "Enter your message",
+	"rows": 6,
+	"helperText": "Multi-line text with variable support"
 }
 ```
 
 **Properties:**
+
 - `rows` - Number of visible text rows (default: 4)
 - `placeholder` - Placeholder text
 - `validation.minLength` - Minimum character length
@@ -112,46 +122,71 @@ Multi-line text input with variable support and configurable rows.
 
 ---
 
-### Numeric Input Types
+#### `text_list`
 
-#### `number`
-Numeric input with optional constraints.
+Multi-value text input that stores an array of strings. Settings only.
 
 ```json
 {
-  "key": "volume",
-  "label": "Volume",
-  "type": "number",
-  "defaultValue": 50,
-  "validation": {
-    "min": 0,
-    "max": 100
-  }
+	"key": "lightIds",
+	"label": "Light IDs",
+	"type": "text_list",
+	"helperText": "Add one or more light identifiers",
+	"defaultValue": ["keylight-1", "keylight-2"]
 }
 ```
 
 **Properties:**
+
+- Outputs an array of strings (e.g., `["one", "two"]`)
+- `defaultValue` should be an array of strings
+
+---
+
+### Numeric Input Types
+
+#### `number`
+
+Numeric input with optional constraints.
+
+```json
+{
+	"key": "volume",
+	"label": "Volume",
+	"type": "number",
+	"defaultValue": 50,
+	"validation": {
+		"min": 0,
+		"max": 100
+	}
+}
+```
+
+**Properties:**
+
 - `validation.min` - Minimum value
 - `validation.max` - Maximum value
 
 ---
 
 #### `slider`
+
 Numeric slider input with visual feedback.
 
 ```json
 {
-  "key": "brightness",
-  "label": "Brightness",
-  "type": "slider",
-  "defaultValue": 100,
-  "min": 0,
-  "max": 255,
-  "step": 5
+	"key": "brightness",
+	"label": "Brightness",
+	"type": "slider",
+	"defaultValue": 100,
+	"min": 0,
+	"max": 255,
+	"step": 5
 }
 ```
 
 **Properties:**
+
 - `min` - Minimum value (default: 0)
 - `max` - Maximum value (default: 100)
 - `step` - Increment step (default: 1)
@@ -161,23 +196,25 @@ Numeric slider input with visual feedback.
 ### Selection Types
 
 #### `select`
+
 Dropdown selection from predefined options.
 
 ```json
 {
-  "key": "mode",
-  "label": "Mode",
-  "type": "select",
-  "defaultValue": "normal",
-  "options": [
-    { "label": "Normal", "value": "normal" },
-    { "label": "Fast", "value": "fast" },
-    { "label": "Slow", "value": "slow" }
-  ]
+	"key": "mode",
+	"label": "Mode",
+	"type": "select",
+	"defaultValue": "normal",
+	"options": [
+		{ "label": "Normal", "value": "normal" },
+		{ "label": "Fast", "value": "fast" },
+		{ "label": "Slow", "value": "slow" }
+	]
 }
 ```
 
 **Properties:**
+
 - `options` - Array of objects with `label` and `value` properties (required)
 
 ---
@@ -185,36 +222,40 @@ Dropdown selection from predefined options.
 ### Boolean Types
 
 #### `checkbox`
+
 Boolean checkbox input.
 
 ```json
 {
-  "key": "enableNotifications",
-  "label": "Enable Notifications",
-  "type": "checkbox",
-  "defaultValue": true
+	"key": "enableNotifications",
+	"label": "Enable Notifications",
+	"type": "checkbox",
+	"defaultValue": true
 }
 ```
 
 **Properties:**
+
 - Accepts boolean values (`true`/`false`)
 
 ---
 
 #### `switch` / `toggle`
+
 Toggle switch for boolean values.
 
 ```json
 {
-  "key": "autoStart",
-  "label": "Auto Start",
-  "type": "switch",
-  "defaultValue": false,
-  "helperText": "Automatically start on load"
+	"key": "autoStart",
+	"label": "Auto Start",
+	"type": "switch",
+	"defaultValue": false,
+	"helperText": "Automatically start on load"
 }
 ```
 
 **Properties:**
+
 - Accepts boolean values (`true`/`false`)
 - `switch` and `toggle` are interchangeable
 
@@ -223,37 +264,41 @@ Toggle switch for boolean values.
 ### Special Input Types
 
 #### `color`
+
 Color picker that outputs hex color values.
 
 ```json
 {
-  "key": "backgroundColor",
-  "label": "Background Color",
-  "type": "color",
-  "defaultValue": "#000000",
-  "helperText": "Choose a background color"
+	"key": "backgroundColor",
+	"label": "Background Color",
+	"type": "color",
+	"defaultValue": "#000000",
+	"helperText": "Choose a background color"
 }
 ```
 
 **Properties:**
+
 - Outputs hex color strings (e.g., `#FF0000`)
 - Default value should be in hex format
 
 ---
 
 #### `file`
+
 File path input with file browser dialog.
 
 ```json
 {
-  "key": "audioFile",
-  "label": "Audio File",
-  "type": "file",
-  "helperText": "Select an audio file to play"
+	"key": "audioFile",
+	"label": "Audio File",
+	"type": "file",
+	"helperText": "Select an audio file to play"
 }
 ```
 
 **Properties:**
+
 - Opens native file picker dialog
 - Returns absolute file path as string
 
@@ -261,20 +306,21 @@ File path input with file browser dialog.
 
 ## Field Type Matrix
 
-| Type | Settings | Actions | Variables | Validation | Notes |
-|------|----------|---------|-----------|------------|-------|
-| `text` | yes | yes | yes | pattern, length | Single-line input |
-| `email` | yes | yes | yes | auto | Email validation |
-| `url` | yes | yes | yes | auto | URL validation |
-| `password` | yes | no | no | pattern, length | Hidden characters |
-| `textarea` | yes | yes | yes | length | Multi-line, rows configurable |
-| `number` | yes | yes | no | min, max | Numeric input |
-| `slider` | yes | yes | no | min, max, step | Visual slider |
-| `select` | yes | yes | no | - | Dropdown menu |
-| `checkbox` | yes | yes | no | - | Boolean checkbox |
-| `switch`/`toggle` | yes | yes | no | - | Toggle switch |
-| `color` | yes | yes | no | - | Color picker |
-| `file` | yes | yes | no | - | File browser |
+| Type              | Settings | Actions | Variables             | Validation      | Notes                         |
+| ----------------- | -------- | ------- | --------------------- | --------------- | ----------------------------- |
+| `text`            | ✅       | ✅      | With `allowVariables` | pattern, length | Single-line input             |
+| `email`           | ✅       | ✅      | With `allowVariables` | auto            | Email validation              |
+| `url`             | ✅       | ✅      | With `allowVariables` | auto            | URL validation                |
+| `password`        | ✅       | ❌      | ❌                    | pattern, length | Hidden characters             |
+| `textarea`        | ✅       | ✅      | With `allowVariables` | length          | Multi-line, rows configurable |
+| `text_list`       | ✅       | ❌      | ❌                    | -               | Array of strings              |
+| `number`          | ✅       | ✅      | With `allowVariables` | min, max        | Numeric input                 |
+| `slider`          | ✅       | ✅      | ❌                    | min, max, step  | Visual slider                 |
+| `select`          | ✅       | ✅      | With `allowVariables` | -               | Dropdown menu                 |
+| `checkbox`        | ✅       | ✅      | ❌                    | -               | Boolean checkbox              |
+| `switch`/`toggle` | ✅       | ✅      | ❌                    | -               | Toggle switch                 |
+| `color`           | ✅       | ✅      | ❌                    | -               | Color picker                  |
+| `file`            | ✅       | ✅      | With `allowVariables` | -               | File browser                  |
 
 ## Common Properties
 
@@ -282,13 +328,13 @@ All field types support these common properties:
 
 ```json
 {
-  "key": "fieldKey",           // Required: Unique identifier for the field
-  "label": "Field Label",       // Required: Display label
-  "type": "text",              // Required: Field type
-  "placeholder": "...",        // Optional: Placeholder text
-  "helperText": "...",         // Optional: Help text below field
-  "defaultValue": null,        // Optional: Default value
-  "required": false            // Optional: Whether field is required
+	"key": "fieldKey", // Required: Unique identifier for the field
+	"label": "Field Label", // Required: Display label
+	"type": "text", // Required: Field type
+	"placeholder": "...", // Optional: Placeholder text
+	"helperText": "...", // Optional: Help text below field
+	"defaultValue": null, // Optional: Default value (string, number, boolean, or string[])
+	"required": false // Optional: Whether field is required
 }
 ```
 
@@ -297,96 +343,99 @@ All field types support these common properties:
 Different field types support different validation options:
 
 ### Text-based Fields (text, email, url, password, textarea)
+
 ```json
 {
-  "validation": {
-    "pattern": "^[a-zA-Z0-9]+$",  // Regex pattern
-    "minLength": 5,                // Minimum character length
-    "maxLength": 50                // Maximum character length
-  }
+	"validation": {
+		"pattern": "^[a-zA-Z0-9]+$", // Regex pattern
+		"minLength": 5, // Minimum character length
+		"maxLength": 50 // Maximum character length
+	}
 }
 ```
 
 ### Numeric Fields (number, slider)
+
 ```json
 {
-  "validation": {
-    "min": 0,      // Minimum value
-    "max": 100     // Maximum value
-  }
+	"validation": {
+		"min": 0, // Minimum value
+		"max": 100 // Maximum value
+	}
 }
 ```
 
 ## Variable Support
 
-The following field types support Lumia variable substitution (e.g., `{{username}}`):
-- `text`
-- `email`
-- `url`
-- `textarea`
+Variable support for **action fields** is controlled by `allowVariables`.
+
+- Set `allowVariables: true` to enable variables for any field.
+- When omitted, variables are not enabled (including `select` fields with `allowTyping`).
+
+Settings fields do not expose variable insertion in the UI.
 
 ## Example: Complete Action with Multiple Field Types
 
 ```json
 {
-  "type": "send_notification",
-  "label": "Send Custom Notification",
-  "description": "Send a customizable notification with various options",
-  "fields": [
-    {
-      "key": "title",
-      "label": "Title",
-      "type": "text",
-      "required": true,
-      "placeholder": "Notification title"
-    },
-    {
-      "key": "message",
-      "label": "Message",
-      "type": "textarea",
-      "required": true,
-      "rows": 4,
-      "placeholder": "Enter your message here..."
-    },
-    {
-      "key": "priority",
-      "label": "Priority",
-      "type": "select",
-      "defaultValue": "normal",
-      "options": [
-        { "label": "Low", "value": "low" },
-        { "label": "Normal", "value": "normal" },
-        { "label": "High", "value": "high" }
-      ]
-    },
-    {
-      "key": "backgroundColor",
-      "label": "Background Color",
-      "type": "color",
-      "defaultValue": "#000000"
-    },
-    {
-      "key": "volume",
-      "label": "Sound Volume",
-      "type": "slider",
-      "defaultValue": 50,
-      "min": 0,
-      "max": 100,
-      "step": 5
-    },
-    {
-      "key": "playSound",
-      "label": "Play Sound",
-      "type": "switch",
-      "defaultValue": true
-    },
-    {
-      "key": "soundFile",
-      "label": "Custom Sound File",
-      "type": "file",
-      "helperText": "Optional: Select a custom sound file"
-    }
-  ]
+	"type": "send_notification",
+	"label": "Send Custom Notification",
+	"description": "Send a customizable notification with various options",
+	"fields": [
+		{
+			"key": "title",
+			"label": "Title",
+			"type": "text",
+			"required": true,
+			"placeholder": "Notification title"
+		},
+		{
+			"key": "message",
+			"label": "Message",
+			"type": "textarea",
+			"required": true,
+			"rows": 4,
+			"placeholder": "Enter your message here..."
+		},
+		{
+			"key": "priority",
+			"label": "Priority",
+			"type": "select",
+			"defaultValue": "normal",
+			"options": [
+				{ "label": "Low", "value": "low" },
+				{ "label": "Normal", "value": "normal" },
+				{ "label": "High", "value": "high" }
+			]
+		},
+		{
+			"key": "backgroundColor",
+			"label": "Background Color",
+			"type": "color",
+			"defaultValue": "#000000"
+		},
+		{
+			"key": "volume",
+			"label": "Sound Volume",
+			"type": "slider",
+			"defaultValue": 50,
+			"min": 0,
+			"max": 100,
+			"step": 5
+		},
+		{
+			"key": "playSound",
+			"label": "Play Sound",
+			"type": "switch",
+			"defaultValue": true
+		},
+		{
+			"key": "soundFile",
+			"label": "Custom Sound File",
+			"type": "file",
+			"helperText": "Optional: Select a custom sound file"
+		}
+	]
 }
 ```
 

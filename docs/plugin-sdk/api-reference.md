@@ -147,6 +147,8 @@ interface PluginDisplayChatOptions {
 
 `PluginActionField` supports `allowTyping` on `select` fields. When true, the UI allows entering custom values while still showing the dropdown options as suggestions.
 
+`PluginActionField` also supports `allowVariables` to control whether template variables (e.g., `{{username}}`) can be inserted. When omitted, variables are **not** enabled. Set `allowVariables: true` on any field where you want variables (including `select` with `allowTyping`).
+
 `dynamic` is the link between runtime alerts and the manifest's `variationConditions`. Provide the fields that the active condition needs—commonly `value` (for equality/greater checks), and optionally `currency`, `giftAmount`, `subMonths`, `isPrime`, etc.—so Lumia Stream can resolve the correct variation. `showInEventList` defaults to `false` and only records the alert in the Event List when set to `true`.
 
 For `displayChat`, `user` flags (e.g., `mod`, `subscriber`, `vip`) are used when evaluating chat command permissions. `emotesRaw` uses the Twitch-style emote index format, while `emotesPack` follows the Kick/Discord style payload used by the chat UI.
