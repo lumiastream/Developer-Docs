@@ -157,6 +157,15 @@ If you provide `settings_tutorial` (markdown), it renders as a setup guide in th
 
 To provide a tutorial that is specific to actions, use `actions_tutorial`. When present, it renders in the Actions editor.
 
+Tutorials can include local images bundled with the plugin. Reference them with a relative path and they will resolve from the plugin root at runtime:
+
+```md
+### Setup
+
+![API Key](clickup_tutorial_api_key.jpg)
+![List ID](clickup_tutorial_list_id.jpg)
+```
+
 #### Multi-Value Settings
 
 Use `text_list` when you need users to enter multiple values (stored as an array of strings).
@@ -292,6 +301,21 @@ Actions allow users to trigger plugin functionality manually:
 	}
 }
 ```
+
+To auto-refresh dynamic options when a user selects the action type (and when action fields change), set `refreshOnChange` on the action.
+
+```json
+{
+	"type": "send_message",
+	"label": "Send Custom Message",
+	"refreshOnChange": true,
+	"fields": []
+}
+```
+
+#### Logging Guidance
+
+Avoid excessive logging. High-frequency logs can quickly fill the user's Logs dashboard. Prefer concise logs and only emit details for errors, manual actions, or explicit debug modes.
 
 #### Action Field Types
 
