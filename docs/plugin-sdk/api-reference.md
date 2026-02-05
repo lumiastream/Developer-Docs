@@ -153,6 +153,12 @@ interface PluginDisplayChatOptions {
 
 For `displayChat`, `user` flags (e.g., `mod`, `subscriber`, `vip`) are used when evaluating chat command permissions. `emotesRaw` uses the Twitch-style emote index format, while `emotesPack` follows the Kick/Discord style payload used by the chat UI.
 
+`displayChat` also supports extra per-message hints via `extraInfo.extraSettings`:
+
+- `rawMessage` (string): Unmodified chat content used for command parsing (useful when the displayed `message` includes prefixes or formatting).
+- `skipCommandProcessing` (boolean): When true, the message is shown in chat but will not trigger command processing.
+- `emoteParserType` (string): Forces emote/badge parsing for a specific platform (e.g., `twitch`, `kick`, `youtube`, `tiktok`) when the plugin origin differs.
+
 `PluginIntegrationConfig` supports `actions_tutorial` (markdown) to display a guide alongside the Actions editor. It also supports `oauth` for Lumia-managed OAuth configuration (see the manifest guide for details).
 
 Additional types such as `PluginManifest`, `PluginContext`, `PluginActionsConfig`, `PluginAuthConfig`, `PluginOAuthConfig`, and the error classes `PluginError`, `PluginSecurityError`, and `PluginInstallError` are exported from the SDK entry point for convenience.

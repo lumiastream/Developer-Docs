@@ -231,10 +231,19 @@ this.lumia.displayChat({
 	emotesPack: {
 		"12345": { locations: ["6-10"], type: "emote" },
 	},
+	extraInfo: {
+		extraSettings: {
+			rawMessage: "Hello from the plugin!",
+			emoteParserType: "twitch",
+			skipCommandProcessing: false,
+		},
+	},
 });
 ```
 
 `displayChat` posts a message to Lumia Stream chatboxes and overlay chat widgets.
+
+When your displayed message includes prefixes (e.g., `[channel]`) or formatting, set `extraInfo.extraSettings.rawMessage` so command parsing uses the original text. Use `extraInfo.extraSettings.skipCommandProcessing` to show a message in chat without triggering commands. To force the emote/badge parser for a specific platform, set `extraInfo.extraSettings.emoteParserType`.
 
 ### File Operations
 
