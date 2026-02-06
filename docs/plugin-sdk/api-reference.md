@@ -26,7 +26,27 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 
 ### Action Handling
 
-- **`actions(config: { actions: any[]; extraSettings?: any }): Promise<void>`** – process action executions defined in the manifest. Optional.
+- **`actions(config: { actions: PluginActionPayload[]; extraSettings?: Record<string, unknown> }): Promise<void>`** – process action executions defined in the manifest. Optional.  
+  **Note:** action parameters are provided via `action.value`. Use `const params = action?.value ?? {};`.
+
+### Variable Functions
+
+- **`variableFunction(config: PluginVariableFunctionContext): Promise<string | PluginVariableFunctionResult | undefined>`** – resolve a template variable function defined in `config.variableFunctions`. Return a string to replace the template, or `{ value, variables }` to also expose extra values.
+
+```ts
+interface PluginVariableFunctionContext {
+	key: string;
+	value?: string;
+	raw?: string;
+	args?: string[];
+	allVariables?: Record<string, any>;
+}
+
+interface PluginVariableFunctionResult {
+	value: string;
+	variables?: Record<string, any>;
+}
+```
 
 ### Convenience Properties
 
@@ -92,7 +112,8 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 
 ### UX Helpers
 
-- **`showToast(options: { message: string; time?: number }): Promise<boolean>`** – display a toast notification within Lumia Stream.
+- **`showToast(options: { message: string; time?: number }): Promise<boolean>`** – display a toast notification within Lumia Stream.  
+  `time` is in **milliseconds**.
 - **`addLog(message: string): Promise<boolean>`** – append a message to the Lumia Stream log panel.
 
 ### Integration Helpers

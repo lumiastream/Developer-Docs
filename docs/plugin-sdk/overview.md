@@ -120,8 +120,6 @@ The CLI is distributed separately via `lumia-plugin`. Use it with `npx` (require
 - [Showcase Plugin Template](./examples/base-plugin.md) - Starter template with lifecycle logging, variables, and alerts.
 - [Rumble Livestream Plugin](./examples/rumble.md) - JavaScript example that polls the Rumble API and publishes variables/alerts.
 - [Hot News Plugin](./examples/hot-news.md) - NewsAPI headlines with alerts, variables, and on-demand actions.
-- [Weather](./examples/cosmic-weather.md) - Open-Meteo example with themed copy and alert payloads.
-- [BLE Messenger Plugin](./examples/ble-messenger.md) - Sends payloads to BLE devices with configurable settings/actions.
 - [Divoom Controller Example Plugin](./examples/divoom-controller.md) - Controls Divoom Pixoo devices via local HTTP.
 
 ## License

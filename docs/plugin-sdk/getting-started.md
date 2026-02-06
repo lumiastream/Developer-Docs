@@ -51,20 +51,26 @@ Create `manifest.json` with your plugin metadata and configuration options:
 				"label": "Custom Message",
 				"type": "text",
 				"defaultValue": "Hello from my plugin!",
-				"helperText": "This message is logged when the plugin loads"
+				"helperText": "Used as the default message for the sample alert"
 			}
 		],
 		"actions": [
 			{
-				"type": "say_hello",
-				"label": "Say Hello",
-				"description": "Logs a hello message",
+				"type": "trigger_alert",
+				"label": "Trigger Alert",
+				"description": "Trigger the sample alert",
 				"fields": [
 					{
-						"key": "name",
-						"label": "Name",
+						"key": "username",
+						"label": "Username",
 						"type": "text",
-						"defaultValue": "World"
+						"defaultValue": "Viewer"
+					},
+					{
+						"key": "message",
+						"label": "Message",
+						"type": "text",
+						"defaultValue": "Hello from my plugin!"
 					}
 				]
 			}
@@ -72,6 +78,8 @@ Create `manifest.json` with your plugin metadata and configuration options:
 	}
 }
 ```
+
+Avoid test-only actions or settings. Focus on real user workflows.
 
 ## 3. Create the Main Plugin File
 
@@ -108,15 +116,15 @@ export default class MyFirstPlugin extends Plugin {
 
 	async actions(config: { actions: any[] }): Promise<void> {
 		for (const action of config.actions) {
-			if (action.type === "say_hello") {
-				const name = action.data?.name ?? "World";
+			if (action.type === "trigger_alert") {
+				const params = action?.value ?? action?.data ?? {};
+				const username = params?.username ?? "Viewer";
+				const message = params?.message ?? this.settings.message ?? "Hello!";
 
 				await this.lumia.triggerAlert({
 					alert: "custom-hello",
-					extraSettings: {
-						username: name,
-						message: `Hello from ${this.manifest.name}!`,
-					},
+					dynamic: { username, message },
+					extraSettings: { username, message },
 				});
 			}
 		}
@@ -174,6 +182,8 @@ The compiled JavaScript will be in the `dist` folder. Your plugin is ready to lo
 
 ### Variables
 
+Do not prefix variable names with your plugin name. Lumia already namespaces them.
+
 ```ts
 // Set a variable
 await this.lumia.setVariable("my_variable", "some value");
@@ -185,6 +195,34 @@ const value = this.lumia.getVariable("my_variable");
 const current = Number(this.lumia.getVariable("counter") ?? 0);
 await this.lumia.setVariable("counter", current + 1);
 ```
+
+### HTTP Requests and Timeouts
+
+The plugin runtime does **not** support `AbortController` / `AbortSignal` in `fetch`. Passing a `signal` option will throw:
+
+```
+Failed to construct 'Request': member signal is not of type AbortSignal.
+```
+
+Use a timeout wrapper instead:
+
+```js
+const timeoutMs = 60000;
+const timeoutPromise = new Promise((_, reject) => {
+	setTimeout(() => reject(new Error("Request timed out")), timeoutMs);
+});
+
+const response = await Promise.race([fetch(url, options), timeoutPromise]);
+if (!response || !response.ok) {
+	const text = response ? await response.text() : "";
+	throw new Error(
+		`Request failed (${response?.status ?? "unknown"}): ${text || response?.statusText || "No response"}`,
+	);
+}
+const data = await response.json();
+```
+
+Keep timeouts reasonable and avoid aggressive retries.
 
 ### Alerts
 
@@ -200,10 +238,11 @@ await this.lumia.triggerAlert({
 await this.lumia.triggerAlert({
 	alert: "my-custom-alert",
 	dynamic: { name: "username", value: "Viewer123" },
+	extraSettings: { username: "Viewer123" },
 });
 ```
 
-When you declare `variationConditions` in your manifest, populate the `dynamic` payload with the fields those conditions expect—for example `value` (for tier/number checks), `currency`, `giftAmount`, or `subMonths`. The comparison logic is defined in `LumiaVariationConditions`, so make sure the runtime data lines up with the chosen condition.
+When you declare `variationConditions` in your manifest, populate the `dynamic` payload with the fields those conditions expect. Pass the same alert variables through `extraSettings` so templates and variations have the same data. The comparison logic is defined in `LumiaVariationConditions`, so make sure the runtime data lines up with the chosen condition.
 
 If you want a plugin alert to appear in the Event List, opt in explicitly:
 
@@ -267,6 +306,10 @@ const data = await response.json();
 await this.lumia.setVariable("api_data", JSON.stringify(data));
 ```
 
+### OAuth 2.0
+
+If your plugin needs OAuth 2.0, contact Lumia Stream on Discord or email dev@lumiastream.com so the server OAuth flow can be enabled for your plugin.
+
 ## Common Patterns
 
 ### Polling External APIs
@@ -274,12 +317,11 @@ await this.lumia.setVariable("api_data", JSON.stringify(data));
 ```ts
 export default class ApiPollingPlugin extends Plugin {
 	private pollInterval?: NodeJS.Timeout;
+	private offline = false;
 
 	async onload(): Promise<void> {
 		const interval = Number(this.settings.pollInterval ?? 30000);
-		this.pollInterval = setInterval(() => {
-			void this.pollApi();
-		}, interval);
+		this.pollInterval = setInterval(() => void this.pollApi(), interval);
 	}
 
 	async onunload(): Promise<void> {
@@ -289,18 +331,43 @@ export default class ApiPollingPlugin extends Plugin {
 	}
 
 	private async pollApi(): Promise<void> {
+		if (this.offline) return;
+
 		try {
-			const response = await fetch("https://api.example.com/status");
-			const data = await response.json();
+			const data = await fetchWithBackoff("https://api.example.com/status");
 
 			await this.lumia.setVariable("api_status", data.status);
 			await this.lumia.setVariable("api_data", JSON.stringify(data));
 		} catch (error) {
+			this.offline = true;
 			await this.lumia.addLog(`API polling failed: ${String(error)}`);
 		}
 	}
 }
+
+async function fetchWithBackoff(url: string) {
+	const maxAttempts = 3;
+	let delayMs = 1000;
+
+	for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+		try {
+			const response = await fetch(url);
+			if (!response.ok) {
+				throw new Error(`HTTP ${response.status}`);
+			}
+			return await response.json();
+		} catch (error) {
+			if (attempt === maxAttempts) {
+				throw error;
+			}
+			await new Promise((resolve) => setTimeout(resolve, delayMs));
+			delayMs *= 2;
+		}
+	}
+}
 ```
+
+If repeated failures occur, keep the plugin offline until the next load or a settings update to avoid rapid reconnect loops.
 
 ### Event-Based Plugins
 
@@ -318,7 +385,7 @@ export default class EventPlugin extends Plugin {
 		for (const action of config.actions) {
 			switch (action.type) {
 				case "manual_trigger":
-					await this.handleManualTrigger(action.data);
+					await this.handleManualTrigger(action?.value ?? action?.data ?? {});
 					break;
 				case "reset_counters":
 					await this.resetCounters();
