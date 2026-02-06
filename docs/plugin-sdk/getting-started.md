@@ -135,7 +135,28 @@ export default class MyFirstPlugin extends Plugin {
 
 ### Module Loading Note
 
-Plugins are executed in a CommonJS context. Use `require()` for external dependencies in runtime code (for example, `const api = require("some-lib")`). Avoid dynamic `import()` because the plugin runtime does not resolve browser-style module specifiers.
+Plugins run in an isolated **Node.js** process (not a browser). Use `require()` for external dependencies in runtime code (for example, `const api = require("some-lib")`). Avoid dynamic `import()` because the plugin runtime does not resolve browser-style module specifiers.
+
+### What Works (Node)
+
+- Node core modules (`fs`, `path`, `crypto`, etc.)
+- Most npm packages that target Node
+- Global `fetch` (Node 18+), including `AbortController`
+
+### What Does Not Work (Browser APIs)
+
+The runtime does **not** provide a DOM or browser globals. Avoid packages that require:
+
+- `window`, `document`, `navigator`, `localStorage`, `sessionStorage`
+- DOM APIs (`HTMLElement`, `CanvasRenderingContext2D`, etc.)
+- Browser-only networking like `XMLHttpRequest`
+- WebRTC, MediaDevices, or other browser-only APIs
+
+If a package is browser-first, you should use a Node alternative.
+
+### Dependency Packaging
+
+Bundle or ship your dependencies with the plugin. Do **not** assume Lumia Stream provides third-party packages unless explicitly documented.
 ```
 
 ## 4. Build Configuration
@@ -189,22 +210,16 @@ Do not prefix variable names with your plugin name. Lumia already namespaces the
 await this.lumia.setVariable("my_variable", "some value");
 
 // Read a variable
-const value = this.lumia.getVariable("my_variable");
+const value = await this.lumia.getVariable("my_variable");
 
 // Update a counter variable
-const current = Number(this.lumia.getVariable("counter") ?? 0);
+const current = Number((await this.lumia.getVariable("counter")) ?? 0);
 await this.lumia.setVariable("counter", current + 1);
 ```
 
 ### HTTP Requests and Timeouts
 
-The plugin runtime does **not** support `AbortController` / `AbortSignal` in `fetch`. Passing a `signal` option will throw:
-
-```
-Failed to construct 'Request': member signal is not of type AbortSignal.
-```
-
-Use a timeout wrapper instead:
+Node 18+ ships with the global `fetch` API and `AbortController`. You can still use a timeout wrapper if preferred:
 
 ```js
 const timeoutMs = 60000;

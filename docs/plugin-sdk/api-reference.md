@@ -80,7 +80,7 @@ interface PluginVariableFunctionResult {
 ### Variables
 
 - **`setVariable(name: string, value: any): Promise<void>`** – store a variable that other Lumia features can consume.
-- **`getVariable(name: string): any`** – read a stored variable value.
+- **`getVariable(name: string): Promise<any>`** – read a stored variable value (await the result).
 
 ### Commands
 
