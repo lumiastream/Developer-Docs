@@ -168,6 +168,8 @@ interface PluginDisplayChatOptions {
 
 `PluginActionField` supports `allowTyping` on `select` fields. When true, the UI allows entering custom values while still showing the dropdown options as suggestions.
 
+`PluginActionField` also supports `multiple` on `select` fields. When true, users can pick multiple options and the action receives an array of selected values.
+
 `PluginActionField` also supports `allowVariables` to control whether template variables (e.g., `{{username}}`) can be inserted. When omitted, variables are **not** enabled. Set `allowVariables: true` on any field where you want variables (including `select` with `allowTyping`).
 
 `dynamic` is the link between runtime alerts and the manifest's `variationConditions`. Provide the fields that the active condition needs—commonly `value` (for equality/greater checks), and optionally `currency`, `giftAmount`, `subMonths`, `isPrime`, etc.—so Lumia Stream can resolve the correct variation. `showInEventList` defaults to `false` and only records the alert in the Event List when set to `true`.
