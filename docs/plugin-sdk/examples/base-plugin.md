@@ -1,19 +1,44 @@
 ---
-sidebar_position: 1
-title: Showcase Plugin Template
+sidebar_position: 10
+title: "Showcase Plugin Example"
 ---
+
+<!-- GENERATED: sdk-example-doc -->
 
 Source: https://github.com/lumiastream/Plugin-SDK/tree/main/examples/base_plugin
 
-This template demonstrates a handful of common Lumia Stream plugin capabilities:
+Starter template that demonstrates settings, actions, variables, and alerts with a minimal code path.
 
-- Logs lifecycle events and recent actions
-- Stores and updates variables that other Lumia features can consume
-- Responds to custom actions for logging, variable updates, and alert triggering
-- Triggers a sample alert effect using configurable colors and duration
-- Shows how to react to setting changes inside `onsettingsupdate`
+## Quick Stats
 
-Use the CLI to copy and customise the template:
+| Key | Value |
+| --- | --- |
+| Folder | `examples/base_plugin` |
+| Plugin ID | `showcase_plugin` |
+| Category | `apps` |
+| Lumia Version | `^9.0.0` |
+| Settings | 3 |
+| Actions | 1 |
+| Variables | 4 |
+| Alerts | 1 |
+
+## Key Files
+
+- `manifest.json`
+- `main.js`
+- `package.json`
+- `README.md`
+
+## README
+
+This template demonstrates a minimal, production-friendly Lumia Stream plugin workflow:
+
+- Defines a small set of settings with a short setup tutorial
+- Exposes a single action that triggers an alert
+- Updates a few variables that alerts and other Lumia features can use
+- Keeps logging to errors only
+
+Use the CLI to copy and customize the template:
 
 ```
 npx lumia-plugin create my_plugin

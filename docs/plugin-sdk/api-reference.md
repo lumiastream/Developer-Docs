@@ -10,41 +10,49 @@ This document describes the public surface of the Lumia Stream Plugin SDK export
 
 ### Constructor
 
-```ts
-constructor(manifest: PluginManifest, context: PluginContext)
+```js
+constructor(manifest, context)
 ```
 
 Store any dependencies, initialise locals, and always pass the parameters to the parent constructor.
 
 ### Lifecycle Methods
 
-- **`onload(): Promise<void>`** – called when the plugin is enabled. Initialise resources, timers, or external connections here.
-- **`onunload(): Promise<void>`** – invoked when the plugin is disabled. Clean up timers, close sockets, and release resources.
-- **`onupdate(oldVersion: string, newVersion: string): Promise<void>`** – triggered after a version upgrade. Optional.
-- **`onsettingsupdate(settings, previousSettings): Promise<void>`** – called after settings change. Optional.
-- **`onLightChange(config): Promise<void>`** – optional hook fired when Lumia sends a color/brightness update for lights owned by your plugin (`config` includes `brand`, `lights`, `color`, `brightness`, `power`, `transition`, `rawConfig`).
+- **`onload()`** – called when the plugin is enabled. Initialise resources, timers, or external connections here.
+- **`onunload()`** – invoked when the plugin is disabled. Clean up timers, close sockets, and release resources.
+- **`onupdate(oldVersion, newVersion)`** – triggered after a version upgrade. Optional.
+- **`onsettingsupdate(settings, previousSettings)`** – called after settings change. Optional.
+- **`searchLights(config?): Promise<any>`** – optional discovery hook for lights plugins. Return a list of devices for the auth UI.
+- **`addLight(config): Promise<any>`** – optional manual-add hook for lights plugins. Return the updated list.
+- **`searchThemes(config?): Promise<any>`** – optional Studio theme discovery hook for lights plugins. Return an array or an object containing `scenes`, `effects`, and/or `presets`.
+- **`onLightChange(config): Promise<void>`** – optional hook fired when Lumia sends color/brightness updates for lights owned by your plugin (`config` includes `brand`, `lights`, `color`, `brightness`, `power`, `transition`, `rawConfig`).  
+  For Studio theme-triggered updates, selected theme values are available in `config.rawConfig.theme`.
 
 ### Action Handling
 
-- **`actions(config: { actions: PluginActionPayload[]; extraSettings?: Record<string, unknown> }): Promise<void>`** – process action executions defined in the manifest. Optional.  
-  **Note:** action parameters are provided via `action.value`. Use `const params = action?.value ?? {};`.
+- **`actions(config)`** – process action executions defined in the manifest. Optional.  
+  **Note:** action parameters are provided via `action.value`. Use `const params = action.value;`.
 
 ### Variable Functions
 
-- **`variableFunction(config: PluginVariableFunctionContext): Promise<string | PluginVariableFunctionResult | undefined>`** – resolve a template variable function defined in `config.variableFunctions`. Return a string to replace the template, or `{ value, variables }` to also expose extra values.
+- **`variableFunction(config)`** – resolve a template variable function defined in `config.variableFunctions`. Return a string to replace the template, or `{ value, variables }` to also expose extra values.
 
-```ts
-interface PluginVariableFunctionContext {
-	key: string;
-	value?: string;
-	raw?: string;
-	args?: string[];
-	allVariables?: Record<string, any>;
+```js
+// config shape
+{
+  key: "example_key",
+  value: "input value",
+  raw: "{{example_key=input value}}",
+  args: ["input value"],
+  allVariables: { username: "viewer123" },
 }
 
-interface PluginVariableFunctionResult {
-	value: string;
-	variables?: Record<string, any>;
+// return shape
+{
+  value: "resolved output",
+  variables: {
+    extra_var: "extra value",
+  },
 }
 ```
 
@@ -73,6 +81,28 @@ interface PluginVariableFunctionResult {
 - **`setSettings(settings: Record<string, any>): void`** – replace all settings.
 - **`updateSettings(updates: Record<string, any>): void`** – merge changes into the existing settings.
 
+### Shared Resources
+
+- **`acquireShared<T>(key: string, factory?: () => T | Promise<T>, options?: { dispose?: (resource: T) => void | Promise<void> }): Promise<T>`** – acquire a shared runtime resource in the plugin host process.
+- **`releaseShared(key: string): Promise<boolean>`** – release one plugin reference for a shared resource key.
+- **`acquireSharedNoble(options?: { key?: string }): Promise<PluginSharedNobleClient>`** – acquire the shared `@abandonware/noble` BLE runtime with plugin-scoped scan/listener controls.
+- **`releaseSharedNoble(options?: { key?: string }): Promise<boolean>`** – release one plugin reference for the shared noble runtime.
+
+Use shared resources for heavyweight runtimes (OpenCV, ONNX, native SDK bridges) so multiple plugins can reuse one initialized instance.  
+For BLE, prefer `acquireSharedNoble` so plugins do not fight over adapter scanning state.
+By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.manager.v1`.
+
+`PluginSharedNobleClient` exposes:
+
+- **`getNoble(): any`** – raw noble module instance.
+- **`getState(): string`** – last observed adapter state.
+- **`isScanning(): boolean`** – whether shared runtime is currently scanning.
+- **`waitForPoweredOn(timeoutMs?: number): Promise<string>`** – wait until adapter is ready.
+- **`onDiscover(listener): () => void`** – subscribe to discovered peripherals.
+- **`onStateChange(listener): () => void`** – subscribe to adapter state changes.
+- **`startScanning(options?: { serviceUuids?: string[]; allowDuplicates?: boolean }): Promise<boolean>`** – start this plugin's scan request.
+- **`stopScanning(): Promise<boolean>`** – stop this plugin's scan request.
+
 ### OAuth
 
 - **`refreshOAuthToken(options: { refreshToken: string; applicationId?: number; secondaryAccount?: boolean }): Promise<{ accessToken?: string; refreshToken?: string; raw?: any }>`** – refresh an OAuth access token via Lumia's server. Provider is inferred from the plugin ID. Returns the new token payload.
@@ -99,6 +129,7 @@ interface PluginVariableFunctionResult {
 - **`sendColor(options: { lights?: string[]; color: string | any; power?: boolean; brightness?: number; transition?: number }): Promise<boolean>`** – control connected lighting devices.
 - **`getLights(): Promise<any>`** – retrieve current light information.
 - _Light management note_: Lights are saved via the PluginAuth UI. Implement `searchLights`/`addLight` to return discovered devices for the UI, and handle runtime updates in `onLightChange`; plugins should not mutate light state directly.
+- _Studio themes note_: If your plugin exposes themes/modes, implement `searchThemes` and set `config.themeConfig` in the manifest so Lumia knows where to place returned options (`scenes`, `effects`, `presets`).
 
 ### Audio & Speech
 
@@ -125,44 +156,43 @@ interface PluginVariableFunctionResult {
 - **`isConnected(): boolean`** – whether the integration reports a connected state.
 - **`isEnabled(): boolean`** – whether the integration is enabled.
 
-### Type Definitions
+### Payload Shapes
 
-```ts
-interface PluginTriggerAlertOptions {
-	alert: string;
-	dynamic?: { name: string; value: string | number | boolean };
-	extraSettings?: Record<string, any>;
-	showInEventList?: boolean;
+```js
+// triggerAlert options
+{
+  alert: "my-alert-key",
+  dynamic: { name: "value", value: "Tier1" }, // optional
+  extraSettings: { username: "viewer123" }, // optional
+  showInEventList: false, // optional
 }
 
-interface PluginDisplayChatOptions {
-	username: string;
-	displayname?: string;
-	message: string;
-	avatar?: string;
-	color?: string;
-	badges?: string[];
-	messageId?: string;
-	channel?: string;
-	user?: {
-		isSelf?: boolean;
-		broadcaster?: boolean;
-		mod?: boolean;
-		vip?: boolean;
-		subscriber?: boolean;
-		member?: boolean;
-		tier1?: boolean;
-		tier2?: boolean;
-		tier3?: boolean;
-		follower?: boolean;
-		regular?: boolean;
-		badges?: Record<string, any> | string[];
-		userId?: string;
-	};
-	emotesRaw?: string;
-	emotesPack?: Record<string, any> | any[];
-	isCheer?: boolean;
-	extraInfo?: Record<string, any>;
+// displayChat options
+{
+  username: "viewer123",
+  displayname: "Viewer123",
+  message: "Hello from plugin",
+  avatar: "https://example.com/avatar.png",
+  color: "#9147ff",
+  badges: ["mod"],
+  messageId: "msg-1",
+  channel: "my_channel",
+  user: {
+    mod: true,
+    subscriber: false,
+    vip: false,
+    userId: "12345",
+  },
+  emotesRaw: "25:0-4",
+  emotesPack: { "25": { locations: ["0-4"], type: "emote" } },
+  isCheer: false,
+  extraInfo: {
+    extraSettings: {
+      rawMessage: "Hello from plugin",
+      skipCommandProcessing: false,
+      emoteParserType: "twitch",
+    },
+  },
 }
 ```
 
@@ -172,7 +202,14 @@ interface PluginDisplayChatOptions {
 
 `PluginActionField` also supports `allowVariables` to control whether template variables (e.g., `{{username}}`) can be inserted. When omitted, variables are **not** enabled. Set `allowVariables: true` on any field where you want variables (including `select` with `allowTyping`).
 
-`dynamic` is the link between runtime alerts and the manifest's `variationConditions`. Provide the fields that the active condition needs—commonly `value` (for equality/greater checks), and optionally `currency`, `giftAmount`, `subMonths`, `isPrime`, etc.—so Lumia Stream can resolve the correct variation. `showInEventList` defaults to `false` and only records the alert in the Event List when set to `true`.
+`dynamic` is only for variation matching (`variationConditions`). Lumia only registers two keys from this object: `name` and `value`.
+
+- `dynamic.name`: the variation field/condition key to evaluate (for example `value`, `giftAmount`, or `subMonths`).
+- `dynamic.value`: the runtime value to compare against that condition.
+
+`extraSettings` is separate from variation matching. It can contain any key/value pairs and is passed through as alert variables for templates, overlays, and other runtime consumers.
+
+If your alert has no `variationConditions`, omit `dynamic` and pass only `extraSettings`. `showInEventList` defaults to `false` and only records the alert in the Event List when set to `true`.
 
 For `displayChat`, `user` flags (e.g., `mod`, `subscriber`, `vip`) are used when evaluating chat command permissions. `emotesRaw` uses the Twitch-style emote index format, while `emotesPack` follows the Kick/Discord style payload used by the chat UI.
 
