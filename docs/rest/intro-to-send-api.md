@@ -37,7 +37,6 @@ The valid types for using the send api:
 - chatbot-command
 - twitch-points
 - twitch-extension
-- trovo-spells
 - alert
 - chatbot-message
 - rgb-color

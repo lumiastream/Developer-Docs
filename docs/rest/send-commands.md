@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Sending Commands
 
-In Lumia Stream a command is considered a Chat command, a Twitch Points command, a Twitch Extension command, and a Trovo Spell command.
+In Lumia Stream a command is considered a Chat command, a Twitch Points command, and a Twitch Extension command.
 
 Sending a command is the easiest thing you can do in our API because it doesn't take in any extra parameter other than the ability to set it as your default.
 
@@ -39,7 +39,6 @@ The valid types for sending a command are:
 - chatbot-command
 - twitch-points
 - twitch-extension
-- trovo-spells
 
 e.g. trigger the chatbot command **uptime**
 

@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # Chat Bot
 
-Lumia Stream has a built in Chat Bot for Twitch, Youtube Live, Facebook Live, and Trovo inside of it that developers are free to use however they see fit.
+Lumia Stream has a built in Chat Bot for Twitch, Youtube Live, and Facebook Live inside of it that developers are free to use however they see fit.
 
 You can trigger the Chat Bot by sending a POST request like this:
 
@@ -19,7 +19,7 @@ Raw JSON to send:
   "type": "chatbot-message",
   "params": {
     "value": "Wow, this tutorial is just way too cool",
-    "platform": "twitch" // "twitch", "youtube", "facebook", "trovo"
+    "platform": "twitch" // "twitch", "youtube", "facebook"
   }
 }
 ```
@@ -31,13 +31,13 @@ To send the message as the streamer
   "type": "chatbot-message",
   "params": {
     "value": "Here the message to send",
-    "platform": "twitch", // "twitch", "youtube", "facebook", "trovo"
+    "platform": "twitch", // "twitch", "youtube", "facebook"
     "userToChatAs": "self"
   }
 }
 ```
 
-Platform is required and has the options of being `twitch`, `youtube`, `facebook`, and `trovo`.
+Platform is required and has the options of being `twitch`, `youtube`, and `facebook`.
 
 The user must be connected to the selected platform as well as having chat bot on in order for this to work.
 

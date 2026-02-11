@@ -41,7 +41,6 @@ An example response would look like this:
 			"studio-theme",
 			"to-default",
 			"toggle-fuze",
-			"trovo-spells",
 			"tts",
 			"twitch-extension",
 			"twitch-points"
@@ -64,8 +63,6 @@ An example response would look like this:
 					"facebook-support",
 					"facebook-share",
 					"facebook-fan",
-					"trovo-follower",
-					"trovo-subscriber",
 					"streamlabs-donation",
 					"streamlabs-merch",
 					"streamlabs-redemption",
@@ -134,26 +131,6 @@ An example response would look like this:
 			},
 			"to-default": null,
 			"toggle-fuze": null,
-			"trovo-spells": {
-				"values": [
-					"Bravo!",
-					"Cash Bang",
-					"Champion",
-					"EZ",
-					"GGWP",
-					"HYPE",
-					"Hand in Hand",
-					"Leon Lime",
-					"On Fire",
-					"Rose",
-					"Shint Uni",
-					"Stay Safe",
-					"Super Good",
-					"Top1",
-					"Torch",
-					"Winner"
-				]
-			},
 			"tts": {
 				"values": {
 					"devices": [
