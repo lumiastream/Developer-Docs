@@ -246,7 +246,8 @@ Example:
 			{
 				"key": "enabledGames",
 				"label": "Enabled Games",
-				"type": "multiselect",
+				"type": "select",
+				"multiple": true,
 				"section": "Detection",
 				"sectionOrder": 2,
 				"options": [
@@ -300,7 +301,7 @@ Tutorials can include local images bundled with the plugin. Reference them with 
 
 #### Multi-Value Settings
 
-Use `text_list` when you need users to enter multiple values (stored as an array of strings).
+Use `select` with `multiple: true` when you need users to select or enter multiple values.
 
 ```json
 {
@@ -309,8 +310,14 @@ Use `text_list` when you need users to enter multiple values (stored as an array
 			{
 				"key": "lightIds",
 				"label": "Light IDs",
-				"type": "text_list",
-				"helperText": "Add one or more light identifiers",
+				"type": "select",
+				"multiple": true,
+				"allowTyping": true,
+				"helperText": "Add one or more light identifiers or choose from suggestions",
+				"options": [
+					{ "label": "Keylight 1", "value": "keylight-1" },
+					{ "label": "Keylight 2", "value": "keylight-2" }
+				],
 				"defaultValue": ["keylight-1", "keylight-2"]
 			}
 		]
@@ -618,6 +625,8 @@ Action fields support the following input types:
 Set `allowTyping` to let users type custom values in addition to the provided options. The dropdown list still appears as suggestions.
 
 Set `multiple: true` on `select` fields to allow multi-select values. Use an array for `defaultValue` when `multiple` is enabled.
+
+`allowTyping` and `multiple` can be combined on the same `select` field to allow selecting known options while also adding custom entries.
 
 ```json
 {

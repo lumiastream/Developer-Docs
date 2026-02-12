@@ -12,7 +12,9 @@ Both `settings` and `actions` in your plugin manifest support various field type
 
 Property support is not identical between settings and actions:
 - Settings support `disabled` and richer string-length validation (`minLength`/`maxLength`).
-- Action fields support runtime-oriented options such as `allowVariables`, `dynamicOptions`, and multi-select via `multiple`.
+- Both settings and action fields support multi-select on `select` via `multiple`.
+- Both settings and action fields support freeform select input via `allowTyping`.
+- Action fields support runtime-oriented options such as `allowVariables`.
 
 ## Supported Field Types
 
@@ -120,25 +122,6 @@ Multi-line text input with optional variable support (set `allowVariables: true`
 
 ---
 
-#### `text_list`
-Multi-value text input that stores an array of strings. Settings only.
-
-```json
-{
-  "key": "lightIds",
-  "label": "Light IDs",
-  "type": "text_list",
-  "helperText": "Add one or more light identifiers",
-  "defaultValue": ["keylight-1", "keylight-2"]
-}
-```
-
-**Properties:**
-- Outputs an array of strings (e.g., `["one", "two"]`)
-- `defaultValue` should be an array of strings
-
----
-
 ### Numeric Input Types
 
 #### `number`
@@ -200,6 +183,7 @@ Dropdown selection from predefined options.
   "key": "mode",
   "label": "Mode",
   "type": "select",
+  "allowTyping": true,
   "defaultValue": "normal",
   "options": [
     { "label": "Normal", "value": "normal" },
@@ -212,20 +196,22 @@ Dropdown selection from predefined options.
 **Properties:**
 - `options` - Array of objects with `label` and `value` properties (required)
 - `allowTyping` - Allow typing a custom value in addition to dropdown options (settings and actions)
-- `multiple` - Allow selecting multiple options; value becomes an array (action fields)
+- `multiple` - Allow selecting multiple options; value becomes an array (settings and actions)
 - `allowVariables` - Enable template variable insertion (action fields)
-- `dynamicOptions` - Allow runtime option updates from plugin code (action fields)
+- `dynamicOptions` - Allow runtime option updates from plugin code (settings and actions)
 
 ---
 
-#### `multiselect`
-Multi-value dropdown selection for **settings** fields.
+#### Multi-select with `select`
+To allow multiple selections, keep `type: "select"` and set `multiple: true`.
 
 ```json
 {
   "key": "enabledGames",
   "label": "Enabled Games",
-  "type": "multiselect",
+  "type": "select",
+  "multiple": true,
+  "allowTyping": true,
   "defaultValue": ["valorant", "rocket_league"],
   "options": [
     { "label": "Valorant", "value": "valorant" },
@@ -238,6 +224,7 @@ Multi-value dropdown selection for **settings** fields.
 **Properties:**
 - `options` - Array of objects with `label` and `value` properties (required)
 - Stored value is always an array of selected option values
+- Use `allowTyping: true` to allow user-defined values in addition to provided options
 
 ---
 
@@ -380,11 +367,9 @@ Structured region-of-interest editor for screen detection coordinates.
 | `url` | ✅ | ✅ | With `allowVariables` | auto | URL validation |
 | `password` | ✅ | ❌ | ❌ | pattern, length (settings) | Hidden characters |
 | `textarea` | ✅ | ✅ | With `allowVariables` | pattern, length (settings) | Multi-line, rows configurable |
-| `text_list` | ✅ | ❌ | ❌ | - | Array of strings |
 | `number` | ✅ | ✅ | With `allowVariables` | min, max | Numeric input (`min`/`max` top-level on actions) |
 | `slider` | ✅ | ✅ | ❌ | min, max | Visual slider (`min`/`max`/`step` top-level on actions) |
-| `select` | ✅ | ✅ | With `allowVariables` | - | Dropdown, supports `allowTyping`; `multiple`/`dynamicOptions` on actions |
-| `multiselect` | ✅ | ❌ | ❌ | - | Multi-value dropdown for settings |
+| `select` | ✅ | ✅ | With `allowVariables` | - | Dropdown, supports `allowTyping`; set `multiple: true` for multi-value; supports `dynamicOptions` |
 | `checkbox` | ✅ | ✅ | ❌ | - | Boolean checkbox |
 | `switch`/`toggle` | ✅ | ✅ | ❌ | - | `toggle` in settings, `switch` in actions |
 | `color` | ✅ | ✅ | ❌ | - | Color picker |
@@ -497,7 +482,8 @@ Use this when you only need tabs and no inner container.
       {
         "key": "enabledGames",
         "label": "Enabled Games",
-        "type": "multiselect",
+        "type": "select",
+        "multiple": true,
         "section": "Detection",
         "sectionOrder": 2,
         "options": [
@@ -529,7 +515,8 @@ Use this when one section has multiple sub-areas that should be visually separat
       {
         "key": "enabledGames",
         "label": "Enabled Games",
-        "type": "multiselect",
+        "type": "select",
+        "multiple": true,
         "section": "Detection",
         "sectionOrder": 2,
         "options": [
