@@ -343,6 +343,24 @@ await this.lumia.setVariable("api_data", JSON.stringify(data));
 
 If your plugin needs OAuth 2.0, contact Lumia Stream on Discord or email dev@lumiastream.com so the server OAuth flow can be enabled for your plugin.
 
+## When To Use A Custom Overlay
+
+If your feature needs on-screen visuals (animated cards, HUD widgets, chat visualizers, stream panels), pair the plugin with a Custom Overlay:
+
+- Keep API calls, normalization, and business logic in the plugin.
+- Keep visual rendering and animation in the overlay.
+
+Recommended plugin->overlay bridge:
+
+1. Write global variables from the plugin with `this.lumia.setVariable("key", value)`.
+2. Trigger alerts from the plugin with `this.lumia.triggerAlert(...)`.
+3. In the overlay, read variables with `Overlay.getVariable("key")` and alert payloads in `Overlay.on("alert", (data) => data.extraSettings)`.
+
+Use `extraSettings` for overlay payload values. Use `dynamic` only when you need alert variation matching.
+
+Overlay docs: https://dev.lumiastream.com/docs/custom-overlays/custom-overlays-documentation  
+Overlay assistant: https://chatgpt.com/g/g-6760d2a59b048191b17812250884971b-lumia-custom-overlays-assistant
+
 ## Common Patterns
 
 ### Polling External APIs
