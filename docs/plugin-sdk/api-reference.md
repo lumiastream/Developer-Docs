@@ -145,7 +145,9 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 
 - **`showToast(options: { message: string; time?: number }): Promise<boolean>`** – display a toast notification within Lumia Stream.  
   `time` is in **milliseconds**.
-- **`addLog(message: string): Promise<boolean>`** – append a message to the Lumia Stream log panel.
+- **`log(params: { message?: any; level?: "info" | "warn" | "warning" | "error" | "success" | "debug"; type?: ... } | string | number, type?: "info" | "warn" | "warning" | "error" | "success" | "debug"): Promise<boolean>`** – write to the plugin host console (visible in plugin host logs). Supports either object form (`{ message, level/type }`) or positional form (`message, type`).
+- **`dashboardLog(params: { message?: any; level?: "info" | "warn" | "warning" | "error" | "success" | "debug"; type?: ... } | string | number, type?: "info" | "warn" | "warning" | "error" | "success" | "debug"): Promise<boolean>`** – write a plugin message into Lumia Stream's dashboard log feed (the main app log panel). Also supports object or positional severity.
+- **`addLog(...)`** – deprecated alias of `log(...)`.
 
 ### Integration Helpers
 

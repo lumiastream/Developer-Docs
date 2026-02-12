@@ -370,7 +370,7 @@ export default class ApiPollingPlugin extends Plugin {
         }
         catch (error) {
             this.offline = true;
-            await this.lumia.addLog(`API polling failed: ${String(error)}`);
+            await this.lumia.log(`API polling failed: ${String(error)}`);
         }
     }
 }
