@@ -297,25 +297,87 @@ this.lumia.displayChat({
     displayname: "Viewer123",
     message: "Hello from the plugin!",
     avatar: "https://example.com/avatar.png",
-    user: {
+    userLevels: {
         mod: true,
+        follower: true,
     },
-    emotesPack: {
-        "12345": { locations: ["6-10"], type: "emote" },
-    },
-    extraInfo: {
-        extraSettings: {
-            rawMessage: "Hello from the plugin!",
-            emoteParserType: "twitch",
-            skipCommandProcessing: false,
-        },
-    },
+    emotesRaw: JSON.stringify([
+        { id: "wave", url: "https://example.com/emotes/wave.webp", start: 6, end: 9 },
+    ]),
+    skipCommandProcessing: false,
 });
 ```
 
 `displayChat` posts a message to Lumia Stream chatboxes and overlay chat widgets.
 
-When your displayed message includes prefixes (e.g., `[channel]`) or formatting, set `extraInfo.extraSettings.rawMessage` so command parsing uses the original text. Use `extraInfo.extraSettings.skipCommandProcessing` to show a message in chat without triggering commands. To force the emote/badge parser for a specific platform, set `extraInfo.extraSettings.emoteParserType`.
+For emotes, use `emotesRaw` with the common plugin JSON format:
+
+- `[{ id?: string, url?: string, urls?: string[], start: number, end: number }]`
+- or `{ emotes: [...] }`
+
+`start`/`end` are inclusive character offsets in `message`.
+Use top-level `skipCommandProcessing` to show a message in chat without triggering commands.
+
+If your plugin should appear as an AI provider in Lumia (similar to ChatGPT/DeepSeek), declare AI support in `manifest.json`:
+
+```json
+{
+	"config": {
+		"hasAI": true
+	}
+}
+```
+
+Implement runtime handlers:
+
+```js
+async aiPrompt(config) {
+	// config.message, config.model, config.thread, config.username, ...
+	return "AI response text";
+}
+
+async aiModels() {
+	// Return strings or { value, name } objects
+	return [{ value: "gpt-oss:20b", name: "gpt-oss:20b" }];
+}
+```
+
+If your plugin should appear as a selectable chatbot platform in Lumia commands, declare chatbot support in `manifest.json`:
+
+```json
+{
+	"config": {
+		"hasChatbot": true
+	}
+}
+```
+
+You can also implement a native runtime handler:
+
+```js
+async chatbot(config) {
+	// config.message, config.userToChatAs, config.color, etc.
+	return true;
+}
+```
+
+For Dashboard/API moderation actions, declare supported commands and implement a handler:
+
+```json
+{
+	"config": {
+		"modcommandOptions": ["delete", "ban", "timeout"]
+	}
+}
+```
+
+```js
+async modCommand(type, value) {
+	// type: "delete" | "ban" | ...
+	// value: { username, message, reason, duration, ... }
+	return true;
+}
+```
 
 ### File Operations
 

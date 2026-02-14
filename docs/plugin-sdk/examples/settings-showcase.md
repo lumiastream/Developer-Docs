@@ -1,11 +1,11 @@
 ---
-sidebar_position: 9
-title: "Settings Field Showcase Example"
+sidebar_position: 10
+title: "Settings Showcase Example"
 ---
 
 <!-- GENERATED: sdk-example-doc -->
 
-Source: https://github.com/lumiastream/Plugin-SDK/tree/main/examples/settings_field_showcase
+Source: https://github.com/lumiastream/Plugin-SDK/tree/main/examples/settings_showcase
 
 Example plugin demonstrating every available settings field type with logging/toasts on save.
 
@@ -13,8 +13,8 @@ Example plugin demonstrating every available settings field type with logging/to
 
 | Key | Value |
 | --- | --- |
-| Folder | `examples/settings_field_showcase` |
-| Plugin ID | `settings_field_showcase` |
+| Folder | `examples/settings_showcase` |
+| Plugin ID | `settings_showcase` |
 | Category | `utilities` |
 | Lumia Version | `^9.0.0` |
 | Settings | 17 |

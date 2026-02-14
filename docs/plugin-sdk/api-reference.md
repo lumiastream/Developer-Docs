@@ -22,6 +22,10 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 - **`onunload()`** – invoked when the plugin is disabled. Clean up timers, close sockets, and release resources.
 - **`onupdate(oldVersion, newVersion)`** – triggered after a version upgrade. Optional.
 - **`onsettingsupdate(settings, previousSettings)`** – called after settings change. Optional.
+- **`aiPrompt(config): Promise<string | object | void> | string | object | void`** – optional AI prompt handler. Enabled by declaring `config.hasAI` in the manifest.
+- **`aiModels(config?): Promise<Array<{ value, name? }> | string[] | { models: [...] } | void>`** – optional AI model list provider used by Lumia AI model pickers.
+- **`chatbot(config): Promise<boolean | void> | boolean | void`** – optional native chatbot handler. Enabled by declaring `config.hasChatbot` in the manifest.
+- **`modCommand(type, value): Promise<boolean | void> | boolean | void`** – optional moderation handler. Enabled by declaring `config.modcommandOptions` in the manifest.
 - **`searchLights(config?): Promise<any>`** – optional discovery hook for lights plugins. Return a list of devices for the auth UI.
 - **`addLight(config): Promise<any>`** – optional manual-add hook for lights plugins. Return the updated list.
 - **`searchThemes(config?): Promise<any>`** – optional Studio theme discovery hook for lights plugins. Return an array or an object containing `scenes`, `effects`, and/or `presets`.
@@ -117,6 +121,11 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 - **`callCommand(name: string, variableValues?: any): Promise<any>`** – execute another Lumia command and optionally pass variable values.
 - **`getAllCommands(params?: { onlyOn?: boolean }): Promise<any>`** – fetch available commands.
 
+### Dynamic UI Options
+
+- **`updateActionFieldOptions({ actionType, fieldKey, options }): Promise<boolean>`** – update action dropdown options at runtime.
+- **`updateSettingsFieldOptions({ fieldKey, options }): Promise<boolean>`** – update settings dropdown options at runtime (used with `dynamicOptions` fields in PluginAuth).
+
 ### Alerts & Chat
 
 - **`triggerAlert(options: PluginTriggerAlertOptions): Promise<boolean>`** – trigger an alert. Options include the alert identifier and optional payload. Set `showInEventList: true` to also record the alert in the Event List (default is `false`).
@@ -176,25 +185,25 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
   message: "Hello from plugin",
   avatar: "https://example.com/avatar.png",
   color: "#9147ff",
-  badges: ["mod"],
+  badges: ["https://example.com/badges/mod.png"],
   messageId: "msg-1",
   channel: "my_channel",
-  user: {
+  userId: "12345",
+  userLevels: {
+    isSelf: false,
     mod: true,
-    subscriber: false,
     vip: false,
-    userId: "12345",
+    tier3: false,
+    tier2: false,
+    subscriber: false,
+    follower: true,
   },
-  emotesRaw: "25:0-4",
-  emotesPack: { "25": { locations: ["0-4"], type: "emote" } },
+  emotesRaw: JSON.stringify([
+    { id: "Cupcake!", url: "https://img.trovo.live/test/emotes/Cupcake!.webp", start: 0, end: 7 },
+    { id: "wave", urls: ["https://example.com/emotes/wave-1x.png", "https://example.com/emotes/wave-2x.png"], start: 9, end: 12 },
+  ]),
+  skipCommandProcessing: false,
   isCheer: false,
-  extraInfo: {
-    extraSettings: {
-      rawMessage: "Hello from plugin",
-      skipCommandProcessing: false,
-      emoteParserType: "twitch",
-    },
-  },
 }
 ```
 
@@ -213,14 +222,49 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 
 If your alert has no `variationConditions`, omit `dynamic` and pass only `extraSettings`. `showInEventList` defaults to `false` and only records the alert in the Event List when set to `true`.
 
-For `displayChat`, `user` flags (e.g., `mod`, `subscriber`, `vip`) are used when evaluating chat command permissions. `emotesRaw` uses the Twitch-style emote index format, while `emotesPack` follows the Kick/Discord style payload used by the chat UI.
+For `displayChat`, `userLevels` flags are used when evaluating chat command permissions.
 
-`displayChat` also supports extra per-message hints via `extraInfo.extraSettings`:
+`emotesRaw` supports two formats:
 
-- `rawMessage` (string): Unmodified chat content used for command parsing (useful when the displayed `message` includes prefixes or formatting).
-- `skipCommandProcessing` (boolean): When true, the message is shown in chat but will not trigger command processing.
-- `emoteParserType` (string): Forces emote/badge parsing for a specific platform (e.g., `twitch`, `kick`, `youtube`, `tiktok`) when the plugin origin differs.
+- Twitch index format string (example: `"25:0-4/1902:6-10"`).
+- Common plugin JSON format (works for any plugin origin):
+  - `[{ id?: string, url?: string, urls?: string[], start: number, end: number }]`
+  - or `{ emotes: [...] }`
+  - `start` and `end` are inclusive character offsets in `message`.
+  - Use `url` for a single image URL or `urls` for multi-resolution emotes.
+
+Use `skipCommandProcessing` (top-level) to show a message in chat without running command parsing.
 
 `PluginIntegrationConfig` supports `actions_tutorial` (markdown) to display a guide alongside the Actions editor. It also supports `oauth` for Lumia-managed OAuth configuration (see the manifest guide for details).
+
+`PluginIntegrationConfig` also supports `hasAI` for plugin-native AI routing:
+
+```js
+{
+  hasAI: true
+}
+```
+
+When `hasAI` is enabled, Lumia routes prompt requests to your plugin by calling `aiPrompt(config)`, and model list requests by calling `aiModels(config?)`.
+
+`PluginIntegrationConfig` also supports `hasChatbot` for plugin-native chatbot routing:
+
+```js
+{
+  hasChatbot: true
+}
+```
+
+When `hasChatbot` is enabled, Lumia routes chatbot messages for that platform to your plugin by calling `chatbot(config)`.
+
+`PluginIntegrationConfig` also supports `modcommandOptions` for Dashboard/API moderation routing:
+
+```js
+{
+  modcommandOptions: ["delete", "ban", "timeout"]
+}
+```
+
+When declared, Lumia routes matching mod actions to your plugin by calling `modCommand(type, value)`.
 
 Additional types such as `PluginManifest`, `PluginContext`, `PluginActionsConfig`, `PluginAuthConfig`, `PluginOAuthConfig`, and the error classes `PluginError`, `PluginSecurityError`, and `PluginInstallError` are exported from the SDK entry point for convenience.

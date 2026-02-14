@@ -171,6 +171,23 @@ Theme runtime contract:
 
 The `config` object defines your plugin's interactive elements:
 
+### AI Provider Support
+
+If your plugin should appear as an AI provider (like ChatGPT/DeepSeek) in Lumia features that support AI routing, declare:
+
+```json
+{
+	"config": {
+		"hasAI": true
+	}
+}
+```
+
+When `hasAI` is enabled, implement:
+
+- `aiPrompt(config)` to process prompt requests and return text.
+- `aiModels(config?)` to return available model options for dropdowns.
+
 ### Settings
 
 Settings create a configuration UI for users:
@@ -376,6 +393,53 @@ Notes:
 - `serviceUrl` can be provided to override the default auth URL entirely.
 - `scopes` are provider-specific. When set, they are sent to Lumia's OAuth service as a comma-separated list.
 - Tokens are stored into your plugin settings using the `tokenKeys` mapping and are available via `this.settings` in your plugin.
+
+### Native chatbot support
+
+If your plugin can post chat messages on its own platform, declare chatbot support in the manifest:
+
+```json
+{
+	"config": {
+		"hasChatbot": true
+	}
+}
+```
+
+`config.hasChatbot` is a boolean flag. Set it to `true` to enable plugin-native chatbot routing.
+
+Runtime routing behavior:
+
+1. Lumia calls `chatbot(config)` on your plugin when implemented.
+2. Lumia does not fall back to `actions()` for chatbot routing.
+
+### Native moderation command support
+
+If your plugin supports chat moderation actions in Dashboard Chatbox / API, declare supported commands:
+
+```json
+{
+	"config": {
+		"modcommandOptions": ["delete", "ban", "timeout"]
+	}
+}
+```
+
+Allowed values are:
+
+- `delete`
+- `copy`
+- `translate`
+- `shoutout`
+- `ban`
+- `unban`
+- `timeout`
+- `add-vip`
+- `remove-vip`
+- `add-moderator`
+- `remove-moderator`
+
+When declared, Lumia routes these commands to `modCommand(type, value)` in your plugin runtime.
 
 #### Setting Types
 

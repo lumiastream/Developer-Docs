@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 9
 title: "Rumble Example"
 ---
 
@@ -19,7 +19,7 @@ Track Rumble livestream state and engagement with alerts, variables, and chat di
 | Lumia Version | `^9.0.0` |
 | Settings | 2 |
 | Actions | 0 |
-| Variables | 25 |
+| Variables | 24 |
 | Alerts | 8 |
 
 ## Key Files

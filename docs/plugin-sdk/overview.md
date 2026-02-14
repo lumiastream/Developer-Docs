@@ -51,6 +51,9 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 	"lumiaVersion": "^9.0.0",
 	"category": "utilities",
 	"config": {
+		"hasAI": true,
+		"hasChatbot": true,
+		"modcommandOptions": ["delete", "ban", "timeout"],
 		"settings": [
 			{
 				"key": "apiKey",
@@ -71,6 +74,10 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 - `onsettingsupdate(settings, previousSettings)` – called whenever settings change.
 - `actions(config)` – handle custom actions invoked from Lumia automations.  
   **Note:** action parameters are provided via `action.value`. Use `const params = action.value;`.
+- `aiPrompt(config)` – optional AI prompt handler used when `config.hasAI` is enabled in your manifest.
+- `aiModels(config?)` – optional AI model provider used by Lumia model pickers when `config.hasAI` is enabled.
+- `chatbot(config)` – optional native chatbot handler used when `config.hasChatbot` is enabled in your manifest.
+- `modCommand(type, value)` – optional moderation handler used when `config.modcommandOptions` is declared in your manifest.
 - `searchLights(config)` – optional hook for lights plugins to return discoverable devices in the auth UI.
 - `addLight(config)` – optional hook for manual light add flows; return the updated light list.
 - `searchThemes(config)` – optional hook for lights plugins to return Studio theme options (array or `{ scenes|effects|presets }` object).
