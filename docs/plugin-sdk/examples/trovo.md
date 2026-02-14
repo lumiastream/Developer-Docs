@@ -27,6 +27,8 @@ Trovo Live integration with chat, alerts, chatbot, moderation, variables, and st
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

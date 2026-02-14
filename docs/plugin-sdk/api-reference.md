@@ -11,7 +11,7 @@ This document describes the public surface of the Lumia Stream Plugin SDK export
 ### Constructor
 
 ```js
-constructor(manifest, context)
+constructor(manifest, context);
 ```
 
 Store any dependencies, initialise locals, and always pass the parameters to the parent constructor.
@@ -237,11 +237,19 @@ Use `skipCommandProcessing` (top-level) to show a message in chat without runnin
 
 `PluginIntegrationConfig` supports `actions_tutorial` (markdown) to display a guide alongside the Actions editor. It also supports `oauth` for Lumia-managed OAuth configuration (see the manifest guide for details).
 
+`PluginIntegrationConfig` also supports `translations` for plugin-localized strings:
+
+- shape: either a language-map object or a single relative `.json` file path
+- object keys: language codes (for example `en`, `es`, `fr`)
+- object values: inline translation objects (legacy per-language file paths are also supported)
+- runtime: loaded under your plugin namespace (plugin `id`) when the plugin loads
+- variable/global variable keys: Lumia resolves both `key` and `pluginid_key` forms automatically
+
 `PluginIntegrationConfig` also supports `hasAI` for plugin-native AI routing:
 
 ```js
 {
-  hasAI: true
+	hasAI: true;
 }
 ```
 
@@ -251,7 +259,7 @@ When `hasAI` is enabled, Lumia routes prompt requests to your plugin by calling 
 
 ```js
 {
-  hasChatbot: true
+	hasChatbot: true;
 }
 ```
 
@@ -261,7 +269,7 @@ When `hasChatbot` is enabled, Lumia routes chatbot messages for that platform to
 
 ```js
 {
-  modcommandOptions: ["delete", "ban", "timeout"]
+	modcommandOptions: ["delete", "ban", "timeout"];
 }
 ```
 

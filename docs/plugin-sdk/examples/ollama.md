@@ -27,6 +27,7 @@ Send prompts to a local Ollama server and use responses in Lumia templates via {
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `settings_tutorial.md`
 
 ## README
 

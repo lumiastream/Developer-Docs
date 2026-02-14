@@ -27,6 +27,8 @@ Send text, GIFs, drawings, and device controls to Divoom Pixoo LED displays over
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

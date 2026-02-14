@@ -27,6 +27,8 @@ Track Steam profile status, current/recent games, and achievements in Lumia with
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

@@ -27,6 +27,8 @@ Subscribe to ntfy topics and trigger Lumia alerts/variables for incoming notific
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

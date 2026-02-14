@@ -21,7 +21,8 @@ The `manifest.json` file is the heart of your Lumia Stream plugin. It defines me
 		"settings": [],
 		"actions": [],
 		"variables": [],
-		"alerts": []
+		"alerts": [],
+		"translations": {}
 	}
 }
 ```
@@ -315,6 +316,61 @@ Tutorials can include local images bundled with the plugin. Reference them with 
 ![API Key](clickup_tutorial_api_key.jpg)
 ![List ID](clickup_tutorial_list_id.jpg)
 ```
+
+### Plugin Translations
+
+Plugins can provide translation bundles under `config.translations`. These bundles are loaded into i18next under the plugin namespace (the plugin `id`) when the plugin loads.
+
+`config.translations` supports two shapes:
+
+- a language-map object (`{ en: {...}, es: {...} }`)
+- a relative `.json` file path that contains that language-map object
+
+```json
+{
+	"id": "clickup",
+	"name": "ClickUp",
+	"version": "1.0.0",
+	"author": "Lumia Stream",
+	"description": "ClickUp integration",
+	"lumiaVersion": "^9.0.0",
+	"category": "apps",
+	"config": {
+		"translations": "./translations.json"
+	}
+}
+```
+
+Example `translations.json`:
+
+```json
+{
+	"en": {
+		"task_due_date": "Task Due Date",
+		"clickup_task_due_date": "Task Due Date"
+	},
+	"de": {
+		"task_due_date": "Fälligkeitsdatum",
+		"clickup_task_due_date": "Fälligkeitsdatum"
+	}
+}
+```
+
+You can also inline the language map directly in `manifest.json`:
+
+```json
+{
+	"config": {
+		"translations": {
+			"en": {
+				"task_due_date": "Task Due Date"
+			}
+		}
+	}
+}
+```
+
+Use keys from supported Lumia languages (`en`, `es`, `fr`, `ar`, `nl`, `sv`, `de`, `tr`, `zh`, `pt`). Regional tags (for example `en-US`) fall back to their base language when available.
 
 #### Multi-Value Settings
 
@@ -749,6 +805,8 @@ Variables define data that your plugin provides to Lumia Stream:
 
 Do not prefix variable names with your plugin name. Lumia automatically namespaces them.
 
+Global variable display text is resolved from your plugin translations (`config.translations`) using your plugin namespace. Lumia resolves `key` and `pluginid_key` automatically at runtime, so you only need to define one form.
+
 ```json
 {
 	"config": {
@@ -758,7 +816,6 @@ Do not prefix variable names with your plugin name. Lumia automatically namespac
 				"system": true,
 				"origin": "twitch",
 				"allowedPlaces": ["chat", "overlay"],
-				"description": "Current number of followers",
 				"value": 0,
 				"example": "follower_count"
 			},
@@ -767,7 +824,6 @@ Do not prefix variable names with your plugin name. Lumia automatically namespac
 				"system": true,
 				"origin": "twitch",
 				"allowedPlaces": ["chat", "overlay", "alert"],
-				"description": "Username of the most recent follower",
 				"value": "",
 				"example": "last_follower"
 			}
@@ -1027,7 +1083,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"system": true,
 				"origin": "discord",
 				"allowedPlaces": ["chat", "overlay"],
-				"description": "Total number of server members",
 				"value": 0,
 				"example": "member_count"
 			},
@@ -1036,7 +1091,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"system": true,
 				"origin": "discord",
 				"allowedPlaces": ["chat", "overlay"],
-				"description": "Number of online members",
 				"value": 0,
 				"example": "online_count"
 			},
@@ -1045,7 +1099,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"system": true,
 				"origin": "discord",
 				"allowedPlaces": ["chat", "overlay"],
-				"description": "Number of members in voice channels",
 				"value": 0,
 				"example": "voice_count"
 			},
@@ -1054,7 +1107,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"system": true,
 				"origin": "discord",
 				"allowedPlaces": ["chat", "overlay", "alert"],
-				"description": "Content of the most recent message",
 				"value": "",
 				"example": "last_message"
 			},
@@ -1063,7 +1115,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"system": true,
 				"origin": "discord",
 				"allowedPlaces": ["chat", "overlay", "alert"],
-				"description": "Username of the last message author",
 				"value": "",
 				"example": "last_user"
 			}
@@ -1119,4 +1170,5 @@ The SDK includes manifest validation. Common validation errors:
 
 ## Localization
 
-Currently, manifests support English only. Localization support is planned for future releases.
+Use `config.translations` to provide plugin-localized strings.
+You can provide either a language-map object directly or a single `.json` file path that contains that language map.

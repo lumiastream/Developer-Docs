@@ -27,6 +27,8 @@ Monitor Minecraft Java servers for status and player changes with alerts and var
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

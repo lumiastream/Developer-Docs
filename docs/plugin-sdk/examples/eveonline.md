@@ -27,6 +27,8 @@ Pull EVE Online character status, wallet, location, and activity from ESI into L
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

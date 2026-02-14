@@ -27,6 +27,8 @@ Track Rumble livestream state and engagement with alerts, variables, and chat di
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

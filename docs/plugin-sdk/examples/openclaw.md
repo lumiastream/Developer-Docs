@@ -28,6 +28,7 @@ Send prompts to an OpenClaw Gateway and use responses in Lumia templates via {{o
 - `main.js`
 - `package.json`
 - `README.md`
+- `settings_tutorial.md`
 
 ## README
 

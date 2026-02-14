@@ -27,6 +27,8 @@ Generate ElevenLabs speech or music audio and play it through Lumia Stream.
 - `manifest.json`
 - `main.js`
 - `package.json`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

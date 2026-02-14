@@ -28,6 +28,8 @@ Starter template that demonstrates settings, actions, variables, and alerts with
 - `main.js`
 - `package.json`
 - `README.md`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 

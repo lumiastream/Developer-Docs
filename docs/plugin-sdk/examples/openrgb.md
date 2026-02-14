@@ -28,6 +28,8 @@ Control OpenRGB devices as Lumia lights and trigger OpenRGB profile actions (Cor
 - `main.js`
 - `package.json`
 - `README.md`
+- `actions_tutorial.md`
+- `settings_tutorial.md`
 
 ## README
 
