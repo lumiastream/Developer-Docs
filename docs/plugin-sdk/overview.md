@@ -80,10 +80,13 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 - `modCommand(type, value)` – optional moderation handler used when `config.modcommandOptions` is declared in your manifest.
 - `searchLights(config)` – optional hook for lights plugins to return discoverable devices in the auth UI.
 - `addLight(config)` – optional hook for manual light add flows; return the updated light list.
+- `searchPlugs(config)` – optional hook for plug/accessory plugins to return discoverable plugs in the auth UI.
+- `addPlug(config)` – optional hook for manual plug add flows; return the updated plug list.
 - `searchThemes(config)` – optional hook for lights plugins to return Studio theme options (array or `{ scenes|effects|presets }` object).
 - `onLightChange(config)` – optional runtime hook for light updates and Studio theme executions (`config.rawConfig.theme` when invoked from themes).
+- `onPlugChange(config)` – optional runtime hook for plug state updates (`config` includes `brand`, `devices`, `state`, `rawConfig`).
 
-## Lights And Studio Themes
+## Lights, Plugs, And Studio Themes
 
 If your plugin is a lights integration:
 
@@ -91,6 +94,12 @@ If your plugin is a lights integration:
 - implement `onLightChange` to apply runtime light changes
 - implement `searchThemes` to surface mode/scene options in Studio themes
 - set `config.themeConfig` in `manifest.json` to control which Studio bucket (`scenes`, `effects`, or `presets`) Lumia should use
+
+If your plugin is a plug/accessory integration:
+
+- implement `searchPlugs` and/or `addPlug` for plug selection in auth
+- implement `onPlugChange` to apply runtime on/off updates
+- add a `config.plugs` block in `manifest.json` to render plug discovery/manual-add UI
 
 ## Lumia API Highlights
 
@@ -190,6 +199,7 @@ The CLI is distributed separately via `lumia-plugin`. Use it with `npx` (require
 - `examples/ollama` – App plugin that queries a local Ollama server and exposes prompt helpers for templates.
 - `examples/openrgb` – Lights plugin that controls OpenRGB devices and profile actions from Lumia.
 - `examples/rumble` – Platforms plugin that tracks Rumble livestream state, engagement, and chat metadata.
+- `examples/sound_match_trigger` – Audio detector that matches a user-uploaded reference sound against live capture and triggers Lumia alerts.
 - `examples/settings_field_showcase` – Reference plugin demonstrating all supported settings field types.
 - `examples/steam` – Steam integration that tracks profile status, games, and achievements with optional alerts/actions.
 

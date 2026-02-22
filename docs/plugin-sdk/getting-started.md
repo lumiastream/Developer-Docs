@@ -162,7 +162,7 @@ Bundle or ship your dependencies with the plugin. Do **not** assume Lumia Stream
 npx lumia-plugin validate .
 ```
 
-## Lights Plugin Hooks (Optional)
+## Lights And Plugs Plugin Hooks (Optional)
 
 If your plugin is a lights integration, implement these runtime hooks as needed:
 
@@ -170,6 +170,9 @@ If your plugin is a lights integration, implement these runtime hooks as needed:
 - `addLight(data)` for manual add flows
 - `onLightChange(config)` to apply color/brightness/power updates
 - `searchThemes()` to expose Studio theme options (scenes/effects/presets)
+- `searchPlugs()` to discover plugs/accessories for auth UI selection
+- `addPlug(data)` for manual plug add flows
+- `onPlugChange(config)` to apply plug on/off updates
 
 When Studio themes trigger your plugin, the selected theme value is available in `config.rawConfig.theme` inside `onLightChange`.
 
