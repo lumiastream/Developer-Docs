@@ -266,15 +266,17 @@ await this.lumia.triggerAlert({
 });
 await this.lumia.triggerAlert({
     alert: "my-custom-alert",
-    dynamic: { name: "value", value: "Viewer123" },
+    dynamic: { value: "Viewer123" },
     extraSettings: { username: "Viewer123" },
 });
 ```
 
-`dynamic` is variation-only and has exactly two keys:
+`dynamic` is variation-only:
 
-- `name` (string): variation field to compare.
-- `value` (string | number | boolean): runtime value for that field.
+- Use `value` (string | number | boolean) for standard comparisons.
+- For specialized comparisons, pass direct dynamic fields such as `giftAmount`, `subMonths`, `currency`, and `isGift`.
+- Plugin-triggered alerts do not accept `dynamic.name`; it is stripped by the plugin runtime.
+- Variation matching reads `dynamic`; `extraSettings` does not satisfy variation conditions.
 
 Use `extraSettings` for everything else. `extraSettings` can contain any keys and is passed through as alert variables.
 
@@ -291,6 +293,8 @@ await this.lumia.triggerAlert({
     },
 });
 ```
+
+Guideline: leave `showInEventList` off for most plugins. Turn it on mainly for platform/event-source plugins where stream events are expected in Event List.
 
 ### Chat Messages
 

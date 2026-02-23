@@ -19,7 +19,6 @@ Browse the plugin SDK examples:
 - [Rumble](./rumble) - Track Rumble livestream state and engagement with alerts, variables, and chat display.
 - [Settings Showcase](./settings-showcase) - Example plugin demonstrating every available settings field type with logging/toasts on save.
 - [Showcase Plugin](./base-plugin) - Starter template that demonstrates settings, actions, variables, and alerts with a minimal code path.
-- [Sound Match Trigger](./sound-match-trigger) - Upload a reference sound, listen to live audio, and trigger Lumia alerts when that sound is detected.
 - [Steam](./steam) - Track Steam profile status, current/recent games, and achievements in Lumia with optional alerts and actions.
 - [System Monitor](./system-monitor) - Monitor CPU, RAM, and GPU usage with variables and alerts.
 - [Trovo](./trovo) - Trovo Live integration with chat, alerts, chatbot, moderation, variables, and stream actions.

@@ -588,7 +588,7 @@ Settings can also include **`disabled`** (boolean) to render a read-only field i
 
 #### Named Map (`named_map`)
 
-Use `named_map` when users should define multiple named entries, each with a typed value and optional alert-variation mapping.
+Use `named_map` when users should define multiple named entries, each with a typed value.
 
 ```json
 {
@@ -596,9 +596,6 @@ Use `named_map` when users should define multiple named entries, each with a typ
 	"label": "Named Sounds",
 	"type": "named_map",
 	"valueType": "file",
-	"mapToVariation": true,
-	"variationAlertKey": "sound_match",
-	"variationConditionType": "EQUAL_SELECTION",
 	"outputMode": "array"
 }
 ```
@@ -607,11 +604,7 @@ Common `named_map` options:
 
 - `valueType`: row value type (`text`, `number`, `select`, `checkbox`/`switch`/`toggle`, `file`, `json`)
 - `valueField`: optional row editor config (placeholder, options, rows, etc.)
-- `mapToVariation`: show/hide variation mapping column (defaults to `true`)
-- `variationOptions`: static variation options
-- `variationSource`: `manifest` (default, uses alert `variationConditions`) or `manual`
-- `variationAlertKey` / `variationConditionType`: choose alert/condition for variation suggestions
-- `nameKey` / `valueKey` / `variationKey`: customize serialized keys
+- `nameKey` / `valueKey`: customize serialized keys
 - `outputMode`: `array` (default) or `object`/`map`
 - `objectValueMode`: for object output, choose `object` (default), `value`, or `path`
 
@@ -981,11 +974,11 @@ Example manifest entry with variations:
 		},
 		{
 			"type": "GIFT_SUB_EQUAL",
-			"description": "Exact gift bundle size (compares when dynamic.name is giftAmount)."
+			"description": "Exact gift bundle size (compares against dynamic.giftAmount)."
 		},
 		{
 			"type": "GIFT_SUB_GREATER",
-			"description": "Gift bundle size or larger (compares when dynamic.name is giftAmount)."
+			"description": "Gift bundle size or larger (compares against dynamic.giftAmount)."
 		}
 	]
 }
@@ -997,7 +990,6 @@ At runtime, trigger the alert with variation data in `dynamic` and alert variabl
 await this.lumia.triggerAlert({
     alert: "giftedMembership",
     dynamic: {
-        name: "value", // variation field/condition key
         value: "Tier2", // value compared by EQUAL_SELECTION
     },
     extraSettings: {
@@ -1011,10 +1003,36 @@ await this.lumia.triggerAlert({
 Important:
 
 - `dynamic` is only for `variationConditions`.
-- `dynamic` can only register two keys: `name` and `value`.
+- Use `dynamic.value` for standard comparisons.
+- For specialized comparisons, pass direct fields like `giftAmount`, `subMonths`, `currency`, or `isGift`.
+- Plugin-triggered alerts do not accept `dynamic.name`; plugin runtime strips it automatically.
 - `extraSettings` can contain any key/value pairs and is the payload used for alert variables/templates.
 
-If you need multiple variation comparisons, trigger separate alerts with the appropriate `{ name, value }` pair for each event.
+If you need multiple variation comparisons, trigger separate alerts with the appropriate `dynamic` payload for each event.
+
+#### Variation Payload Contract (Plugins)
+
+For plugin-triggered alerts, Lumia applies these runtime rules:
+
+- Variation matching uses `dynamic` (not `extraSettings`).
+- Plugin alert keys are auto-prefixed as `<pluginId>-<alert>` unless already prefixed.
+- Reserved identity keys are stripped from plugin payloads: `pluginId`, `platform`, `site`, `origin`.
+- `dynamic.name` from plugins is stripped and ignored.
+- `dynamic` is merged into `extraSettings` for downstream consumers; if the same key exists in both objects, `dynamic` wins.
+
+Use these `dynamic` fields for each variation type:
+
+| Variation Condition Type | Dynamic Fields To Send |
+| --- | --- |
+| `EQUAL_NUMBER`, `EQUAL_SELECTION`, `EQUAL_STRING`, `GREATER_NUMBER`, `LESS_NUMBER` | `value` |
+| `EQUAL_CURRENCY_NUMBER`, `GREATER_CURRENCY_NUMBER` | `value`, `currency` |
+| `GIFT_SUB_EQUAL`, `GIFT_SUB_GREATER` | `giftAmount` |
+| `IS_GIFT` | `isGift` and/or `giftAmount` |
+| `SUBSCRIBED_MONTHS_EQUAL`, `SUBSCRIBED_MONTHS_GREATER` | `subMonths` |
+| `EQUAL_USERNAME` | `username` (or `value`) |
+| `EQUAL_USER_LEVEL` | `lumiauserlevels` |
+| `COUNT_IS_MULTIPLE_OF` | `total` (`previousTotal` optional for deterministic threshold-crossing behavior) |
+| `RANDOM` | no dynamic field required |
 
 If no matching selection is found for the provided condition values (or no `dynamic` payload is supplied), Lumia falls back to the base alert configuration and `defaultMessage`.
 
@@ -1032,7 +1050,9 @@ await this.lumia.triggerAlert({
 });
 ```
 
-Tip: `LumiaDynamicCondition` in `lumia-types/src/alert.types.ts:99` documents valid `dynamic.name` values used by variation checkers (`value`, `currency`, `subMonths`, `giftAmount`, etc.).
+Recommendation: keep `showInEventList` disabled by default. Most utility/app/device plugins should not write every plugin-triggered alert to Event List. Enable it for platform/event-source integrations when those events are meant to appear there.
+
+Tip: `LumiaDynamicCondition` in `lumia-types/src/alert.types.ts:99` documents the dynamic fields used by variation checkers (`value`, `currency`, `subMonths`, `giftAmount`, etc.).
 
 ## Complete Example
 

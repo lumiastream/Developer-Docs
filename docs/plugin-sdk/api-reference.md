@@ -131,7 +131,7 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 
 ### Alerts & Chat
 
-- **`triggerAlert(options: PluginTriggerAlertOptions): Promise<boolean>`** – trigger an alert. Options include the alert identifier and optional payload. Set `showInEventList: true` to also record the alert in the Event List (default is `false`).
+- **`triggerAlert(options: PluginTriggerAlertOptions): Promise<boolean>`** – trigger an alert. Options include the alert identifier and optional payload. `showInEventList` defaults to `false`; set it to `true` only when users should see those plugin-triggered events in Event List (usually streaming platform/event-source plugins).
 - **`displayChat(options: PluginDisplayChatOptions): void`** – display chat content inside Lumia Stream chatboxes and overlays.
 - **`chatbot(options: { message: string; site?: string | string[]; color?: string; chatAsSelf?: boolean }): Promise<boolean>`** – send a message through the Lumia chatbot system.
 
@@ -177,7 +177,7 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 // triggerAlert options
 {
   alert: "my-alert-key",
-  dynamic: { name: "value", value: "Tier1" }, // optional
+  dynamic: { value: "Tier1" }, // optional
   extraSettings: { username: "viewer123" }, // optional
   showInEventList: false, // optional
 }
@@ -217,14 +217,19 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 
 `PluginActionField` also supports `allowVariables` to control whether template variables (e.g., `{{username}}`) can be inserted. When omitted, variables are **not** enabled. Set `allowVariables: true` on any field where you want variables (including `select` with `allowTyping`).
 
-`dynamic` is only for variation matching (`variationConditions`). Lumia only registers two keys from this object: `name` and `value`.
+`dynamic` is only for variation matching (`variationConditions`).
 
-- `dynamic.name`: the variation field/condition key to evaluate (for example `value`, `giftAmount`, or `subMonths`).
-- `dynamic.value`: the runtime value to compare against that condition.
+- Use `dynamic.value` for standard equal/greater/less conditions.
+- For specialized checks, pass direct dynamic fields (for example `giftAmount`, `subMonths`, `currency`, `isGift`).
+- Plugin-triggered alerts do not accept `dynamic.name`; plugin runtime strips it automatically.
+- Variation matching reads `dynamic`; `extraSettings` is not used to satisfy variation checks.
+- See the Manifest Guide section `Variation Payload Contract (Plugins)` for condition-to-field mapping.
 
 `extraSettings` is separate from variation matching. It can contain any key/value pairs and is passed through as alert variables for templates, overlays, and other runtime consumers.
 
 If your alert has no `variationConditions`, omit `dynamic` and pass only `extraSettings`. `showInEventList` defaults to `false` and only records the alert in the Event List when set to `true`.
+
+Best practice: keep `showInEventList` disabled for utility/device/app plugins that fire internal workflow alerts. Enable it for platform integrations (for example Twitch/Kick/Trovo/Rumble-style event streams) where Event List visibility is expected.
 
 For `displayChat`, `userLevels` flags are used when evaluating chat command permissions.
 
