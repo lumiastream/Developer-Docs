@@ -174,6 +174,9 @@ Plugins execute in an isolated **Node.js** process (no browser DOM). Use Node-co
 - `npm run lint` – type-check the source without emitting output.
 - `npm run package-docs` – rebuild the GPT knowledge pack in `gpt-knowledge/lumia-plugin-sdk-docs`.
 - `npm run sync:developer-docs` – sync core SDK docs and generated example pages into `../Developer-Docs/docs/plugin-sdk` (no manual copy/paste).
+- `npm run sync:skills` – refresh Codex skill docs snapshot, Claude skill docs snapshot, and Cursor rules together.
+- `npm run validate:skills` – validate Codex skill + Claude skill + Copilot instructions + Gemini instructions + Cursor rule version alignment.
+- `npm run update:skills -- --target <plugin-path>` – pull latest skill files (Claude/Copilot/Gemini/Cursor, optional Codex) from `main`.
 
 ## CLI Helpers
 
@@ -182,6 +185,69 @@ The CLI is distributed separately via `lumia-plugin`. Use it with `npx` (require
 - `npx lumia-plugin create my_plugin` scaffold a feature-rich sample plugin showing logging, variables, and alerts
 - `npx lumia-plugin validate ./path/to/plugin` check `manifest.json`, entry files, and config for common mistakes
 - `npx lumia-plugin build ./path/to/plugin --out ./plugin.lumiaplugin` bundle the directory into a distributable archive
+
+## Skills Support (Codex + Claude + Copilot + Gemini CLI + Cursor)
+
+This repository ships cross-tool guidance for all supported tools using this repo as source:
+
+- [https://github.com/lumiastream/Plugin-SDK](https://github.com/lumiastream/Plugin-SDK)
+
+### Easy Install (Recommended)
+
+Install common project skill files (Claude + Copilot + Gemini + Cursor):
+
+```bash
+npx lumia-plugin skills --target /path/to/your-plugin
+```
+
+Install one specific tool:
+
+```bash
+npx lumia-plugin skills claude --target /path/to/your-plugin
+npx lumia-plugin skills copilot --target /path/to/your-plugin
+npx lumia-plugin skills gemini --target /path/to/your-plugin
+npx lumia-plugin skills cursor --target /path/to/your-plugin
+npx lumia-plugin skills codex
+```
+
+Optional Codex home override:
+
+```bash
+npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
+```
+
+List available skill bundles:
+
+```bash
+npx lumia-plugin skills list
+```
+
+### Easy Updates (No Full Redownload)
+
+Run the same command again to update to latest skill files:
+
+```bash
+npx lumia-plugin skills --target /path/to/your-plugin
+```
+
+Optional tool selection:
+
+```bash
+npx lumia-plugin skills --tools claude,copilot,gemini,cursor --target /path/to/your-plugin
+```
+
+Optional Codex skill update (for Codex Desktop install path):
+
+```bash
+npx lumia-plugin skills codex
+npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
+```
+
+### Automatic Sync on Publish
+
+- `npm run sync:skills`
+- `npm run validate:skills`
+- `prepublishOnly` runs both before publish (covers Codex + Claude + Copilot + Gemini CLI + Cursor)
 
 ## Documentation
 

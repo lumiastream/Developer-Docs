@@ -20,6 +20,61 @@ The repository ships simple helpers so you can bootstrap and package plugins wit
 - `npx lumia-plugin build ./path/to/plugin` runs the same build pipeline globally (optional `--out`).
 - `npx lumia-plugin validate ./path/to/plugin` validates manifests without cloning the repo.
 
+## Skills Support (Optional)
+
+Use the built-in skill files if you develop plugins in Codex Desktop, Claude, GitHub Copilot, Gemini CLI, or Cursor.
+
+### Easy Install (Recommended)
+
+Install common project skill files (Claude + Copilot + Gemini + Cursor):
+
+```bash
+npx lumia-plugin skills --target /path/to/your-plugin
+```
+
+Install one specific tool:
+
+```bash
+npx lumia-plugin skills claude --target /path/to/your-plugin
+npx lumia-plugin skills copilot --target /path/to/your-plugin
+npx lumia-plugin skills gemini --target /path/to/your-plugin
+npx lumia-plugin skills cursor --target /path/to/your-plugin
+npx lumia-plugin skills codex
+```
+
+Optional Codex home override:
+
+```bash
+npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
+```
+
+List available skill bundles:
+
+```bash
+npx lumia-plugin skills list
+```
+
+Use in Codex prompts:
+
+- `$lumia-plugin-codex-skill`
+- Example: `Use $lumia-plugin-codex-skill to validate my plugin manifest and hooks before packaging`
+
+### Updating Later (No Full Redownload)
+
+Run the same command again to update to latest skill files:
+
+```bash
+npx lumia-plugin skills --target /path/to/your-plugin
+```
+
+Tool-specific updates:
+
+```bash
+npx lumia-plugin skills --tools claude,copilot,gemini,cursor --target /path/to/your-plugin
+npx lumia-plugin skills codex
+npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
+```
+
 ## 1. Project Setup
 
 ```bash
