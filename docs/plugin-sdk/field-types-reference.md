@@ -124,6 +124,24 @@ Multi-line text input with optional variable support (set `allowVariables: true`
 
 ### Numeric Input Types
 
+#### `datetime`
+Native local date/time picker.
+
+```json
+{
+  "key": "publishAt",
+  "label": "Publish At",
+  "type": "datetime",
+  "defaultValue": "2026-03-01T15:30"
+}
+```
+
+**Properties:**
+- Returns a local datetime string in `YYYY-MM-DDTHH:mm` format
+- `allowVariables` - Enable template variables for action fields
+
+---
+
 #### `number`
 Numeric input with optional constraints.
 
@@ -322,7 +340,7 @@ Name-to-value map editor. Users can add multiple rows, where each row has:
 ```
 
 **Properties:**
-- `valueType` - Row value input type (`text`, `number`, `select`, `checkbox`/`switch`/`toggle`, `file`, `json`)
+- `valueType` - Row value input type (`text`, `datetime`, `number`, `select`, `checkbox`/`switch`/`toggle`, `file`, `json`)
 - `valueField` - Optional full field config override for the row value editor (`label`, `placeholder`, `options`, `rows`, etc.)
 - `nameKey` / `valueKey` - Customize serialized payload keys
 - `outputMode` - Store as `array` (default) or `object`/`map`
@@ -392,6 +410,7 @@ Structured region-of-interest editor for screen detection coordinates.
 | `url` | ✅ | ✅ | With `allowVariables` | auto | URL validation |
 | `password` | ✅ | ❌ | ❌ | pattern, length (settings) | Hidden characters |
 | `textarea` | ✅ | ✅ | With `allowVariables` | pattern, length (settings) | Multi-line, rows configurable |
+| `datetime` | ✅ | ✅ | With `allowVariables` | - | Native datetime picker (`YYYY-MM-DDTHH:mm`) |
 | `number` | ✅ | ✅ | With `allowVariables` | min, max | Numeric input (`min`/`max` top-level on actions) |
 | `slider` | ✅ | ✅ | ❌ | min, max | Visual slider (`min`/`max`/`step` top-level on actions) |
 | `select` | ✅ | ✅ | With `allowVariables` | - | Dropdown, supports `allowTyping`; set `multiple: true` for multi-value; supports `dynamicOptions` |

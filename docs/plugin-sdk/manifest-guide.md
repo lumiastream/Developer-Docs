@@ -543,6 +543,7 @@ When declared, Lumia routes these commands to `modCommand(type, value)` in your 
 #### Setting Types
 
 - **`text`** - Single-line text input
+- **`datetime`** - Native datetime picker (`YYYY-MM-DDTHH:mm`)
 - **`password`** - Password input (hidden text)
 - **`number`** - Numeric input
 - **`email`** - Email address input
@@ -602,7 +603,7 @@ Use `named_map` when users should define multiple named entries, each with a typ
 
 Common `named_map` options:
 
-- `valueType`: row value type (`text`, `number`, `select`, `checkbox`/`switch`/`toggle`, `file`, `json`)
+- `valueType`: row value type (`text`, `datetime`, `number`, `select`, `checkbox`/`switch`/`toggle`, `file`, `json`)
 - `valueField`: optional row editor config (placeholder, options, rows, etc.)
 - `nameKey` / `valueKey`: customize serialized keys
 - `outputMode`: `array` (default) or `object`/`map`
@@ -714,6 +715,7 @@ Avoid excessive logging. High-frequency logs can quickly fill the user's Logs da
 Action fields support the following input types:
 
 - **`text`** - Single-line text input. Supports variables when `allowVariables` is true.
+- **`datetime`** - Native datetime picker. Supports variables when `allowVariables` is true. Returns `YYYY-MM-DDTHH:mm`.
 - **`email`** - Email address input with validation. Supports variables when `allowVariables` is true.
 - **`url`** - URL input with validation. Supports variables when `allowVariables` is true.
 - **`number`** - Numeric input with optional min/max constraints.

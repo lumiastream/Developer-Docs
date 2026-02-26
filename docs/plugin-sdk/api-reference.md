@@ -156,8 +156,22 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 
 ### UX Helpers
 
-- **`showToast(options: { message: string; time?: number }): Promise<boolean>`** – display a toast notification within Lumia Stream.  
+- **`showToast(options: { message: string; time?: number; type?: "info" | "success" | "warning" | "warn" | "error" }): Promise<boolean>`** – display a toast notification within Lumia Stream.  
   `time` is in **milliseconds**.
+- **`prompt(options: { title?: string; message?: string; inputLabel?: string; inputPlaceholder?: string; confirmLabel?: string; showCancelButton?: boolean; inputType?: "text" | "password" }): Promise<{ value: string } | null>`** – open a SweetAlert input prompt. Returns `{ value }` on confirm or `null` if cancelled/failed.
+  Example:
+  ```js
+  const result = await lumia.prompt({
+    title: "Phone Verification",
+    message: "Enter the verification code",
+    inputLabel: "Login Code",
+    inputPlaceholder: "12345",
+    confirmLabel: "Verify",
+  });
+  if (result?.value) {
+    // use result.value
+  }
+  ```
 - **`log(params: { message?: any; level?: "info" | "warn" | "warning" | "error" | "success" | "debug"; type?: ... } | string | number, type?: "info" | "warn" | "warning" | "error" | "success" | "debug"): Promise<boolean>`** – write to the plugin host console (visible in plugin host logs). Supports either object form (`{ message, level/type }`) or positional form (`message, type`).
 - **`dashboardLog(params: { message?: any; level?: "info" | "warn" | "warning" | "error" | "success" | "debug"; type?: ... } | string | number, type?: "info" | "warn" | "warning" | "error" | "success" | "debug"): Promise<boolean>`** – write a plugin message into Lumia Stream's dashboard log feed (the main app log panel). Also supports object or positional severity.
 - **`addLog(...)`** – deprecated alias of `log(...)`.
