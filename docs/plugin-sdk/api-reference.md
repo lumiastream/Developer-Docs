@@ -28,8 +28,10 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 - **`modCommand(type, value): Promise<boolean | void> | boolean | void`** – optional moderation handler. Enabled by declaring `config.modcommandOptions` in the manifest.
 - **`searchLights(config?): Promise<any>`** – optional discovery hook for lights plugins. Return a list of devices for the auth UI.
 - **`addLight(config): Promise<any>`** – optional manual-add hook for lights plugins. Return the updated list.
+- **`removeLight(config): Promise<any>`** – optional manual-remove hook for lights plugins. Return the updated list.
 - **`searchPlugs(config?): Promise<any>`** – optional discovery hook for plug/accessory plugins. Return a list of plugs for the auth UI.
 - **`addPlug(config): Promise<any>`** – optional manual-add hook for plug/accessory plugins. Return the updated list.
+- **`removePlug(config): Promise<any>`** – optional manual-remove hook for plug/accessory plugins. Return the updated list.
 - **`searchThemes(config?): Promise<any>`** – optional Studio theme discovery hook for lights plugins. Return an array or an object containing `scenes`, `effects`, and/or `presets`.
 - **`onLightChange(config): Promise<void>`** – optional hook fired when Lumia sends color/brightness updates for lights owned by your plugin (`config` includes `brand`, `lights`, `color`, `brightness`, `power`, `transition`, `rawConfig`).  
   For Studio theme-triggered updates, selected theme values are available in `config.rawConfig.theme`.
@@ -140,8 +142,8 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 - **`overlaySendCustomContent(options: { layer: string; codeId: string; content: any }): Promise<boolean>`** – push custom overlay content.
 - **`sendColor(options: { lights?: string[]; color: string | any; power?: boolean; brightness?: number; transition?: number }): Promise<boolean>`** – control connected lighting devices.
 - **`getLights(): Promise<any>`** – retrieve current light information.
-- _Light management note_: Lights are saved via the PluginAuth UI. Implement `searchLights`/`addLight` to return discovered devices for the UI, and handle runtime updates in `onLightChange`; plugins should not mutate light state directly.
-- _Plug management note_: Plugs are saved via the PluginAuth UI. Implement `searchPlugs`/`addPlug` to return discovered plugs for the UI, and handle runtime updates in `onPlugChange`; plugins should not mutate plug state directly.
+- _Light management note_: Lights are saved via the PluginAuth UI. Implement `searchLights`/`addLight` (and optionally `removeLight`) to manage auth UI devices, and handle runtime updates in `onLightChange`; plugins should not mutate live light state directly.
+- _Plug management note_: Plugs are saved via the PluginAuth UI. Implement `searchPlugs`/`addPlug` (and optionally `removePlug`) to manage auth UI devices, and handle runtime updates in `onPlugChange`; plugins should not mutate plug state directly.
 - _Studio themes note_: If your plugin exposes themes/modes, implement `searchThemes` and set `config.themeConfig` in the manifest so Lumia knows where to place returned options (`scenes`, `effects`, `presets`).
 
 ### Audio & Speech

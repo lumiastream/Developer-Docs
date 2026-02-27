@@ -80,8 +80,10 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 - `modCommand(type, value)` – optional moderation handler used when `config.modcommandOptions` is declared in your manifest.
 - `searchLights(config)` – optional hook for lights plugins to return discoverable devices in the auth UI.
 - `addLight(config)` – optional hook for manual light add flows; return the updated light list.
+- `removeLight(config)` – optional hook for manual light removal flows; return the updated light list.
 - `searchPlugs(config)` – optional hook for plug/accessory plugins to return discoverable plugs in the auth UI.
 - `addPlug(config)` – optional hook for manual plug add flows; return the updated plug list.
+- `removePlug(config)` – optional hook for manual plug removal flows; return the updated plug list.
 - `searchThemes(config)` – optional hook for lights plugins to return Studio theme options (array or `{ scenes|effects|presets }` object).
 - `onLightChange(config)` – optional runtime hook for light updates and Studio theme executions (`config.rawConfig.theme` when invoked from themes).
 - `onPlugChange(config)` – optional runtime hook for plug state updates (`config` includes `brand`, `devices`, `state`, `rawConfig`).
@@ -91,6 +93,7 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 If your plugin is a lights integration:
 
 - implement `searchLights` and/or `addLight` for light selection in auth
+- implement `removeLight` if users should be able to remove manually added lights from auth
 - implement `onLightChange` to apply runtime light changes
 - implement `searchThemes` to surface mode/scene options in Studio themes
 - set `config.themeConfig` in `manifest.json` to control which Studio bucket (`scenes`, `effects`, or `presets`) Lumia should use
@@ -98,6 +101,7 @@ If your plugin is a lights integration:
 If your plugin is a plug/accessory integration:
 
 - implement `searchPlugs` and/or `addPlug` for plug selection in auth
+- implement `removePlug` if users should be able to remove manually added plugs from auth
 - implement `onPlugChange` to apply runtime on/off updates
 - add a `config.plugs` block in `manifest.json` to render plug discovery/manual-add UI
 
@@ -194,7 +198,7 @@ This repository ships cross-tool guidance for all supported tools using this rep
 
 ### Easy Install (Recommended)
 
-Install common project skill files (Claude + Copilot + Gemini + Cursor):
+Install all supported skills (Claude + Copilot + Gemini + Cursor + Codex):
 
 ```bash
 npx lumia-plugin skills --target /path/to/your-plugin
@@ -220,6 +224,24 @@ List available skill bundles:
 
 ```bash
 npx lumia-plugin skills list
+```
+
+### Codex Desktop: Enable And Use
+
+Codex skill files install to `$CODEX_HOME/skills` (or `~/.codex/skills` when `CODEX_HOME` is not set).
+
+1. Install Codex skill files:
+```bash
+npx lumia-plugin skills codex
+```
+2. Restart Codex Desktop (or open a new thread).
+3. Invoke the skill in your prompt:
+```text
+$lumia-plugin-codex-skill
+```
+4. Example:
+```text
+Use $lumia-plugin-codex-skill to validate my plugin manifest and required hooks.
 ```
 
 ### Easy Updates (No Full Redownload)

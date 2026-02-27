@@ -26,7 +26,7 @@ Use the built-in skill files if you develop plugins in Codex Desktop, Claude, Gi
 
 ### Easy Install (Recommended)
 
-Install common project skill files (Claude + Copilot + Gemini + Cursor):
+Install all supported skills (Claude + Copilot + Gemini + Cursor + Codex):
 
 ```bash
 npx lumia-plugin skills --target /path/to/your-plugin
@@ -54,10 +54,23 @@ List available skill bundles:
 npx lumia-plugin skills list
 ```
 
-Use in Codex prompts:
+### Codex Desktop: Enable And Use
 
-- `$lumia-plugin-codex-skill`
-- Example: `Use $lumia-plugin-codex-skill to validate my plugin manifest and hooks before packaging`
+Codex skill files install to `$CODEX_HOME/skills` (or `~/.codex/skills` when `CODEX_HOME` is not set).
+
+1. Install Codex skill files:
+```bash
+npx lumia-plugin skills codex
+```
+2. Restart Codex Desktop (or open a new thread).
+3. Invoke the skill in your prompt:
+```text
+$lumia-plugin-codex-skill
+```
+4. Example:
+```text
+Use $lumia-plugin-codex-skill to validate my plugin manifest and hooks before packaging.
+```
 
 ### Updating Later (No Full Redownload)
 
