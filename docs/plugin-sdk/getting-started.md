@@ -551,7 +551,13 @@ async function fetchWithBackoff(url) {
 }
 ```
 
-If repeated failures occur, keep the plugin offline until the next load or a settings update to avoid rapid reconnect loops.
+Connection reliability checklist for polling/integration plugins:
+
+- Implement an explicit `disconnect()` flow that clears intervals/timeouts, closes sockets, and calls `await this.lumia.updateConnection(false)`.
+- Retry with capped exponential backoff (for example `1s -> 2s -> 4s -> 8s -> 16s`) and stop after a small fixed retry budget (typically 3-5 attempts).
+- When retries are exhausted, keep the plugin marked as disconnected and stop polling.
+- Resume only on an explicit reconnect trigger (plugin load, relevant settings change, or a manual connect action).
+- Do not run continuous polling loops while disconnected unless the upstream integration explicitly requires it and the poll rate is safely bounded.
 
 ### Event-Based Plugins
 

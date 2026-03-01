@@ -87,6 +87,10 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 - `searchThemes(config)` – optional hook for lights plugins to return Studio theme options (array or `{ scenes|effects|presets }` object).
 - `onLightChange(config)` – optional runtime hook for light updates and Studio theme executions (`config.rawConfig.theme` when invoked from themes).
 - `onPlugChange(config)` – optional runtime hook for plug state updates (`config` includes `brand`, `devices`, `state`, `rawConfig`).
+- `onCustomAuthDisplaySignal(config)` – optional hook to handle signals sent from `config.customAuthDisplay` UI.
+- `onCustomAuthDisplayClose(config)` – optional hook called whenever the custom auth modal closes (button, backdrop, escape, or signal close).
+
+For networked plugins, add an explicit disconnect flow, use capped retry backoff, and set connection state to disconnected when retry limits are reached so polling does not run forever.
 
 ## Lights, Plugs, And Studio Themes
 
@@ -145,6 +149,71 @@ Notes:
 - The first plugin call for a key should provide `factory`.
 - Later plugins can call `acquireShared(key)` to reuse the same instance.
 - If a plugin unloads without releasing, Lumia auto-releases its remaining references.
+
+### Custom Auth Display
+
+Plugins can render a custom setup UI inside PluginAuth by defining `config.customAuthDisplay`:
+
+```json
+{
+	"config": {
+		"customAuthDisplay": {
+			"entry": "./auth/index.html",
+			"autoAutoOpen": true,
+			"authButtonLabel": "Open Fixture Patcher",
+			"title": "Fixture Patcher"
+		}
+	}
+}
+```
+
+- `entry` is required and must point to your HTML file.
+- `title` is required and sets the modal title.
+- `autoAutoOpen` controls automatic opening when PluginAuth loads.
+- `authButtonLabel` adds a manual open button.
+
+Inside your custom auth page, Lumia injects `window.customAuthDisplay`:
+
+- `window.customAuthDisplay.signal(type, payload)` sends a generic request to plugin runtime (`onCustomAuthDisplaySignal`) and resolves with the hook response.
+- `window.customAuthDisplay.close(reason?)` closes the modal and triggers `onCustomAuthDisplayClose`.
+
+You can also close through signal mode by sending `signal('close')`.
+
+#### Custom Auth Display Styling (Lumia Match)
+
+When building `customAuthDisplay` pages, use Lumia's core dark theme tokens so your setup UI looks native inside PluginAuth.
+
+Recommended base palette:
+
+```css
+:root {
+	--background: #191743;
+	--containerbackground: #1f1f3a;
+	--cardbackground: #15142b;
+	--cardborder: #393853;
+	--primary: #ff4076;
+	--secondary: #535395;
+	--white: #ffffff;
+	--white2: #cac9d5;
+	--success: #5dda6c;
+	--warning: #dcc984;
+	--error: #fd5454;
+	--transwhite: rgba(255, 255, 255, 0.05);
+}
+```
+
+Recommended UI standards:
+
+- Typography: use `Roboto` first (`font-family: "Roboto", sans-serif`).
+- Border radius: use `16px` for cards/modals and `10px-14px` for controls/buttons.
+- Inputs/selects/textareas: `1px` border (`#393853`), dark fill (`#1f1f3a` or `rgba(255,255,255,0.05)`), text `#ffffff`, helper text `#cac9d5`.
+- Input focus: change border to `#cac9d5` (or `#ff4076` for primary emphasis).
+- Primary buttons: pink Lumia accent (`#ff4076`) with subtle tinted background and stronger border.
+- Secondary buttons: neutral dark fill with `#393853` border and lighter hover border.
+- Success/warn/error actions: use `#5dda6c`, `#dcc984`, `#fd5454` tints for state clarity.
+- Spacing rhythm: prefer `8px` increments (`8/12/16/24`) for consistent density.
+
+Tip for AI-assisted generation: include the palette + standards above directly in prompts when asking an AI to generate PluginAuth HTML/CSS so results stay aligned with Lumia styling.
 
 For Bluetooth plugins using `@abandonware/noble`, use the shared noble helper instead of loading noble separately in each plugin:
 

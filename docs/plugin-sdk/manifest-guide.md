@@ -360,6 +360,47 @@ Tutorials can include local images bundled with the plugin. Reference them with 
 ![List ID](clickup_tutorial_list_id.jpg)
 ```
 
+Tutorials can also embed playable media directly in markdown-supported HTML tags.
+
+#### Tutorial Media Embeds
+
+Use raw HTML tags inside `settings_tutorial` or `actions_tutorial` for embedded media:
+
+```md
+### Video Walkthrough
+<iframe
+  width="100%"
+  height="315"
+  src="https://www.youtube.com/watch?v=VCd0kYWLvMQ"
+  title="Setup walkthrough"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen
+></iframe>
+```
+
+```md
+### Local Video
+<video controls preload="metadata">
+  <source src="./setup-demo.mp4" type="video/mp4" />
+</video>
+```
+
+```md
+### Audio Instructions
+<audio controls preload="metadata">
+  <source src="./voiceover.mp3" type="audio/mpeg" />
+</audio>
+```
+
+Media behavior and safety rules:
+
+- `iframe` embeds are restricted to YouTube (`youtube.com`, `m.youtube.com`, `youtu.be`).
+- YouTube watch/share URLs are normalized to embed URLs automatically.
+- `video`, `audio`, and `source` `src` values allow `http`, `https`, `file`, `blob`, and `data:audio/*` / `data:video/*`.
+- Relative media paths are resolved from the plugin root, so include those files in your plugin package.
+- Keep a plain fallback link near embeds so users can still open media externally if playback is blocked on their system.
+
 ### Plugin Translations
 
 Plugins can provide translation bundles under `config.translations`. These bundles are loaded into i18next under the plugin namespace (the plugin `id`) when the plugin loads.
@@ -492,6 +533,83 @@ Notes:
 - `serviceUrl` can be provided to override the default auth URL entirely.
 - `scopes` are provider-specific. When set, they are sent to Lumia's OAuth service as a comma-separated list.
 - Tokens are stored into your plugin settings using the `tokenKeys` mapping and are available via `this.settings` in your plugin.
+
+### Custom Auth Display (PluginAuth Embedded UI)
+
+If your plugin needs a custom setup flow (for example, patching fixtures or testing hardware output), you can render your own HTML/CSS/JS inside PluginAuth.
+
+Manifest shape:
+
+```json
+{
+	"config": {
+		"customAuthDisplay": {
+			"entry": "./auth/index.html",
+			"autoAutoOpen": true,
+			"authButtonLabel": "Open Device Setup",
+			"title": "Device Setup"
+		}
+	}
+}
+```
+
+Field behavior:
+
+- `entry` (required): relative path to your HTML file from plugin root.
+- `title` (required): modal title shown in PluginAuth.
+- `autoAutoOpen` (optional boolean): auto-opens the modal when PluginAuth loads.
+- `authButtonLabel` (optional string): label for the manual open button in PluginAuth.
+
+Runtime hooks:
+
+- `onCustomAuthDisplaySignal(config)` receives generic signals from your embedded page.
+- `onCustomAuthDisplayClose(config)` runs when the modal closes.
+
+In your embedded page, Lumia injects `window.customAuthDisplay`:
+
+- `window.customAuthDisplay.signal(type, payload)` sends a generic signal to `onCustomAuthDisplaySignal`.
+- `window.customAuthDisplay.close(reason?)` closes the modal and triggers `onCustomAuthDisplayClose`.
+- `window.customAuthDisplay.signal('close')` is also supported as a close mode.
+
+#### Lumia PluginAuth Styling Standards (Recommended)
+
+To keep custom auth pages visually consistent with Lumia Stream, use Lumia's base theme colors and component conventions.
+
+Suggested palette:
+
+```css
+:root {
+	--background: #191743;
+	--containerbackground: #1f1f3a;
+	--cardbackground: #15142b;
+	--cardborder: #393853;
+	--primary: #ff4076;
+	--secondary: #535395;
+	--white: #ffffff;
+	--white2: #cac9d5;
+	--success: #5dda6c;
+	--warning: #dcc984;
+	--error: #fd5454;
+	--transwhite: rgba(255, 255, 255, 0.05);
+}
+```
+
+Suggested component rules:
+
+- Font: `Roboto, sans-serif`.
+- Cards/panels: radius `16px`, border `1px solid #393853`, dark panel fill (`#1f1f3a`/`#15142b`).
+- Inputs/selects/textareas:
+  - border `1px solid #393853`
+  - background `rgba(255,255,255,0.05)` or `#1f1f3a`
+  - text `#ffffff`, secondary/help text `#cac9d5`
+  - focus border `#cac9d5` (or `#ff4076` for primary emphasis)
+- Buttons:
+  - primary actions use `#ff4076` tint + stronger accent border
+  - secondary actions use neutral dark fill + subtle border/hover
+  - status actions use `#5dda6c`, `#dcc984`, `#fd5454` tinted variants
+- Spacing: use `8px` scale (`8/12/16/24`) for consistent density.
+
+For AI-assisted UI generation, include these tokens and rules in your prompt so generated custom auth pages match Lumia out of the box.
 
 ### Native chatbot support
 
@@ -945,6 +1063,7 @@ Use `variationConditions` when an alert can fire with multiple sub-types (for ex
 
 - **`type`** – One of the condition identifiers exposed by `LumiaVariationConditions` (see `lumia-types/src/alert.types.ts:6`). Examples: `EQUAL_SELECTION`, `GIFT_SUB_EQUAL`, `GREATER_NUMBER`, `RANDOM`.
 - **`description`** _(optional)_ – Helper text shown in the Lumia UI.
+- **`dynamicSelections`** _(optional, `EQUAL_SELECTION` only)_ – When `true`, Lumia shows dropdown suggestions but also allows typed custom values.
 - **`selections`** _(optional)_ – Only used with `EQUAL_SELECTION`; supplies the dropdown values the creator can pick from.
   - **`label`** – How the option appears in the Lumia UI.
   - **`value`** – The literal tier/value you expect to receive at runtime (compared against `dynamic.value`).
@@ -962,6 +1081,7 @@ Example manifest entry with variations:
 		{
 			"type": "EQUAL_SELECTION",
 			"description": "Tier level (compares against dynamic.value).",
+			"dynamicSelections": true,
 			"selections": [
 				{
 					"label": "Single gift",
@@ -1260,7 +1380,7 @@ The SDK includes manifest validation. Common validation errors:
 7. **Testing**: Test your manifest with the validation tools
 8. **Tutorials**: Provide clear `settings_tutorial` and `actions_tutorial` steps
 9. **No Test Controls**: Avoid test-only settings and actions
-10. **Retry Discipline**: Use exponential backoff and stop rapid retry loops
+10. **Retry Discipline**: Implement a disconnect flow, use exponential backoff with a retry cap, mark the plugin disconnected when retries are exhausted, and pause polling until an explicit reconnect trigger
 11. **Minimal Logs**: Log errors and explicit user actions only
 
 ## Localization

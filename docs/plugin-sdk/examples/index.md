@@ -17,7 +17,7 @@ Browse the plugin SDK examples:
 - [OpenClaw](./openclaw) - Send prompts to an OpenClaw Gateway and use responses in Lumia templates via {{openclaw_prompt}} and related helpers.
 - [OpenRGB](./openrgb) - Control OpenRGB devices as Lumia lights and trigger OpenRGB profile actions (Corsair, Razer, ASUS, MSI, Gigabyte, ASRock, NZXT, SteelSeries, Logitech, HyperX, Cooler Master, and more).
 - [Rumble](./rumble) - Track Rumble livestream state and engagement with alerts, variables, and chat display.
-- [Settings Showcase](./settings-showcase) - Example plugin demonstrating every available settings field type with logging/toasts on save.
+- [Settings Showcase](./settings-showcase) - Example plugin demonstrating every available settings field type with logging on save.
 - [Showcase Plugin](./base-plugin) - Starter template that demonstrates settings, actions, variables, and alerts with a minimal code path.
 - [Steam](./steam) - Track Steam profile status, current/recent games, and achievements in Lumia with optional alerts and actions.
 - [System Monitor](./system-monitor) - Monitor CPU, RAM, and GPU usage with variables and alerts.

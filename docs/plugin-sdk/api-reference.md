@@ -36,6 +36,8 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 - **`onLightChange(config): Promise<void>`** – optional hook fired when Lumia sends color/brightness updates for lights owned by your plugin (`config` includes `brand`, `lights`, `color`, `brightness`, `power`, `transition`, `rawConfig`).  
   For Studio theme-triggered updates, selected theme values are available in `config.rawConfig.theme`.
 - **`onPlugChange(config): Promise<void>`** – optional hook fired when Lumia sends plug state updates for plugs owned by your plugin (`config` includes `brand`, `devices`, `state`, `rawConfig`).
+- **`onCustomAuthDisplaySignal(config): Promise<any>`** – optional hook fired when your custom auth display sends `signal(type, payload)`.
+- **`onCustomAuthDisplayClose(config): Promise<void> | void`** – optional hook fired when the custom auth modal closes (manual close, backdrop/escape, or signal close).
 
 ### Action Handling
 
@@ -83,6 +85,12 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 
 - **`updateConnection(state: boolean): Promise<void>`** – notify Lumia Stream that the plugin connection has changed.
 - **`getConnectionState(): boolean`** – check the last reported connection state.
+
+Connection lifecycle guidance for networked plugins:
+
+- Implement a real disconnect path (`onunload`, manual disconnect action, or auth failure) and call `updateConnection(false)`.
+- Use capped backoff for reconnect attempts and stop retrying after a small fixed limit.
+- If retries are exhausted, keep the plugin disconnected and pause polling until an explicit reconnect trigger.
 
 ### Settings
 
@@ -261,6 +269,40 @@ For `displayChat`, `userLevels` flags are used when evaluating chat command perm
 Use `skipCommandProcessing` (top-level) to show a message in chat without running command parsing.
 
 `PluginIntegrationConfig` supports `actions_tutorial` (markdown) to display a guide alongside the Actions editor. It also supports `oauth` for Lumia-managed OAuth configuration (see the manifest guide for details).
+
+For media embeds inside tutorials (`iframe`, `video`, `audio`, `source`) and URL safety rules, see `docs/manifest-guide.md` under **Tutorial Media Embeds**.
+
+`PluginIntegrationConfig` also supports `customAuthDisplay` for custom setup UI embedded in PluginAuth:
+
+```json
+{
+	"config": {
+		"customAuthDisplay": {
+			"entry": "./auth/index.html",
+			"autoAutoOpen": true,
+			"authButtonLabel": "Open Setup",
+			"title": "Setup Wizard"
+		}
+	}
+}
+```
+
+- `entry` and `title` are required.
+
+Custom auth display runtime bridge:
+
+- `window.customAuthDisplay.signal(type, payload)` routes to `onCustomAuthDisplaySignal`.
+- `window.customAuthDisplay.close(reason?)` closes the modal and routes to `onCustomAuthDisplayClose`.
+- `signal('close')` is also supported as a close mode.
+
+Custom auth display styling guidance (Lumia-aligned):
+
+- Base palette: `#191743` (background), `#1f1f3a` (container), `#15142b` (card), `#393853` (border), `#ff4076` (primary), `#ffffff` (primary text), `#cac9d5` (secondary text).
+- Control standards: `1px` borders, dark/translucent fills, `10-14px` control radius, `16px` panel radius, `8px` spacing scale.
+- Buttons: primary uses Lumia pink (`#ff4076`) accent; secondary uses neutral dark fill; success/warn/error use `#5dda6c` / `#dcc984` / `#fd5454` tints.
+- Typography: `Roboto, sans-serif`.
+
+See `docs/manifest-guide.md` ("Lumia PluginAuth Styling Standards") for the full token block and examples.
 
 `PluginIntegrationConfig` also supports `translations` for plugin-localized strings:
 
