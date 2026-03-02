@@ -272,12 +272,12 @@ Use `skipCommandProcessing` (top-level) to show a message in chat without runnin
 
 For media embeds inside tutorials (`iframe`, `video`, `audio`, `source`) and URL safety rules, see `docs/manifest-guide.md` under **Tutorial Media Embeds**.
 
-`PluginIntegrationConfig` also supports `customAuthDisplay` for custom setup UI embedded in PluginAuth:
+`PluginIntegrationConfig` also supports `custom_auth_display` for custom setup UI embedded in PluginAuth:
 
 ```json
 {
 	"config": {
-		"customAuthDisplay": {
+		"custom_auth_display": {
 			"entry": "./auth/index.html",
 			"autoAutoOpen": true,
 			"authButtonLabel": "Open Setup",

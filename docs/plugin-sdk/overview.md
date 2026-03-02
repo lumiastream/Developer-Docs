@@ -87,7 +87,7 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 - `searchThemes(config)` – optional hook for lights plugins to return Studio theme options (array or `{ scenes|effects|presets }` object).
 - `onLightChange(config)` – optional runtime hook for light updates and Studio theme executions (`config.rawConfig.theme` when invoked from themes).
 - `onPlugChange(config)` – optional runtime hook for plug state updates (`config` includes `brand`, `devices`, `state`, `rawConfig`).
-- `onCustomAuthDisplaySignal(config)` – optional hook to handle signals sent from `config.customAuthDisplay` UI.
+- `onCustomAuthDisplaySignal(config)` – optional hook to handle signals sent from `config.custom_auth_display` UI.
 - `onCustomAuthDisplayClose(config)` – optional hook called whenever the custom auth modal closes (button, backdrop, escape, or signal close).
 
 For networked plugins, add an explicit disconnect flow, use capped retry backoff, and set connection state to disconnected when retry limits are reached so polling does not run forever.
@@ -152,12 +152,12 @@ Notes:
 
 ### Custom Auth Display
 
-Plugins can render a custom setup UI inside PluginAuth by defining `config.customAuthDisplay`:
+Plugins can render a custom setup UI inside PluginAuth by defining `config.custom_auth_display`:
 
 ```json
 {
 	"config": {
-		"customAuthDisplay": {
+		"custom_auth_display": {
 			"entry": "./auth/index.html",
 			"autoAutoOpen": true,
 			"authButtonLabel": "Open Fixture Patcher",
@@ -181,7 +181,7 @@ You can also close through signal mode by sending `signal('close')`.
 
 #### Custom Auth Display Styling (Lumia Match)
 
-When building `customAuthDisplay` pages, use Lumia's core dark theme tokens so your setup UI looks native inside PluginAuth.
+When building `custom_auth_display` pages, use Lumia's core dark theme tokens so your setup UI looks native inside PluginAuth.
 
 Recommended base palette:
 
