@@ -788,6 +788,8 @@ To auto-refresh dynamic options when a user selects the action type, set `refres
 }
 ```
 
+`acceptedVariables` on actions is optional, but when used each key must be prefixed with your plugin id (for example, `myplugin_song_name`). Unprefixed keys are ignored by Lumia.
+
 ### Variable Functions
 
 Variable functions let plugins return values inline in templates (similar to `{{ai_prompt=...}}`).
@@ -989,9 +991,11 @@ Set `allowVariables: true` to enable template variables (e.g., `{{username}}`) f
 
 Variables define data that your plugin provides to Lumia Stream:
 
-Do not prefix variable names with your plugin name. Lumia automatically namespaces them.
+Variable names in `config.variables` can be unprefixed. Lumia namespaces them internally.
 
-Global variable display text is resolved from your plugin translations (`config.translations`) using your plugin namespace. Lumia resolves `key` and `pluginid_key` automatically at runtime, so you only need to define one form.
+When you reference variables in action `acceptedVariables` or return them from `actions()` via `newlyPassedVariables`, keys must be fully prefixed with your plugin id (`<pluginId>_key`). Unprefixed keys are ignored.
+
+Global variable display text is resolved from your plugin translations (`config.translations`) using your plugin namespace.
 
 ```json
 {

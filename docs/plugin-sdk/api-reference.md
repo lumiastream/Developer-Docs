@@ -43,6 +43,23 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 
 - **`actions(config)`** – process action executions defined in the manifest. Optional.  
   **Note:** action parameters are provided via `action.value`. Use `const params = action.value;`.
+- `actions(config)` may optionally return:
+  - `newlyPassedVariables?: Record<string, unknown>` – merged into runtime `extraSettings` for subsequent actions in the same chain.
+    - Keys must be prefixed with your plugin id (`<pluginId>_key`).
+    - Unprefixed keys are ignored by Lumia.
+  - `shouldStop?: boolean` – when `true`, Lumia stops processing the remaining actions in that chain.
+
+```js
+// optional action return payload
+{
+  newlyPassedVariables: {
+    myplugin_api_token: "abc123",
+    myplugin_retry_count: 2,
+    myplugin_payload: { source: "api" },
+  },
+  shouldStop: false,
+}
+```
 
 ### Variable Functions
 

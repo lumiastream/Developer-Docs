@@ -18,7 +18,7 @@ Example plugin demonstrating every available settings field type with logging on
 | Category | `utilities` |
 | Lumia Version | `^9.0.0` |
 | Settings | 27 |
-| Actions | 0 |
+| Actions | 1 |
 | Variables | 3 |
 | Alerts | 0 |
 

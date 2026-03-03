@@ -73,7 +73,8 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 - `onupdate(oldVersion, newVersion)` – triggered after version upgrades.
 - `onsettingsupdate(settings, previousSettings)` – called whenever settings change.
 - `actions(config)` – handle custom actions invoked from Lumia automations.  
-  **Note:** action parameters are provided via `action.value`. Use `const params = action.value;`.
+  **Note:** action parameters are provided via `action.value`. Use `const params = action.value;`.  
+  Optionally return `{ newlyPassedVariables, shouldStop }` to pass variables (any value type) to subsequent actions or stop the current action chain.
 - `aiPrompt(config)` – optional AI prompt handler used when `config.hasAI` is enabled in your manifest.
 - `aiModels(config?)` – optional AI model provider used by Lumia model pickers when `config.hasAI` is enabled.
 - `chatbot(config)` – optional native chatbot handler used when `config.hasChatbot` is enabled in your manifest.
