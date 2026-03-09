@@ -16,6 +16,7 @@ Browse the plugin SDK examples:
 - [Ollama](./ollama) - Send prompts to a local Ollama server and use responses in Lumia templates via {{ollama_prompt}} and related helpers.
 - [OpenClaw](./openclaw) - Send prompts to an OpenClaw Gateway and use responses in Lumia templates via {{openclaw_prompt}} and related helpers.
 - [OpenRGB](./openrgb) - Control OpenRGB devices as Lumia lights and trigger OpenRGB profile actions (Corsair, Razer, ASUS, MSI, Gigabyte, ASRock, NZXT, SteelSeries, Logitech, HyperX, Cooler Master, and more).
+- [RetroAchievements](./retro-achievements) - Track RetroAchievements profile stats, recently played games, and unlocked achievements in Lumia.
 - [Rumble](./rumble) - Track Rumble livestream state and engagement with alerts, variables, and chat display.
 - [Settings Showcase](./settings-showcase) - Example plugin demonstrating every available settings field type with logging on save.
 - [Showcase Plugin](./base-plugin) - Starter template that demonstrates settings, actions, variables, and alerts with a minimal code path.

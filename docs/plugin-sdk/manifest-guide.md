@@ -790,6 +790,8 @@ To auto-refresh dynamic options when a user selects the action type, set `refres
 
 `acceptedVariables` on actions is optional, but when used each key must be prefixed with your plugin id (for example, `myplugin_song_name`). Unprefixed keys are ignored by Lumia.
 
+Use action `acceptedVariables` for action-specific result data. Do not mirror one-off action payloads into global `config.variables` unless that value must persist outside the action result.
+
 ### Variable Functions
 
 Variable functions let plugins return values inline in templates (similar to `{{ai_prompt=...}}`).
@@ -996,6 +998,8 @@ Variable names in `config.variables` can be unprefixed. Lumia namespaces them in
 When you reference variables in action `acceptedVariables` or return them from `actions()` via `newlyPassedVariables`, keys must be fully prefixed with your plugin id (`<pluginId>_key`). Unprefixed keys are ignored.
 
 Global variable display text is resolved from your plugin translations (`config.translations`) using your plugin namespace.
+
+Best practice: keep `config.variables` minimal and durable. Reserve globals for long-lived state (for example totals, latest known status, profile metadata). For action outputs and request-specific values, use action `acceptedVariables` / `newlyPassedVariables` and alert `extraSettings` payloads instead of creating many global variables.
 
 ```json
 {
