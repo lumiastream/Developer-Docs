@@ -67,7 +67,10 @@ Use `bundle` when you want a plugin to install ready-made commands or overlays a
 	"category": "utilities",
 	"config": { "settings": [] },
 	"bundle": {
-		"commands": ["bundle/commands/hype_command.lumia", "bundle/commands/wow_command.lumia"],
+		"commands": [
+			"bundle/commands/hype_command.lumia",
+			"bundle/commands/wow_command.lumia"
+		],
 		"overlays": ["overlay-marketplace-upload-id", "another-overlay-upload-id"]
 	}
 }
@@ -163,8 +166,18 @@ If your plugin provides plug/accessory control, add a `config.plugs` block so th
 				"buttonLabel": "Add plug",
 				"helperText": "Enter details for a plug",
 				"fields": [
-					{ "key": "name", "label": "Alias Name", "type": "text", "required": true },
-					{ "key": "mac", "label": "MAC Address", "type": "text", "required": true },
+					{
+						"key": "name",
+						"label": "Alias Name",
+						"type": "text",
+						"required": true
+					},
+					{
+						"key": "mac",
+						"label": "MAC Address",
+						"type": "text",
+						"required": true
+					},
 					{ "key": "model", "label": "Model (optional)", "type": "text" }
 				]
 			},
@@ -356,6 +369,7 @@ Tutorials can include local images bundled with the plugin. Reference them with 
 
 ```md
 ### Setup
+
 ![API Key](clickup_tutorial_api_key.jpg)
 ![List ID](clickup_tutorial_list_id.jpg)
 ```
@@ -368,6 +382,7 @@ Use raw HTML tags inside `settings_tutorial` or `actions_tutorial` for embedded 
 
 ```md
 ### Video Walkthrough
+
 <iframe
   width="100%"
   height="315"
@@ -381,6 +396,7 @@ Use raw HTML tags inside `settings_tutorial` or `actions_tutorial` for embedded 
 
 ```md
 ### Local Video
+
 <video controls preload="metadata">
   <source src="./setup-demo.mp4" type="video/mp4" />
 </video>
@@ -388,6 +404,7 @@ Use raw HTML tags inside `settings_tutorial` or `actions_tutorial` for embedded 
 
 ```md
 ### Audio Instructions
+
 <audio controls preload="metadata">
   <source src="./voiceover.mp3" type="audio/mpeg" />
 </audio>
@@ -1009,7 +1026,6 @@ Best practice: keep `config.variables` minimal and durable. Reserve globals for 
 				"name": "follower_count",
 				"system": true,
 				"origin": "twitch",
-				"allowedPlaces": ["chat", "overlay"],
 				"value": 0,
 				"example": "follower_count"
 			},
@@ -1017,7 +1033,6 @@ Best practice: keep `config.variables` minimal and durable. Reserve globals for 
 				"name": "last_follower",
 				"system": true,
 				"origin": "twitch",
-				"allowedPlaces": ["chat", "overlay", "alert"],
 				"value": "",
 				"example": "last_follower"
 			}
@@ -1118,15 +1133,15 @@ At runtime, trigger the alert with variation data in `dynamic` and alert variabl
 
 ```js
 await this.lumia.triggerAlert({
-    alert: "giftedMembership",
-    dynamic: {
-        value: "Tier2", // value compared by EQUAL_SELECTION
-    },
-    extraSettings: {
-        gifter: "StreamerFan42",
-        recipient: "LuckyViewer",
-        gift_count: 5,
-    },
+	alert: "giftedMembership",
+	dynamic: {
+		value: "Tier2", // value compared by EQUAL_SELECTION
+	},
+	extraSettings: {
+		gifter: "StreamerFan42",
+		recipient: "LuckyViewer",
+		gift_count: 5,
+	},
 });
 ```
 
@@ -1152,17 +1167,17 @@ For plugin-triggered alerts, Lumia applies these runtime rules:
 
 Use these `dynamic` fields for each variation type:
 
-| Variation Condition Type | Dynamic Fields To Send |
-| --- | --- |
-| `EQUAL_NUMBER`, `EQUAL_SELECTION`, `EQUAL_STRING`, `GREATER_NUMBER`, `LESS_NUMBER` | `value` |
-| `EQUAL_CURRENCY_NUMBER`, `GREATER_CURRENCY_NUMBER` | `value`, `currency` |
-| `GIFT_SUB_EQUAL`, `GIFT_SUB_GREATER` | `giftAmount` |
-| `IS_GIFT` | `isGift` and/or `giftAmount` |
-| `SUBSCRIBED_MONTHS_EQUAL`, `SUBSCRIBED_MONTHS_GREATER` | `subMonths` |
-| `EQUAL_USERNAME` | `username` (or `value`) |
-| `EQUAL_USER_LEVEL` | `lumiauserlevels` |
-| `COUNT_IS_MULTIPLE_OF` | `total` (`previousTotal` optional for deterministic threshold-crossing behavior) |
-| `RANDOM` | no dynamic field required |
+| Variation Condition Type                                                           | Dynamic Fields To Send                                                           |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `EQUAL_NUMBER`, `EQUAL_SELECTION`, `EQUAL_STRING`, `GREATER_NUMBER`, `LESS_NUMBER` | `value`                                                                          |
+| `EQUAL_CURRENCY_NUMBER`, `GREATER_CURRENCY_NUMBER`                                 | `value`, `currency`                                                              |
+| `GIFT_SUB_EQUAL`, `GIFT_SUB_GREATER`                                               | `giftAmount`                                                                     |
+| `IS_GIFT`                                                                          | `isGift` and/or `giftAmount`                                                     |
+| `SUBSCRIBED_MONTHS_EQUAL`, `SUBSCRIBED_MONTHS_GREATER`                             | `subMonths`                                                                      |
+| `EQUAL_USERNAME`                                                                   | `username` (or `value`)                                                          |
+| `EQUAL_USER_LEVEL`                                                                 | `lumiauserlevels`                                                                |
+| `COUNT_IS_MULTIPLE_OF`                                                             | `total` (`previousTotal` optional for deterministic threshold-crossing behavior) |
+| `RANDOM`                                                                           | no dynamic field required                                                        |
 
 If no matching selection is found for the provided condition values (or no `dynamic` payload is supplied), Lumia falls back to the base alert configuration and `defaultMessage`.
 
@@ -1170,13 +1185,13 @@ To also show a plugin-triggered alert inside the Event List, opt in explicitly:
 
 ```js
 await this.lumia.triggerAlert({
-    alert: "giftedMembership",
-    showInEventList: true,
-    extraSettings: {
-        gifter: "StreamerFan42",
-        recipient: "LuckyViewer",
-        gift_count: 5,
-    },
+	alert: "giftedMembership",
+	showInEventList: true,
+	extraSettings: {
+		gifter: "StreamerFan42",
+		recipient: "LuckyViewer",
+		gift_count: 5,
+	},
 });
 ```
 
@@ -1305,7 +1320,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"name": "member_count",
 				"system": true,
 				"origin": "discord",
-				"allowedPlaces": ["chat", "overlay"],
 				"value": 0,
 				"example": "member_count"
 			},
@@ -1313,7 +1327,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"name": "online_count",
 				"system": true,
 				"origin": "discord",
-				"allowedPlaces": ["chat", "overlay"],
 				"value": 0,
 				"example": "online_count"
 			},
@@ -1321,7 +1334,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"name": "voice_count",
 				"system": true,
 				"origin": "discord",
-				"allowedPlaces": ["chat", "overlay"],
 				"value": 0,
 				"example": "voice_count"
 			},
@@ -1329,7 +1341,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"name": "last_message",
 				"system": true,
 				"origin": "discord",
-				"allowedPlaces": ["chat", "overlay", "alert"],
 				"value": "",
 				"example": "last_message"
 			},
@@ -1337,7 +1348,6 @@ Here's a complete manifest for a hypothetical Discord integration plugin:
 				"name": "last_user",
 				"system": true,
 				"origin": "discord",
-				"allowedPlaces": ["chat", "overlay", "alert"],
 				"value": "",
 				"example": "last_user"
 			}
