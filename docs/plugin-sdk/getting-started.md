@@ -209,6 +209,41 @@ Plugins run in an isolated **Node.js** process (not a browser). Use `require()` 
 - Most npm packages that target Node
 - Global `fetch` (Node 18+), including `AbortController`
 
+### Polling + Fetch Safety (Important)
+
+If your plugin polls APIs, do not run raw unbounded `fetch` calls inside that loop.
+
+- Wrap every polling-path request in a timeout.
+- Keep one in-flight refresh lock, but always clear it in `finally`.
+- Add stale-lock recovery so one hung request cannot block polling forever.
+
+Example:
+
+```js
+if (this._refreshPromise) {
+  const elapsed = Date.now() - this._refreshStartedAt;
+  if (elapsed < 60000) return this._refreshPromise;
+  this._refreshPromise = null; // stale lock recovery
+}
+
+this._refreshStartedAt = Date.now();
+this._refreshPromise = (async () => {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      return await response.json();
+    } finally {
+      clearTimeout(timeout);
+    }
+  } finally {
+    this._refreshPromise = null;
+    this._refreshStartedAt = 0;
+  }
+})();
+```
+
 ### What Does Not Work (Browser APIs)
 
 The runtime does **not** provide a DOM or browser globals. Avoid packages that require:

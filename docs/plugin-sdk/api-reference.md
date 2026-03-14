@@ -108,6 +108,9 @@ Connection lifecycle guidance for networked plugins:
 - Implement a real disconnect path (`onunload`, manual disconnect action, or auth failure) and call `updateConnection(false)`.
 - Use capped backoff for reconnect attempts and stop retrying after a small fixed limit.
 - If retries are exhausted, keep the plugin disconnected and pause polling until an explicit reconnect trigger.
+- In polling paths, do not use unbounded `fetch`; enforce request timeouts with `AbortController` or `Promise.race`.
+- If you gate refreshes with an in-flight promise (for example `_refreshPromise`), clear it in `finally`.
+- Add stale lock recovery so a hung request cannot block all future polls.
 
 ### Settings
 

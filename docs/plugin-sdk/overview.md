@@ -93,6 +93,12 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 
 For networked plugins, add an explicit disconnect flow, use capped retry backoff, and set connection state to disconnected when retry limits are reached so polling does not run forever.
 
+Also avoid unbounded fetch calls in polling loops:
+
+- Always wrap polling-path `fetch` calls in a timeout (`AbortController` or `Promise.race` fallback).
+- If you use an in-flight guard like `_refreshPromise`, always clear it in `finally`.
+- Add stale-refresh recovery (for example, if a refresh is still in flight after a safety window, reset the lock and start a new cycle).
+
 ## Lights, Plugs, And Studio Themes
 
 If your plugin is a lights integration:
