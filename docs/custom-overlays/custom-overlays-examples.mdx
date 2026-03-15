@@ -3,6 +3,331 @@ title: Examples
 sidebar_position: 3
 ---
 
+import React from "react";
+import Link from "@docusaurus/Link";
+import CodeBlock from "@theme/CodeBlock";
+import { LumiaAlertConfigs } from "@lumiastream/lumia-types";
 import CustomOverlaysExamples from '@lumiastream/lumia-types/dist/custom-overlays/custom-overlays-examples.md';
+
+export const boxStyles = {
+  border: "1px solid var(--ifm-toc-border-color)",
+  borderRadius: "12px",
+  padding: "1rem 1.25rem",
+  marginBottom: "1rem",
+  background: "linear-gradient(180deg, rgba(112, 28, 52, 0.04), rgba(112, 28, 52, 0.01))",
+};
+
+export const chipStyles = {
+  display: "inline-block",
+  padding: "0.2rem 0.55rem",
+  borderRadius: "999px",
+  background: "rgba(112, 28, 52, 0.08)",
+  color: "#701c34",
+  fontSize: "0.8rem",
+  fontWeight: 600,
+  marginBottom: "0.5rem",
+};
+
+export const optionButtonStyles = {
+  display: "inline-block",
+  padding: "0.45rem 0.75rem",
+  borderRadius: "999px",
+  border: "1px solid var(--ifm-toc-border-color)",
+  background: "var(--ifm-background-surface-color)",
+  cursor: "pointer",
+  marginRight: "0.5rem",
+  marginBottom: "0.5rem",
+};
+
+export const activeOptionButtonStyles = {
+  ...optionButtonStyles,
+  background: "rgba(112, 28, 52, 0.10)",
+  borderColor: "#701c34",
+  color: "#701c34",
+  fontWeight: 700,
+};
+
+export const titleCase = (value) =>
+  value
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+export const getAlertSearchText = (alert, config) =>
+  [
+    alert,
+    titleCase(alert),
+    config.connection,
+    config.message,
+    ...(config.acceptedVariables || []),
+    ...(config.quickActions || []).map((quickAction) => quickAction.label),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+export const getAlertEntries = () =>
+  Object.entries(LumiaAlertConfigs).sort((a, b) => {
+    const platformCompare = a[1].connection.localeCompare(b[1].connection);
+    if (platformCompare !== 0) {
+      return platformCompare;
+    }
+
+    return titleCase(a[0]).localeCompare(titleCase(b[0]));
+  });
+
+export const getAlertExamplePayload = (alert, config, exampleIndex = 0) => {
+  const exampleAction = config.quickActions?.[exampleIndex] || config.quickActions?.[0];
+  const extraSettings = {};
+  const dynamic = {};
+
+  (config.inputFields || []).forEach((inputField) => {
+    if (inputField.variableField && inputField.default !== undefined && inputField.default !== null && inputField.default !== "") {
+      extraSettings[inputField.variableField] = inputField.default;
+    }
+
+    if (inputField.dynamicField && inputField.default !== undefined && inputField.default !== null && inputField.default !== "") {
+      dynamic[inputField.dynamicField] = inputField.default;
+    }
+  });
+
+  if (exampleAction?.extraSettings) {
+    Object.assign(extraSettings, exampleAction.extraSettings);
+  }
+
+  if (exampleAction?.dynamic) {
+    Object.assign(dynamic, exampleAction.dynamic);
+  }
+
+  const payload = {
+    alert,
+    extraSettings,
+    fromLumia: true,
+  };
+
+  if (Object.keys(dynamic).length > 0) {
+    payload.dynamic = dynamic;
+  }
+
+  return payload;
+};
+
+export const formatPayloadValue = (value) => {
+  if (typeof value === "string") {
+    return `"${value}"`;
+  }
+
+  if (value === null) {
+    return "null";
+  }
+
+  if (typeof value === "undefined") {
+    return "undefined";
+  }
+
+  return String(value);
+};
+
+export const PayloadTreeNode = ({ name, value, depth = 0 }) => {
+  const isObject = value && typeof value === "object" && !Array.isArray(value);
+  const isArray = Array.isArray(value);
+
+  if (!isObject && !isArray) {
+    return (
+      <div style={{ marginLeft: `${depth * 1.1}rem`, marginBottom: "0.35rem" }}>
+        <code>{name}</code>: <code>{formatPayloadValue(value)}</code>
+      </div>
+    );
+  }
+
+  const entries = isArray ? value.map((item, index) => [index, item]) : Object.entries(value);
+
+  return (
+    <details open={depth < 2} style={{ marginLeft: `${depth * 1.1}rem`, marginBottom: "0.5rem" }}>
+      <summary style={{ cursor: "pointer" }}>
+        <code>{name}</code>
+        {" "}
+        <span style={{ color: "var(--ifm-color-emphasis-700)" }}>
+          {isArray ? `[${entries.length}]` : `{${entries.length}}`}
+        </span>
+      </summary>
+      <div
+        style={{
+          marginTop: "0.5rem",
+          paddingLeft: "0.85rem",
+          borderLeft: "1px solid var(--ifm-toc-border-color)",
+        }}
+      >
+        {entries.map(([key, childValue]) => (
+          <PayloadTreeNode key={String(key)} name={String(key)} value={childValue} depth={depth + 1} />
+        ))}
+      </div>
+    </details>
+  );
+};
+
+export const AlertPayloadExplorer = () => {
+  const alerts = React.useMemo(() => getAlertEntries(), []);
+  const [query, setQuery] = React.useState("");
+  const [selectedAlert, setSelectedAlert] = React.useState(alerts[0]?.[0] || "");
+  const [selectedExampleIndex, setSelectedExampleIndex] = React.useState(0);
+
+  const filteredAlerts = React.useMemo(() => {
+    if (!query) {
+      return alerts;
+    }
+
+    return alerts.filter(([alert, config]) => getAlertSearchText(alert, config).includes(query.toLowerCase()));
+  }, [alerts, query]);
+
+  React.useEffect(() => {
+    if (!filteredAlerts.some(([alert]) => alert === selectedAlert)) {
+      setSelectedAlert(filteredAlerts[0]?.[0] || "");
+      setSelectedExampleIndex(0);
+    }
+  }, [filteredAlerts, selectedAlert]);
+
+  const activeEntry = filteredAlerts.find(([alert]) => alert === selectedAlert) || filteredAlerts[0];
+
+  return (
+    <div style={boxStyles}>
+      <div style={chipStyles}>Alert payload explorer</div>
+      <p style={{ marginTop: 0 }}>
+        Search any alert here and inspect the live example payload your overlay receives in
+        {" "}
+        <code>{"Overlay.on('alert', (data) => ...)"}</code>.
+      </p>
+      <p style={{ marginTop: 0 }}>
+        Alert template variables like <code>{"{{username}}"}</code> and <code>{"{{amount}}"}</code> map to the same keys inside <code>data.extraSettings</code>. For the full variable reference, use the
+        {" "}
+        <Link to="/docs/variables#alert-explorer">Platform Variables alert explorer</Link>.
+      </p>
+
+      <label style={{ display: "block", fontWeight: 600, marginBottom: "0.5rem" }}>
+        Search alerts
+      </label>
+      <input
+        type="search"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        placeholder="Search by alert name, platform, message, or field"
+        style={{
+          width: "100%",
+          maxWidth: "560px",
+          padding: "0.75rem 0.9rem",
+          borderRadius: "10px",
+          border: "1px solid var(--ifm-toc-border-color)",
+          background: "var(--ifm-background-surface-color)",
+          marginBottom: "1rem",
+        }}
+      />
+
+      {filteredAlerts.length > 0 ? (
+        <>
+          <div
+            style={{
+              maxHeight: "220px",
+              overflowY: "auto",
+              paddingRight: "0.25rem",
+              marginBottom: "1rem",
+            }}
+          >
+            {filteredAlerts.map(([alert, config]) => (
+              <button
+                key={alert}
+                type="button"
+                onClick={() => {
+                  setSelectedAlert(alert);
+                  setSelectedExampleIndex(0);
+                }}
+                style={selectedAlert === alert ? activeOptionButtonStyles : optionButtonStyles}
+              >
+                {titleCase(alert)}
+                {" "}
+                <span style={{ opacity: 0.8 }}>({config.connection})</span>
+              </button>
+            ))}
+          </div>
+
+          {activeEntry && (() => {
+            const [alert, config] = activeEntry;
+            const quickActions = config.quickActions || [];
+            const payload = getAlertExamplePayload(alert, config, selectedExampleIndex);
+
+            return (
+              <>
+                <div style={boxStyles}>
+                  <div style={chipStyles}>Live Overlay.on data</div>
+                  <p style={{ marginTop: 0 }}>
+                    <strong>Selected alert:</strong>
+                    {" "}
+                    <code>{alert}</code>
+                    {" "}
+                    on
+                    {" "}
+                    <code>{config.connection}</code>
+                  </p>
+                  <p style={{ marginTop: 0 }}>
+                    <strong>Message template:</strong>
+                    {" "}
+                    <code>{config.message}</code>
+                  </p>
+
+                  {quickActions.length > 0 && (
+                    <>
+                      <label style={{ display: "block", fontWeight: 600, marginBottom: "0.5rem" }}>
+                        Example scenario
+                      </label>
+                      <div style={{ marginBottom: "1rem" }}>
+                        {quickActions.map((quickAction, index) => (
+                          <button
+                            key={`${quickAction.label}-${index}`}
+                            type="button"
+                            onClick={() => setSelectedExampleIndex(index)}
+                            style={selectedExampleIndex === index ? activeOptionButtonStyles : optionButtonStyles}
+                          >
+                            {quickAction.label}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  <div
+                    style={{
+                      border: "1px solid var(--ifm-toc-border-color)",
+                      borderRadius: "10px",
+                      padding: "0.85rem 1rem",
+                      background: "var(--ifm-code-background)",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <div style={{ marginBottom: "0.5rem", fontWeight: 700 }}>
+                      Payload tree
+                    </div>
+                    <PayloadTreeNode name="data" value={payload} />
+                  </div>
+
+                  <CodeBlock language="json" title="Overlay.on('alert') payload">
+                    {JSON.stringify(payload, null, 2)}
+                  </CodeBlock>
+                </div>
+              </>
+            );
+          })()}
+        </>
+      ) : (
+        <div style={boxStyles}>
+          <div style={chipStyles}>No matches</div>
+          <p style={{ margin: 0 }}>
+            No alerts matched "{query}".
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+<AlertPayloadExplorer />
 
 <CustomOverlaysExamples />

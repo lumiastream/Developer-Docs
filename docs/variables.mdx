@@ -6,8 +6,7 @@ description: All available Lumia Stream variables that you can use inside the ap
 ---
 
 import React from "react";
-import Link from "@docusaurus/Link";
-import { AllVariables } from "@lumiastream/lumia-types";
+import { AllVariables, LumiaAlertConfigs } from "@lumiastream/lumia-types";
 import { enTrans } from "@lumiastream/lumia-translations";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
@@ -21,141 +20,972 @@ export const chatCommandTypes = [
   "chatmatch",
 ];
 
-export const slugify = (s) =>
-  s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+export const titleCase = (value) =>
+  value
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+export const formatVariable = (value) => `{{${value}}}`;
+
+export const getDescription = (value) =>
+  enTrans?.variables?.[value] || "No description available yet.";
+
+export const getTypeLabel = (type) => {
+  const labels = {
+    command: "Chat command",
+    chatbotCommand: "Chatbot command",
+    twitchPoints: "Twitch channel points",
+    kickPoints: "Kick points",
+    twitchExtensions: "Twitch extension redeem",
+    chatmatch: "Chat match",
+  };
+  return labels[type] || titleCase(type);
+};
+
+export const tableStyles = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginBottom: "1rem",
+  fontSize: "0.95rem",
+  minWidth: "780px",
+};
+
+export const tableWrapperStyles = {
+  width: "100%",
+  overflowX: "auto",
+};
+
+export const thStyles = {
+  textAlign: "left",
+  padding: "0.75rem",
+  borderBottom: "1px solid var(--ifm-toc-border-color)",
+  background: "rgba(112, 28, 52, 0.06)",
+};
+
+export const tdStyles = {
+  padding: "0.75rem",
+  borderBottom: "1px solid var(--ifm-toc-border-color)",
+  verticalAlign: "top",
+};
+
+export const boxStyles = {
+  border: "1px solid var(--ifm-toc-border-color)",
+  borderRadius: "12px",
+  padding: "1rem 1.25rem",
+  marginBottom: "1rem",
+  background: "linear-gradient(180deg, rgba(112, 28, 52, 0.04), rgba(112, 28, 52, 0.01))",
+};
+
+export const chipStyles = {
+  display: "inline-block",
+  padding: "0.2rem 0.55rem",
+  borderRadius: "999px",
+  background: "rgba(112, 28, 52, 0.08)",
+  color: "#701c34",
+  fontSize: "0.8rem",
+  fontWeight: 600,
+  marginBottom: "0.5rem",
+};
+
+export const exampleChipStyles = {
+  display: "inline-block",
+  padding: "0.2rem 0.45rem",
+  borderRadius: "8px",
+  background: "var(--ifm-code-background)",
+  marginRight: "0.4rem",
+  marginBottom: "0.4rem",
+};
+
+export const optionButtonStyles = {
+  display: "inline-block",
+  padding: "0.45rem 0.75rem",
+  borderRadius: "999px",
+  border: "1px solid var(--ifm-toc-border-color)",
+  background: "var(--ifm-background-surface-color)",
+  cursor: "pointer",
+  marginRight: "0.5rem",
+  marginBottom: "0.5rem",
+};
+
+export const activeOptionButtonStyles = {
+  ...optionButtonStyles,
+  background: "rgba(112, 28, 52, 0.10)",
+  borderColor: "#701c34",
+  color: "#701c34",
+  fontWeight: 700,
+};
+
+export const filterVariables = (variables, query) => {
+  if (!query) {
+    return variables;
+  }
+
+  const normalizedQuery = query.toLowerCase();
+  return variables.filter((value) => {
+    const description = getDescription(value).toLowerCase();
+    return value.toLowerCase().includes(normalizedQuery) || description.includes(normalizedQuery);
+  });
+};
+
+export const getAlertEntriesForPlatform = (platform) =>
+  Object.entries(LumiaAlertConfigs)
+    .filter(([, config]) => config.connection === platform)
+    .sort((a, b) => titleCase(a[0]).localeCompare(titleCase(b[0])));
+
+export const getAlertSearchText = (alert, config) =>
+  [
+    alert,
+    titleCase(alert),
+    config.message,
+    ...(config.acceptedVariables || []),
+    ...(config.quickActions || []).map((quickAction) => quickAction.label),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+export const globalVariableExamples = {
+  read_file: ["Hello from notes.txt"],
+  read_url: ["OK"],
+  selection: ["Option A"],
+  random: ["7"],
+  random_input: ["Blue"],
+  math: ["42"],
+  compare: ["true"],
+  round: ["4"],
+  if: ["Online"],
+  coalesce: ["Fallback value"],
+  between: ["15"],
+  min: ["3"],
+  max: ["9"],
+  regex_extract: ["12345"],
+  replace: ["Hello Lumia"],
+  format_date: ["Mar 15, 2026 9:00 AM"],
+  time_since: ["5 minutes ago"],
+  sum_variables: ["42"],
+  offset_count: ["3"],
+  get_commands: ["!lights,!brb,!discord"],
+  get_all_commands: ["!lights,!brb,!discord,!song"],
+  convert_color_to_hex: ["#FF4076"],
+  get_latest_file_from_folder: ["/Users/name/Videos/latest.mp4"],
+  get_random_file_from_folder: ["/Users/name/Videos/random.mp4"],
+  screenshot: ["https://cdn.example.com/screenshot.png"],
+  get_queue_count: ["5"],
+  get_var_from_msg: ["lumiastream"],
+  get_user_loyalty_points: ["1250"],
+  translate: ["Hello world"],
+};
+
+export const serializeExampleValue = (value) => {
+  if (value === null) {
+    return "null";
+  }
+
+  if (Array.isArray(value) || typeof value === "object") {
+    return JSON.stringify(value);
+  }
+
+  return String(value);
+};
+
+export const getVariableExamples = (platform, value) => {
+  if (globalVariableExamples[value]) {
+    return globalVariableExamples[value];
+  }
+
+  const normalized = value.toLowerCase();
+
+  if (normalized === "username") {
+    return ["lumiastream"];
+  }
+
+  if (normalized === "displayname") {
+    return ["LumiaStream"];
+  }
+
+  if (normalized === "message") {
+    return ["Great stream"];
+  }
+
+  if (normalized === "amount") {
+    return ["25.00"];
+  }
+
+  if (normalized === "currency") {
+    return ["USD"];
+  }
+
+  if (normalized === "currencysymbol") {
+    return ["$"];
+  }
+
+  if (normalized === "viewers") {
+    return ["42"];
+  }
+
+  if (normalized === "title") {
+    return [`${titleCase(platform)} Stream Live`];
+  }
+
+  if (normalized === "game") {
+    return ["Just Chatting"];
+  }
+
+  if (normalized === "avatar") {
+    return ["https://cdn.example.com/avatar.png"];
+  }
+
+  if (normalized === "userid") {
+    return ["123456789"];
+  }
+
+  if (normalized === "stickerid") {
+    return ["pearfect_hey_you_ja_v2"];
+  }
+
+  if (normalized === "stickername") {
+    return ["Pear character turning around waving his hand, saying 'Hey you' while lowering his glasses"];
+  }
+
+  if (normalized === "total") {
+    return ["42"];
+  }
+
+  if (normalized === "previoustotal") {
+    return ["35"];
+  }
+
+  if (normalized === "bits") {
+    return ["500"];
+  }
+
+  if (normalized === "command") {
+    return ["!lights"];
+  }
+
+  if (normalized === "recipient") {
+    return ["rgblumia"];
+  }
+
+  if (normalized === "recipients") {
+    return ["rgblumia,lumiatwitch"];
+  }
+
+  if (normalized === "giftamount") {
+    return ["5"];
+  }
+
+  if (normalized === "submonths") {
+    return ["12"];
+  }
+
+  if (normalized.includes("currency_symbol")) {
+    return ["$"];
+  }
+
+  if (normalized.includes("currency")) {
+    return ["USD"];
+  }
+
+  if (normalized.includes("amount")) {
+    return ["25.00"];
+  }
+
+  if (normalized.endsWith("_live")) {
+    return ["true"];
+  }
+
+  if (normalized.includes("uptime")) {
+    return ["2h 14m"];
+  }
+
+  if (normalized.includes("followage")) {
+    return ["2 years, 3 months"];
+  }
+
+  if (normalized.includes("avatar") || normalized.includes("image") || normalized.includes("artwork") || normalized.includes("thumbnail")) {
+    return ["https://cdn.example.com/image.png"];
+  }
+
+  if (normalized.includes("spotify_url")) {
+    return ["https://open.spotify.com/track/abc123"];
+  }
+
+  if (normalized.includes("beatport_url")) {
+    return ["https://www.beatport.com/track/example/123456"];
+  }
+
+  if (normalized.includes("url")) {
+    return ["https://example.com"];
+  }
+
+  if (normalized.includes("date") || normalized.includes("timestamp")) {
+    return ["2026-03-15T09:00:00Z"];
+  }
+
+  if (normalized.includes("title")) {
+    return [`${titleCase(platform)} Stream Live`];
+  }
+
+  if (normalized.includes("description")) {
+    return ["Going live with alerts and lights"];
+  }
+
+  if (normalized.includes("category") || normalized.includes("game")) {
+    return ["Just Chatting"];
+  }
+
+  if (normalized.includes("entries_count") || normalized.includes("queue_limit") || normalized.includes("count") || normalized.includes("views")) {
+    return ["42"];
+  }
+
+  if (normalized.includes("list") || normalized.includes("entries") || normalized.includes("players") || normalized.includes("members") || normalized.includes("subscribers") || normalized.includes("viewers")) {
+    return ["lumiastream,rgblumia"];
+  }
+
+  if (
+    normalized.includes("username") ||
+    normalized.includes("donator") ||
+    normalized.includes("subscriber") ||
+    normalized.includes("member") ||
+    normalized.includes("chatter") ||
+    normalized.includes("follower") ||
+    normalized.includes("raider") ||
+    normalized.includes("winner") ||
+    normalized.includes("player")
+  ) {
+    return ["lumiastream"];
+  }
+
+  if (normalized.includes("id")) {
+    return ["abc123"];
+  }
+
+  if (normalized.includes("color")) {
+    return ["#FF4076"];
+  }
+
+  if (normalized.includes("bpm")) {
+    return ["128"];
+  }
+
+  if (normalized.includes("rating")) {
+    return ["5"];
+  }
+
+  if (normalized.includes("length")) {
+    return ["03:45"];
+  }
+
+  if (normalized.includes("comment")) {
+    return ["Now playing"];
+  }
+
+  if (normalized.includes("key")) {
+    return ["C#m"];
+  }
+
+  if (normalized.includes("file_path")) {
+    return ["/Users/name/Music/song.mp3"];
+  }
+
+  return [];
+};
+
+export const getAlertFieldExamples = (config, field) => {
+  const examples = [];
+  const seen = new Set();
+
+  (config.quickActions || []).forEach((quickAction) => {
+    const value = quickAction?.extraSettings?.[field];
+    if (value === undefined || value === null || value === "") {
+      return;
+    }
+
+    const serialized = serializeExampleValue(value);
+    if (seen.has(serialized)) {
+      return;
+    }
+
+    seen.add(serialized);
+    examples.push(serialized);
+  });
+
+  (config.inputFields || []).forEach((inputField) => {
+    if (inputField.variableField !== field) {
+      return;
+    }
+
+    if (inputField.default === undefined || inputField.default === null || inputField.default === "") {
+      return;
+    }
+
+    const serialized = serializeExampleValue(inputField.default);
+    if (seen.has(serialized)) {
+      return;
+    }
+
+    seen.add(serialized);
+    examples.push(serialized);
+  });
+
+  return examples.slice(0, 6);
+};
+
+export const getAlertExamplePayload = (alert, config, exampleIndex = 0) => {
+  const exampleAction = config.quickActions?.[exampleIndex] || config.quickActions?.[0];
+  const extraSettings = {};
+  const dynamic = {};
+
+  (config.inputFields || []).forEach((inputField) => {
+    if (inputField.variableField && inputField.default !== undefined && inputField.default !== null && inputField.default !== "") {
+      extraSettings[inputField.variableField] = inputField.default;
+    }
+
+    if (inputField.dynamicField && inputField.default !== undefined && inputField.default !== null && inputField.default !== "") {
+      dynamic[inputField.dynamicField] = inputField.default;
+    }
+  });
+
+  if (exampleAction?.extraSettings) {
+    Object.assign(extraSettings, exampleAction.extraSettings);
+  }
+
+  if (exampleAction?.dynamic) {
+    Object.assign(dynamic, exampleAction.dynamic);
+  }
+
+  const payload = {
+    alert,
+    extraSettings,
+    fromLumia: true,
+  };
+
+  if (Object.keys(dynamic).length > 0) {
+    payload.dynamic = dynamic;
+  }
+
+  return payload;
+};
+
+export const formatPayloadValue = (value) => {
+  if (typeof value === "string") {
+    return `"${value}"`;
+  }
+
+  if (value === null) {
+    return "null";
+  }
+
+  if (typeof value === "undefined") {
+    return "undefined";
+  }
+
+  return String(value);
+};
+
+export const PayloadTreeNode = ({ name, value, depth = 0 }) => {
+  const isObject = value && typeof value === "object" && !Array.isArray(value);
+  const isArray = Array.isArray(value);
+
+  if (!isObject && !isArray) {
+    return (
+      <div style={{ marginLeft: `${depth * 1.1}rem`, marginBottom: "0.35rem" }}>
+        <code>{name}</code>: <code>{formatPayloadValue(value)}</code>
+      </div>
+    );
+  }
+
+  const entries = isArray ? value.map((item, index) => [index, item]) : Object.entries(value);
+
+  return (
+    <details open={depth < 2} style={{ marginLeft: `${depth * 1.1}rem`, marginBottom: "0.5rem" }}>
+      <summary style={{ cursor: "pointer" }}>
+        <code>{name}</code>
+        {" "}
+        <span style={{ color: "var(--ifm-color-emphasis-700)" }}>
+          {isArray ? `[${entries.length}]` : `{${entries.length}}`}
+        </span>
+      </summary>
+      <div
+        style={{
+          marginTop: "0.5rem",
+          paddingLeft: "0.85rem",
+          borderLeft: "1px solid var(--ifm-toc-border-color)",
+        }}
+      >
+        {entries.map(([key, childValue]) => (
+          <PayloadTreeNode key={String(key)} name={String(key)} value={childValue} depth={depth + 1} />
+        ))}
+      </div>
+    </details>
+  );
+};
+
+export const VariableTable = ({ variables, emptyLabel = "No variables in this section.", getExamples }) => {
+  if (!variables.length) {
+    return <p><em>{emptyLabel}</em></p>;
+  }
+
+  return (
+    <div style={tableWrapperStyles}>
+      <table style={tableStyles}>
+        <thead>
+          <tr>
+            <th style={thStyles}>Variable</th>
+            <th style={thStyles}>Meaning</th>
+            <th style={thStyles}>Use it like</th>
+            {getExamples && <th style={thStyles}>Example values</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {variables.map((value) => {
+            const examples = getExamples ? getExamples(value) : [];
+
+            return (
+              <tr key={value}>
+                <td style={tdStyles}>
+                  <code>{formatVariable(value)}</code>
+                </td>
+                <td style={tdStyles}>{getDescription(value)}</td>
+                <td style={tdStyles}>
+                  <code>{formatVariable(value)}</code>
+                </td>
+                {getExamples && (
+                  <td style={tdStyles}>
+                    {examples.length > 0 ? (
+                      examples.map((example) => (
+                        <code key={example} style={exampleChipStyles}>
+                          {example}
+                        </code>
+                      ))
+                    ) : (
+                      <em>No example yet</em>
+                    )}
+                  </td>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export const AlertVariableTable = ({ config, variables, emptyLabel = "No alert fields in this section." }) => {
+  if (!variables.length) {
+    return <p><em>{emptyLabel}</em></p>;
+  }
+
+  return (
+    <div style={tableWrapperStyles}>
+      <table style={tableStyles}>
+        <thead>
+          <tr>
+            <th style={thStyles}>Template variable</th>
+            <th style={thStyles}>Overlay path</th>
+            <th style={thStyles}>Meaning</th>
+            <th style={thStyles}>Example values</th>
+          </tr>
+        </thead>
+        <tbody>
+          {variables.map((value) => {
+            const examples = getAlertFieldExamples(config, value);
+
+            return (
+              <tr key={value}>
+                <td style={tdStyles}>
+                  <code>{formatVariable(value)}</code>
+                </td>
+                <td style={tdStyles}>
+                  <code>data.extraSettings.{value}</code>
+                </td>
+                <td style={tdStyles}>{getDescription(value)}</td>
+                <td style={tdStyles}>
+                  {examples.length > 0 ? (
+                    examples.map((example) => (
+                      <code key={example} style={exampleChipStyles}>
+                        {example}
+                      </code>
+                    ))
+                  ) : (
+                    <em>No example yet</em>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export const AlertExplorer = ({ platform, alerts }) => {
+  const [alertQuery, setAlertQuery] = React.useState("");
+  const [selectedAlert, setSelectedAlert] = React.useState(alerts[0]?.[0] || "");
+  const [selectedExampleIndex, setSelectedExampleIndex] = React.useState(0);
+
+  const filteredAlerts = alerts.filter(([alert, config]) => {
+    if (!alertQuery) {
+      return true;
+    }
+
+    return getAlertSearchText(alert, config).includes(alertQuery.toLowerCase());
+  });
+
+  React.useEffect(() => {
+    if (!filteredAlerts.some(([alert]) => alert === selectedAlert)) {
+      setSelectedAlert(filteredAlerts[0]?.[0] || "");
+      setSelectedExampleIndex(0);
+    }
+  }, [filteredAlerts, selectedAlert]);
+
+  const activeEntry = filteredAlerts.find(([alert]) => alert === selectedAlert) || filteredAlerts[0];
+
+  if (!alerts.length) {
+    return null;
+  }
+
+  return (
+    <section id="alert-explorer" style={boxStyles}>
+      <div style={chipStyles}>Alerts and events</div>
+      <p style={{ marginTop: 0 }}>
+        Search an alert and inspect a live example of what
+        {" "}
+        <code>Overlay.on('alert')</code>
+        {" "}
+        receives. Template alert variables map to the same keys inside
+        {" "}
+        <code>data.extraSettings</code>.
+      </p>
+      <label style={{ display: "block", fontWeight: 600, marginBottom: "0.5rem" }}>
+        Search alerts on {titleCase(platform)}
+      </label>
+      <input
+        type="search"
+        value={alertQuery}
+        onChange={(event) => setAlertQuery(event.target.value)}
+        placeholder="Search by alert name, message, or field"
+        style={{
+          width: "100%",
+          maxWidth: "520px",
+          padding: "0.75rem 0.9rem",
+          borderRadius: "10px",
+          border: "1px solid var(--ifm-toc-border-color)",
+          background: "var(--ifm-background-surface-color)",
+          marginBottom: "1rem",
+        }}
+      />
+
+      {filteredAlerts.length > 0 ? (
+        <>
+          <div style={{ marginBottom: "1rem" }}>
+            {filteredAlerts.map(([alert]) => (
+              <button
+                key={alert}
+                type="button"
+                onClick={() => {
+                  setSelectedAlert(alert);
+                  setSelectedExampleIndex(0);
+                }}
+                style={selectedAlert === alert ? activeOptionButtonStyles : optionButtonStyles}
+              >
+                {titleCase(alert)}
+              </button>
+            ))}
+          </div>
+
+          {activeEntry && (() => {
+            const [alert, config] = activeEntry;
+            const payload = getAlertExamplePayload(alert, config, selectedExampleIndex);
+            const quickActions = config.quickActions || [];
+
+            return (
+              <>
+                <div style={boxStyles}>
+                  <div style={chipStyles}>Live preview</div>
+                  <p style={{ marginTop: 0 }}>
+                    <strong>Alert:</strong>
+                    {" "}
+                    <code>{alert}</code>
+                  </p>
+                  <p style={{ marginTop: 0 }}>
+                    <strong>Message template:</strong>
+                    {" "}
+                    <code>{config.message}</code>
+                  </p>
+
+                  {quickActions.length > 0 && (
+                    <>
+                      <label style={{ display: "block", fontWeight: 600, marginBottom: "0.5rem" }}>
+                        Example scenario
+                      </label>
+                      <div style={{ marginBottom: "1rem" }}>
+                        {quickActions.map((quickAction, index) => (
+                          <button
+                            key={`${quickAction.label}-${index}`}
+                            type="button"
+                            onClick={() => setSelectedExampleIndex(index)}
+                            style={selectedExampleIndex === index ? activeOptionButtonStyles : optionButtonStyles}
+                          >
+                            {quickAction.label}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  <div
+                    style={{
+                      border: "1px solid var(--ifm-toc-border-color)",
+                      borderRadius: "10px",
+                      padding: "0.85rem 1rem",
+                      background: "var(--ifm-code-background)",
+                    }}
+                  >
+                    <div style={{ marginBottom: "0.5rem", fontWeight: 700 }}>
+                      Overlay payload explorer
+                    </div>
+                    <PayloadTreeNode name="data" value={payload} />
+                  </div>
+                </div>
+
+                <AlertVariableTable
+                  config={config}
+                  variables={config.acceptedVariables || []}
+                  emptyLabel={`No fields available for ${titleCase(alert)}.`}
+                />
+              </>
+            );
+          })()}
+        </>
+      ) : (
+        <div style={boxStyles}>
+          <div style={chipStyles}>No alert matches</div>
+          <p style={{ margin: 0 }}>
+            No alerts matched "{alertQuery}" on {titleCase(platform)}.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+};
+
+export const SearchablePlatformVariables = ({ platform, cfg }) => {
+  const [query, setQuery] = React.useState("");
+
+  const filteredGlobals = filterVariables(cfg.variables || [], query);
+  const filteredChat = Object.entries(cfg.chat || {})
+    .sort(([a], [b]) => {
+      const aIs = chatCommandTypes.includes(a);
+      const bIs = chatCommandTypes.includes(b);
+      if (aIs !== bIs) {
+        return aIs ? -1 : 1;
+      }
+      return a.localeCompare(b);
+    })
+    .map(([type, variables]) => [type, filterVariables(variables || [], query)])
+    .filter(([, variables]) => variables.length > 0 || !query);
+
+  const alertConfigEntries = getAlertEntriesForPlatform(platform);
+
+  const hasMatches =
+    filteredGlobals.length > 0 ||
+    filteredChat.length > 0;
+
+  return (
+    <>
+      <div style={boxStyles}>
+        <div style={chipStyles}>{titleCase(platform)}</div>
+        <p style={{ marginTop: 0, marginBottom: "0.75rem" }}>
+          Variables only work when the event provides that data. Global variables are broadly available. Chat and alert variables only work in those specific contexts.
+        </p>
+        <label style={{ display: "block", fontWeight: 600, marginBottom: "0.5rem" }}>
+          Search variables on this platform
+        </label>
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search by variable name or meaning"
+          style={{
+            width: "100%",
+            maxWidth: "520px",
+            padding: "0.75rem 0.9rem",
+            borderRadius: "10px",
+            border: "1px solid var(--ifm-toc-border-color)",
+            background: "var(--ifm-background-surface-color)",
+          }}
+        />
+      </div>
+
+      {cfg.variables?.length > 0 && (
+        <section style={boxStyles}>
+          <div style={chipStyles}>Available everywhere</div>
+          <p style={{ marginTop: 0 }}>
+            These are the safest variables to use across the selected platform. This table includes sample output values.
+          </p>
+          <VariableTable
+            variables={filteredGlobals}
+            emptyLabel={`No global variables matched "${query}".`}
+            getExamples={(value) => getVariableExamples(platform, value)}
+          />
+        </section>
+      )}
+
+      {filteredChat.length > 0 && (
+        <section style={boxStyles}>
+          <div style={chipStyles}>Chat and commands</div>
+          <p style={{ marginTop: 0 }}>
+            Use these when building chat responses, command replies, redeems, or chatbot actions.
+          </p>
+          {filteredChat.map(([type, variables]) => (
+            <details key={type} open={!query} style={{ marginBottom: "1rem" }}>
+              <summary style={{ cursor: "pointer", fontWeight: 700, marginBottom: "0.75rem" }}>
+                {getTypeLabel(type)}
+                {" "}
+                <span style={{ color: "var(--ifm-color-emphasis-700)", fontWeight: 500 }}>
+                  ({variables.length})
+                </span>
+              </summary>
+              <VariableTable
+                variables={variables}
+                emptyLabel={`No variables matched "${query}" in ${getTypeLabel(type)}.`}
+              />
+            </details>
+          ))}
+        </section>
+      )}
+
+      <AlertExplorer platform={platform} alerts={alertConfigEntries} />
+
+      {!hasMatches && query && (
+        <div style={boxStyles}>
+          <div style={chipStyles}>No matches</div>
+          <p style={{ margin: 0 }}>
+            No variables matched "{query}" on {titleCase(platform)}. Try a broader term like
+            {" "}
+            <code>username</code>, <code>amount</code>, or <code>message</code>.
+          </p>
+        </div>
+      )}
+    </>
+  );
+};
 
 # Platform Variables
 
+Use variables as placeholders inside Lumia messages, alerts, and overlays. Write them like <code>{"{{username}}"}</code> or <code>{"{{amount}}"}</code>, and Lumia replaces them with live data when the event runs.
+
+<div style={boxStyles}>
+  <div style={chipStyles}>Quick start</div>
+  <p style={{ marginTop: 0 }}>
+    Pick a platform tab, then look in the section that matches where you want to use the variable.
+  </p>
+  <ul style={{ marginBottom: 0 }}>
+    <li><strong>Available everywhere</strong>: broadly usable platform variables.</li>
+    <li><strong>Chat and commands</strong>: variables for chat messages, commands, redeems, and chatbot actions.</li>
+    <li><strong>Alerts and events</strong>: variables that only exist for a specific alert or event.</li>
+  </ul>
+</div>
+
+<div style={boxStyles}>
+  <div style={chipStyles}>Examples</div>
+  <table style={tableStyles}>
+    <thead>
+      <tr>
+        <th style={thStyles}>You write</th>
+        <th style={thStyles}>What users see</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style={tdStyles}><code>{"Thanks {{username}}!"}</code></td>
+        <td style={tdStyles}>Thanks LumiaStream!</td>
+      </tr>
+      <tr>
+        <td style={tdStyles}><code>{"You tipped {{currencySymbol}}{{amount}}"}</code></td>
+        <td style={tdStyles}>You tipped $5</td>
+      </tr>
+      <tr>
+        <td style={tdStyles}><code>{"Latest message: {{message}}"}</code></td>
+        <td style={tdStyles}>Latest message: Great stream</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Alert Explorer
+
+If you are building a custom overlay, open a platform tab and use the alert explorer to inspect the exact alert name, the `data.extraSettings.*` fields it returns, and the matching template variables.
+
+<div style={boxStyles}>
+  <div style={chipStyles}>How alert variables map to Overlay.on('alert')</div>
+  <p style={{ marginTop: 0 }}>
+    In alert templates, variables like <code>{"{{username}}"}</code>, <code>{"{{amount}}"}</code>, and <code>{"{{stickerName}}"}</code> are the same values your overlay receives inside
+    {" "}
+    <code>data.extraSettings</code>.
+  </p>
+  <div style={tableWrapperStyles}>
+    <table style={{ ...tableStyles, minWidth: "680px" }}>
+      <thead>
+        <tr>
+          <th style={thStyles}>In alert text / templates</th>
+          <th style={thStyles}>In Overlay.on('alert')</th>
+          <th style={thStyles}>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={tdStyles}><code>{"{{username}}"}</code></td>
+          <td style={tdStyles}><code>data.extraSettings.username</code></td>
+          <td style={tdStyles}>Most common payload mapping.</td>
+        </tr>
+        <tr>
+          <td style={tdStyles}><code>{"{{amount}}"}</code></td>
+          <td style={tdStyles}><code>data.extraSettings.amount</code></td>
+          <td style={tdStyles}>Present on alerts that carry an amount.</td>
+        </tr>
+        <tr>
+          <td style={tdStyles}><code>{"{{stickerId}}"}</code></td>
+          <td style={tdStyles}><code>data.extraSettings.stickerId</code></td>
+          <td style={tdStyles}>Example: YouTube Super Sticker.</td>
+        </tr>
+        <tr>
+          <td style={tdStyles}><code>{"{{stickerName}}"}</code></td>
+          <td style={tdStyles}><code>data.extraSettings.stickerName</code></td>
+          <td style={tdStyles}>Human-readable sticker label.</td>
+        </tr>
+        <tr>
+          <td style={tdStyles}>Variation value</td>
+          <td style={tdStyles}><code>data.dynamic.value</code></td>
+          <td style={tdStyles}>Use this for alert variation matching, not for general overlay payload access.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style={{ marginBottom: 0 }}>
+    Rule of thumb: if you see an alert variable on this page, read it from
+    {" "}
+    <code>data.extraSettings.variableName</code>
+    {" "}
+    in
+    {" "}
+    <code>Overlay.on('alert')</code>.
+  </p>
+</div>
+
 <Tabs queryString="platform">
   {Object.entries(AllVariables).map(([platform, cfg]) => (
-    <TabItem key={platform} value={platform} label={platform.charAt(0).toUpperCase() + platform.slice(1)}>
-      
-      {/* Global Variables */}
-      {cfg.variables?.length > 0 && (
-        <>
-          <h3 style={{ color: "#701c34", textTransform: "capitalize" }}>
-            {platform === "lumiastream" ? "Global Variables" : `${platform} Global Variables`}
-          </h3>
-          <ul
-            style={{
-              padding: "10px",
-              borderRadius: "4px",
-              listStyle: "disc inside",
-            }}
-          >
-            {cfg.variables.map((v) => (
-              <li key={v} style={{ padding: "4px 0" }}>
-                <code>{v}</code>
-                {enTrans?.variables?.[v] && (
-                  <div style={{ marginLeft: "8px", color: "#555" }}>
-                    {enTrans.variables[v]}
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
-      {/* Chat Command Types */}
-      {cfg.chat && Object.keys(cfg.chat).length > 0 && (
-        <>
-          {Object.entries(cfg.chat)
-            .sort(([a], [b]) => {
-              const aIs = chatCommandTypes.includes(a);
-              const bIs = chatCommandTypes.includes(b);
-              if (aIs !== bIs) return aIs ? -1 : 1;
-              return a.localeCompare(b);
-            })
-            .map(([type, vars]) => {
-              const label = chatCommandTypes.includes(type)
-                ? `${type} [Chat Type]`
-                : `${type} [Chatbot Command Type]`;
-              return (
-                <React.Fragment key={type}>
-                  <h3 style={{ color: "#701c34", textTransform: "capitalize" }}>
-                    {label}
-                  </h3>
-                  {vars.length > 0 ? (
-                    <ul
-                      style={{
-                        padding: "10px",
-                        borderRadius: "4px",
-                        listStyle: "circle inside",
-                      }}
-                    >
-                      {vars.map((a) => (
-                        <li key={a} style={{ padding: "4px 0" }}>
-                          <code>{a}</code>
-                          {enTrans?.variables?.[a] && (
-                            <div style={{ marginLeft: "8px", color: "#555" }}>
-                              {enTrans.variables[a]}
-                            </div>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <em>none</em>
-                  )}
-                </React.Fragment>
-              );
-            })}
-        </>
-      )}
-
-      {/* Alerts */}
-      {cfg.alerts && Object.keys(cfg.alerts).length > 0 && (
-        <>
-          <h3 style={{ color: "#701c34", textTransform: "capitalize" }}>
-            {platform} Alerts Variables
-          </h3>
-          <ul
-            style={{
-              padding: "10px",
-              borderRadius: "4px",
-              listStyle: "square inside",
-            }}
-          >
-            {Object.entries(cfg.alerts).map(([alert, vars]) => (
-              <li key={alert} style={{ padding: "4px 0" }}>
-                <strong style={{ textTransform: "capitalize" }}>
-                  {alert}
-                </strong>
-                :{" "}
-                {vars.length > 0 ? (
-                  <ul
-                    style={{
-                      marginLeft: "20px",
-                      padding: "10px",
-                      borderRadius: "4px",
-                      listStyle: "disc inside",
-                    }}
-                  >
-                    {vars.map((a) => (
-                      <li key={a} style={{ padding: "4px 0" }}>
-                        <code>{a}</code>
-                        {enTrans?.variables?.[a] && (
-                          <div style={{ marginLeft: "8px", color: "#555" }}>
-                            {enTrans.variables[a]}
-                          </div>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <em>none</em>
-                )}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+    <TabItem
+      key={platform}
+      value={platform}
+      label={platform.charAt(0).toUpperCase() + platform.slice(1)}
+    >
+      <SearchablePlatformVariables platform={platform} cfg={cfg} />
     </TabItem>
-
-))}
-
+  ))}
 </Tabs>
