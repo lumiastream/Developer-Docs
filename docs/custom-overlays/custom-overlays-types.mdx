@@ -4,27 +4,359 @@ id: types
 title: Overlay Type Definitions
 ---
 
+import Link from "@docusaurus/Link";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 import OverlayTypes from "!!raw-loader!@lumiastream/lumia-types/dist/custom-overlays/custom-overlays.d.ts";
 import OverlayAlertTypes from "!!raw-loader!@lumiastream/lumia-types/dist/custom-overlays/custom-overlays-alerts.d.ts";
 
-# Type Definitions
+export const boxStyles = {
+  border: "1px solid var(--ifm-toc-border-color)",
+  borderRadius: "12px",
+  padding: "1rem 1.25rem",
+  marginBottom: "1rem",
+  background: "linear-gradient(180deg, rgba(112, 28, 52, 0.04), rgba(112, 28, 52, 0.01))",
+};
 
-## Overlay Types
+export const chipStyles = {
+  display: "inline-block",
+  padding: "0.2rem 0.55rem",
+  borderRadius: "999px",
+  background: "rgba(112, 28, 52, 0.08)",
+  color: "#701c34",
+  fontSize: "0.8rem",
+  fontWeight: 600,
+  marginBottom: "0.5rem",
+};
 
-> Sourced directly from `@lumiastream/lumia-types/dist/custom-overlays/custom-overlays.d.ts`
+export const tableStyles = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginBottom: "1rem",
+  fontSize: "0.95rem",
+};
 
-<CodeBlock language="typescript" title="custom-overlays.d.ts">
-	{OverlayTypes}
-</CodeBlock>
+export const thStyles = {
+  textAlign: "left",
+  padding: "0.75rem",
+  borderBottom: "1px solid var(--ifm-toc-border-color)",
+  background: "rgba(112, 28, 52, 0.06)",
+};
 
-## Alert Types
+export const tdStyles = {
+  padding: "0.75rem",
+  borderBottom: "1px solid var(--ifm-toc-border-color)",
+  verticalAlign: "top",
+};
 
-> This is currently incomplete and still being worked on, but these are some of the examples collected so far
-> Refer to the /variables page to see all of the possible variables for each alert
+export const treeStyles = {
+  fontFamily: "var(--ifm-font-family-monospace)",
+  fontSize: "0.92rem",
+  lineHeight: 1.7,
+  margin: 0,
+  whiteSpace: "pre-wrap",
+};
 
-> Sourced directly from `@lumiastream/lumia-types/dist/custom-overlays/custom-overlays-alerts.d.ts`
+export const alertEventTree = `data
+|- alert: LumiaAlertValues
+|- dynamic
+|  '- value: number | string
+|- extraSettings
+|  |- username
+|  |- displayname
+|  |- userId
+|  |- avatar
+|  |- timestamp
+|  |- site
+|  |- checkTimingType
+|  |- timingType
+|  '- duration
+'- fromLumia`;
 
-<CodeBlock language="typescript" title="custom-overlays-alerts.d.ts">
-	{OverlayAlertTypes}
-</CodeBlock>
+export const alertEventExample = `Overlay.on('alert', (data) => {
+  switch (data.alert) {
+    case LumiaAlertValues.TWITCH_FOLLOWER:
+      console.log(\`New follower: \${data.extraSettings.username}\`);
+      break;
+
+    case LumiaAlertValues.YOUTUBE_SUPERCHAT:
+      console.log(
+        \`\${data.extraSettings.username} sent \${data.extraSettings.currencySymbol}\${data.extraSettings.amount}\`
+      );
+      break;
+
+    default:
+      console.log('Alert type:', data.alert);
+      console.log('Returned fields:', data.extraSettings);
+  }
+});`;
+
+export const commonAlertFields = [
+  {
+    field: "data.alert",
+    meaning: "The alert identifier, such as twitch follower or youtube superchat.",
+    example: "LumiaAlertValues.TWITCH_FOLLOWER",
+  },
+  {
+    field: "data.dynamic",
+    meaning: "The alert's dynamic matching payload. This changes by alert type.",
+    example: "{ value: 5 }",
+  },
+  {
+    field: "data.extraSettings",
+    meaning: "The main payload object overlays usually read from.",
+    example: "{ username, amount, currency, ... }",
+  },
+  {
+    field: "data.extraSettings.username",
+    meaning: "Origin username when the platform provides it.",
+    example: "lumiastream",
+  },
+  {
+    field: "data.extraSettings.displayname",
+    meaning: "Display name when available.",
+    example: "LumiaStream",
+  },
+  {
+    field: "data.extraSettings.site",
+    meaning: "Origin platform for the alert.",
+    example: "twitch",
+  },
+  {
+    field: "data.extraSettings.timestamp",
+    meaning: "When the alert happened.",
+    example: "2026-03-15T14:30:00.000Z",
+  },
+  {
+    field: "data.fromLumia",
+    meaning: "Whether the event came through Lumia's internal pipeline.",
+    example: "true",
+  },
+];
+
+export const alertMappingRows = [
+  {
+    template: "{{username}}",
+    overlay: "data.extraSettings.username",
+    note: "Template alert variable and overlay payload field for the same value.",
+  },
+  {
+    template: "{{message}}",
+    overlay: "data.extraSettings.message",
+    note: "Only present on alerts that include a message.",
+  },
+  {
+    template: "{{amount}}",
+    overlay: "data.extraSettings.amount",
+    note: "Common on donations, bits, super chats, and other paid events.",
+  },
+  {
+    template: "{{currencySymbol}}",
+    overlay: "data.extraSettings.currencySymbol",
+    note: "Useful for overlay display formatting.",
+  },
+  {
+    template: "{{stickerId}}",
+    overlay: "data.extraSettings.stickerId",
+    note: "Example: YouTube Super Sticker payloads.",
+  },
+  {
+    template: "{{stickerName}}",
+    overlay: "data.extraSettings.stickerName",
+    note: "Human-readable label that matches the alert variable name.",
+  },
+  {
+    template: "variation value",
+    overlay: "data.dynamic.value",
+    note: "Use for alert variation logic, not the main payload bridge.",
+  },
+];
+
+# Overlay Type Definitions
+
+Use this page when you need the exact overlay event shapes. If you are working on alerts specifically, start with the `AlertEvent` guide below, then use the full type files only when you need the raw declarations.
+
+<div style={boxStyles}>
+  <div style={chipStyles}>Best path for alerts</div>
+  <p style={{ marginTop: 0 }}>
+    The easiest way to work with alert overlays is:
+  </p>
+  <ol style={{ marginBottom: 0 }}>
+    <li>Use this page to understand the base <code>AlertEvent</code> shape.</li>
+    <li>Use the <Link to="/docs/variables#alert-explorer">alert explorer</Link> to inspect what each alert returns.</li>
+    <li>Use the raw type files below only when you need full TypeScript detail.</li>
+  </ol>
+</div>
+
+## AlertEvent
+
+<Tabs>
+  <TabItem value="overview" label="Overview" default>
+    <div style={boxStyles}>
+      <div style={chipStyles}>At a glance</div>
+      <p style={{ marginTop: 0 }}>
+        Every overlay alert handler receives the same high-level object shape. The exact fields inside
+        {" "}
+        <code>data.dynamic</code>
+        {" "}
+        and
+        {" "}
+        <code>data.extraSettings</code>
+        {" "}
+        depend on
+        {" "}
+        <code>data.alert</code>.
+      </p>
+      <pre style={treeStyles}>{alertEventTree}</pre>
+    </div>
+
+    <div style={boxStyles}>
+      <div style={chipStyles}>How template variables map to alert payload</div>
+      <p style={{ marginTop: 0 }}>
+        The same alert variables you use in Lumia templates are usually exposed to overlays under
+        {" "}
+        <code>data.extraSettings</code>.
+      </p>
+      <table style={tableStyles}>
+        <thead>
+          <tr>
+            <th style={thStyles}>In alert templates</th>
+            <th style={thStyles}>In Overlay.on('alert')</th>
+            <th style={thStyles}>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {alertMappingRows.map((row) => (
+            <tr key={row.template}>
+              <td style={tdStyles}><code>{row.template}</code></td>
+              <td style={tdStyles}><code>{row.overlay}</code></td>
+              <td style={tdStyles}>{row.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p style={{ marginBottom: 0 }}>
+        Rule: alert variables like <code>{"{{username}}"}</code> map to <code>data.extraSettings.username</code>. Use <code>data.dynamic</code> only for variation-matching values.
+      </p>
+    </div>
+
+    <div style={boxStyles}>
+      <div style={chipStyles}>Common fields</div>
+      <table style={tableStyles}>
+        <thead>
+          <tr>
+            <th style={thStyles}>Field</th>
+            <th style={thStyles}>What it means</th>
+            <th style={thStyles}>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          {commonAlertFields.map((row) => (
+            <tr key={row.field}>
+              <td style={tdStyles}>
+                <code>{row.field}</code>
+              </td>
+              <td style={tdStyles}>{row.meaning}</td>
+              <td style={tdStyles}>
+                <code>{row.example}</code>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div style={boxStyles}>
+      <div style={chipStyles}>How to use it</div>
+      <p style={{ marginTop: 0 }}>
+        Narrow by
+        {" "}
+        <code>data.alert</code>
+        {" "}
+        first, then read the fields that belong to that alert from
+        {" "}
+        <code>data.extraSettings</code>.
+      </p>
+      <CodeBlock language="typescript" title="Overlay.on('alert')">
+        {alertEventExample}
+      </CodeBlock>
+    </div>
+  </TabItem>
+
+  <TabItem value="tips" label="Tips">
+    <div style={boxStyles}>
+      <div style={chipStyles}>What trips people up</div>
+      <ul style={{ marginBottom: 0 }}>
+        <li>Do not assume every alert has <code>message</code>, <code>amount</code>, or <code>avatar</code>.</li>
+        <li>Use <code>data.alert</code> to decide which fields are safe to read.</li>
+        <li>Alert template variables like <code>{"{{username}}"}</code> map to overlay payload fields like <code>data.extraSettings.username</code>.</li>
+        <li>Most overlay code should read from <code>data.extraSettings</code>, not from guessed field names.</li>
+        <li>Use the <Link to="/docs/variables#alert-explorer">alert explorer</Link> to inspect the exact fields for each alert.</li>
+      </ul>
+    </div>
+
+    <div style={boxStyles}>
+      <div style={chipStyles}>When to use each doc</div>
+      <table style={tableStyles}>
+        <thead>
+          <tr>
+            <th style={thStyles}>Need</th>
+            <th style={thStyles}>Best place</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={tdStyles}>See which fields a specific alert returns</td>
+            <td style={tdStyles}><Link to="/docs/variables#alert-explorer">Platform Variables: Alert Explorer</Link></td>
+          </tr>
+          <tr>
+            <td style={tdStyles}>Understand the base overlay event shapes</td>
+            <td style={tdStyles}>This page</td>
+          </tr>
+          <tr>
+            <td style={tdStyles}>Read the full generated TypeScript declarations</td>
+            <td style={tdStyles}>Raw type tabs below</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </TabItem>
+</Tabs>
+
+## Raw Type Files
+
+These are sourced directly from the published package and kept here for full reference.
+
+<Tabs>
+  <TabItem value="overlay-types" label="Overlay Types" default>
+    <div style={boxStyles}>
+      <div style={chipStyles}>Full file</div>
+      <p style={{ marginTop: 0 }}>
+        Source:
+        {" "}
+        <code>@lumiastream/lumia-types/dist/custom-overlays/custom-overlays.d.ts</code>
+      </p>
+      <CodeBlock language="typescript" title="custom-overlays.d.ts">
+        {OverlayTypes}
+      </CodeBlock>
+    </div>
+  </TabItem>
+
+  <TabItem value="alert-types" label="Alert Types">
+    <div style={boxStyles}>
+      <div style={chipStyles}>Full file</div>
+      <p style={{ marginTop: 0 }}>
+        This file is still incomplete, but it captures the alert-specific typings collected so far.
+      </p>
+      <p style={{ marginTop: 0 }}>
+        Source:
+        {" "}
+        <code>@lumiastream/lumia-types/dist/custom-overlays/custom-overlays-alerts.d.ts</code>
+      </p>
+      <CodeBlock language="typescript" title="custom-overlays-alerts.d.ts">
+        {OverlayAlertTypes}
+      </CodeBlock>
+    </div>
+  </TabItem>
+</Tabs>

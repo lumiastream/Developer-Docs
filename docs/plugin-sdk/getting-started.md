@@ -526,7 +526,7 @@ Recommended plugin->overlay bridge:
 
 1. Write global variables from the plugin with `this.lumia.setVariable("key", value)`.
 2. Trigger alerts from the plugin with `this.lumia.triggerAlert(...)`.
-3. In the overlay, read variables with `Overlay.getVariable("key")` and alert payloads in `Overlay.on("alert", (data) => data.extraSettings)`.
+3. In the overlay, read variables with `Overlay.getVariable("key")` and alert payloads in `Overlay.on("alert", (data) => data.extraSettings)`. Alert variables like `{{username}}` and `{{amount}}` map to `data.extraSettings.username` and `data.extraSettings.amount`.
 
 Use `extraSettings` for overlay payload values. Use `dynamic` only when you need alert variation matching.
 
