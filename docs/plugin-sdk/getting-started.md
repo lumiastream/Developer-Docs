@@ -12,6 +12,8 @@ This guide walks you through creating your first Lumia Stream plugin from scratc
 - Basic understanding of JavaScript
 - The Lumia Stream desktop app for local testing
 
+> **Runtime constraint:** Lumia plugins run in a Node.js process, not a browser. Avoid browser globals (`window`, `document`, `localStorage`, `XMLHttpRequest`) and browser-only packages — see [What Does Not Work](#what-does-not-work-browser-apis) below for details.
+
 ## SDK CLI Helpers
 
 The repository ships simple helpers so you can bootstrap and package plugins without writing scripts yourself:
@@ -19,74 +21,6 @@ The repository ships simple helpers so you can bootstrap and package plugins wit
 - `npx lumia-plugin create my_plugin` scaffolds the showcase template without cloning this repo (requires npm 7+).
 - `npx lumia-plugin build ./path/to/plugin` runs the same build pipeline globally (optional `--out`).
 - `npx lumia-plugin validate ./path/to/plugin` validates manifests without cloning the repo.
-
-## Skills Support (Optional)
-
-Use the built-in skill files if you develop plugins in Codex Desktop, Claude, GitHub Copilot, Gemini CLI, or Cursor.
-
-### Easy Install (Recommended)
-
-Install all supported skills (Claude + Copilot + Gemini + Cursor + Codex):
-
-```bash
-npx lumia-plugin skills --target /path/to/your-plugin
-```
-
-Install one specific tool:
-
-```bash
-npx lumia-plugin skills claude --target /path/to/your-plugin
-npx lumia-plugin skills copilot --target /path/to/your-plugin
-npx lumia-plugin skills gemini --target /path/to/your-plugin
-npx lumia-plugin skills cursor --target /path/to/your-plugin
-npx lumia-plugin skills codex
-```
-
-Optional Codex home override:
-
-```bash
-npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
-```
-
-List available skill bundles:
-
-```bash
-npx lumia-plugin skills list
-```
-
-### Codex Desktop: Enable And Use
-
-Codex skill files install to `$CODEX_HOME/skills` (or `~/.codex/skills` when `CODEX_HOME` is not set).
-
-1. Install Codex skill files:
-```bash
-npx lumia-plugin skills codex
-```
-2. Restart Codex Desktop (or open a new thread).
-3. Invoke the skill in your prompt:
-```text
-$lumia-plugin-codex-skill
-```
-4. Example:
-```text
-Use $lumia-plugin-codex-skill to validate my plugin manifest and hooks before packaging.
-```
-
-### Updating Later (No Full Redownload)
-
-Run the same command again to update to latest skill files:
-
-```bash
-npx lumia-plugin skills --target /path/to/your-plugin
-```
-
-Tool-specific updates:
-
-```bash
-npx lumia-plugin skills --tools claude,copilot,gemini,cursor --target /path/to/your-plugin
-npx lumia-plugin skills codex
-npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
-```
 
 ## 1. Project Setup
 
@@ -526,7 +460,7 @@ Recommended plugin->overlay bridge:
 
 1. Write global variables from the plugin with `this.lumia.setVariable("key", value)`.
 2. Trigger alerts from the plugin with `this.lumia.triggerAlert(...)`.
-3. In the overlay, read variables with `Overlay.getVariable("key")` and alert payloads in `Overlay.on("alert", (data) => data.extraSettings)`. Alert variables like `{{username}}` and `{{amount}}` map to `data.extraSettings.username` and `data.extraSettings.amount`.
+3. In the overlay, read variables with `Overlay.getVariable("key")` and alert payloads in `Overlay.on("alert", (data) => data.extraSettings)`.
 
 Use `extraSettings` for overlay payload values. Use `dynamic` only when you need alert variation matching.
 
@@ -638,3 +572,71 @@ export default class EventPlugin extends Plugin {
 - Explore the [examples](./examples) for implementation ideas (e.g., `weather`, and the more advanced `rumble` sample)
 - Dive into the [manifest guide](./manifest-guide) for advanced configuration options
 - Join the [Lumia Stream community](https://lumiastream.com/discord) for support and feedback
+
+## AI / IDE Skills Support (Optional)
+
+Use the built-in skill files if you develop plugins with Claude Code, GitHub Copilot, Gemini CLI, Cursor, or Codex Desktop. Skills give your AI assistant full context about the Lumia Plugin SDK so it can validate, build, and debug plugins without manual prompting.
+
+### Easy Install (Recommended)
+
+Install all supported skills (Claude + Copilot + Gemini + Cursor + Codex):
+
+```bash
+npx lumia-plugin skills --target /path/to/your-plugin
+```
+
+Install one specific tool:
+
+```bash
+npx lumia-plugin skills claude --target /path/to/your-plugin
+npx lumia-plugin skills copilot --target /path/to/your-plugin
+npx lumia-plugin skills gemini --target /path/to/your-plugin
+npx lumia-plugin skills cursor --target /path/to/your-plugin
+npx lumia-plugin skills codex
+```
+
+Optional Codex home override:
+
+```bash
+npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
+```
+
+List available skill bundles:
+
+```bash
+npx lumia-plugin skills list
+```
+
+### Codex Desktop: Enable And Use
+
+Codex skill files install to `$CODEX_HOME/skills` (or `~/.codex/skills` when `CODEX_HOME` is not set).
+
+1. Install Codex skill files:
+```bash
+npx lumia-plugin skills codex
+```
+2. Restart Codex Desktop (or open a new thread).
+3. Invoke the skill in your prompt:
+```text
+$lumia-plugin-codex-skill
+```
+4. Example:
+```text
+Use $lumia-plugin-codex-skill to validate my plugin manifest and hooks before packaging.
+```
+
+### Updating Later (No Full Redownload)
+
+Run the same command again to update to latest skill files:
+
+```bash
+npx lumia-plugin skills --target /path/to/your-plugin
+```
+
+Tool-specific updates:
+
+```bash
+npx lumia-plugin skills --tools claude,copilot,gemini,cursor --target /path/to/your-plugin
+npx lumia-plugin skills codex
+npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
+```

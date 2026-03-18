@@ -675,74 +675,11 @@ Allowed values are:
 
 When declared, Lumia routes these commands to `modCommand(type, value)` in your plugin runtime.
 
-#### Setting Types
+Settings support the same field types as action fields, plus three settings-only structured types: `named_map` (labeled name-to-value rows), `json` (raw JSON editor), and `roi` (region-of-interest coordinates). Settings also support `disabled: true` to render a field read-only in PluginAuth.
 
-- **`text`** - Single-line text input
-- **`datetime`** - Native datetime picker (`YYYY-MM-DDTHH:mm`)
-- **`password`** - Password input (hidden text)
-- **`number`** - Numeric input
-- **`email`** - Email address input
-- **`url`** - URL input
-- **`textarea`** - Multi-line text input
-- **`select`** - Dropdown selection
-- **`checkbox`** - Checkbox input
-- **`toggle`** - Toggle switch
-- **`color`** - Color picker
-- **`file`** - File upload
-- **`named_map`** - Name-to-value map (settings only)
+Use `named_map` instead of a freeform `textarea` when users should define multiple named entries (for example `sound name -> file`, `feed name -> URL`).
 
-Settings can also include **`disabled`** (boolean) to render a read-only field in the PluginAuth UI.
-
-#### Validation Options
-
-```json
-{
-	"validation": {
-		"pattern": "^[a-zA-Z0-9]+$",
-		"min": 1,
-		"max": 100,
-		"minLength": 5,
-		"maxLength": 50
-	}
-}
-```
-
-#### Select Options
-
-```json
-{
-	"key": "quality",
-	"label": "Stream Quality",
-	"type": "select",
-	"options": [
-		{ "label": "Low (480p)", "value": "480p" },
-		{ "label": "Medium (720p)", "value": "720p" },
-		{ "label": "High (1080p)", "value": "1080p" }
-	]
-}
-```
-
-#### Named Map (`named_map`)
-
-Use `named_map` when users should define multiple named entries, each with a typed value.
-
-```json
-{
-	"key": "sounds",
-	"label": "Named Sounds",
-	"type": "named_map",
-	"valueType": "file",
-	"outputMode": "array"
-}
-```
-
-Common `named_map` options:
-
-- `valueType`: row value type (`text`, `datetime`, `number`, `select`, `checkbox`/`switch`/`toggle`, `file`, `json`)
-- `valueField`: optional row editor config (placeholder, options, rows, etc.)
-- `nameKey` / `valueKey`: customize serialized keys
-- `outputMode`: `array` (default) or `object`/`map`
-- `objectValueMode`: for object output, choose `object` (default), `value`, or `path`
+For all field types, properties, validation options, and examples see [Field Types Reference](./field-types-reference).
 
 ### Actions
 
@@ -849,162 +786,16 @@ Guidelines:
 
 Avoid excessive logging. High-frequency logs can quickly fill the user's Logs dashboard. Prefer concise logs and only emit details for errors or explicit user actions. Avoid per-plugin log wrappers unless they add real value.
 
-#### Action Field Types
+Action fields support: `text`, `datetime`, `email`, `url`, `number`, `textarea`, `color`, `select`, `checkbox`, `switch`, `slider`, `file`. Note: `password`, `named_map`, `json`, and `roi` are not available in action fields.
 
-Action fields support the following input types:
+Key action-field behaviors:
 
-- **`text`** - Single-line text input. Supports variables when `allowVariables` is true.
-- **`datetime`** - Native datetime picker. Supports variables when `allowVariables` is true. Returns `YYYY-MM-DDTHH:mm`.
-- **`email`** - Email address input with validation. Supports variables when `allowVariables` is true.
-- **`url`** - URL input with validation. Supports variables when `allowVariables` is true.
-- **`number`** - Numeric input with optional min/max constraints.
-- **`textarea`** - Multi-line text input. Supports variables when `allowVariables` is true and configurable rows.
-- **`color`** - Color picker that outputs hex color values (e.g., `#FF0000`).
-- **`select`** - Dropdown selection from predefined options.
-- **`checkbox`** - Boolean checkbox input.
-- **`switch`** - Toggle switch for boolean values.
-- **`slider`** - Numeric slider with min, max, and step values.
-- **`file`** - File path input with file browser dialog.
+- Set `allowVariables: true` to enable `{{variable}}` insertion on a field. When omitted, variables are disabled — including on `select` fields with `allowTyping`.
+- Set `allowTyping: true` on `select` to allow custom typed values alongside dropdown options.
+- Set `multiple: true` on `select` to allow multi-value selection (value becomes an array).
+- `allowTyping` and `multiple` can be combined on the same `select` field.
 
-#### Field Configuration Examples
-
-**Text Input with Variables**
-
-```json
-{
-	"key": "username",
-	"label": "Username",
-	"type": "text",
-	"placeholder": "Enter username",
-	"helperText": "Supports variables like {{username}}"
-}
-```
-
-**Textarea with Custom Rows**
-
-```json
-{
-	"key": "message",
-	"label": "Message",
-	"type": "textarea",
-	"placeholder": "Enter your message",
-	"rows": 6,
-	"helperText": "Multi-line text with variable support"
-}
-```
-
-**Number with Constraints**
-
-```json
-{
-	"key": "volume",
-	"label": "Volume",
-	"type": "number",
-	"defaultValue": 50,
-	"min": 0,
-	"max": 100
-}
-```
-
-**Slider Input**
-
-```json
-{
-	"key": "brightness",
-	"label": "Brightness",
-	"type": "slider",
-	"defaultValue": 100,
-	"min": 0,
-	"max": 255,
-	"step": 5
-}
-```
-
-**Color Picker**
-
-```json
-{
-	"key": "backgroundColor",
-	"label": "Background Color",
-	"type": "color",
-	"defaultValue": "#000000",
-	"helperText": "Choose a background color"
-}
-```
-
-**Select Dropdown**
-
-```json
-{
-	"key": "mode",
-	"label": "Mode",
-	"type": "select",
-	"defaultValue": "normal",
-	"allowTyping": true,
-	"options": [
-		{ "label": "Normal", "value": "normal" },
-		{ "label": "Fast", "value": "fast" },
-		{ "label": "Slow", "value": "slow" }
-	]
-}
-```
-
-Set `allowTyping` to let users type custom values in addition to the provided options. The dropdown list still appears as suggestions.
-
-Set `multiple: true` on `select` fields to allow multi-select values. Use an array for `defaultValue` when `multiple` is enabled.
-
-`allowTyping` and `multiple` can be combined on the same `select` field to allow selecting known options while also adding custom entries.
-
-```json
-{
-	"key": "modes",
-	"label": "Modes",
-	"type": "select",
-	"multiple": true,
-	"defaultValue": ["normal", "fast"],
-	"options": [
-		{ "label": "Normal", "value": "normal" },
-		{ "label": "Fast", "value": "fast" },
-		{ "label": "Slow", "value": "slow" }
-	]
-}
-```
-
-Set `allowVariables: true` to enable template variables (e.g., `{{username}}`) for a specific action field. When omitted, variables are not enabled—even for `select` fields with `allowTyping`.
-
-**Checkbox**
-
-```json
-{
-	"key": "enableNotifications",
-	"label": "Enable Notifications",
-	"type": "checkbox",
-	"defaultValue": true
-}
-```
-
-**Switch Toggle**
-
-```json
-{
-	"key": "autoStart",
-	"label": "Auto Start",
-	"type": "switch",
-	"defaultValue": false,
-	"helperText": "Automatically start on load"
-}
-```
-
-**File Input**
-
-```json
-{
-	"key": "audioFile",
-	"label": "Audio File",
-	"type": "file",
-	"helperText": "Select an audio file to play"
-}
-```
+For full property lists and examples see [Field Types Reference](./field-types-reference).
 
 ### Variables
 
@@ -1086,7 +877,7 @@ Use `variationConditions` when an alert can fire with multiple sub-types (for ex
 
 - **`type`** – One of the condition identifiers exposed by `LumiaVariationConditions` (see `lumia-types/src/alert.types.ts:6`). Examples: `EQUAL_SELECTION`, `GIFT_SUB_EQUAL`, `GREATER_NUMBER`, `RANDOM`.
 - **`description`** _(optional)_ – Helper text shown in the Lumia UI.
-- **`dynamicSelections`** _(optional, `EQUAL_SELECTION` only)_ – When `true`, Lumia shows dropdown suggestions but also allows typed custom values.
+- **`dynamicOptions`** _(optional, `EQUAL_SELECTION` only)_ – When `true`, Lumia shows dropdown suggestions but also allows typed custom values.
 - **`selections`** _(optional)_ – Only used with `EQUAL_SELECTION`; supplies the dropdown values the creator can pick from.
   - **`label`** – How the option appears in the Lumia UI.
   - **`value`** – The literal tier/value you expect to receive at runtime (compared against `dynamic.value`).
@@ -1104,7 +895,7 @@ Example manifest entry with variations:
 		{
 			"type": "EQUAL_SELECTION",
 			"description": "Tier level (compares against dynamic.value).",
-			"dynamicSelections": true,
+			"dynamicOptions": true,
 			"selections": [
 				{
 					"label": "Single gift",
@@ -1154,6 +945,73 @@ Important:
 - `extraSettings` can contain any key/value pairs and is the payload used for alert variables/templates.
 
 If you need multiple variation comparisons, trigger separate alerts with the appropriate `dynamic` payload for each event.
+
+#### Variation Generation
+
+Use variation generation when Lumia should build many alert variations from plugin-managed data instead of having the creator add them one by one.
+
+- **`variationGeneration`** _(optional)_ – Configures the modal shown before generation runs.
+  - **`title`** _(optional)_ – Modal title.
+  - **`description`** _(optional)_ – Helper text shown above the form.
+  - **`buttonLabel`** _(optional)_ – Label used for the alert-page button.
+  - **`generateLabel`** _(optional)_ – Label used for the modal submit button.
+  - **`fields`** _(optional)_ – Uses the same `PluginFormField[]` schema as other plugin forms, so you can declare checkboxes, inputs, selects, sliders, and other supported field types.
+
+Example manifest entry:
+
+```json
+{
+	"title": "Gift Event",
+	"key": "gift",
+	"defaultMessage": "{{username}} sent {{giftName}}",
+	"variationGeneration": {
+		"title": "Generate Gift Variations",
+		"description": "Create one variation for each supported gift.",
+		"buttonLabel": "Generate Gifts",
+		"generateLabel": "Generate",
+		"fields": [
+			{
+				"key": "minimumCost",
+				"label": "Minimum cost",
+				"type": "number",
+				"defaultValue": 1,
+				"min": 0
+			},
+			{
+				"key": "includeImages",
+				"label": "Include thumbnails",
+				"type": "checkbox",
+				"defaultValue": true
+			}
+		]
+	}
+}
+```
+
+When the creator clicks the button, Lumia calls your runtime `generateVariations()` method:
+
+```ts
+async generateVariations(config) {
+	const { alertKey, options, existingVariations } = config;
+	if (alertKey !== 'gift') return [];
+
+	return [
+		{
+			name: 'Rose',
+			conditionType: 'EQUAL_SELECTION',
+			condition: 'Rose',
+			image: 'https://example.com/rose.png',
+		},
+	];
+}
+```
+
+Guidelines:
+
+- Return only new variations; skip duplicates against `existingVariations`.
+- `condition` / `conditionType` should match the alert's `variationConditions`.
+- `image` is optional and becomes the variation thumbnail.
+- Lumia still does its own duplicate filtering before saving, but plugins should avoid returning duplicates themselves.
 
 #### Variation Payload Contract (Plugins)
 
@@ -1403,5 +1261,4 @@ The SDK includes manifest validation. Common validation errors:
 
 ## Localization
 
-Use `config.translations` to provide plugin-localized strings.
-You can provide either a language-map object directly or a single `.json` file path that contains that language map.
+See [Plugin Translations](#plugin-translations) above for full `config.translations` documentation, including inline language maps, external `.json` file paths, supported language codes, and runtime key resolution.

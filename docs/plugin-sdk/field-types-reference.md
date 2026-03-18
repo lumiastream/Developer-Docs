@@ -16,6 +16,11 @@ Property support is not identical between settings and actions:
 - Both settings and action fields support freeform select input via `allowTyping`.
 - Action fields support runtime-oriented options such as `allowVariables`.
 
+Easy-to-miss settings-only structured types:
+- `named_map` - best when users should define labeled entries such as `name -> URL`, `name -> file`, or `name -> selector`
+- `json` - best when the value is inherently structured and should be edited as JSON
+- `roi` - best when the value is a rectangular region with `x/y/width/height`
+
 ## Supported Field Types
 
 ### Text Input Types
@@ -122,7 +127,7 @@ Multi-line text input with optional variable support (set `allowVariables: true`
 
 ---
 
-### Numeric Input Types
+### Date/Time Types
 
 #### `datetime`
 Native local date/time picker.
@@ -141,6 +146,8 @@ Native local date/time picker.
 - `allowVariables` - Enable template variables for action fields
 
 ---
+
+### Numeric Input Types
 
 #### `number`
 Numeric input with optional constraints.
@@ -748,21 +755,16 @@ Settings fields do not expose variable insertion in the UI.
 }
 ```
 
-## Best Practices
+## Common Gotchas
 
-1. **Use appropriate types**: Choose the most specific field type for your data (e.g., `email` instead of `text` for email addresses).
-
-2. **Provide defaults**: Set sensible `defaultValue` properties to improve user experience.
-
-3. **Add validation**: Use validation rules to prevent user errors early.
-
-4. **Write helpful text**: Use `helperText` to guide users on what to enter.
-
-5. **Consider UX**: Use `slider` for ranges, `select` for limited choices, and `textarea` for long text.
-
-6. **Variable support**: Leverage variable substitution in text fields for dynamic content.
-
-7. **Consistent naming**: Use clear, descriptive `key` names (e.g., `apiKey`, `webhookUrl`, `backgroundColor`).
+- **`toggle` vs `switch`**: Use `toggle` for settings fields and `switch` for action fields — they are the same control but the type name differs by context.
+- **`allowVariables` is opt-in**: Variables are not enabled by default on any field, including `select` with `allowTyping`. You must set `allowVariables: true` explicitly on each action field that needs it.
+- **Settings don't support `allowVariables`**: Variable insertion is only available on action fields, not `config.settings`.
+- **`password` is settings-only**: The `password` type is not available in action fields.
+- **`named_map`, `json`, `roi` are settings-only**: These structured types are not available in action fields.
+- **`min`/`max` location differs**: For action fields, use top-level `min`/`max`; for settings fields, use `validation.min`/`validation.max`. Both are accepted but the canonical location differs.
+- **`multiple: true` changes the value shape**: When `multiple` is enabled on `select`, the stored value is always an array even if one item is selected. Set `defaultValue` to an array accordingly.
+- **`dynamicOptions` requires a runtime call**: Declaring `dynamicOptions: true` on a field does nothing on its own — your plugin must call `lumia.updateActionFieldOptions(...)` or `lumia.updateSettingsFieldOptions(...)` to populate the options.
 
 ## See Also
 
