@@ -179,6 +179,38 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 - **`playAudio(options: { path: string; volume?: number; waitForAudioToStop?: boolean }): Promise<boolean>`** – play an audio file. Await the promise if you need to wait for playback to finish.
 - **`tts(options: { message: string; voice?: string; volume?: number }): Promise<boolean>`** – trigger text-to-speech playback.
 
+`playAudio` notes:
+
+- `path` should be a renderer-playable audio source such as a local file path, `file://...`, `http://...`, `https://...`, or `data:audio/...`.
+- Prefer local files or `data:` URLs when your plugin generated/downloaded the audio itself.
+- Avoid passing `blob:` / `blob:nodedata:` URLs from a different runtime context. Blob URLs are context-scoped and may fail to load in Lumia's renderer even if they were valid where they were created.
+- `waitForAudioToStop: true` means the returned promise resolves after playback completes.
+- `waitForAudioToStop: false` means the promise may resolve as soon as playback starts, so plugin cleanup code must not immediately invalidate the source.
+
+Example:
+
+```js
+await this.lumia.playAudio({
+	path: "file:///Users/me/Desktop/alert.wav",
+	volume: 100,
+	waitForAudioToStop: true,
+});
+```
+
+Example with generated audio bytes:
+
+```js
+const response = await fetch(audioUrl);
+const buffer = await response.arrayBuffer();
+const base64 = Buffer.from(buffer).toString("base64");
+
+await this.lumia.playAudio({
+	path: `data:audio/wav;base64,${base64}`,
+	volume: 100,
+	waitForAudioToStop: true,
+});
+```
+
 ### Files & Persistence
 
 - **`writeFile(options: { path: string; message: string; append?: boolean; value?: string }): Promise<boolean>`** – write or append to a file.

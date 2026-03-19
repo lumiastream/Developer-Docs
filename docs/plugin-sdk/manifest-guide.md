@@ -786,7 +786,7 @@ Guidelines:
 
 Avoid excessive logging. High-frequency logs can quickly fill the user's Logs dashboard. Prefer concise logs and only emit details for errors or explicit user actions. Avoid per-plugin log wrappers unless they add real value.
 
-Action fields support: `text`, `datetime`, `email`, `url`, `number`, `textarea`, `color`, `select`, `checkbox`, `switch`, `slider`, `file`. Note: `password`, `named_map`, `json`, and `roi` are not available in action fields.
+Action fields support: `text`, `datetime`, `email`, `url`, `number`, `textarea`, `color`, `select`, `checkbox`, `toggle`, `slider`, `file`. Note: `password`, `named_map`, `json`, and `roi` are not available in action fields.
 
 Key action-field behaviors:
 

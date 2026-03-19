@@ -136,6 +136,13 @@ this.lumia.displayChat({
 
 `showInEventList` should stay `false` for most plugins. Enable it only when users expect those plugin-triggered events in Event List (typically streaming platform/event-source plugins).
 
+`playAudio` tips:
+
+- Prefer file paths, `file://` URLs, normal `http(s)` URLs, or `data:audio/...` URLs.
+- If your plugin fetched/generated audio bytes itself, convert them to a `data:` URL or save them to a file before calling `playAudio`.
+- Avoid cross-context `blob:` URLs. They can be valid in the process that created them but fail once handed to Lumia's renderer.
+- Use `waitForAudioToStop: true` if later plugin logic depends on playback being fully finished.
+
 See the [API reference](./api-reference) for the full surface area.
 
 ### Shared Runtime Resources

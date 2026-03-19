@@ -272,14 +272,14 @@ Boolean checkbox input.
 
 ---
 
-#### `switch` / `toggle`
-Toggle switch for boolean values (`toggle` in settings, `switch` in actions).
+#### `toggle`
+Boolean toggle control.
 
 ```json
 {
   "key": "autoStart",
   "label": "Auto Start",
-  "type": "switch",
+  "type": "toggle",
   "defaultValue": false,
   "helperText": "Automatically start on load"
 }
@@ -287,7 +287,6 @@ Toggle switch for boolean values (`toggle` in settings, `switch` in actions).
 
 **Properties:**
 - Accepts boolean values (`true`/`false`)
-- Use `toggle` for settings and `switch` for actions
 
 ---
 
@@ -347,7 +346,7 @@ Name-to-value map editor. Users can add multiple rows, where each row has:
 ```
 
 **Properties:**
-- `valueType` - Row value input type (`text`, `datetime`, `number`, `select`, `checkbox`/`switch`/`toggle`, `file`, `json`)
+- `valueType` - Row value input type (`text`, `datetime`, `number`, `select`, `checkbox`/`toggle`, `file`, `json`)
 - `valueField` - Optional full field config override for the row value editor (`label`, `placeholder`, `options`, `rows`, etc.)
 - `nameKey` / `valueKey` - Customize serialized payload keys
 - `outputMode` - Store as `array` (default) or `object`/`map`
@@ -422,7 +421,7 @@ Structured region-of-interest editor for screen detection coordinates.
 | `slider` | ✅ | ✅ | ❌ | min, max | Visual slider (`min`/`max`/`step` top-level on actions) |
 | `select` | ✅ | ✅ | With `allowVariables` | - | Dropdown, supports `allowTyping`; set `multiple: true` for multi-value; supports `dynamicOptions` |
 | `checkbox` | ✅ | ✅ | ❌ | - | Boolean checkbox |
-| `switch`/`toggle` | ✅ | ✅ | ❌ | - | `toggle` in settings, `switch` in actions |
+| `toggle` | ✅ | ✅ | ❌ | - | Boolean toggle control |
 | `color` | ✅ | ✅ | ❌ | - | Color picker |
 | `file` | ✅ | ✅ | With `allowVariables` | - | File browser |
 | `named_map` | ✅ | ❌ | ❌ | Row-level required checks + duplicate-name checks | Name-to-value map |
@@ -742,7 +741,7 @@ Settings fields do not expose variable insertion in the UI.
     {
       "key": "playSound",
       "label": "Play Sound",
-      "type": "switch",
+      "type": "toggle",
       "defaultValue": true
     },
     {
@@ -757,7 +756,7 @@ Settings fields do not expose variable insertion in the UI.
 
 ## Common Gotchas
 
-- **`toggle` vs `switch`**: Use `toggle` for settings fields and `switch` for action fields — they are the same control but the type name differs by context.
+- **Use `toggle` for boolean fields**: This is the canonical plugin field type for toggle-style boolean inputs.
 - **`allowVariables` is opt-in**: Variables are not enabled by default on any field, including `select` with `allowTyping`. You must set `allowVariables: true` explicitly on each action field that needs it.
 - **Settings don't support `allowVariables`**: Variable insertion is only available on action fields, not `config.settings`.
 - **`password` is settings-only**: The `password` type is not available in action fields.
