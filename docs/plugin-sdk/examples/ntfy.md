@@ -17,7 +17,7 @@ Subscribe to ntfy topics and trigger Lumia alerts/variables for incoming notific
 | Plugin ID | `ntfy` |
 | Category | `apps` |
 | Lumia Version | `^9.0.0` |
-| Settings | 9 |
+| Settings | 10 |
 | Actions | 0 |
 | Variables | 0 |
 | Alerts | 1 |
