@@ -330,6 +330,27 @@ File path input with file browser dialog.
 
 ---
 
+#### `media`
+Media path input with a picker dialog for local files or remote URLs.
+
+```json
+{
+  "key": "postMedia",
+  "label": "Media",
+  "type": "media",
+  "helperText": "Choose a local file or paste a remote URL"
+}
+```
+
+**Properties:**
+- Opens a media picker dialog with local-file and URL tabs
+- Returns a single string value
+- Local selections return an absolute file path string
+- Remote selections return the entered URL string
+- `allowVariables` - Enable template variable insertion for action fields
+
+---
+
 #### `named_map` (settings only)
 Name-to-value map editor. Users can add multiple rows, where each row has:
 - `name` (unique key by default)
@@ -424,6 +445,7 @@ Structured region-of-interest editor for screen detection coordinates.
 | `toggle` | ✅ | ✅ | ❌ | - | Boolean toggle control |
 | `color` | ✅ | ✅ | ❌ | - | Color picker |
 | `file` | ✅ | ✅ | With `allowVariables` | - | File browser |
+| `media` | ✅ | ✅ | With `allowVariables` on actions | - | Media picker (local file or URL) |
 | `named_map` | ✅ | ❌ | ❌ | Row-level required checks + duplicate-name checks | Name-to-value map |
 | `json` | ✅ | ❌ | ❌ | JSON parse | Structured object/array editor |
 | `roi` | ✅ | ❌ | ❌ | ROI shape + numeric bounds | Region-of-interest editor |

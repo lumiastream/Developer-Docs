@@ -25,3 +25,4 @@ Browse the plugin SDK examples:
 - [System Monitor](./system-monitor) - Monitor CPU, RAM, and GPU usage with variables and alerts.
 - [Trovo](./trovo) - Trovo Live integration with chat, alerts, chatbot, moderation, variables, and stream actions.
 - [TTS Monster](./tts-monster) - Generate TTS Monster speech audio and play it through Lumia Stream.
+- [X](./x) - Create and delete X posts with your own developer tokens, sync account variables, and trigger polling-based alerts for mentions and follower growth.
