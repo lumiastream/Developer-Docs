@@ -464,6 +464,8 @@ Recommended plugin->overlay bridge:
 
 Use `extraSettings` for overlay payload values. Use `dynamic` only when you need alert variation matching.
 
+For the full overlay payload types, see [Overlay Type Definitions](/docs/custom-overlays/types), especially `AlertEvent` when passing plugin data through alerts.
+
 Keep global variables focused on durable state. Avoid writing request/action-specific data as globals; pass action outputs via `acceptedVariables` / `newlyPassedVariables` and alert payloads via `extraSettings` so plugin variables do not become overloaded.
 
 Overlay docs: https://dev.lumiastream.com/docs/custom-overlays/custom-overlays-documentation  

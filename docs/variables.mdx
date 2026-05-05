@@ -6,6 +6,7 @@ description: All available Lumia Stream variables that you can use inside the ap
 ---
 
 import React from "react";
+import Link from "@docusaurus/Link";
 import { AllVariables, LumiaAlertConfigs } from "@lumiastream/lumia-types";
 import { enTrans } from "@lumiastream/lumia-translations";
 import Tabs from "@theme/Tabs";
@@ -660,6 +661,10 @@ export const AlertExplorer = ({ platform, alerts }) => {
         receives. Template alert variables map to the same keys inside
         {" "}
         <code>data.extraSettings</code>.
+        {" "}
+        For the full alert event type, see
+        {" "}
+        <Link to="/docs/custom-overlays/types#alertevent">Overlay Type Definitions</Link>.
       </p>
       <label style={{ display: "block", fontWeight: 600, marginBottom: "0.5rem" }}>
         Search alerts on {titleCase(platform)}
@@ -920,7 +925,7 @@ Use variables as placeholders inside Lumia messages, alerts, and overlays. Write
 
 ## Alert Explorer
 
-If you are building a custom overlay, open a platform tab and use the alert explorer to inspect the exact alert name, the `data.extraSettings.*` fields it returns, and the matching template variables.
+If you are building a custom overlay, open a platform tab and use the alert explorer to inspect the exact alert name, the `data.extraSettings.*` fields it returns, and the matching template variables. For the full `AlertEvent` type, see [Overlay Type Definitions](/docs/custom-overlays/types#alertevent).
 
 <div style={boxStyles}>
   <div style={chipStyles}>How alert variables map to Overlay.on('alert')</div>
