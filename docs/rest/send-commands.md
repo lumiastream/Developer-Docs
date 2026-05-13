@@ -91,3 +91,14 @@ Local variables, such as \{\{username\}\}, can be used within commands like a TT
 By passing extraSettings, you can modify the value of \{\{username\}\} or introduce new variables like \{\{customVariable\}\}.
 
 Simply provide the desired values in extraSettings to set or update these variables.
+
+## Runtime Metadata
+
+Commands that run custom code also receive queue metadata as variables:
+
+| Variable | Meaning | Example values |
+| --- | --- | --- |
+| `originType` | Source of the activity. This groups activities by where they came from. | `chat`, `chatbot`, `alert`, `api`, `system`, `streamdeck` |
+| `queueType` | Specific queued activity type. Use this when custom code needs to distinguish related triggers. | `chat-command`, `chat-match`, `chatbot-command`, `twitch-points`, `twitch-extension`, `kick-points`, `alert` |
+
+For REST API calls, `originType` is usually `api`. The `queueType` follows the `type` you send, such as `chat-command` or `twitch-points`.

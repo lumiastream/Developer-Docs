@@ -7,6 +7,7 @@ title: Examples
 Browse the plugin SDK examples:
 
 - [Chat Summarizer](./chat-summarizer) - Summarizes chat on an interval and highlights users by category.
+- [Crypto Price Monitor](./crypto-price-monitor) - Monitor CoinGecko cryptocurrency prices and trigger Lumia alerts when prices change or configured target rules are met.
 - [Divoom Pixoo](./divoom-pixoo) - Send text, GIFs, drawings, and device controls to Divoom Pixoo LED displays over Wi-Fi.
 - [ElevenLabs TTS](./elevenlabs-tts) - Generate ElevenLabs speech or music audio and play it through Lumia Stream.
 - [EVE Online](./eveonline) - Pull EVE Online character status, wallet, location, and activity from ESI into Lumia.

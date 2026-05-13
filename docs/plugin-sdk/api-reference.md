@@ -154,10 +154,45 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 - **`callCommand(name: string, variableValues?: any): Promise<any>`** – execute another Lumia command and optionally pass variable values.
 - **`getAllCommands(params?: { onlyOn?: boolean }): Promise<any>`** – fetch available commands.
 
+Commands that run custom code receive queue metadata as variables:
+
+| Variable | Meaning | Example values |
+| --- | --- | --- |
+| `originType` | Source of the activity. This groups activities by where they came from. | `chat`, `chatbot`, `alert`, `api`, `system`, `streamdeck` |
+| `queueType` | Specific queued activity type. Use this when custom code needs to distinguish related triggers. | `chat-command`, `chat-match`, `chatbot-command`, `twitch-points`, `twitch-extension`, `kick-points`, `alert` |
+
+For example, a normal chat command and a chat match both use `originType: "chat"`. Custom code should check `queueType` to tell them apart.
+
 ### Dynamic UI Options
 
 - **`updateActionFieldOptions({ actionType, fieldKey, options }): Promise<boolean>`** – update action dropdown options at runtime.
 - **`updateSettingsFieldOptions({ fieldKey, options }): Promise<boolean>`** – update settings dropdown options at runtime (used with `dynamicOptions` fields in PluginAuth).
+
+Dynamic option objects support:
+
+- `label` – visible option text
+- `value` – stored value
+- `helperText` – optional secondary line shown in supporting UIs
+- `imageUrl` – optional thumbnail/icon shown by image-capable select/autocomplete UIs
+- `searchText` – optional extra searchable text for autocomplete filtering
+
+Example:
+
+```js
+await this.lumia.updateActionFieldOptions({
+	actionType: "trigger_button",
+	fieldKey: "button",
+	options: [
+		{
+			label: "Go Live",
+			value: "go_live",
+			helperText: "OBS scene switcher",
+			imageUrl: "http://127.0.0.1:9090/assets/go-live.png",
+			searchText: "obs stream start scene",
+		},
+	],
+});
+```
 
 ### Alerts & Chat
 
