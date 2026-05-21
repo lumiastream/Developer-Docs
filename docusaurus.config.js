@@ -1,4 +1,5 @@
 const { themes } = require("prism-react-renderer");
+const variablesAlertsSearchIndexPlugin = require("./plugins/variables-alerts-search-index");
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
 
@@ -45,6 +46,7 @@ const darkCodeTheme = themes.dracula;
           highlightResult: true,
         },
       ],
+      variablesAlertsSearchIndexPlugin,
     ],
 
     presets: [

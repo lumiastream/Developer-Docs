@@ -21,16 +21,42 @@ export const chatCommandTypes = [
   "chatmatch",
 ];
 
+export const toText = (value) =>
+  value === undefined || value === null ? "" : String(value);
+
 export const titleCase = (value) =>
-  value
+  toText(value)
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
     .replace(/_/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
-export const formatVariable = (value) => `{{${value}}}`;
+export const getVariableName = (value) => {
+  if (typeof value === "string") {
+    return value;
+  }
 
-export const getDescription = (value) =>
-  enTrans?.variables?.[value] || "No description available yet.";
+  if (value && typeof value === "object") {
+    return typeof value.name === "string" ? value.name : "";
+  }
+
+  return "";
+};
+
+export const getVariableList = (variables) =>
+  Array.isArray(variables)
+    ? variables.filter((value) => getVariableName(value))
+    : [];
+
+export const formatVariable = (value) => `{{${getVariableName(value)}}}`;
+
+export const getDescription = (value) => {
+  const name = getVariableName(value);
+  if (value && typeof value === "object" && typeof value.description === "string" && value.description) {
+    return value.description;
+  }
+
+  return enTrans?.variables?.[name] || "No description available yet.";
+};
 
 export const getTypeLabel = (type) => {
   const labels = {
@@ -118,29 +144,32 @@ export const activeOptionButtonStyles = {
 };
 
 export const filterVariables = (variables, query) => {
+  const variableList = getVariableList(variables);
+
   if (!query) {
-    return variables;
+    return variableList;
   }
 
-  const normalizedQuery = query.toLowerCase();
-  return variables.filter((value) => {
+  const normalizedQuery = toText(query).toLowerCase();
+  return variableList.filter((value) => {
+    const name = getVariableName(value).toLowerCase();
     const description = getDescription(value).toLowerCase();
-    return value.toLowerCase().includes(normalizedQuery) || description.includes(normalizedQuery);
+    return name.includes(normalizedQuery) || description.includes(normalizedQuery);
   });
 };
 
 export const getAlertEntriesForPlatform = (platform) =>
   Object.entries(LumiaAlertConfigs)
-    .filter(([, config]) => config.connection === platform)
+    .filter(([, config]) => config?.connection === platform)
     .sort((a, b) => titleCase(a[0]).localeCompare(titleCase(b[0])));
 
 export const getAlertSearchText = (alert, config) =>
   [
     alert,
     titleCase(alert),
-    config.message,
-    ...(config.acceptedVariables || []),
-    ...(config.quickActions || []).map((quickAction) => quickAction.label),
+    config?.message,
+    ...getVariableList(config?.acceptedVariables).map(getVariableName),
+    ...(Array.isArray(config?.quickActions) ? config.quickActions : []).map((quickAction) => quickAction?.label),
   ]
     .filter(Boolean)
     .join(" ")
@@ -191,11 +220,17 @@ export const serializeExampleValue = (value) => {
 };
 
 export const getVariableExamples = (platform, value) => {
-  if (globalVariableExamples[value]) {
-    return globalVariableExamples[value];
+  if (value && typeof value === "object" && value.example !== undefined) {
+    return [serializeExampleValue(value.example)];
   }
 
-  const normalized = value.toLowerCase();
+  const name = getVariableName(value);
+
+  if (globalVariableExamples[name]) {
+    return globalVariableExamples[name];
+  }
+
+  const normalized = name.toLowerCase();
 
   if (normalized === "username") {
     return ["lumiastream"];
@@ -397,9 +432,9 @@ export const getVariableExamples = (platform, value) => {
 export const getAlertFieldExamples = (config, field) => {
   const examples = [];
   const seen = new Set();
+  const fieldName = getVariableName(field);
 
-  (config.quickActions || []).forEach((quickAction) => {
-    const value = quickAction?.extraSettings?.[field];
+  const addExample = (value) => {
     if (value === undefined || value === null || value === "") {
       return;
     }
@@ -411,35 +446,39 @@ export const getAlertFieldExamples = (config, field) => {
 
     seen.add(serialized);
     examples.push(serialized);
+  };
+
+  if (field && typeof field === "object" && field.example !== undefined) {
+    addExample(field.example);
+  }
+
+  (Array.isArray(config?.quickActions) ? config.quickActions : []).forEach((quickAction) => {
+    addExample(quickAction?.extraSettings?.[fieldName]);
   });
 
-  (config.inputFields || []).forEach((inputField) => {
-    if (inputField.variableField !== field) {
+  (Array.isArray(config?.inputFields) ? config.inputFields : []).forEach((inputField) => {
+    if (!inputField || inputField.variableField !== fieldName) {
       return;
     }
 
-    if (inputField.default === undefined || inputField.default === null || inputField.default === "") {
-      return;
-    }
-
-    const serialized = serializeExampleValue(inputField.default);
-    if (seen.has(serialized)) {
-      return;
-    }
-
-    seen.add(serialized);
-    examples.push(serialized);
+    addExample(inputField.default);
   });
 
   return examples.slice(0, 6);
 };
 
 export const getAlertExamplePayload = (alert, config, exampleIndex = 0) => {
-  const exampleAction = config.quickActions?.[exampleIndex] || config.quickActions?.[0];
+  const quickActions = Array.isArray(config?.quickActions) ? config.quickActions : [];
+  const inputFields = Array.isArray(config?.inputFields) ? config.inputFields : [];
+  const exampleAction = quickActions[exampleIndex] || quickActions[0];
   const extraSettings = {};
   const dynamic = {};
 
-  (config.inputFields || []).forEach((inputField) => {
+  inputFields.forEach((inputField) => {
+    if (!inputField) {
+      return;
+    }
+
     if (inputField.variableField && inputField.default !== undefined && inputField.default !== null && inputField.default !== "") {
       extraSettings[inputField.variableField] = inputField.default;
     }
@@ -542,10 +581,11 @@ export const VariableTable = ({ variables, emptyLabel = "No variables in this se
         </thead>
         <tbody>
           {variables.map((value) => {
+            const name = getVariableName(value);
             const examples = getExamples ? getExamples(value) : [];
 
             return (
-              <tr key={value}>
+              <tr key={name}>
                 <td style={tdStyles}>
                   <code>{formatVariable(value)}</code>
                 </td>
@@ -593,15 +633,16 @@ export const AlertVariableTable = ({ config, variables, emptyLabel = "No alert f
         </thead>
         <tbody>
           {variables.map((value) => {
+            const name = getVariableName(value);
             const examples = getAlertFieldExamples(config, value);
 
             return (
-              <tr key={value}>
+              <tr key={name}>
                 <td style={tdStyles}>
                   <code>{formatVariable(value)}</code>
                 </td>
                 <td style={tdStyles}>
-                  <code>data.extraSettings.{value}</code>
+                  <code>data.extraSettings.{name}</code>
                 </td>
                 <td style={tdStyles}>{getDescription(value)}</td>
                 <td style={tdStyles}>
@@ -720,7 +761,7 @@ export const AlertExplorer = ({ platform, alerts }) => {
                   <p style={{ marginTop: 0 }}>
                     <strong>Message template:</strong>
                     {" "}
-                    <code>{config.message}</code>
+                    <code>{toText(config.message)}</code>
                   </p>
 
                   {quickActions.length > 0 && (
@@ -760,7 +801,7 @@ export const AlertExplorer = ({ platform, alerts }) => {
 
                 <AlertVariableTable
                   config={config}
-                  variables={config.acceptedVariables || []}
+                  variables={getVariableList(config.acceptedVariables)}
                   emptyLabel={`No fields available for ${titleCase(alert)}.`}
                 />
               </>
@@ -782,7 +823,8 @@ export const AlertExplorer = ({ platform, alerts }) => {
 export const SearchablePlatformVariables = ({ platform, cfg }) => {
   const [query, setQuery] = React.useState("");
 
-  const filteredGlobals = filterVariables(cfg.variables || [], query);
+  const globals = getVariableList(cfg.variables);
+  const filteredGlobals = filterVariables(globals, query);
   const filteredChat = Object.entries(cfg.chat || {})
     .sort(([a], [b]) => {
       const aIs = chatCommandTypes.includes(a);
@@ -792,7 +834,7 @@ export const SearchablePlatformVariables = ({ platform, cfg }) => {
       }
       return a.localeCompare(b);
     })
-    .map(([type, variables]) => [type, filterVariables(variables || [], query)])
+    .map(([type, variables]) => [type, filterVariables(variables, query)])
     .filter(([, variables]) => variables.length > 0 || !query);
 
   const alertConfigEntries = getAlertEntriesForPlatform(platform);
@@ -827,7 +869,7 @@ export const SearchablePlatformVariables = ({ platform, cfg }) => {
         />
       </div>
 
-      {cfg.variables?.length > 0 && (
+      {globals.length > 0 && (
         <section style={boxStyles}>
           <div style={chipStyles}>Available everywhere</div>
           <p style={{ marginTop: 0 }}>
@@ -887,9 +929,7 @@ Use variables as placeholders inside Lumia messages, alerts, and overlays. Write
 
 <div style={boxStyles}>
   <div style={chipStyles}>Quick start</div>
-  <p style={{ marginTop: 0 }}>
-    Pick a platform tab, then look in the section that matches where you want to use the variable.
-  </p>
+  <p style={{ marginTop: 0 }}>{"Pick a platform tab, then look in the section that matches where you want to use the variable."}</p>
   <ul style={{ marginBottom: 0 }}>
     <li><strong>Available everywhere</strong>: broadly usable platform variables.</li>
     <li><strong>Chat and commands</strong>: variables for chat messages, commands, redeems, and chatbot actions.</li>
@@ -930,9 +970,15 @@ If you are building a custom overlay, open a platform tab and use the alert expl
 <div style={boxStyles}>
   <div style={chipStyles}>How alert variables map to Overlay.on('alert')</div>
   <p style={{ marginTop: 0 }}>
-    In alert templates, variables like <code>{"{{username}}"}</code>, <code>{"{{amount}}"}</code>, and <code>{"{{stickerName}}"}</code> are the same values your overlay receives inside
-    {" "}
-    <code>data.extraSettings</code>.
+    {"In alert templates, variables like "}
+    <code>{"{{username}}"}</code>
+    {", "}
+    <code>{"{{amount}}"}</code>
+    {", and "}
+    <code>{"{{stickerName}}"}</code>
+    {" are the same values your overlay receives inside "}
+    <code>data.extraSettings</code>
+    {"."}
   </p>
   <div style={tableWrapperStyles}>
     <table style={{ ...tableStyles, minWidth: "680px" }}>
@@ -973,13 +1019,11 @@ If you are building a custom overlay, open a platform tab and use the alert expl
     </table>
   </div>
   <p style={{ marginBottom: 0 }}>
-    Rule of thumb: if you see an alert variable on this page, read it from
-    {" "}
+    {"Rule of thumb: if you see an alert variable on this page, read it from "}
     <code>data.extraSettings.variableName</code>
-    {" "}
-    in
-    {" "}
-    <code>Overlay.on('alert')</code>.
+    {" in "}
+    <code>Overlay.on('alert')</code>
+    {"."}
   </p>
 </div>
 
