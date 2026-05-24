@@ -110,7 +110,6 @@ The valid types for sending an alert are:
 - tiktok-follower
 - tiktok-like
 - tiktok-gift
-- tiktok-subscriber
 - tiktok-share
 - tiktok-streamEnd
 - tiktok-newVideo
