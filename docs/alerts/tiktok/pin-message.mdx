@@ -1,0 +1,67 @@
+---
+sidebar_position: 10
+id: alert-tiktok-pin-message
+title: Pin Message
+description: pinned a message
+---
+
+# Pin Message
+
+- **Alert key:** `tiktok-pinMessage`
+- **Source:** TikTok
+- **Event list label:** Pin Message
+
+## Default message template
+
+```text
+Pinned message: {{message}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{messageId}}` | `data.extraSettings.messageId` | The ID of the message |
+| `{{pinId}}` | `data.extraSettings.pinId` | No description available yet. |
+| `{{pinTime}}` | `data.extraSettings.pinTime` | No description available yet. |
+| `{{operatorUsername}}` | `data.extraSettings.operatorUsername` | No description available yet. |
+| `{{operatorUserId}}` | `data.extraSettings.operatorUserId` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Pinned Message
+
+```json
+{
+  "alert": "tiktok-pinMessage",
+  "dynamic": {
+    "value": "Remember to follow!"
+  },
+  "extraSettings": {
+    "message": "Remember to follow!",
+    "pinId": "1",
+    "messageId": "",
+    "pinTime": "",
+    "operatorUsername": "",
+    "operatorUserId": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Message is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

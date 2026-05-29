@@ -1,0 +1,8 @@
+{
+	"label": "NowPlaying",
+	"position": 23,
+	"link": {
+		"type": "doc",
+		"id": "alerts-nowplaying-index"
+	}
+}

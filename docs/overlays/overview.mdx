@@ -1,0 +1,59 @@
+---
+sidebar_position: 0
+id: overview
+slug: /overlays
+title: Overlays overview
+description: How Lumia overlays consume the variable system - labels, goals, chat-trigger inputs, and the module.config.json preset surface.
+---
+
+# Overlays overview
+
+A **Lumia overlay** is a browser-source compatible widget that renders on top of your stream. Every overlay reads from the same variable + event system the chatbot and actions use, which means anything you can express in a chatbot template you can also render in an overlay.
+
+Overlays come from the **Overlay UI** workspace (`Overlay-UI/`). They ship as modules - each module has a `module.config.json` that declares which presets it exposes for labels, goals, and chat triggers.
+
+This section is the reference for everything overlay-related.
+
+## Sections
+
+- **[Chat triggers](/docs/overlays/chat-triggers)** - how overlays subscribe to chatbot commands via `useChatCommandTrigger`, with the canonical wiring pattern.
+- **[Label & goal presets](/docs/overlays/label-and-goal-presets)** - the `module.config.json` surface that drives the UI's variable picker.
+
+## How overlays read data
+
+Three primary surfaces:
+
+| Surface | What it gives the overlay |
+| --- | --- |
+| **Display variables** | Resolved values that update in near-realtime over the WebSocket: `LATEST_SUB`, `RECENT_TIPS`, etc. See the [Variables overview](/docs/variables). |
+| **Event subscriptions** | Direct event delivery - every alert / chat / channel-points event hits a subscribable bus. Used for animated alerts and HFX timing. |
+| **Chat triggers** | Overlay subscribes to a named chatbot command via `useChatCommandTrigger`. Whenever that command fires, the overlay receives a payload and can run an animation, swap state, etc. See [Chat triggers](/docs/overlays/chat-triggers). |
+
+## How labels work
+
+A **label** is a single piece of resolved text that an overlay renders - "@latestSub" displayed on a banner, "Top donor: @topTipper" displayed in a leaderboard.
+
+Under the hood, a label is just a variable name (or a template string of variable names). The overlay calls a hook that resolves the variable and re-renders when the value changes.
+
+`module.config.json` exposes a `labelPresets` array that maps human-readable preset names to the underlying variable. The UI's variable picker pulls from this list so the streamer doesn't have to memorize variable names.
+
+See [Label & goal presets](/docs/overlays/label-and-goal-presets) for the full preset format.
+
+## How goals work
+
+A **goal** is a (current, target) pair plus optional reset rules. The overlay renders progress (bar, ring, count) and animates as the current value approaches the target.
+
+The current value is always a variable from the `*_GOAL` family (`FOLLOWER_GOAL`, `TIP_GOAL`, etc.). The target value is configured in the overlay settings, with sensible defaults from the preset so the goal renders correctly out of the box.
+
+`module.config.json` exposes a `goalPresets` array. Each preset declares:
+
+- The variable that drives the current value
+- A default target (used if the streamer doesn't set one)
+- A display label
+- Optional reset behavior (manual / on stream start / on time-window roll)
+
+See [Label & goal presets](/docs/overlays/label-and-goal-presets).
+
+## Underscored module convention
+
+Module folders prefixed with `_` are excluded from the overlay build the same way Docusaurus excludes underscore-prefixed doc folders. Use it for in-progress overlays you don't want shipped yet.

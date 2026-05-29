@@ -1,0 +1,60 @@
+---
+sidebar_position: 4
+id: alert-vtubestudio-hotkey-triggered
+title: Hotkey Triggered
+description: Vtubestudio Hotkey Triggered alert payload reference.
+---
+
+# Hotkey Triggered
+
+- **Alert key:** `vtubestudio-hotkeyTriggered`
+- **Source:** Vtubestudio
+
+## Default message template
+
+```text
+{{name}} hotkey triggered
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{name}}` | `data.extraSettings.name` | Name of user |
+| `{{modelName}}` | `data.extraSettings.modelName` | No description available yet. |
+| `{{modelId}}` | `data.extraSettings.modelId` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Hotkey Triggered
+
+```json
+{
+  "alert": "vtubestudio-hotkeyTriggered",
+  "dynamic": {
+    "value": "tomato_splat"
+  },
+  "extraSettings": {
+    "name": "tomato_splat",
+    "modelName": "Light Bulb",
+    "modelId": "123"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Hotkey Name is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

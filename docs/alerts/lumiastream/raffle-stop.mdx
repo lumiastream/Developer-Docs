@@ -1,0 +1,69 @@
+---
+sidebar_position: 8
+id: alert-lumiastream-raffle-stop
+title: Raffle Stop
+description: "{{raffle_title}} has stopped! Winners will be drawn soon"
+---
+
+# Raffle Stop
+
+- **Alert key:** `lumiastream-raffleStop`
+- **Source:** Lumia
+- **Event list label:** Raffle Stop
+
+## Default message template
+
+```text
+{{raffle_title}} has stopped! Winners will be drawn soon
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{raffle_title}}` | `data.extraSettings.raffle_title` | Title of the raffle |
+| `{{raffle_description}}` | `data.extraSettings.raffle_description` | Description of the raffle |
+| `{{raffle_type}}` | `data.extraSettings.raffle_type` | Type of raffle |
+| `{{raffle_entry_command}}` | `data.extraSettings.raffle_entry_command` | Command that enters a user into the raffle |
+| `{{duration}}` | `data.extraSettings.duration` | No description available yet. |
+| `{{raffle_generated_number}}` | `data.extraSettings.raffle_generated_number` | The number that has been selected for the raffle |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### My bright raffle
+
+```json
+{
+  "alert": "lumiastream-raffleStop",
+  "dynamic": {
+    "value": "My bright raffle"
+  },
+  "extraSettings": {
+    "title": "My bright raffle",
+    "description": "Raffle only for the brightest streamers",
+    "type": "userList",
+    "raffle_entry_command": "!join",
+    "raffle_title": "",
+    "raffle_description": "",
+    "raffle_type": "",
+    "duration": "",
+    "raffle_generated_number": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

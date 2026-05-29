@@ -1,0 +1,151 @@
+---
+sidebar_position: 2
+id: label-and-goal-presets
+title: Label & goal presets
+description: The labelPresets and goalPresets surface in module.config.json - how overlays expose variable-driven labels and goals to the LumiaStream UI.
+---
+
+# Label & goal presets
+
+`module.config.json` is the contract between an overlay and the LumiaStream UI. Two of its arrays - `labelPresets` and `goalPresets` - drive the variable pickers the streamer sees when configuring the overlay.
+
+## labelPresets
+
+A `labelPreset` declares one human-readable option in the "what should this label show?" picker.
+
+```json
+{
+	"labelPresets": [
+		{
+			"id": "latestFollower",
+			"label": "Latest follower",
+			"description": "The most recent person to follow on any connected platform",
+			"variable": "LATEST_FOLLOWER",
+			"category": "Recent activity"
+		},
+		{
+			"id": "topMonthlyTipper",
+			"label": "Top tipper this month",
+			"description": "User with the highest tip total in the current calendar month",
+			"variable": "TOP_TIPPER_MONTHLY",
+			"category": "Top supporters"
+		}
+	]
+}
+```
+
+| Field | Purpose |
+| --- | --- |
+| `id` | Stable identifier. Used for analytics, default-selection, and presets carry-over across overlay updates. |
+| `label` | The human-readable name shown in the UI dropdown. |
+| `description` | Tooltip / subtitle. Keep it short - one line in the picker. |
+| `variable` | The variable that resolves the displayed value. Must exist in Lumia's variable catalogue. |
+| `category` | Optional grouping. The UI groups options under this heading. |
+| `template` | Optional. If present, replaces `variable` with a full template string that can compose multiple variables, e.g. `"{{LATEST_FOLLOWER}} (@{{LATEST_FOLLOWER}})"`. |
+
+The variable picker lists every preset across every overlay on the layer. Streamers can also pick **Custom** to type any variable name - presets are sugar, not gates.
+
+## goalPresets
+
+A `goalPreset` declares one option in the "what should this goal track?" picker.
+
+```json
+{
+	"goalPresets": [
+		{
+			"id": "monthlyTipGoal",
+			"label": "Monthly tip total",
+			"description": "Tips this calendar month",
+			"variable": "TIP_GOAL_MONTHLY",
+			"defaultTarget": 500,
+			"resetMode": "monthly",
+			"category": "Tips"
+		},
+		{
+			"id": "streamSubGoal",
+			"label": "Subs this stream",
+			"description": "Subscriptions since the current stream started",
+			"variable": "SUB_GOAL_STREAM",
+			"defaultTarget": 20,
+			"resetMode": "stream",
+			"category": "Subs"
+		}
+	]
+}
+```
+
+| Field | Purpose |
+| --- | --- |
+| `id` | Stable identifier. |
+| `label` | Picker display name. |
+| `description` | Tooltip. |
+| `variable` | The current-value variable. Should be a `*_GOAL` family member. |
+| `defaultTarget` | Numeric default if the streamer doesn't set one. Used as the `target` for `current / target` progress. |
+| `resetMode` | `manual` (never auto-reset), `stream` (resets on stream start), `daily`, `weekly`, `monthly`. |
+| `category` | Optional grouping. |
+| `template` | Optional. If the displayed progress label needs a composed string. |
+
+### Target overrides
+
+When a counter has a goal target stored at the counter level (set via Custom JS, the Bot Counters UI, or an importer), Lumia uses that target instead of the preset's `defaultTarget`. The resolution order is: counter-level target → preset `defaultTarget` → undefined.
+
+## Categories
+
+Both `labelPresets` and `goalPresets` accept an optional `category`. The UI groups by category in the picker dropdown:
+
+```
+Recent activity
+  └─ Latest follower
+  └─ Latest sub
+Top supporters
+  └─ Top tipper this month
+  └─ Top cheerer this month
+```
+
+If you omit `category`, the preset shows up under "Other".
+
+## Validation
+
+`module.config.json` is validated at module-build time:
+
+- Every `variable` must exist in Lumia's variable catalogue.
+- `goalPresets[].variable` must be a member of the `*_GOAL` family.
+- `id` must be unique within its array.
+- `defaultTarget` on a goal must be a positive number.
+
+Build fails with a clear error if any of these are off.
+
+## Example: minimal label overlay
+
+```json
+{
+	"name": "Latest follower banner",
+	"version": "1.0.0",
+	"description": "Banner that shows the most recent follower",
+	"labelPresets": [
+		{
+			"id": "latestFollower",
+			"label": "Latest follower",
+			"variable": "LATEST_FOLLOWER",
+			"category": "Recent activity"
+		}
+	]
+}
+```
+
+In the overlay component:
+
+```tsx
+import { useLabel } from '@lumia/overlay-shared'
+
+export function LatestFollowerBanner() {
+  const value = useLabel('primary')
+  return <div className='banner'>{value}</div>
+}
+```
+
+`useLabel('primary')` resolves to whatever variable the streamer picked in the UI for the `primary` label slot. If they picked the "Latest follower" preset, `value` updates whenever `LATEST_FOLLOWER` changes.
+
+## Autogen / scaffolding note
+
+The label/goal preset surface is the eventual entry point for an autogen pass: walk Lumia's variable catalogue and emit a preset for any variable that has a label/goal flag set, dropping the manual editing of `module.config.json` for the common cases. The current presets in shipped overlays were hand-curated for the top ~30 variables; the long tail still needs the manual step. This is a planned follow-up.

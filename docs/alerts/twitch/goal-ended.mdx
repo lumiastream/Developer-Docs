@@ -1,0 +1,111 @@
+---
+sidebar_position: 19
+id: alert-twitch-goal-ended
+title: Goal Ended
+description: "Goal {{goal_description}} ended at amount {{goal_amount}} with a target of {{goal_target_amount}}"
+---
+
+# Goal Ended
+
+- **Alert key:** `twitch-goalEnded`
+- **Source:** Twitch
+- **Event list label:** Goal ended
+
+## Default message template
+
+```text
+Goal {{goal_description}} ended at amount {{goal_amount}} with a target of {{goal_target_amount}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{goal_type}}` | `data.extraSettings.goal_type` | Goal type |
+| `{{goal_id}}` | `data.extraSettings.goal_id` | Goal id |
+| `{{goal_description}}` | `data.extraSettings.goal_description` | Goal description |
+| `{{goal_amount}}` | `data.extraSettings.goal_amount` | Goal amount |
+| `{{goal_target_amount}}` | `data.extraSettings.goal_target_amount` | Goal target amount |
+| `{{goal_achieved}}` | `data.extraSettings.goal_achieved` | No description available yet. |
+| `{{goal_status}}` | `data.extraSettings.goal_status` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Reached 100 Followers
+
+```json
+{
+  "alert": "twitch-goalEnded",
+  "dynamic": {
+    "value": "follower"
+  },
+  "extraSettings": {
+    "goal_type": "follower",
+    "goal_description": "100 Followers!",
+    "goal_amount": 100,
+    "goal_target_amount": 100,
+    "goal_id": "",
+    "goal_achieved": "",
+    "goal_status": ""
+  }
+}
+```
+
+### Reached 100 Subs
+
+```json
+{
+  "alert": "twitch-goalEnded",
+  "dynamic": {
+    "value": "subscription"
+  },
+  "extraSettings": {
+    "goal_type": "subscription",
+    "goal_description": "100 Subs!",
+    "goal_amount": 100,
+    "goal_target_amount": 100,
+    "goal_id": "",
+    "goal_achieved": "",
+    "goal_status": ""
+  }
+}
+```
+
+### Reached 100 New Subs
+
+```json
+{
+  "alert": "twitch-goalEnded",
+  "dynamic": {
+    "value": "new_subscriptions"
+  },
+  "extraSettings": {
+    "goal_type": "new_subscriptions",
+    "goal_description": "100 New Subs!",
+    "goal_amount": 100,
+    "goal_target_amount": 100,
+    "goal_id": "",
+    "goal_achieved": "",
+    "goal_status": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `TARGET_ACHIEVED` - Goal target was reached
+- `EQUAL_NUMBER` - Final Amount is equal to
+- `GREATER_NUMBER` - Final Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

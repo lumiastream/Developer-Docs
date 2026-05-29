@@ -1,0 +1,70 @@
+---
+sidebar_position: 11
+id: alert-tiktok-poll
+title: Poll
+description: sent a poll message
+---
+
+# Poll
+
+- **Alert key:** `tiktok-poll`
+- **Source:** TikTok
+- **Event list label:** Poll
+
+## Default message template
+
+```text
+Poll started: {{title}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{pollId}}` | `data.extraSettings.pollId` | No description available yet. |
+| `{{title}}` | `data.extraSettings.title` | The title of the Twitch Redemption that was redeemed |
+| `{{pollKind}}` | `data.extraSettings.pollKind` | No description available yet. |
+| `{{pollDuration}}` | `data.extraSettings.pollDuration` | No description available yet. |
+| `{{timeRemain}}` | `data.extraSettings.timeRemain` | No description available yet. |
+| `{{pollSponsor}}` | `data.extraSettings.pollSponsor` | No description available yet. |
+| `{{userCount}}` | `data.extraSettings.userCount` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### New Poll
+
+```json
+{
+  "alert": "tiktok-poll",
+  "dynamic": {
+    "value": "What should we do next?"
+  },
+  "extraSettings": {
+    "title": "What should we do next?",
+    "pollId": "1",
+    "pollKind": "normal",
+    "pollDuration": "",
+    "timeRemain": "",
+    "pollSponsor": "",
+    "userCount": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Title is equal to
+- `EQUAL_SELECTION` - Poll kind is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

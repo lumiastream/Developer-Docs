@@ -1,0 +1,8 @@
+{
+	"label": "Chatbot Commands",
+	"position": 3,
+	"link": {
+		"type": "doc",
+		"id": "chatbot/overview"
+	}
+}

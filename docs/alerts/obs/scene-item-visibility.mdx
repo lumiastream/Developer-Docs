@@ -1,0 +1,56 @@
+---
+sidebar_position: 7
+id: alert-obs-scene-item-visibility
+title: Scene Item Visibility
+description: OBS Scene Item Visibility alert payload reference.
+---
+
+# Scene Item Visibility
+
+- **Alert key:** `obs-sceneItemVisibility`
+- **Source:** OBS
+
+## Default message template
+
+```text
+OBS scene item {{item}} became visibile
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{item}}` | `data.extraSettings.item` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Scene Visible
+
+```json
+{
+  "alert": "obs-sceneItemVisibility",
+  "dynamic": {
+    "value": "Lumia Scene"
+  },
+  "extraSettings": {
+    "item": "Lumia Scene"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Scene item is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

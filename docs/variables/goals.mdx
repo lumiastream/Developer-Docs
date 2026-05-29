@@ -1,0 +1,63 @@
+---
+sidebar_position: 5
+id: goals
+slug: /goals
+title: Goals
+description: The *_GOAL family - target values for follower/sub/cheer/tip/superchat/merch goals. Paired with current-progress counters to drive Goal overlay layers.
+---
+
+# Goals
+
+Lumia exposes a family of `*_GOAL` system variables that hold the **target** of a goal, the number you're working toward. They pair with existing **progress** variables to drive the Goal overlay layer or any custom progress display.
+
+## Available goals
+
+| Goal target variable | Suggested progress variable |
+| --- | --- |
+| `{{follower_goal}}` | `{{total_follower_count}}` |
+| `{{subscriber_goal}}` | `{{total_subscriber_count}}` |
+| `{{cheer_goal}}` | `{{twitch_total_bits_count}}` |
+| `{{tip_goal}}` | `{{total_donation_amount}}` |
+| `{{superchat_goal}}` | `{{youtube_total_superchat_amount}}` |
+| `{{merch_goal_orders}}` | (no Lumia merch tracker today) |
+| `{{merch_goal_items}}` | (no Lumia merch tracker today) |
+| `{{merch_goal_total}}` | (no Lumia merch tracker today) |
+
+Set goal targets from Custom JS, a chatbot command, or by editing the template-variable list directly. See [Updating the target manually](#updating-the-target-manually) below.
+
+## Driving a Goal overlay layer
+
+Add a Goal layer to your overlay and set:
+
+| Field | Value |
+| --- | --- |
+| `value` | `{{total_donation_amount}}` (or whichever progress variable matches your goal) |
+| `valueGoal` | `{{tip_goal}}` (or whichever goal variable matches) |
+
+Both fields are template strings, they get resolved on every render. As soon as `tip_goal` updates, the overlay's target bar shifts.
+
+Lumia ships `_dynamic` goal presets in `module.config.json` for each of these pairings. When you add a Goal layer and pick "Tip Goal (auto-target)" from the preset list, both fields come pre-filled.
+
+## Updating the target manually
+
+You can override the target from chat, a chatbot command, or a custom action:
+
+```text
+{{tip_goal=5000}}    → set the tip goal to 5000
+```
+
+This works because `tip_goal` is a regular system variable, and `{{name=value}}` is the standard "set or fallback" syntax. The next render of any Goal layer pointing at `{{tip_goal}}` will use the new value.
+
+## Cumulative vs. session goals
+
+Lumia goals are **cumulative** - they don't reset at stream start. If you want a "session sub goal" that resets every stream, wire an automation:
+
+1. Trigger: "Stream live"
+2. Action: chatbot message → `{{subscriber_goal=10}}` (or whatever fresh target)
+
+Combined with `{{session_subscriber_count}}` as the progress, you get a per-stream goal display.
+
+## See also
+
+- [Display variables](./display-variables) - the autogen list of every progress variable available
+- [Counters](./counters) - for custom progress counters (death count, etc.) you can also use as `value` in a Goal layer

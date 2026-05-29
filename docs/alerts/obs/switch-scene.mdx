@@ -1,0 +1,57 @@
+---
+sidebar_position: 12
+id: alert-obs-switch-scene
+title: Switch Scene
+description: OBS Switch Scene alert payload reference.
+---
+
+# Switch Scene
+
+- **Alert key:** `obs-switchScene`
+- **Source:** OBS
+
+## Default message template
+
+```text
+OBS scene switched to {{scene}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{scene}}` | `data.extraSettings.scene` | Scene name |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Scene Change
+
+```json
+{
+  "alert": "obs-switchScene",
+  "dynamic": {
+    "value": "Lumia Scene"
+  },
+  "extraSettings": {
+    "item": "Lumia Scene",
+    "scene": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Scene is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

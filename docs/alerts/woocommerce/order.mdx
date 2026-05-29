@@ -1,0 +1,90 @@
+---
+sidebar_position: 1
+id: alert-woocommerce-order
+title: Order
+description: "ordered {{item}}"
+---
+
+# Order
+
+- **Alert key:** `woocommerce-order`
+- **Source:** WooCommerce
+- **Event list label:** Order
+
+## Default message template
+
+```text
+Someone just ordered {{item}} in the amount of {{amount}}
+```
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### $100
+
+```json
+{
+  "alert": "woocommerce-order",
+  "dynamic": {
+    "value": 100,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "item": "rgb light",
+    "amount": 100,
+    "currency": "USD"
+  }
+}
+```
+
+### $200
+
+```json
+{
+  "alert": "woocommerce-order",
+  "dynamic": {
+    "value": 200,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "item": "rgb light, smart plug",
+    "amount": 200,
+    "currency": "USD"
+  }
+}
+```
+
+### $300
+
+```json
+{
+  "alert": "woocommerce-order",
+  "dynamic": {
+    "value": 300,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "item": "rgb light, keylight, smart plug",
+    "amount": 300,
+    "currency": "USD"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_CURRENCY_NUMBER` - Donation Amount is equal to
+- `GREATER_CURRENCY_NUMBER` - Donation Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,60 @@
+---
+sidebar_position: 1
+id: alert-pulse-heartrate
+title: Heartrate
+description: Pulse Heartrate alert payload reference.
+---
+
+# Heartrate
+
+- **Alert key:** `pulse-heartrate`
+- **Source:** Pulse
+
+## Default message template
+
+```text
+Heart rate changed to {{heartrate}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{heartrate}}` | `data.extraSettings.heartrate` | No description available yet. |
+| `{{min_heartrate}}` | `data.extraSettings.min_heartrate` | No description available yet. |
+| `{{max_heartrate}}` | `data.extraSettings.max_heartrate` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Heart Rate 100
+
+```json
+{
+  "alert": "pulse-heartrate",
+  "dynamic": {
+    "value": 100
+  },
+  "extraSettings": {
+    "heartrate": 100,
+    "min_heartrate": "",
+    "max_heartrate": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `GREATER_NUMBER` - Heart Rate is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

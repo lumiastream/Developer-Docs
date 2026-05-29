@@ -1,0 +1,45 @@
+---
+sidebar_position: 1
+id: alert-meld-recording-starting
+title: Recording Starting
+description: Meld Recording Starting alert payload reference.
+---
+
+# Recording Starting
+
+- **Alert key:** `meld-recordingStarting`
+- **Source:** Meld
+
+## Default message template
+
+```text
+{{name}} is starting
+```
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Recording Started
+
+```json
+{
+  "alert": "meld-recordingStarting",
+  "dynamic": {
+    "value": "Go Bright"
+  },
+  "extraSettings": {}
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,109 @@
+---
+sidebar_position: 6
+id: alert-twitch-category-changed
+title: Category Changed
+description: "Category changed to {{category_name}}"
+---
+
+# Category Changed
+
+- **Alert key:** `twitch-categoryChanged`
+- **Source:** Twitch
+- **Event list label:** Category `{{category_name}}`
+
+## Default message template
+
+```text
+Category changed to {{category_name}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{category_name}}` | `data.extraSettings.category_name` | Category name |
+| `{{category_id}}` | `data.extraSettings.category_id` | Category id |
+| `{{channel_title}}` | `data.extraSettings.channel_title` | Channel title |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Just Chatting
+
+```json
+{
+  "alert": "twitch-categoryChanged",
+  "dynamic": {
+    "value": "Just Chatting"
+  },
+  "extraSettings": {
+    "category_name": "Just Chatting",
+    "category_id": "",
+    "channel_title": ""
+  }
+}
+```
+
+### Fortnite
+
+```json
+{
+  "alert": "twitch-categoryChanged",
+  "dynamic": {
+    "value": "Fortnite"
+  },
+  "extraSettings": {
+    "category_name": "Fortnite",
+    "category_id": "",
+    "channel_title": ""
+  }
+}
+```
+
+### Valorant
+
+```json
+{
+  "alert": "twitch-categoryChanged",
+  "dynamic": {
+    "value": "Valorant"
+  },
+  "extraSettings": {
+    "category_name": "Valorant",
+    "category_id": "",
+    "channel_title": ""
+  }
+}
+```
+
+### Retro
+
+```json
+{
+  "alert": "twitch-categoryChanged",
+  "dynamic": {
+    "value": "Retro"
+  },
+  "extraSettings": {
+    "category_name": "Retro",
+    "category_id": "",
+    "channel_title": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Title is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,102 @@
+---
+sidebar_position: 20
+id: alert-twitch-goal-progressed
+title: Goal Progressed
+description: "Goal {{goal_description}} progressed to {{goal_amount}} with a target of {{goal_target_amount}}"
+---
+
+# Goal Progressed
+
+- **Alert key:** `twitch-goalProgressed`
+- **Source:** Twitch
+- **Event list label:** Goal progressed
+
+## Default message template
+
+```text
+Goal {{goal_description}} progressed to {{goal_amount}} with a target of {{goal_target_amount}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{goal_type}}` | `data.extraSettings.goal_type` | Goal type |
+| `{{goal_id}}` | `data.extraSettings.goal_id` | Goal id |
+| `{{goal_description}}` | `data.extraSettings.goal_description` | Goal description |
+| `{{goal_amount}}` | `data.extraSettings.goal_amount` | Goal amount |
+| `{{goal_target_amount}}` | `data.extraSettings.goal_target_amount` | Goal target amount |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Gained 50 Followers
+
+```json
+{
+  "alert": "twitch-goalProgressed",
+  "dynamic": {
+    "value": "follower"
+  },
+  "extraSettings": {
+    "goal_type": "follower",
+    "goal_description": "100 Followers!",
+    "goal_amount": 50,
+    "goal_target_amount": 100,
+    "goal_id": ""
+  }
+}
+```
+
+### Gained 50 Subs
+
+```json
+{
+  "alert": "twitch-goalProgressed",
+  "dynamic": {
+    "value": "subscription"
+  },
+  "extraSettings": {
+    "goal_type": "subscription",
+    "goal_description": "100 Subs!",
+    "goal_amount": 50,
+    "goal_target_amount": 50,
+    "goal_id": ""
+  }
+}
+```
+
+### Gained 50 New Subs
+
+```json
+{
+  "alert": "twitch-goalProgressed",
+  "dynamic": {
+    "value": "new_subscriptions"
+  },
+  "extraSettings": {
+    "goal_type": "new_subscriptions",
+    "goal_description": "100 New Subs!",
+    "goal_amount": 50,
+    "goal_target_amount": 100,
+    "goal_id": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_NUMBER` - Current Amount is equal to
+- `GREATER_NUMBER` - Current Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

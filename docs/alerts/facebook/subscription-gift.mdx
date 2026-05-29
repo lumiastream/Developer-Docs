@@ -1,0 +1,117 @@
+---
+sidebar_position: 10
+id: alert-facebook-subscription-gift
+title: Subscription Gift
+description: "sent {{amount}} gift subscriptions"
+---
+
+# Subscription Gift
+
+- **Alert key:** `facebook-subscriptionGift`
+- **Source:** Facebook
+- **Event list label:** Gift Subscription
+
+## Default message template
+
+```text
+{{username}} sent {{amount}} gift subscriptions
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{recipient}}` | `data.extraSettings.recipient` | User being gifted the sub |
+| `{{recipients}}` | `data.extraSettings.recipients` | Users being gifted the gift subscription. Comma separated list of usernames |
+| `{{recipientsRaw}}` | `data.extraSettings.recipientsRaw` | Users being gifted the gift subscription. Raw array of usernames, avatar, and userId. mainly used for custom code and custom overlays. Can be accessed with dot notation e.g. `{{recipientsRaw.0.avatar}}` to get the first users avatar |
+| `{{gifter}}` | `data.extraSettings.gifter` | The username of the one who gifted |
+| `{{giftAmount}}` | `data.extraSettings.giftAmount` | Amount gifted by user |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 100
+
+```json
+{
+  "alert": "facebook-subscriptionGift",
+  "dynamic": {
+    "value": 100
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 100,
+    "recipient": "",
+    "recipients": "",
+    "recipientsRaw": "",
+    "gifter": "",
+    "giftAmount": "",
+    "message": ""
+  }
+}
+```
+
+### 200
+
+```json
+{
+  "alert": "facebook-subscriptionGift",
+  "dynamic": {
+    "value": 200
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 200,
+    "recipient": "",
+    "recipients": "",
+    "recipientsRaw": "",
+    "gifter": "",
+    "giftAmount": "",
+    "message": ""
+  }
+}
+```
+
+### 300
+
+```json
+{
+  "alert": "facebook-subscriptionGift",
+  "dynamic": {
+    "value": 300
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 300,
+    "recipient": "",
+    "recipients": "",
+    "recipientsRaw": "",
+    "gifter": "",
+    "giftAmount": "",
+    "message": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_NUMBER` - Gift Sub Amount is equal to
+- `GREATER_NUMBER` - Gift Sub Amount is greater than or equal to
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

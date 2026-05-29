@@ -1,0 +1,94 @@
+---
+sidebar_position: 8
+id: alert-youtube-session-gifts
+title: Session Gifts
+description: "reached {{total}} jewels"
+---
+
+# Session Gifts
+
+- **Alert key:** `youtube-sessionGifts`
+- **Source:** YouTube
+- **Event list label:** Total Gifts `{{total}}`
+
+## Default message template
+
+```text
+Reached {{total}} jewels this session
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{total}}` | `data.extraSettings.total` | Hype train current total |
+| `{{previousTotal}}` | `data.extraSettings.previousTotal` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 100 Total Jewels
+
+```json
+{
+  "alert": "youtube-sessionGifts",
+  "dynamic": {
+    "value": 100,
+    "total": 100,
+    "previousTotal": 50
+  },
+  "extraSettings": {
+    "total": 100,
+    "previousTotal": 50
+  }
+}
+```
+
+### 500 Total Jewels
+
+```json
+{
+  "alert": "youtube-sessionGifts",
+  "dynamic": {
+    "value": 500,
+    "total": 500,
+    "previousTotal": 100
+  },
+  "extraSettings": {
+    "total": 500,
+    "previousTotal": 100
+  }
+}
+```
+
+### 1000 Total Jewels
+
+```json
+{
+  "alert": "youtube-sessionGifts",
+  "dynamic": {
+    "value": 1000,
+    "total": 1000,
+    "previousTotal": 500
+  },
+  "extraSettings": {
+    "total": 1000,
+    "previousTotal": 500
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `GREATER_NUMBER` - Total Session Jewels is greater than or equal to
+- `COUNT_IS_MULTIPLE_OF` - Total Session Jewels is a multiple of
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

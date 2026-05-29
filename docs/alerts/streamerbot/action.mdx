@@ -1,0 +1,58 @@
+---
+sidebar_position: 1
+id: alert-streamerbot-action
+title: Action
+description: Streamer.bot Action alert payload reference.
+---
+
+# Action
+
+- **Alert key:** `streamerbot-action`
+- **Source:** Streamer.bot
+
+## Default message template
+
+```text
+{{action}} action triggered
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{action}}` | `data.extraSettings.action` | Action name |
+| `{{actionId}}` | `data.extraSettings.actionId` | Action ID |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Lumia Action
+
+```json
+{
+  "alert": "streamerbot-action",
+  "dynamic": {
+    "value": "Lumia Action"
+  },
+  "extraSettings": {
+    "action": "Lumia Action",
+    "actionId": "lumia"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Action is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

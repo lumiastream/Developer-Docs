@@ -1,0 +1,94 @@
+---
+sidebar_position: 37
+id: alert-twitch-session-bits
+title: Session Bits
+description: "reached {{total}} bits"
+---
+
+# Session Bits
+
+- **Alert key:** `twitch-sessionBits`
+- **Source:** Twitch
+- **Event list label:** Total Bits `{{total}}`
+
+## Default message template
+
+```text
+Reached {{total}} bits
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{total}}` | `data.extraSettings.total` | Hype train current total |
+| `{{previousTotal}}` | `data.extraSettings.previousTotal` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 1000 Total Bits
+
+```json
+{
+  "alert": "twitch-sessionBits",
+  "dynamic": {
+    "value": 1000,
+    "total": 1000,
+    "previousTotal": 500
+  },
+  "extraSettings": {
+    "total": 1000,
+    "previousTotal": 500
+  }
+}
+```
+
+### 20000 Total Bits
+
+```json
+{
+  "alert": "twitch-sessionBits",
+  "dynamic": {
+    "value": 20000,
+    "total": 20000,
+    "previousTotal": 10000
+  },
+  "extraSettings": {
+    "total": 20000,
+    "previousTotal": 10000
+  }
+}
+```
+
+### 100000 Total Bits
+
+```json
+{
+  "alert": "twitch-sessionBits",
+  "dynamic": {
+    "value": 100000,
+    "total": 100000,
+    "previousTotal": 50000
+  },
+  "extraSettings": {
+    "total": 100000,
+    "previousTotal": 50000
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `GREATER_NUMBER` - Total Session Bits is greater than or equal to
+- `COUNT_IS_MULTIPLE_OF` - Total Session Bits is a multiple of
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

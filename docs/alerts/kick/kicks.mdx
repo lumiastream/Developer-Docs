@@ -1,0 +1,96 @@
+---
+sidebar_position: 6
+id: alert-kick-kicks
+title: Kicks
+description: "sent {{name}} for {{amount}} kicks"
+---
+
+# Kicks
+
+- **Alert key:** `kick-kicks`
+- **Source:** Kick
+- **Event list label:** Kicks
+
+## Default message template
+
+```text
+{{username}} sent {{name}} for {{amount}} kicks. They said "{{message}}"
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{name}}` | `data.extraSettings.name` | Name of user |
+| `{{type}}` | `data.extraSettings.type` | No description available yet. |
+| `{{tier}}` | `data.extraSettings.tier` | Tier gift |
+| `{{id}}` | `data.extraSettings.id` | No description available yet. |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 100 kicks Hype
+
+```json
+{
+  "alert": "kick-kicks",
+  "dynamic": {
+    "value": 100,
+    "name": "Hype"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 100,
+    "name": "Hype",
+    "type": "BASIC",
+    "tier": "BASIC",
+    "id": "hype",
+    "message": "This is so hype"
+  }
+}
+```
+
+### 500 kicks Rage Quit
+
+```json
+{
+  "alert": "kick-kicks",
+  "dynamic": {
+    "value": 500,
+    "name": "Rage Quit"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 500,
+    "name": "Rage Quit",
+    "type": "LEVEL_UP",
+    "tier": "MID",
+    "id": "rage_quit",
+    "message": "Im raging!!"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_SELECTION` - Kicks Name is equal to
+- `EQUAL_NUMBER` - Kicks Amount is equal to
+- `GREATER_NUMBER` - Kicks Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

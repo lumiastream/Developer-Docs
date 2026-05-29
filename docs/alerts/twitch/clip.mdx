@@ -1,0 +1,81 @@
+---
+sidebar_position: 13
+id: alert-twitch-clip
+title: Clip
+description: created a clip
+---
+
+# Clip
+
+- **Alert key:** `twitch-clip`
+- **Source:** Twitch
+- **Event list label:** Clipped
+- **Carries alert image:** yes (`extraSettings.contentImage`)
+
+## Default message template
+
+```text
+Clip taken by {{username}} with title of {{clip_title}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{clip_url}}` | `data.extraSettings.clip_url` | clip_url |
+| `{{clip_id}}` | `data.extraSettings.clip_id` | ID of the clip |
+| `{{clip_title}}` | `data.extraSettings.clip_title` | Clip's title |
+| `{{clip_duration}}` | `data.extraSettings.clip_duration` | Clip's duration |
+| `{{clip_user_is_mod}}` | `data.extraSettings.clip_user_is_mod` | The clip taken by user is a moderator |
+| `{{clip_user_is_vip}}` | `data.extraSettings.clip_user_is_vip` | The clip taken by user is a vip |
+| `{{clip_user_is_sub}}` | `data.extraSettings.clip_user_is_sub` | The clip taken by user is a subscriber |
+| `{{clip_user_is_follower}}` | `data.extraSettings.clip_user_is_follower` | The clip taken by user is a follower |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Lumia Clipped
+
+```json
+{
+  "alert": "twitch-clip",
+  "dynamic": {
+    "value": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "clip_title": "Lumia Stream",
+    "clip_url": "https://www.twitch.tv/lumiastream/clip/EnchantingSuccessfulMoonBlargNaut-ev_c6MJ_Qb0o7gEx",
+    "contentImage": "https://clips-media-assets2.twitch.tv/AT-cm%7CEnchantingSuccessfulMoonBlargNaut-preview-480x272.jpg",
+    "displayname": "",
+    "userId": "",
+    "clip_id": "",
+    "clip_duration": "",
+    "clip_user_is_mod": "",
+    "clip_user_is_vip": "",
+    "clip_user_is_sub": "",
+    "clip_user_is_follower": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME` - Username is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

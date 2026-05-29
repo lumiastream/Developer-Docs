@@ -1,0 +1,29 @@
+---
+sidebar_position: 10
+id: alert-obs-stream-stopping
+title: Stream Stopping
+description: OBS Stream Stopping alert payload reference.
+---
+
+# Stream Stopping
+
+- **Alert key:** `obs-streamStopping`
+- **Source:** OBS
+
+## Default message template
+
+```text
+OBS stream stopped
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

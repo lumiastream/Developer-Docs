@@ -1,0 +1,45 @@
+---
+sidebar_position: 4
+id: alert-meld-stream-stopping
+title: Stream Stopping
+description: Meld Stream Stopping alert payload reference.
+---
+
+# Stream Stopping
+
+- **Alert key:** `meld-streamStopping`
+- **Source:** Meld
+
+## Default message template
+
+```text
+{{name}} is stopping
+```
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Stream Stop
+
+```json
+{
+  "alert": "meld-streamStopping",
+  "dynamic": {
+    "value": "Go Bright"
+  },
+  "extraSettings": {}
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,42 @@
+---
+sidebar_position: 18
+id: alert-lumiastream-variable-changed
+title: Variable Changed
+description: "{{variable_name}} changed to {{variable_value}}"
+---
+
+# Variable Changed
+
+- **Alert key:** `lumiastream-variableChanged`
+- **Source:** Lumia
+- **Event list label:** Variable Changed
+
+## Default message template
+
+```text
+{{variable_name}} changed to {{variable_value}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{variable_name}}` | `data.extraSettings.variable_name` | No description available yet. |
+| `{{variable_value}}` | `data.extraSettings.variable_value` | No description available yet. |
+| `{{variable_previous_value}}` | `data.extraSettings.variable_previous_value` | No description available yet. |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `EQUAL_STRING` - Value equals (text)
+- `EQUAL_NUMBER` - Value equals (number)
+- `GREATER_NUMBER` - Value is a number greater than or equal to
+- `LESS_NUMBER` - Value is a number less than or equal to
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

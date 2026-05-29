@@ -1,0 +1,77 @@
+---
+sidebar_position: 1
+id: alert-crowdcontrol-effect
+title: Effect
+description: "sent effect {{effect}} for game {{game}}"
+---
+
+# Effect
+
+- **Alert key:** `crowdcontrol-effect`
+- **Source:** Crowd Control
+- **Event list label:** Effect
+
+## Default message template
+
+```text
+{{username}} sent {{effect}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{platform}}` | `data.extraSettings.platform` | The streaming platform this message is coming from |
+| `{{effect}}` | `data.extraSettings.effect` | No description available yet. |
+| `{{effectId}}` | `data.extraSettings.effectId` | No description available yet. |
+| `{{game}}` | `data.extraSettings.game` | No description available yet. |
+| `{{gameId}}` | `data.extraSettings.gameId` | No description available yet. |
+| `{{artwork}}` | `data.extraSettings.artwork` | No description available yet. |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{duration}}` | `data.extraSettings.duration` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### New Effect
+
+```json
+{
+  "alert": "crowdcontrol-effect",
+  "dynamic": {
+    "value": "Big Light"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "effect": "Big Light",
+    "game": "Lumia Stream",
+    "artwork": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "message": "Turn on the lights",
+    "duration": 5,
+    "displayname": "",
+    "platform": "",
+    "effectId": "",
+    "gameId": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Effect is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

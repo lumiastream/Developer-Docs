@@ -1,0 +1,45 @@
+---
+sidebar_position: 2
+id: alert-meld-recording-stopping
+title: Recording Stopping
+description: Meld Recording Stopping alert payload reference.
+---
+
+# Recording Stopping
+
+- **Alert key:** `meld-recordingStopping`
+- **Source:** Meld
+
+## Default message template
+
+```text
+{{name}} is stopping
+```
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Recording Stop
+
+```json
+{
+  "alert": "meld-recordingStopping",
+  "dynamic": {
+    "value": "Go Bright"
+  },
+  "extraSettings": {}
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

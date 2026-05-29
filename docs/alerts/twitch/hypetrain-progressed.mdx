@@ -1,0 +1,105 @@
+---
+sidebar_position: 24
+id: alert-twitch-hypetrain-progressed
+title: Hypetrain Progressed
+description: "Hype train progressed to {{progress}}"
+---
+
+# Hypetrain Progressed
+
+- **Alert key:** `twitch-hypetrainProgressed`
+- **Source:** Twitch
+- **Event list label:** Hype train progressed
+
+## Default message template
+
+```text
+Hype train progressed to {{progress}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{level}}` | `data.extraSettings.level` | Hype train current level |
+| `{{total}}` | `data.extraSettings.total` | Hype train current total |
+| `{{progress}}` | `data.extraSettings.progress` | Hype train current progress |
+| `{{goal}}` | `data.extraSettings.goal` | Hype train current goal |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Progress 100
+
+```json
+{
+  "alert": "twitch-hypetrainProgressed",
+  "dynamic": {
+    "value": 100,
+    "amount": 100
+  },
+  "extraSettings": {
+    "level": 1,
+    "total": 100,
+    "progress": 100,
+    "goal": 4,
+    "amount": 100
+  }
+}
+```
+
+### Progress 200
+
+```json
+{
+  "alert": "twitch-hypetrainProgressed",
+  "dynamic": {
+    "value": 200,
+    "amount": 200
+  },
+  "extraSettings": {
+    "level": 1,
+    "total": 200,
+    "progress": 200,
+    "goal": 4,
+    "amount": 200
+  }
+}
+```
+
+### Progress 300
+
+```json
+{
+  "alert": "twitch-hypetrainProgressed",
+  "dynamic": {
+    "value": 300,
+    "amount": 300
+  },
+  "extraSettings": {
+    "level": 1,
+    "total": 300,
+    "progress": 300,
+    "goal": 4,
+    "amount": 300
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_NUMBER` - Progress is equal to
+- `GREATER_NUMBER` - Progress is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

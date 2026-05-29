@@ -1,0 +1,56 @@
+---
+sidebar_position: 6
+id: alert-obs-scene-item-hidden
+title: Scene Item Hidden
+description: OBS Scene Item Hidden alert payload reference.
+---
+
+# Scene Item Hidden
+
+- **Alert key:** `obs-sceneItemHidden`
+- **Source:** OBS
+
+## Default message template
+
+```text
+OBS scene item {{item}} became hidden
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{item}}` | `data.extraSettings.item` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Scene Hidden
+
+```json
+{
+  "alert": "obs-sceneItemHidden",
+  "dynamic": {
+    "value": "Lumia Scene"
+  },
+  "extraSettings": {
+    "item": "Lumia Scene"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Scene item is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

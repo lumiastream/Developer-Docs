@@ -1,0 +1,67 @@
+---
+sidebar_position: 46
+id: alert-twitch-timeout-over
+title: Timeout Over
+description: time out over
+---
+
+# Timeout Over
+
+- **Alert key:** `twitch-timeoutOver`
+- **Source:** Twitch
+- **Event list label:** Timeout Over
+
+## Default message template
+
+```text
+{{username}}'s timeout of {{duration}} seconds is over
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{timeout_duration}}` | `data.extraSettings.timeout_duration` | Timeout duration in seconds |
+| `{{expiration_ms}}` | `data.extraSettings.expiration_ms` | No description available yet. |
+| `{{reason}}` | `data.extraSettings.reason` | Ban Reason, e.g. this will get the reason when using /ban [username] [reason] |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Time Out Over
+
+```json
+{
+  "alert": "twitch-timeoutOver",
+  "dynamic": {
+    "value": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "timeout_duration": 30,
+    "reason": "For being too bright",
+    "userId": "",
+    "expiration_ms": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,69 @@
+---
+sidebar_position: 0
+id: overview
+slug: /variables
+title: Variables overview
+description: How Lumia's template system works - display variables, variable functions, scoping, and the three syntax forms.
+---
+
+# Variables & templating
+
+Anything you type into a chatbot message, an overlay label, a TTS prompt, or an alert template can include **variables** - placeholders that resolve to live values when the message is rendered.
+
+There are two kinds:
+
+- **Display variables** - read a single value from Lumia's internal state. Example: `{{total_donation_amount}}` resolves to a number. Reference: [Display variables](./display-variables).
+- **Variable functions** - callable helpers that take arguments and produce a value, possibly with side effects. Example: `{{random=1-100}}`, `{{nuke=300,delete,scam}}`. Reference: [Variable functions](./variable-functions).
+
+Both share the same `{{...}}` braced syntax. The parser doesn't care which kind a name maps to - it looks the name up in a unified registry and resolves accordingly.
+
+## The three syntax forms
+
+Lumia accepts three forms interchangeably. They can be mixed freely in the same message:
+
+| Form | Example |
+| --- | --- |
+| `{{name}}` | `{{username}} just followed!` |
+| `${name}` | `${sender} hugs ${1}` |
+| `$(name args)` | `$(touser) is $(random.1-100)% cracked` |
+
+`${...}` and `$(...)` are normalised to `{{...}}` as the very first pass through the resolver. They behave identically, pick whichever feels natural.
+
+## Resolution pipeline
+
+When Lumia renders a template, this happens in order:
+
+1. **Rewrite pass** - `${...}` and `$(...)` forms get normalised to `{{...}}`. Loops up to 5 times to handle nested patterns like `${channel ${1}}`.
+2. **Variable scan** - the parser walks the string finding `{{name}}` and `{{name=args}}` tokens.
+3. **Lookup + resolve** - for each token, the resolver checks (in order):
+   1. **Variable functions** - is the name a registered function? If so, call it with the args.
+   2. **Provided variables** - was the name passed in as part of the event-scoped scope (e.g. `{{username}}` inside an alert variation)?
+   3. **Template variables / system variables** - is it a name in the global template-variable store?
+   4. **Fallback** - if a default was provided via `{{name=default}}`, use it. Otherwise the token is replaced with the empty string.
+4. **Loop** - if any new `{{...}}` tokens appeared (e.g. because a function returned a string containing more variables), repeat from step 2. Caps at 50 iterations.
+
+The loop is what makes nested patterns work: `{{nuke={{arg=1}},delete,scam}}` first resolves the inner `{{arg=1}}`, then sees `{{nuke=alice,delete,scam}}` and dispatches.
+
+## Scoping
+
+Variables live in three scopes that the resolver checks in order:
+
+- **Event scope** - short-lived, available only inside a specific event's render (alert variation, chatbot reply). Includes `{{username}}`, `{{message}}`, `{{amount}}`, `{{currency}}`, `{{platform}}`, and the alert-specific dynamic vars (`{{subMonths}}`, `{{raidViewers}}`, etc.).
+- **Template variables** - long-lived, persisted across runs. Includes counters (`{{counter=deaths}}` or just `{{deaths}}` if the counter exists) and any custom variables you defined.
+- **System variables** - the built-in catalogue of ~700 names. These are populated by event handlers (followers, subs, donations) and external integrations (Spotify, Twitch, OBS).
+
+A function/system name always wins over a template name with the same string. Custom counters can't shadow a system variable.
+
+## Special families
+
+Three families deserve their own home page because they have shared patterns:
+
+- **[Counters](./counters)** - runtime-mutable named numbers shared with the Bot Counters UI. Also includes emote auto-tracking.
+- **[Recent lists](./recent-lists)** - the `RECENT_*` family, comma-separated lists of recent events with parallel `*_AMOUNT` companions.
+- **[Goals](./goals)** - the `*_GOAL` family, paired with current-progress counters to drive Goal overlay layers.
+
+## Where to look next
+
+- Need the full reference of available display variables? → [Display variables](./display-variables)
+- Need the full reference of variable functions? → [Variable functions](./variable-functions)
+- Cheatsheet of common patterns? → [Cheatsheet](/docs/cheatsheet)

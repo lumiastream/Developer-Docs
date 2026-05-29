@@ -1,0 +1,72 @@
+---
+sidebar_position: 3
+id: alert-throne-gift-purchase
+title: Gift Purchase
+description: "sent {{itemName}}"
+---
+
+# Gift Purchase
+
+- **Alert key:** `throne-giftPurchase`
+- **Source:** Throne
+- **Event list label:** Gift Purchase
+
+## Default message template
+
+```text
+{{username}} sent {{itemName}} from Throne. {{message}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{itemName}}` | `data.extraSettings.itemName` | No description available yet. |
+| `{{itemThumbnailUrl}}` | `data.extraSettings.itemThumbnailUrl` | No description available yet. |
+| `{{isSurpriseGift}}` | `data.extraSettings.isSurpriseGift` | No description available yet. |
+| `{{creatorUsername}}` | `data.extraSettings.creatorUsername` | TikTok battle creator username |
+| `{{raw}}` | `data.extraSettings.raw` | The raw data that comes in through the platform for the alert. This is useful for custom code when data is needed that we don't provide by default. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Gift
+
+```json
+{
+  "alert": "throne-giftPurchase",
+  "dynamic": {
+    "value": "AirPods Max",
+    "name": "AirPods Max"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "lumiastream",
+    "message": "Keep doing what you're doing!",
+    "itemName": "AirPods Max",
+    "itemThumbnailUrl": "https://m.media-amazon.com/images/I/81jqUPkIVRL._AC_SX522_.jpg",
+    "isSurpriseGift": false,
+    "creatorUsername": "lumiastream",
+    "raw": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Item Name is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

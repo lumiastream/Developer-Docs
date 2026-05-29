@@ -1,0 +1,85 @@
+---
+sidebar_position: 10
+id: alert-fourthwall-thankyou-sent
+title: Thankyou Sent
+description: "thank you for {{contributionType}}"
+---
+
+# Thankyou Sent
+
+- **Alert key:** `fourthwall-thankyouSent`
+- **Source:** Fourthwall
+- **Event list label:** Thank You Sent
+
+## Default message template
+
+```text
+Thank you sent to {{username}} for {{contributionType}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{email}}` | `data.extraSettings.email` | Email of user |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{mediaUrl}}` | `data.extraSettings.mediaUrl` | No description available yet. |
+| `{{contributionType}}` | `data.extraSettings.contributionType` | No description available yet. |
+| `{{contribution}}` | `data.extraSettings.contribution` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Order
+
+```json
+{
+  "alert": "fourthwall-thankyouSent",
+  "dynamic": {
+    "value": 1
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "contributionType": "ORDER",
+    "message": "Thank you for your support!",
+    "email": "",
+    "mediaUrl": "",
+    "contribution": ""
+  }
+}
+```
+
+### Donation
+
+```json
+{
+  "alert": "fourthwall-thankyouSent",
+  "dynamic": {
+    "value": 1
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "contributionType": "DONATION",
+    "message": "Thank you for your support!",
+    "email": "",
+    "mediaUrl": "",
+    "contribution": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

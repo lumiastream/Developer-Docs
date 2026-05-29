@@ -1,0 +1,99 @@
+---
+sidebar_position: 4
+id: alert-fourthwall-giveaway-started
+title: Giveaway Started
+description: "started giveaway for {{giveawayName}}"
+---
+
+# Giveaway Started
+
+- **Alert key:** `fourthwall-giveawayStarted`
+- **Source:** Fourthwall
+- **Event list label:** Giveaway Started
+- **Carries alert image:** yes (`extraSettings.contentImage`)
+
+## Default message template
+
+```text
+{{username}} just started a giveaway for {{giveawayName}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{email}}` | `data.extraSettings.email` | Email of user |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{currency}}` | `data.extraSettings.currency` | The currency used |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{giveawayName}}` | `data.extraSettings.giveawayName` | No description available yet. |
+| `{{giveawayId}}` | `data.extraSettings.giveawayId` | No description available yet. |
+| `{{giveawayFriendlyId}}` | `data.extraSettings.giveawayFriendlyId` | No description available yet. |
+| `{{offerName}}` | `data.extraSettings.offerName` | No description available yet. |
+| `{{offerImageUrl}}` | `data.extraSettings.offerImageUrl` | No description available yet. |
+| `{{winners}}` | `data.extraSettings.winners` | No description available yet. |
+| `{{winnerNames}}` | `data.extraSettings.winnerNames` | No description available yet. |
+| `{{winnerCount}}` | `data.extraSettings.winnerCount` | No description available yet. |
+| `{{firstWinner}}` | `data.extraSettings.firstWinner` | No description available yet. |
+| `{{duration}}` | `data.extraSettings.duration` | No description available yet. |
+| `{{allGifts}}` | `data.extraSettings.allGifts` | No description available yet. |
+| `{{gifts}}` | `data.extraSettings.gifts` | No description available yet. |
+| `{{totalGifts}}` | `data.extraSettings.totalGifts` | Gifts total count |
+| `{{offer}}` | `data.extraSettings.offer` | No description available yet. |
+| `{{type}}` | `data.extraSettings.type` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Test
+
+```json
+{
+  "alert": "fourthwall-giveawayStarted",
+  "dynamic": {
+    "value": 100,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "giveawayName": "Test Item",
+    "giveawayId": "TEST123",
+    "amount": 100,
+    "currency": "USD",
+    "contentImage": "https://cdn.fourthwall.com/storefront-en/_next/image?url=https%3A%2F%2Fcdn.fourthwall.com%2Fpublic%2Flogos%2Ffw-logo-stacked-purple.png",
+    "email": "",
+    "message": "",
+    "giveawayFriendlyId": "",
+    "offerName": "",
+    "offerImageUrl": "",
+    "winners": "",
+    "winnerNames": "",
+    "winnerCount": "",
+    "firstWinner": "",
+    "duration": "",
+    "allGifts": "",
+    "gifts": "",
+    "totalGifts": "",
+    "offer": "",
+    "type": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_CURRENCY_NUMBER` - Donation Amount is equal to
+- `GREATER_CURRENCY_NUMBER` - Donation Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

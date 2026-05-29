@@ -1,0 +1,196 @@
+---
+sidebar_position: 1
+id: variable-functions
+slug: /variable-functions
+title: Variable functions
+description: All ~70 callable {{name=args}} helpers, grouped by domain. Use this as the canonical reference when building templates.
+---
+
+# Variable functions
+
+Variable functions are the callable helpers in Lumia's template system. They look like `{{name=args}}` and resolve at render time. Some are pure (random, math, string ops); others have side effects (mod actions, song control, settings toggles).
+
+Functions are grouped below by **what they do**, not by which platform they originate from.
+
+## Reading external data
+
+| Function | Description |
+| --- | --- |
+| `{{read_file=PATH}}` | Read a text file from disk. Used for filewatcher integrations. |
+| `{{read_url=URL[,jsonPath]}}` | GET a URL. Without `jsonPath`, returns the whole body as a JSON string. With `jsonPath`, drills into the response (`{{read_url=https://x.io/api,data.0.title}}`). |
+| `{{customapi=URL}}` | Alias for `read_url`. |
+
+## Time + date
+
+| Function | Description |
+| --- | --- |
+| `{{time[=TZ]}}` | Current time in the given IANA timezone (defaults to local). Uses `Intl.DateTimeFormat` - no network call. |
+| `{{format_date=DATE,FORMAT}}` | Format an ISO date string with a moment-style format. |
+| `{{time_since=DATE}}` | Friendly "3 hours ago" string. |
+| `{{time_until=DATE}}` | Friendly "in 2 days" string. |
+| `{{lumia_uptime}}` | How long the Lumia app has been running. |
+| `{{twitch_uptime}}`, `{{youtube_uptime}}`, `{{facebook_uptime}}` | Per-platform stream uptime. |
+| `{{session_start_date}}` | ISO timestamp of the current stream session start. |
+
+## Randomness
+
+| Function | Description |
+| --- | --- |
+| `{{random=N-M}}` | Random integer between N and M inclusive. |
+| `{{random_input=a,b,c}}` | Pick one of the inputs at random. |
+| `{{random_inputs=a,b,c}}` | Alias for `random_input`. |
+| `{{random_chatter}}` | Pick a random user from the last ~30 chatters. |
+| `{{selection=key,a:Apple,b:Banana}}` | Map an input key to a labelled output. |
+
+## Math + logic
+
+| Function | Description |
+| --- | --- |
+| `{{math=EXPRESSION}}` | Evaluate an arithmetic expression. Supports +, -, *, /, parens. |
+| `{{compare=A,OP,B}}` | Returns "true"/"false". `OP` is `==`, `!=`, `>`, `<`, `>=`, `<=`. |
+| `{{round=NUMBER[,DIGITS]}}` | Round to N digits. |
+| `{{if=CONDITION,TRUE_VAL,FALSE_VAL}}` | Ternary. |
+| `{{coalesce=A,B,C,…}}` | Return the first non-empty arg. Great for "use input or default". |
+| `{{between=N,LOW,HIGH}}` | Returns "true" if `LOW ≤ N ≤ HIGH`. |
+| `{{min=A,B,C,…}}` | Smallest input. |
+| `{{max=A,B,C,…}}` | Largest input. |
+| `{{sum_variables=var1,var2,…}}` | Sum the listed template variables. |
+| `{{offset_count=VAR,DELTA}}` | Read VAR then add DELTA. |
+| `{{regex_extract=TEXT,PATTERN,GROUP_INDEX}}` | Regex match + capture group. |
+| `{{replace=TEXT,FIND,REPLACE}}` | String substitution. |
+
+## Chat input + viewer data
+
+| Function | Description |
+| --- | --- |
+| `{{arg=N[,word\|emote]}}` | The Nth whitespace-separated token of `{{message}}`. Optional `word` or `emote` validator. |
+| `{{get_var_from_msg=NAME}}` | Read a key=value pair from the message body. |
+| `{{user_watchtime=USER}}` | Watch time for a user, from loyalty tracking. |
+| `{{lookup_user=USER}}` | Returns the user's profile string. |
+| `{{user_has_role=ROLE}}` | "true"/"false" - check if the caller has a role (`mod`, `vip`, `subscriber`). |
+| `{{is_first_chatter}}` | "true" if this is the user's first message of the session. |
+| `{{get_user_loyalty_points=USER}}` | The user's current loyalty point balance. |
+| `{{viewer_profile_summary}}` | Compact viewer-engagement summary for the caller. |
+
+## Cross-platform user lookups
+
+| Function | Description |
+| --- | --- |
+| `{{account_age=USER[,PLATFORM]}}` | Friendly account age. Defaults to the caller's platform; falls back to the first connected. Supports Twitch + YouTube. |
+| `{{lookup_user_game=USER[,PLATFORM]}}` | Current game/category for a user's channel. Twitch + Kick. |
+| `{{lookup_user_title=USER[,PLATFORM]}}` | Current stream title for a user's channel. Twitch + Kick. |
+| `{{get_avatar[=USER][,PLATFORM]}}` | Avatar URL. Twitch + Kick + YouTube. |
+| `{{channel_emotes[=PLATFORM]}}` | Channel emotes for the caller's platform. Twitch + Kick. |
+| `{{translate=TEXT[,LANG]}}` | Translate to the target language. |
+
+## Twitch-prefixed helpers
+
+These are intentionally Twitch-only. Use the cross-platform versions above when you want multi-platform behaviour.
+
+| Function | Description |
+| --- | --- |
+| `{{twitch_followage[=USER]}}` | Followage on Twitch. |
+| `{{twitch_accountage[=USER]}}` | Twitch account age. |
+| `{{twitch_next_ad}}` | When the next mid-roll ad will run. |
+| `{{twitch_get_avatar=USER}}` | Twitch-specific avatar lookup. |
+| `{{twitch_channel_emotes}}` | Twitch channel emotes via Helix. |
+
+## Counters
+
+See [Counters](./counters) for the full pattern. The TL;DR:
+
+| Function | Description |
+| --- | --- |
+| `{{counter=NAME[,MODIFIER]}}` | Increment / decrement / set / read a counter. `MODIFIER` defaults to `+1`. Use `=N` to set, `+N` / `-N` to adjust. |
+| `{{emote_use_count=NAME}}` | Read the auto-tracked per-emote use count. |
+
+## Mod actions
+
+| Function | Description |
+| --- | --- |
+| `{{vanish[=SECONDS]}}` | Self-timeout the caller on the platform they typed from. |
+| `{{nuke=LOOKBACK,ACTION,PATTERN}}` | Bulk-moderate matching recent messages across every platform. `ACTION` is `delete`, `ban`, or a timeout duration in seconds. |
+| `{{nuke_username=USER[,ACTION[,LOOKBACK]]}}` | Bulk-action one user's recent messages. |
+| `{{permit=USER,SECONDS}}` | Grant a per-user permit window in the chat filter. |
+
+## Stream control (broadcaster / mod)
+
+| Function | Description |
+| --- | --- |
+| `{{settitle=TEXT}}` | Update the stream title on every connected platform. Twitch + Kick + YouTube. |
+| `{{setgame=NAME}}` | Update the stream category. Twitch + Kick. |
+| `{{set_alerts_paused=true\|false}}` | Toggle the global alerts-paused flag. |
+| `{{set_sfx_muted=true\|false}}` | Mute TTS + HFX audio + `AudioManager.play`. |
+| `{{toggle_automation=NAME,enable\|disable}}` | Enable/disable a Lumia automation. |
+| `{{bot_status}}` | Render a "Bot connected to: …" summary. |
+
+## Loyalty
+
+| Function | Description |
+| --- | --- |
+| `{{loyalty_top=N}}` | Top-N loyalty users formatted "1. alice (1500), 2. bob (1200), …". Max 10. |
+| `{{loyalty_leaderboard_url}}` | Public leaderboard URL for your channel. |
+| `{{add_points=USER,N}}` | Add N points to USER. |
+| `{{set_points=USER,N}}` | Set USER's points to N. |
+| `{{give_points=USER,N}}` | Transfer N of caller's points to USER. |
+
+## Games
+
+| Function | Description |
+| --- | --- |
+| `{{cancel_raffle}}` | End the active raffle. |
+| `{{start_sub_raffle}}` | Start a sub-only raffle. |
+| `{{cancel_duel}}` / `{{accept_duel}}` / `{{deny_duel}}` | Duel lifecycle on the caller's platform. |
+| `{{votekick=USER\|yes\|no}}` | Single dispatcher: non-vote arg starts a vote, vote arg counts toward threshold. |
+| `{{bet=open\|<amount>\|close\|resolve, …}}` | Loyalty-point parimutuel bet lifecycle. |
+| `{{bingo=start\|<number>, …}}` | Number-guess game. |
+
+## Music / Spotify
+
+| Function | Description |
+| --- | --- |
+| `{{song_skip}}` / `{{song_play}}` / `{{song_pause}}` | Spotify playback control. |
+| `{{song_volume=N}}` | Set Spotify volume (0-100). |
+| `{{song_request=QUERY}}` | Search and queue. Tracks the requester for later removal. |
+| `{{song_queue}}` | Show the last 5 song requests. |
+| `{{song_remove_last}}` | Remove the most recent tracked request. |
+| `{{song_queue_clear}}` | Drop everything from the tracked queue. |
+| `{{song_voteskip_start}}` / `{{song_voteskip_vote=yes\|no}}` | Vote-skip lifecycle. |
+| `{{song_wrongsong}}` | The caller's most recent request gets dropped. |
+
+## Audio / overlay
+
+| Function | Description |
+| --- | --- |
+| `{{screenshot}}` | Take a screenshot, return a base64 data URL. |
+| `{{overlay_screenshot}}` | Screenshot a Lumia overlay. |
+| `{{obs_screenshot[=SOURCE]}}` | Screenshot an OBS scene/source via OBS WebSocket. |
+| `{{obs_replay}}` / `{{obs_vertical_replay}}` | Save an instant replay clip. |
+| `{{get_queue_count}}` | How many viewers are in the join queue. |
+| `{{viewer_queue_list}}` | First 10 entries in the join queue. |
+| `{{get_latest_file_from_folder=PATH}}` | Most recent file in a folder. |
+| `{{get_random_file_from_folder=PATH}}` | Random pick from a folder. |
+| `{{convert_color_to_hex=NAME}}` | "red" → "#ff0000". |
+
+## Bot management (chat-triggered)
+
+| Function | Description |
+| --- | --- |
+| `{{filesay=URL}}` | Fetch URL, post each line as a chat message. Capped 50 lines / 1s per line. |
+| `{{get_commands}}` / `{{get_all_commands}}` | List the current chatbot commands. |
+| `{{add_chatbot_command=NAME,RESPONSE}}` | Create a chatbot command from inside another command. |
+| `{{edit_chatbot_command=NAME,RESPONSE}}` | Edit an existing one. |
+| `{{delete_chatbot_command=NAME}}` | Remove one. |
+
+## AI / external
+
+| Function | Description |
+| --- | --- |
+| `{{ai_prompt=PROMPT}}` | Route a prompt to the configured AI provider (OpenAI / DeepSeek). |
+| `{{weather=LOCATION}}` | One-line weather summary from wttr.in. |
+
+## Notes on side effects
+
+Functions in **Mod actions**, **Stream control**, **Loyalty**, **Games**, **Music / Spotify**, and **Bot management** mutate state. They're safe to call repeatedly but each call costs an API roundtrip or a state write. Don't put them inside `{{coalesce=…}}` or `{{if=…}}` expressions expecting "only one branch fires" - every variable function token is resolved before the surrounding text gets composed.
+
+If you need conditional side effects, use the conditional-action chain on the command itself (Lumia's command editor exposes a "Conditions" tab) instead of trying to gate it inside a template.

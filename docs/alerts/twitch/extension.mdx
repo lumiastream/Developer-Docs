@@ -1,0 +1,165 @@
+---
+sidebar_position: 15
+id: alert-twitch-extension
+title: Extension
+description: "redeemed {{command}} for {{amount}} {{amount_type}}"
+---
+
+# Extension
+
+- **Alert key:** `twitch-extension`
+- **Source:** Twitch
+- **Event list label:** Redeemed
+
+## Default message template
+
+```text
+{{username}} redeemed {{command}} for {{amount}} {{amount_type}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{channelDescription}}` | `data.extraSettings.channelDescription` | The description of the target channel |
+| `{{channelViews}}` | `data.extraSettings.channelViews` | Amount of views the target channel has |
+| `{{originType}}` | `data.extraSettings.originType` | No description available yet. |
+| `{{queueType}}` | `data.extraSettings.queueType` | No description available yet. |
+| `{{command}}` | `data.extraSettings.command` | The command that was triggered for the message |
+| `{{prompt}}` | `data.extraSettings.prompt` | The users message that was prompted |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{messageWithoutEmotes}}` | `data.extraSettings.messageWithoutEmotes` | The message that the sender sent without the command/alias and without emots inside of the message. Mainly used for TTS. |
+| `{{rawMessageWithoutEmotes}}` | `data.extraSettings.rawMessageWithoutEmotes` | The raw message that the sender sent without emotes inside of the message |
+| `{{bits}}` | `data.extraSettings.bits` | (Twitch) How many bits were used with the Twitch Extension redemption |
+| `{{timestamp}}` | `data.extraSettings.timestamp` | The time the command was triggered |
+| `{{points_cost}}` | `data.extraSettings.points_cost` | Loyalty Points command cost |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Redeemed for 100 bits
+
+```json
+{
+  "alert": "twitch-extension",
+  "dynamic": {
+    "value": "100",
+    "name": "lumibeam",
+    "currency": "bits"
+  },
+  "extraSettings": {
+    "command": "lumibeam",
+    "message": "pew pew",
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "displayname": "LumiaStream",
+    "amount": "100",
+    "amount_type": "bits",
+    "currency": "bits",
+    "currencySymbol": "♦",
+    "userId": "",
+    "channelDescription": "",
+    "channelViews": "",
+    "originType": "",
+    "queueType": "",
+    "prompt": "",
+    "messageWithoutEmotes": "",
+    "rawMessageWithoutEmotes": "",
+    "bits": "",
+    "timestamp": "",
+    "points_cost": ""
+  }
+}
+```
+
+### Redeemed for 2000 bits
+
+```json
+{
+  "alert": "twitch-extension",
+  "dynamic": {
+    "value": "2000",
+    "name": "lumibeam",
+    "currency": "bits"
+  },
+  "extraSettings": {
+    "command": "lumibeam",
+    "message": "pew pew",
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "displayname": "LumiaStream",
+    "amount": "2000",
+    "amount_type": "bits",
+    "currency": "bits",
+    "currencySymbol": "♦",
+    "userId": "",
+    "channelDescription": "",
+    "channelViews": "",
+    "originType": "",
+    "queueType": "",
+    "prompt": "",
+    "messageWithoutEmotes": "",
+    "rawMessageWithoutEmotes": "",
+    "bits": "",
+    "timestamp": "",
+    "points_cost": ""
+  }
+}
+```
+
+### Redeemed for 10000 bits
+
+```json
+{
+  "alert": "twitch-extension",
+  "dynamic": {
+    "value": "10000",
+    "name": "lumibeam",
+    "currency": "bits"
+  },
+  "extraSettings": {
+    "command": "lumibeam",
+    "message": "pew pew",
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "displayname": "LumiaStream",
+    "amount": "10000",
+    "amount_type": "bits",
+    "currency": "bits",
+    "currencySymbol": "♦",
+    "userId": "",
+    "channelDescription": "",
+    "channelViews": "",
+    "originType": "",
+    "queueType": "",
+    "prompt": "",
+    "messageWithoutEmotes": "",
+    "rawMessageWithoutEmotes": "",
+    "bits": "",
+    "timestamp": "",
+    "points_cost": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_NUMBER` - Amount is equal to
+- `GREATER_NUMBER` - Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

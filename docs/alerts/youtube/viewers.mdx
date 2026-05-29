@@ -1,0 +1,90 @@
+---
+sidebar_position: 18
+id: alert-youtube-viewers
+title: Viewers
+description: "{{viewers}} viewers are watching the stream"
+---
+
+# Viewers
+
+- **Alert key:** `youtube-viewers`
+- **Source:** YouTube
+- **Event list label:** Viewers
+
+## Default message template
+
+```text
+{{viewers}} viewers are watching the stream
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{viewers}}` | `data.extraSettings.viewers` | Viewers count |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 100 viewers
+
+```json
+{
+  "alert": "youtube-viewers",
+  "dynamic": {
+    "value": 100,
+    "amount": 100
+  },
+  "extraSettings": {
+    "viewers": 100,
+    "amount": 100
+  }
+}
+```
+
+### 200 viewers
+
+```json
+{
+  "alert": "youtube-viewers",
+  "dynamic": {
+    "value": 200,
+    "amount": 200
+  },
+  "extraSettings": {
+    "viewers": 200,
+    "amount": 200
+  }
+}
+```
+
+### 300 viewers
+
+```json
+{
+  "alert": "youtube-viewers",
+  "dynamic": {
+    "value": 300,
+    "amount": 300
+  },
+  "extraSettings": {
+    "viewers": 300,
+    "amount": 300
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `GREATER_NUMBER` - Viewers is greater than or equal to
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

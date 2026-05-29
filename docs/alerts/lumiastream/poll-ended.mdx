@@ -1,0 +1,89 @@
+---
+sidebar_position: 4
+id: alert-lumiastream-poll-ended
+title: Poll Ended
+description: "Poll {{poll_title}} ended! The winning choice is: {{poll_winning_title}} with a total of {{poll_winning_votes}} votes"
+---
+
+# Poll Ended
+
+- **Alert key:** `lumiastream-pollEnded`
+- **Source:** Lumia
+- **Event list label:** Poll ended
+
+## Default message template
+
+```text
+Poll {{poll_title}} ended! The winning choice is: {{poll_winning_title}} with a total of {{poll_winning_votes}} votes
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{poll_id}}` | `data.extraSettings.poll_id` | Poll id |
+| `{{poll_title}}` | `data.extraSettings.poll_title` | Poll title |
+| `{{poll_choices}}` | `data.extraSettings.poll_choices` | Poll choices |
+| `{{poll_winning_title}}` | `data.extraSettings.poll_winning_title` | Poll winning title |
+| `{{poll_winning_id}}` | `data.extraSettings.poll_winning_id` | Poll winning id |
+| `{{poll_winning_votes}}` | `data.extraSettings.poll_winning_votes` | Number of votes for the winning item |
+| `{{poll_total_votes}}` | `data.extraSettings.poll_total_votes` | Total number of votes |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Yes won
+
+```json
+{
+  "alert": "lumiastream-pollEnded",
+  "dynamic": {
+    "value": "Is Lumia Stream the best"
+  },
+  "extraSettings": {
+    "poll_title": "Is Lumia Stream the best",
+    "poll_choices": "Yes,No",
+    "poll_winning_title": "Yes",
+    "poll_winning_votes": 10,
+    "poll_total_votes": 14,
+    "poll_id": "",
+    "poll_winning_id": ""
+  }
+}
+```
+
+### No won
+
+```json
+{
+  "alert": "lumiastream-pollEnded",
+  "dynamic": {
+    "value": "Is Lumia Stream the best"
+  },
+  "extraSettings": {
+    "poll_title": "Is Lumia Stream the best",
+    "poll_choices": "Yes,No",
+    "poll_winning_title": "No",
+    "poll_winning_votes": 10,
+    "poll_total_votes": 15,
+    "poll_id": "",
+    "poll_winning_id": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Winning Choice is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

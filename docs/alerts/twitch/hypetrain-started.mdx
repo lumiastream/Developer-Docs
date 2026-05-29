@@ -1,0 +1,42 @@
+---
+sidebar_position: 25
+id: alert-twitch-hypetrain-started
+title: Hypetrain Started
+description: Hype train started
+---
+
+# Hypetrain Started
+
+- **Alert key:** `twitch-hypetrainStarted`
+- **Source:** Twitch
+- **Event list label:** Hype train started
+
+## Default message template
+
+```text
+Hype train started
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{total}}` | `data.extraSettings.total` | Hype train current total |
+| `{{progress}}` | `data.extraSettings.progress` | Hype train current progress |
+| `{{goal}}` | `data.extraSettings.goal` | Hype train current goal |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `GREATER_NUMBER` - Goal is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

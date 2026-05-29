@@ -1,0 +1,67 @@
+---
+sidebar_position: 2
+id: alert-twitch-ad-stopped
+title: Ad Stopped
+description: ad stopped
+---
+
+# Ad Stopped
+
+- **Alert key:** `twitch-adStopped`
+- **Source:** Twitch
+- **Event list label:** Ad Stopped
+
+## Default message template
+
+```text
+ad stopped
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{length}}` | `data.extraSettings.length` | Length of time in seconds |
+| `{{is_automatic}}` | `data.extraSettings.is_automatic` | Whether the ad is playing automatically or not |
+| `{{started_at}}` | `data.extraSettings.started_at` | ISO String of the time this alert was triggered |
+| `{{twitch_next_ad}}` | `data.extraSettings.twitch_next_ad` | (Twitch) Gets the remaining time for how long until the next ad |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Ad Stopped
+
+```json
+{
+  "alert": "twitch-adStopped",
+  "dynamic": {
+    "value": "60",
+    "amount": 60
+  },
+  "extraSettings": {
+    "length": "60",
+    "amount": 60,
+    "is_automatic": false,
+    "started_at": "2022-07-26T17:00:03.17106713Z",
+    "next_ad_starts": "1 hour, 5 minutes, 20 seconds",
+    "next_ad_starts_date": "2022-07-26T17:00:05.17106713Z",
+    "twitch_next_ad": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

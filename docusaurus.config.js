@@ -27,7 +27,7 @@ const darkCodeTheme = themes.dracula;
           redirects: [
             {
               to: "/docs/variables",
-              from: ["/variables", "/docs/variables"],
+              from: ["/variables"],
             },
             {
               to: "/docs/custom-code/what-is-custom-javascript",
@@ -123,6 +123,18 @@ const darkCodeTheme = themes.dracula;
               position: "left",
               label: "Variables",
               activeBaseRegex: "docs/(variables)?$",
+            },
+            {
+              to: "/docs/chatbot",
+              label: "Chatbot Commands",
+              position: "left",
+              activeBasePath: "docs/chatbot",
+            },
+            {
+              to: "/docs/alerts",
+              label: "Alerts",
+              position: "left",
+              activeBasePath: "docs/alerts",
             },
             {
               to: "/docs/custom-code/what-is-custom-javascript",

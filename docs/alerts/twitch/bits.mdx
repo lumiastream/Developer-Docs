@@ -1,0 +1,99 @@
+---
+sidebar_position: 4
+id: alert-twitch-bits
+title: Bits
+description: "cheered {{amount}} bits"
+---
+
+# Bits
+
+- **Alert key:** `twitch-bits`
+- **Source:** Twitch
+- **Event list label:** Bits
+
+## Default message template
+
+```text
+{{username}} cheered {{amount}} bits. They said {{message}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 100 bits
+
+```json
+{
+  "alert": "twitch-bits",
+  "dynamic": {
+    "value": 100
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 100,
+    "message": ""
+  }
+}
+```
+
+### 500 bits
+
+```json
+{
+  "alert": "twitch-bits",
+  "dynamic": {
+    "value": 500
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 500,
+    "message": ""
+  }
+}
+```
+
+### 1000 bits
+
+```json
+{
+  "alert": "twitch-bits",
+  "dynamic": {
+    "value": 1000
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 1000,
+    "message": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_NUMBER` - Bits Amount is equal to
+- `GREATER_NUMBER` - Bits Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

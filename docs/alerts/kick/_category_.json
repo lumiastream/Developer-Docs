@@ -1,0 +1,8 @@
+{
+	"label": "Kick",
+	"position": 3,
+	"link": {
+		"type": "doc",
+		"id": "alerts-kick-index"
+	}
+}

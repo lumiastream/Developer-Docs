@@ -1,0 +1,119 @@
+---
+sidebar_position: 3
+id: games
+title: Games
+description: Loyalty-point and chat-driven games - Roulette, Duel, Slots, Bet, Bingo, Votekick. Lifecycle, options, and how each game manages state.
+---
+
+# Games
+
+Lumia ships six chat-driven games. Each has its own state machine and is exposed through a default chatbot command. Where possible, the underlying state is shared with the variable functions so you can build custom flows on top.
+
+## Roulette
+
+`!roulette <amount>` - bet a loyalty-point amount. ~50% chance to double it; ~50% chance to lose it.
+
+| systemOptions field | Purpose |
+| --- | --- |
+| `minBet` / `maxBet` | Range gate for the bet |
+| `winMessage` / `loseMessage` | Reply templates |
+| `hideWinMessage` | When true, skips the chat reply (assumes you'll surface via an alert) |
+| `invalidInput` | Reply for malformed bets |
+
+The win/lose result lands in `roulette_result` for the chatbot reply template.
+
+## Duel
+
+`!duel <user> <amount>` - challenge another viewer.
+
+Lifecycle:
+
+1. Challenger runs `!duel @target 100`. A pending duel is recorded keyed by the target's username.
+2. Target runs `!accept` (or the SE-equivalent `!duel yes`). Lumia rolls; one of them wins; points transfer.
+3. If target ignores: the duel times out after `systemOptions.duration` seconds.
+4. Target can `!deny` (or `!duel no`) to cancel.
+5. Broadcaster/mod can `!cancelduel` to wipe all pending duels.
+
+| systemOptions field | Purpose |
+| --- | --- |
+| `minBet` / `maxBet` | Bet range |
+| `duration` | Pending-duel timeout, seconds |
+| `winMessage` | Reply on successful duel |
+| `startDuelMessage` | Reply when a challenge opens |
+| `invalidInput` | Reply for malformed challenges |
+
+Both `!accept`, `!deny`, and `!cancelduel` are exposed as variable functions (`{{accept_duel}}`, `{{deny_duel}}`, `{{cancel_duel}}`) so they work cross-platform - the duel is routed to whichever platform the responding user typed from.
+
+## Slots
+
+`!slots <amount>` - bet, spin N icon columns, win if all match.
+
+| systemOptions field | Purpose |
+| --- | --- |
+| `minBet` / `maxBet` | Bet range |
+| `iconColumns` | How many icons spin (default 3) |
+| `jackpotMessage` | Reply on all-match |
+| `winMessage` / `loseMessage` | Other outcomes |
+| `hideWinMessage` | Skip the chat reply |
+
+Result lands in `slots_result` for the chatbot reply template.
+
+## Bet
+
+`!bet open A B…` - start a parimutuel bet with named outcomes (no point cost to open). Viewers wager on outcomes; broadcaster/mod resolves a winner; pool is paid out to winners proportional to stake.
+
+Lifecycle:
+
+| Phase | Command | Effect |
+| --- | --- | --- |
+| Open | `!bet open A B` | Stakes accepted. |
+| Wager | `!bet 100 A` | Subtracts 100 loyalty points from caller, books a bet on A. |
+| Close | `!bet close` | Stops accepting new wagers. |
+| Resolve | `!bet resolve A` | Pays out the total pool to A's bettors, proportional to stake. |
+
+A single active bet is tracked per Lumia instance. The session resets after `bet resolve` (or you can wipe it with another `bet open`).
+
+If no one bet on the winning outcome, the pool is forfeited (no refund). This matches SE's behaviour and discourages skewing the pool by waiting until close.
+
+## Bingo
+
+`!bingo start <max>` - broadcaster opens a number-guess game in range 1-max. Viewers type `!bingo <N>`. First correct guess wins (the prize is whatever you announce in chat - Bingo doesn't auto-payout points).
+
+| Command | Effect |
+| --- | --- |
+| `!bingo start 100` | Picks a random target 1-100 |
+| `!bingo start 50 200` | Range 50-200 |
+| `!bingo 75` | Guess. Reply is `higher`, `lower`, or `wins!` |
+
+A single active game is tracked per Lumia instance. Game ends when someone wins.
+
+## Votekick
+
+`!votekick <user>` opens a vote; `!votekick yes`/`no` casts a vote. If the threshold of yes-votes lands within the voting window, the target gets timed out on the caller's platform.
+
+Defaults:
+
+- Threshold: 5 yes-votes
+- Voting window: 90 seconds
+- Timeout duration on success: 600 seconds (10 min)
+
+Only one active vote-kick per Lumia instance. Subsequent `!votekick <user>` while a vote is in progress is ignored.
+
+The command is a single dispatcher - same template for opening and voting:
+
+```text
+{{votekick={{message}}}}
+```
+
+The variable function inspects the message: if it's "yes"/"no", it counts a vote; otherwise it treats the message as a target username and opens a new vote.
+
+## Building custom games
+
+The pattern shared by all six:
+
+1. Add a chatbot command (either as a default or a user command).
+2. Hook up the underlying game state.
+3. Expose a variable function (`{{my_game_action=…}}`) so the chatbot response can fire the action.
+4. Have the variable function update game state and return a chat-friendly result string.
+
+The state-machine games (Bet, Bingo, Votekick) keep their state in memory and reset on Lumia restart. The point-betting games (Roulette, Duel, Slots) interact with loyalty points on every round.

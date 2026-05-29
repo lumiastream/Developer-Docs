@@ -1,0 +1,43 @@
+---
+sidebar_position: 10
+id: alert-lumiastream-roulette-winner
+title: Roulette Winner
+description: "Congratulations {{username}}! The ball landed on {{ball_position}}. You win {{outcome_amount}} {{loyalty_currency_name}}! Well played! 🎉"
+---
+
+# Roulette Winner
+
+- **Alert key:** `lumiastream-rouletteWinner`
+- **Source:** Lumia
+- **Event list label:** Roulette Winner
+
+## Default message template
+
+```text
+Congratulations {{username}}! The ball landed on {{ball_position}}. You win {{outcome_amount}} {{loyalty_currency_name}}! Well played! 🎉
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{platform}}` | `data.extraSettings.platform` | The streaming platform this message is coming from |
+| `{{outcome_amount}}` | `data.extraSettings.outcome_amount` | The outcome amount is the total won or lost during a game. |
+| `{{ball_position}}` | `data.extraSettings.ball_position` | The position where the ball lands in a game. |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_NUMBER` - Outcome Amount is equal to
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

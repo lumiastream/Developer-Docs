@@ -1,0 +1,39 @@
+---
+sidebar_position: 2
+id: alert-obs-media-input-playback-started
+title: Media Input Playback Started
+description: OBS Media Input Playback Started alert payload reference.
+---
+
+# Media Input Playback Started
+
+- **Alert key:** `obs-mediaInputPlaybackStarted`
+- **Source:** OBS
+
+## Default message template
+
+```text
+OBS media input playback started
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{inputName}}` | `data.extraSettings.inputName` | No description available yet. |
+| `{{inputUuid}}` | `data.extraSettings.inputUuid` | No description available yet. |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Input is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type
