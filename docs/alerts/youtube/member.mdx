@@ -1,0 +1,127 @@
+---
+sidebar_position: 6
+id: alert-youtube-member
+title: Member
+description: "just became a member with a {{tier}} plan"
+---
+
+# Member
+
+- **Alert key:** `youtube-member`
+- **Source:** YouTube
+- **Event list label:** `{{tier}}` Member
+
+## Default message template
+
+```text
+{{username}} just became a member with a {{tier}} plan!
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{tier}}` | `data.extraSettings.tier` | Tier gift |
+| `{{subMonths}}` | `data.extraSettings.subMonths` | How many months the user has been subbed for |
+| `{{streakMonths}}` | `data.extraSettings.streakMonths` | How many months the user has been subbed for in a row |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{subPlan}}` | `data.extraSettings.subPlan` | Subs plan value (1000, 2000, 3000) |
+| `{{subPlanName}}` | `data.extraSettings.subPlanName` | Subs plan value name (Tier 1, Tier 2, Tier 3) |
+| `{{subPlanId}}` | `data.extraSettings.subPlanId` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Lumia became a Bronze member
+
+```json
+{
+  "alert": "youtube-member",
+  "dynamic": {
+    "value": "Bronze",
+    "username": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "message": "Great Stream",
+    "subMonths": 1,
+    "streakMonths": 1,
+    "tier": "Bronze",
+    "subPlan": "Bronze",
+    "subPlanName": "Bronze",
+    "subPlanId": "CC-1234567890",
+    "displayname": ""
+  }
+}
+```
+
+### Lumia became a Silver member
+
+```json
+{
+  "alert": "youtube-member",
+  "dynamic": {
+    "value": "Silver",
+    "username": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "message": "Great Stream",
+    "subMonths": 1,
+    "streakMonths": 1,
+    "tier": "Silver",
+    "subPlan": "Silver",
+    "subPlanName": "Silver",
+    "subPlanId": "CC-234567890",
+    "displayname": ""
+  }
+}
+```
+
+### Lumia became a Gold member
+
+```json
+{
+  "alert": "youtube-member",
+  "dynamic": {
+    "value": "Gold",
+    "username": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "message": "Great Stream",
+    "subMonths": 1,
+    "streakMonths": 1,
+    "tier": "Gold",
+    "subPlan": "Gold",
+    "subPlanName": "Gold",
+    "subPlanId": "CC-34567890",
+    "displayname": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Plan Name is equal to
+- `SUBSCRIBED_MONTHS_EQUAL` - Months Subscribed is equal to
+- `SUBSCRIBED_MONTHS_GREATER` - Months Subscribed is greater than or equal to
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

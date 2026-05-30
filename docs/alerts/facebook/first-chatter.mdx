@@ -1,0 +1,43 @@
+---
+sidebar_position: 3
+id: alert-facebook-first-chatter
+title: First Chatter
+description: was the first chatter
+---
+
+# First Chatter
+
+- **Alert key:** `facebook-firstChatter`
+- **Source:** Facebook
+- **Event list label:** First Chatter
+
+## Default message template
+
+```text
+{{username}} is the first chatter!
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{first_count}}` | `data.extraSettings.first_count` | Count how many times the first chatter's username starts a chat |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_NUMBER` - First Chatter Count is equal to
+- `GREATER_NUMBER` - First Chatter Count is greater than or equal to
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

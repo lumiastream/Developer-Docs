@@ -1,0 +1,56 @@
+---
+sidebar_position: 11
+id: alert-obs-switch-profile
+title: Switch Profile
+description: OBS Switch Profile alert payload reference.
+---
+
+# Switch Profile
+
+- **Alert key:** `obs-switchProfile`
+- **Source:** OBS
+
+## Default message template
+
+```text
+OBS profile switched to {{profile}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{profile}}` | `data.extraSettings.profile` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Profile Change
+
+```json
+{
+  "alert": "obs-switchProfile",
+  "dynamic": {
+    "value": "Lumia Profile"
+  },
+  "extraSettings": {
+    "profile": "Lumia Profile"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Profile is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

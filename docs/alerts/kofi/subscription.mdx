@@ -1,0 +1,105 @@
+---
+sidebar_position: 4
+id: alert-kofi-subscription
+title: Subscription
+description: "subscribed with tier {{tier}}"
+---
+
+# Subscription
+
+- **Alert key:** `kofi-subscription`
+- **Source:** Ko-fi
+- **Event list label:** Subscription
+
+## Default message template
+
+```text
+{{username}} just subscribed with tier {{tier}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{email}}` | `data.extraSettings.email` | Email of user |
+| `{{currency}}` | `data.extraSettings.currency` | The currency used |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{tier}}` | `data.extraSettings.tier` | Tier gift |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Tier 1
+
+```json
+{
+  "alert": "kofi-subscription",
+  "dynamic": {
+    "value": "Tier 1"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "tier": "Tier 1",
+    "amount": 100,
+    "currency": "USD",
+    "email": ""
+  }
+}
+```
+
+### Tier 2
+
+```json
+{
+  "alert": "kofi-subscription",
+  "dynamic": {
+    "value": "Tier 2"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "tier": "Tier 2",
+    "amount": 200,
+    "currency": "USD",
+    "email": ""
+  }
+}
+```
+
+### Tier 3
+
+```json
+{
+  "alert": "kofi-subscription",
+  "dynamic": {
+    "value": "Tier 3"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "tier": "Tier 3",
+    "amount": 300,
+    "currency": "USD",
+    "email": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_CURRENCY_NUMBER` - Donation Amount is equal to
+- `GREATER_CURRENCY_NUMBER` - Donation Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

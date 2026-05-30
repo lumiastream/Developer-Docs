@@ -1,0 +1,8 @@
+{
+	"label": "Facebook",
+	"position": 4,
+	"link": {
+		"type": "doc",
+		"id": "alerts-facebook-index"
+	}
+}

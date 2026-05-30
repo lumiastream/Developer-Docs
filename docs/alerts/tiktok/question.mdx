@@ -1,0 +1,71 @@
+---
+sidebar_position: 12
+id: alert-tiktok-question
+title: Question
+description: asked a question
+---
+
+# Question
+
+- **Alert key:** `tiktok-question`
+- **Source:** TikTok
+- **Event list label:** Question
+
+## Default message template
+
+```text
+{{username}} asked: {{question}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{question}}` | `data.extraSettings.question` | No description available yet. |
+| `{{questionId}}` | `data.extraSettings.questionId` | No description available yet. |
+| `{{answerStatus}}` | `data.extraSettings.answerStatus` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### New Question
+
+```json
+{
+  "alert": "tiktok-question",
+  "dynamic": {
+    "value": "How does this work?"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "question": "How does this work?",
+    "answerStatus": 0,
+    "userId": "",
+    "displayname": "",
+    "avatar": "",
+    "questionId": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Question is equal to
+- `EQUAL_NUMBER` - Answer status is equal to
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

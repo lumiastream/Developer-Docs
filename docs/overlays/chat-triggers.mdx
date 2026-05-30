@@ -1,0 +1,148 @@
+---
+sidebar_position: 1
+id: chat-triggers
+title: Chat triggers
+description: Wire any chatbot command to an overlay event with useChatCommandTrigger. The canonical pattern for animated chat-driven overlays.
+---
+
+# Chat triggers
+
+A **chat trigger** is the wiring that lets a chatbot command fire an overlay-side effect - an animation, a state swap, a particle burst. The connection happens through the `useChatCommandTrigger` hook from the overlay shared library.
+
+## The hook
+
+```tsx
+import { useChatCommandTrigger } from '@lumia/overlay-shared'
+
+useChatCommandTrigger('hug', (payload) => {
+  setRecipient(payload.message)
+  triggerAnimation()
+})
+```
+
+The first argument is the command name (without the `!` prefix). The second is a callback that receives the resolved payload whenever a chat message triggers that command in LumiaStream.
+
+## Payload shape
+
+```ts
+type ChatCommandTriggerPayload = {
+  username: string
+  platform: 'twitch' | 'youtube' | 'kick' | 'facebook' | 'tiktok' | string
+  message: string
+  raw: string
+  userId?: string
+  badges?: string[]
+}
+```
+
+- `message` - the part of the chat message after the command name, with placeholders already resolved (so `!hug @alice` arrives as `@alice`).
+- `raw` - the unprocessed chat message (`!hug @alice`).
+- `username` / `platform` - who triggered it, from where.
+
+## End-to-end wiring
+
+The flow is:
+
+1. Streamer adds (or edits) a chatbot command in LumiaStream - say `!hug`.
+2. LumiaStream's chatbot pipeline matches incoming chat, resolves the response template, and runs configured side effects.
+3. One of those side effects is an `overlayTriggerEvent` action that emits a named event over the overlay WebSocket.
+4. The overlay's `useChatCommandTrigger('hug', …)` subscription receives the event and runs the callback.
+
+The streamer doesn't have to set up step 3 manually for any command they declared in `module.config.json` under `chatTriggers`. The overlay-config tooling auto-creates the wiring when the overlay is added to a layer.
+
+## module.config.json - `chatTriggers`
+
+To declare which commands an overlay listens for, add a `chatTriggers` array to the overlay's `module.config.json`:
+
+```json
+{
+	"chatTriggers": [
+		{
+			"command": "hug",
+			"label": "Hug animation",
+			"description": "Play hug VFX when a viewer types !hug @target",
+			"defaultMessage": "{{username}} hugs {{coalesce={{message}},a viewer}}"
+		}
+	]
+}
+```
+
+| Field | Purpose |
+| --- | --- |
+| `command` | The default trigger name. Streamer can override per-install. |
+| `label` | Human label shown in the LumiaStream overlay config UI. |
+| `description` | Tooltip text. |
+| `defaultMessage` | Seeded chatbot response template if the command doesn't already exist. Auto-creates the command on layer-add. |
+
+When the streamer adds the overlay to a layer:
+
+- Lumia checks for the named chatbot command.
+- If missing, Lumia creates it with `defaultMessage` as the response.
+- The command's "overlay trigger" tab is wired to fire the event the overlay subscribes to.
+- The streamer can edit response / cooldown / user-level freely; the overlay trigger stays attached.
+
+## Multiple commands per overlay
+
+`chatTriggers` is an array - declare as many as you need. A "viewer reactions" overlay might subscribe to `!hug`, `!slap`, `!hi5`, `!confetti` all in one overlay.
+
+```tsx
+useChatCommandTrigger('hug', (p) => play('hug', p))
+useChatCommandTrigger('slap', (p) => play('slap', p))
+useChatCommandTrigger('hi5', (p) => play('hi5', p))
+useChatCommandTrigger('confetti', (p) => play('confetti', p))
+```
+
+## Variables inside the trigger response
+
+The chatbot response template runs through the variable resolver before the overlay event fires, so the `payload.message` your overlay receives already has variables substituted. That means you can keep overlay code free of variable logic - anything you want resolved (`{{username}}`, `{{lookup_user_game={{message}}}}`, etc.) happens in the chatbot template, and the overlay just consumes the final string.
+
+This is the same template you see in the LumiaStream UI when you edit `!hug`. The streamer can change it without rebuilding the overlay.
+
+## Layer-direct triggers
+
+Some shipped overlay layers listen to chat directly instead of going through a chatbot command. The trigger is configured in the layer's settings (command word, allowed roles, cooldown) and fires the same overlay-side effect a chatbot command would.
+
+| Layer | Default trigger | Notes |
+| --- | --- | --- |
+| **Emote Alert** | `!kappagen` | Disabled by default. Enable and customise the trigger word in the layer settings. Fires the same emote burst as the alert-triggered path. |
+| **Hype Train** | `!hypecup clear` | Mod / broadcaster only. Resets the train's contributor leaderboard and runtime state. |
+
+The reason these don't go through the chatbot:
+
+1. The behaviour is purely visual and lives on the overlay.
+2. Routing through the chatbot would need a chatbot command, a payload type on the layer, and two configuration surfaces to keep in sync.
+3. A streamer with two Emote Alert layers can give each a different trigger word with zero chatbot setup.
+
+Layer authors implement this with the same `useChatCommandTrigger` hook plus a `chatTrigger` config block on the layer:
+
+```tsx
+useChatCommandTrigger(content?.chatTrigger, useCallback(() => fireMyAction(), []))
+```
+
+Config shape:
+
+```ts
+{
+  enabled: boolean,
+  command: string,
+  verb?: string,
+  allowedRoles?: ('broadcaster' | 'moderator' | 'vip' | 'subscriber' | 'anyone')[],
+  cooldownSeconds?: number,
+}
+```
+
+The hook handles role gating against the chat event's badges/mod flags and per-instance cooldown, so chat spam can't refire the trigger.
+
+## Testing locally
+
+In the LumiaStream dashboard:
+
+1. Open the overlay's preview window.
+2. Go to Chatbot Commands → find the command → click "Trigger" or just send the chat message in any connected chat.
+3. The overlay receives the payload and runs your callback.
+
+If nothing fires:
+
+- Check the overlay browser console for `useChatCommandTrigger registered: hug`.
+- Check the LumiaStream chatbot console for `Resolved command: hug → trigger overlay event`.
+- Verify the overlay is added to an active scene layer (overlays only listen when mounted).

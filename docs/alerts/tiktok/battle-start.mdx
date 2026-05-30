@@ -1,0 +1,76 @@
+---
+sidebar_position: 3
+id: alert-tiktok-battle-start
+title: Battle Start
+description: started a battle
+---
+
+# Battle Start
+
+- **Alert key:** `tiktok-battleStart`
+- **Source:** TikTok
+- **Event list label:** Battle Start
+
+## Default message template
+
+```text
+Battle started: {{battleLabel}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{battleId}}` | `data.extraSettings.battleId` | TikTok battle ID |
+| `{{battleLabel}}` | `data.extraSettings.battleLabel` | TikTok battle label, usually creator vs opponent |
+| `{{creatorUsername}}` | `data.extraSettings.creatorUsername` | TikTok battle creator username |
+| `{{creatorDisplayname}}` | `data.extraSettings.creatorDisplayname` | TikTok battle creator display name |
+| `{{creatorAvatar}}` | `data.extraSettings.creatorAvatar` | TikTok battle creator avatar URL |
+| `{{opponentUsername}}` | `data.extraSettings.opponentUsername` | TikTok battle opponent username |
+| `{{opponentDisplayname}}` | `data.extraSettings.opponentDisplayname` | TikTok battle opponent display name |
+| `{{opponentAvatar}}` | `data.extraSettings.opponentAvatar` | TikTok battle opponent avatar URL |
+| `{{battleType}}` | `data.extraSettings.battleType` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Battle Start
+
+```json
+{
+  "alert": "tiktok-battleStart",
+  "dynamic": {
+    "value": "lumiastream vs rivalstream"
+  },
+  "extraSettings": {
+    "battleId": "1",
+    "battleLabel": "lumiastream vs rivalstream",
+    "creatorUsername": "lumiastream",
+    "opponentUsername": "rivalstream",
+    "creatorDisplayname": "",
+    "creatorAvatar": "",
+    "opponentDisplayname": "",
+    "opponentAvatar": "",
+    "battleType": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Battle Label is equal to
+- `EQUAL_NUMBER` - Total Diamond Count is equal to
+- `GREATER_NUMBER` - Total Diamond Count is greater than or equal to
+- `EQUAL_SELECTION` - Battle Status is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,57 @@
+---
+sidebar_position: 4
+id: alert-kick-follower
+title: Follower
+description: became a follower
+---
+
+# Follower
+
+- **Alert key:** `kick-follower`
+- **Source:** Kick
+- **Event list label:** Followed
+
+## Default message template
+
+```text
+{{username}} just followed
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### New Follow
+
+```json
+{
+  "alert": "kick-follower",
+  "dynamic": {
+    "value": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

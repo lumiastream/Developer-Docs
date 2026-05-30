@@ -1,0 +1,37 @@
+---
+sidebar_position: 3
+id: alert-slobs-switch-scene
+title: Switch Scene
+description: Streamlabs Desktop Switch Scene alert payload reference.
+---
+
+# Switch Scene
+
+- **Alert key:** `slobs-switchScene`
+- **Source:** Streamlabs Desktop
+
+## Default message template
+
+```text
+SLOBS scene switched to {{scene}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{scene}}` | `data.extraSettings.scene` | Scene name |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

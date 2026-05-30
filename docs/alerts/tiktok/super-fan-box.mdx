@@ -1,0 +1,63 @@
+---
+sidebar_position: 17
+id: alert-tiktok-super-fan-box
+title: Super Fan Box
+description: triggered a Super Fan box
+---
+
+# Super Fan Box
+
+- **Alert key:** `tiktok-superFanBox`
+- **Source:** TikTok
+- **Event list label:** Super Fan Box
+
+## Default message template
+
+```text
+{{username}} triggered a Super Fan box
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Super Fan Box
+
+```json
+{
+  "alert": "tiktok-superFanBox",
+  "dynamic": {
+    "value": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "",
+    "avatar": "",
+    "userId": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

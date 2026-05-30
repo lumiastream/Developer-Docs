@@ -1,0 +1,155 @@
+---
+sidebar_position: 4
+id: alert-youtube-gifts
+title: Gifts
+description: "sent x{{comboCount}} {{giftName}} worth {{jewelsAmount}} jewels"
+---
+
+# Gifts
+
+- **Alert key:** `youtube-gifts`
+- **Source:** YouTube
+- **Event list label:** Gift
+- **Carries alert image:** yes (`extraSettings.contentImage`)
+
+## Default message template
+
+```text
+{{username}} sent x{{comboCount}} {{giftName}} ({{jewelsAmount}} jewels)
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{jewelsAmount}}` | `data.extraSettings.jewelsAmount` | No description available yet. |
+| `{{totalJewels}}` | `data.extraSettings.totalJewels` | No description available yet. |
+| `{{comboCount}}` | `data.extraSettings.comboCount` | No description available yet. |
+| `{{giftName}}` | `data.extraSettings.giftName` | No description available yet. |
+| `{{giftUrl}}` | `data.extraSettings.giftUrl` | No description available yet. |
+| `{{giftImageUrl}}` | `data.extraSettings.giftImageUrl` | No description available yet. |
+| `{{giftDurationSeconds}}` | `data.extraSettings.giftDurationSeconds` | No description available yet. |
+| `{{giftDurationNanos}}` | `data.extraSettings.giftDurationNanos` | No description available yet. |
+| `{{hasVisualEffect}}` | `data.extraSettings.hasVisualEffect` | No description available yet. |
+| `{{altText}}` | `data.extraSettings.altText` | No description available yet. |
+| `{{language}}` | `data.extraSettings.language` | No description available yet. |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 10 Jewels
+
+```json
+{
+  "alert": "youtube-gifts",
+  "dynamic": {
+    "value": 10,
+    "name": "Heart"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "LumiaStream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "giftName": "Heart",
+    "jewelsAmount": 10,
+    "totalJewels": 10,
+    "comboCount": 1,
+    "hasVisualEffect": false,
+    "giftUrl": "https://www.gstatic.com/youtube/img/pdg/gift/assets/gold_coin_v2_320x320.png",
+    "contentImage": "https://www.gstatic.com/youtube/img/pdg/gift/assets/gold_coin_v2_320x320.png",
+    "giftDurationSeconds": 3,
+    "giftDurationNanos": 0,
+    "altText": "Heart",
+    "language": "en_US",
+    "userId": "",
+    "giftImageUrl": "",
+    "message": ""
+  }
+}
+```
+
+### 100 Jewels
+
+```json
+{
+  "alert": "youtube-gifts",
+  "dynamic": {
+    "value": 100,
+    "name": "Rose"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "LumiaStream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "giftName": "Rose",
+    "jewelsAmount": 100,
+    "totalJewels": 100,
+    "comboCount": 1,
+    "hasVisualEffect": true,
+    "giftUrl": "https://www.gstatic.com/youtube/img/pdg/gift/assets/gold_coin_v2_320x320.png",
+    "contentImage": "https://www.gstatic.com/youtube/img/pdg/gift/assets/gold_coin_v2_320x320.png",
+    "giftDurationSeconds": 3,
+    "giftDurationNanos": 0,
+    "altText": "Rose",
+    "language": "en_US",
+    "userId": "",
+    "giftImageUrl": "",
+    "message": ""
+  }
+}
+```
+
+### 500 Jewels Combo
+
+```json
+{
+  "alert": "youtube-gifts",
+  "dynamic": {
+    "value": 500,
+    "name": "Star"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "LumiaStream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "giftName": "Star",
+    "jewelsAmount": 500,
+    "totalJewels": 500,
+    "comboCount": 5,
+    "hasVisualEffect": true,
+    "giftUrl": "https://www.gstatic.com/youtube/img/pdg/gift/assets/gold_coin_v2_320x320.png",
+    "contentImage": "https://www.gstatic.com/youtube/img/pdg/gift/assets/gold_coin_v2_320x320.png",
+    "giftDurationSeconds": 3,
+    "giftDurationNanos": 0,
+    "altText": "Star",
+    "language": "en_US",
+    "userId": "",
+    "giftImageUrl": "",
+    "message": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Gift Name is equal to
+- `EQUAL_NUMBER` - Jewels is equal to
+- `GREATER_NUMBER` - Jewels is greater than or equal to
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,8 @@
+{
+	"label": "OBS",
+	"position": 26,
+	"link": {
+		"type": "doc",
+		"id": "alerts-obs-index"
+	}
+}

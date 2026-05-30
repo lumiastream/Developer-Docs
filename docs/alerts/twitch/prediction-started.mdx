@@ -1,0 +1,78 @@
+---
+sidebar_position: 34
+id: alert-twitch-prediction-started
+title: Prediction Started
+description: "Prediction started with the title {{prediction_title}}! Choices are {{prediction_outcome1_title}} or {{prediction_outcome2_title}}"
+---
+
+# Prediction Started
+
+- **Alert key:** `twitch-predictionStarted`
+- **Source:** Twitch
+- **Event list label:** Prediction start
+
+## Default message template
+
+```text
+Prediction started with the title {{prediction_title}}! Choices are {{prediction_outcome1_title}} or {{prediction_outcome2_title}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{prediction_title}}` | `data.extraSettings.prediction_title` | Prediction title |
+| `{{prediction_id}}` | `data.extraSettings.prediction_id` | Prediction id |
+| `{{prediction_possible_outcomes}}` | `data.extraSettings.prediction_possible_outcomes` | Prediction possible outcomes |
+| `{{prediction_outcome1_title}}` | `data.extraSettings.prediction_outcome1_title` | Prediction outcome1 title |
+| `{{prediction_outcome1_points}}` | `data.extraSettings.prediction_outcome1_points` | Prediction outcome1 points |
+| `{{prediction_outcome1_color}}` | `data.extraSettings.prediction_outcome1_color` | Prediction outcome1 color |
+| `{{prediction_outcome2_title}}` | `data.extraSettings.prediction_outcome2_title` | Prediction outcome2 title |
+| `{{prediction_outcome2_points}}` | `data.extraSettings.prediction_outcome2_points` | Prediction outcome2 points |
+| `{{prediction_outcome2_color}}` | `data.extraSettings.prediction_outcome2_color` | Prediction outcome2 color |
+| `{{prediction_started_at}}` | `data.extraSettings.prediction_started_at` | Time prediction started at |
+| `{{prediction_ends_at}}` | `data.extraSettings.prediction_ends_at` | Time prediction ends at |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Prediction Yes/No
+
+```json
+{
+  "alert": "twitch-predictionStarted",
+  "dynamic": {
+    "value": "Will Lumia Stream be my only app for stream"
+  },
+  "extraSettings": {
+    "poll_title": "Is Lumia Stream the best",
+    "prediction_outcomes": "Yes,No",
+    "prediction_outcome1_title": "Yes",
+    "prediction_outcome1_points": 0,
+    "prediction_outcome1_color": "#ff00ff",
+    "prediction_outcome2_title": "No",
+    "prediction_outcome2_points": 0,
+    "prediction_outcome2_color": "#0000ff",
+    "prediction_title": "",
+    "prediction_id": "",
+    "prediction_possible_outcomes": "",
+    "prediction_started_at": "",
+    "prediction_ends_at": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

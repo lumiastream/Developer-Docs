@@ -1,0 +1,65 @@
+---
+sidebar_position: 14
+id: alert-tiktok-shop-purchase
+title: Shop Purchase
+description: triggered live shopping
+---
+
+# Shop Purchase
+
+- **Alert key:** `tiktok-shopPurchase`
+- **Source:** TikTok
+- **Event list label:** Live Shopping
+
+## Default message template
+
+```text
+Live Shopping: {{title}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{title}}` | `data.extraSettings.title` | The title of the Twitch Redemption that was redeemed |
+| `{{price}}` | `data.extraSettings.price` | No description available yet. |
+| `{{imageUrl}}` | `data.extraSettings.imageUrl` | No description available yet. |
+| `{{shopUrl}}` | `data.extraSettings.shopUrl` | No description available yet. |
+| `{{shopName}}` | `data.extraSettings.shopName` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Live Shopping
+
+```json
+{
+  "alert": "tiktok-shopPurchase",
+  "dynamic": {
+    "value": "Featured Item"
+  },
+  "extraSettings": {
+    "title": "Featured Item",
+    "price": "$55.99",
+    "shopName": "Shopify",
+    "imageUrl": "",
+    "shopUrl": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Title is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,65 @@
+---
+sidebar_position: 29
+id: alert-twitch-poll-started
+title: Poll Started
+description: "Poll started {{poll_title}} with choices {{poll_choices}}"
+---
+
+# Poll Started
+
+- **Alert key:** `twitch-pollStarted`
+- **Source:** Twitch
+- **Event list label:** Poll start
+
+## Default message template
+
+```text
+New poll started {{poll_title}} with choices {{poll_choices}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{poll_title}}` | `data.extraSettings.poll_title` | Poll title |
+| `{{poll_id}}` | `data.extraSettings.poll_id` | Poll id |
+| `{{poll_choices}}` | `data.extraSettings.poll_choices` | Poll choices |
+| `{{poll_started_at}}` | `data.extraSettings.poll_started_at` | Time poll started at |
+| `{{poll_ends_at}}` | `data.extraSettings.poll_ends_at` | Time poll ends at |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Poll Yes/No
+
+```json
+{
+  "alert": "twitch-pollStarted",
+  "dynamic": {
+    "value": "Is Lumia Stream the best"
+  },
+  "extraSettings": {
+    "poll_title": "Is Lumia Stream the best",
+    "poll_choices": "Yes,No",
+    "poll_id": "",
+    "poll_started_at": "",
+    "poll_ends_at": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Title is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

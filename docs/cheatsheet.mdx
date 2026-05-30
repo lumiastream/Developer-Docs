@@ -1,0 +1,224 @@
+---
+sidebar_position: 1.5
+id: cheatsheet
+title: Cheatsheet
+description: The fastest path to common chatbot, overlay, and variable patterns. Copy a snippet, paste it into the Lumia editor, done.
+---
+
+# Cheatsheet
+
+The fastest path to common patterns. Each snippet is the actual template string - paste it into a chatbot command's response, an overlay label's value, or an alert's TTS message.
+
+## Display data in chat
+
+### Show donation total
+
+```text
+Tips received: {{total_donation_amount_currency_symbol}}{{total_donation_amount}}
+```
+
+### Show session sub count
+
+```text
+{{session_subscriber_count}} subs this session - let's go!
+```
+
+### Show top tipper this session
+
+```text
+Session top tipper: {{session_top_tipper}} with {{session_top_tipper_amount}}
+```
+
+### Show the streamer's current game / title
+
+```text
+Playing {{game}} - {{title}}
+```
+
+### Show a recent-events feed
+
+```text
+Recent tips: {{recent_tips}}
+Recent followers: {{recent_followers}}
+```
+
+## Use chat input
+
+### Echo back the rest of the command
+
+```text
+{{message}}
+```
+
+### Get the first / second argument
+
+```text
+{{arg=1}} challenges {{arg=2}} to a duel!
+```
+
+### Fall back when an argument is missing
+
+```text
+Hugs to {{coalesce={{arg=1}},a friendly viewer}}
+```
+
+## Random + math
+
+### Random integer in a range
+
+```text
+You rolled a {{random=1-100}}
+```
+
+### Random pick from a fixed list
+
+```text
+Your class is {{random_inputs=Wizard,Goblin,Tank,NPC,Speedrunner}}
+```
+
+### Math expression with variables
+
+```text
+That's {{math={{count=deaths}}*2}} deaths-equivalent
+```
+
+## Mod actions in a command
+
+### Time a user out from a chatbot response
+
+```text
+{{nuke_username={{arg=1}},600}}
+```
+
+### Self-timeout (vanish)
+
+```text
+{{vanish}}
+```
+
+### Change the stream title
+
+```text
+{{settitle={{message}}}}Title updated to {{message}}
+```
+
+## Counters
+
+### Increment a counter
+
+```text
+That's death #{{counter=deaths,+1}}. Pain.
+```
+
+### Read a counter without incrementing
+
+```text
+Sub goal: {{subgoal}} / 100
+```
+
+### Reset a counter
+
+```text
+{{counter=deaths,=0}}Deaths reset.
+```
+
+## Loyalty
+
+### Show the caller's loyalty rank
+
+```text
+{{username}}'s rank: {{user_rank}}
+```
+
+### Top 5 loyalty holders
+
+```text
+Top 5: {{loyalty_top=5}}
+```
+
+### Give a viewer points
+
+```text
+{{add_points={{arg=1}},{{arg=2}}}}Added {{arg=2}} points to {{arg=1}}
+```
+
+## External data
+
+### Hit a custom API
+
+```text
+{{read_url=https://twitch.center/customapi/quote?token=abc123&no_id=1}}
+```
+
+### Pull a specific JSON field
+
+```text
+Today's joke: {{read_url=https://x.com/api,setup}} - {{read_url=https://x.com/api,punchline}}
+```
+
+### Weather
+
+```text
+{{weather=Seattle}}
+```
+
+### AI prompt
+
+```text
+{{ai_prompt=Roast {{message}} in 20 words or less, twitch-safe}}
+```
+
+## Build a goal that auto-updates
+
+Add a Goal layer to your overlay and set:
+
+- `value`: `{{total_donation_amount}}` (current progress)
+- `valueGoal`: `{{tip_goal}}` (the target)
+
+The `valueGoal` template resolves on every render, so the bar updates whenever the goal variable is rewritten.
+
+The same pattern works for:
+
+- `{{follower_goal}}`, `{{subscriber_goal}}`, `{{cheer_goal}}`, `{{superchat_goal}}`
+- `{{merch_goal_orders}}`, `{{merch_goal_items}}`, `{{merch_goal_total}}`
+
+## Fire an overlay HFX from a chat command
+
+The chatbot command's `HFX` action picker writes the HFX content. Lumia routes the dispatch through `OverlayManager.send(HFX, …)` - no template syntax needed. If you want to programmatically pause SFX globally without ripping the HFX out of every command:
+
+```text
+{{set_sfx_muted=true}}
+```
+
+That suppresses TTS, HFX audio, and `AudioManager.play` calls until you flip it back.
+
+## Send a chat message from a custom action
+
+The chatbot has an inbuilt chatbot message field. For more dynamic flows (e.g. inside Custom JS), use the IPC:
+
+```js
+await ipcRenderer.invoke("chatbot:send", { site: "twitch", message: "Hello from custom JS" });
+```
+
+## Wire a chat command to an overlay layer (no chatbot command needed)
+
+The Emote Alert and Hype Train layers both support a `chatTrigger` config:
+
+```json
+{
+  "chatTrigger": {
+    "enabled": true,
+    "command": "!kappagen",
+    "allowedRoles": ["anyone"],
+    "cooldownSeconds": 10
+  }
+}
+```
+
+See [Chat triggers](./overlays/chat-triggers) for the pattern and how to build it into your own layers.
+
+## I'm new - where do I go next?
+
+- Want the full variable reference? → [Platform Variables](./variables)
+- Building a custom overlay? → [Custom Overlays](./custom-overlays/custom-overlays-documentation)
+- Writing custom JavaScript? → [Custom JavaScript](./custom-code/what-is-custom-javascript)

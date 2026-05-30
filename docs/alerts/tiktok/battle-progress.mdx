@@ -1,0 +1,88 @@
+---
+sidebar_position: 2
+id: alert-tiktok-battle-progress
+title: Battle Progress
+description: updated battle progress
+---
+
+# Battle Progress
+
+- **Alert key:** `tiktok-battleProgress`
+- **Source:** TikTok
+- **Event list label:** Battle Progress
+
+## Default message template
+
+```text
+Battle update: {{battleLabel}} ({{creatorScore}} - {{opponentScore}})
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{battleId}}` | `data.extraSettings.battleId` | TikTok battle ID |
+| `{{battleLabel}}` | `data.extraSettings.battleLabel` | TikTok battle label, usually creator vs opponent |
+| `{{creatorUsername}}` | `data.extraSettings.creatorUsername` | TikTok battle creator username |
+| `{{creatorDisplayname}}` | `data.extraSettings.creatorDisplayname` | TikTok battle creator display name |
+| `{{creatorAvatar}}` | `data.extraSettings.creatorAvatar` | TikTok battle creator avatar URL |
+| `{{opponentUsername}}` | `data.extraSettings.opponentUsername` | TikTok battle opponent username |
+| `{{opponentDisplayname}}` | `data.extraSettings.opponentDisplayname` | TikTok battle opponent display name |
+| `{{opponentAvatar}}` | `data.extraSettings.opponentAvatar` | TikTok battle opponent avatar URL |
+| `{{creatorScore}}` | `data.extraSettings.creatorScore` | TikTok battle creator score |
+| `{{opponentScore}}` | `data.extraSettings.opponentScore` | TikTok battle opponent score |
+| `{{giftId}}` | `data.extraSettings.giftId` | TikTok battle gift ID for this progress update |
+| `{{giftCount}}` | `data.extraSettings.giftCount` | TikTok battle gift count for this progress update |
+| `{{repeatCount}}` | `data.extraSettings.repeatCount` | TikTok battle gift repeat count for this progress update |
+| `{{totalDiamondCount}}` | `data.extraSettings.totalDiamondCount` | TikTok battle total diamond count for this progress update |
+| `{{battleStatus}}` | `data.extraSettings.battleStatus` | TikTok battle progress status |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Battle Progress
+
+```json
+{
+  "alert": "tiktok-battleProgress",
+  "dynamic": {
+    "value": 100,
+    "amount": 100
+  },
+  "extraSettings": {
+    "battleId": "1",
+    "battleLabel": "lumiastream vs rivalstream",
+    "creatorUsername": "lumiastream",
+    "creatorDisplayname": "Lumia Stream",
+    "creatorAvatar": "",
+    "opponentUsername": "rivalstream",
+    "opponentDisplayname": "Rival Stream",
+    "opponentAvatar": "",
+    "creatorScore": 1200,
+    "opponentScore": 900,
+    "giftId": 5655,
+    "giftCount": 1,
+    "repeatCount": 1,
+    "totalDiamondCount": 100,
+    "battleStatus": "scoreUpdate",
+    "amount": 100
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Battle Label is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

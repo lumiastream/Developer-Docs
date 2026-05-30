@@ -1,0 +1,97 @@
+---
+sidebar_position: 5
+id: alert-youtube-like
+title: Like
+description: "{{likes}} likes on the stream"
+---
+
+# Like
+
+- **Alert key:** `youtube-like`
+- **Source:** YouTube
+- **Event list label:** Likes
+
+## Default message template
+
+```text
+{{likes}} likes on the stream
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{likes}}` | `data.extraSettings.likes` | (Twitter) the amount of likes received for this tweet |
+| `{{dislikes}}` | `data.extraSettings.dislikes` | No description available yet. |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 10 likes
+
+```json
+{
+  "alert": "youtube-like",
+  "dynamic": {
+    "value": 10,
+    "amount": 10
+  },
+  "extraSettings": {
+    "likes": 10,
+    "dislikes": 2,
+    "amount": 10
+  }
+}
+```
+
+### 20 likes
+
+```json
+{
+  "alert": "youtube-like",
+  "dynamic": {
+    "value": 20,
+    "amount": 20
+  },
+  "extraSettings": {
+    "likes": 20,
+    "dislikes": 2,
+    "amount": 20
+  }
+}
+```
+
+### 100 likes
+
+```json
+{
+  "alert": "youtube-like",
+  "dynamic": {
+    "value": 100,
+    "amount": 100
+  },
+  "extraSettings": {
+    "likes": 100,
+    "dislikes": 2,
+    "amount": 100
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_NUMBER` - Likes is equal to
+- `GREATER_NUMBER` - Likes is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

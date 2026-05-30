@@ -1,0 +1,83 @@
+---
+sidebar_position: 0
+id: overview
+slug: /chatbot
+title: Chatbot overview
+description: How Lumia's chatbot commands work - system vs user, user-level gating, the resolver pipeline, and how to build your own.
+---
+
+# Chatbot overview
+
+Lumia's chatbot turns chat messages into actions. A **chatbot command** is a named trigger that matches incoming chat against a name (e.g. `!8ball`) and runs a configured response - a message back to chat, an HFX overlay burst, a light scene, a sound effect, etc.
+
+This section is the reference for everything chatbot-related.
+
+## Sections in this section
+
+- **[Default commands](/docs/chatbot/default-commands)** - the 60+ shipped defaults grouped by category.
+- **[Mod management](/docs/chatbot/mod-management)** - `!command add` / `!editcom` / `!delcom` from chat.
+- **[Games](/docs/chatbot/games)** - Roulette, Duel, Slots, Bet, Bingo, Votekick.
+- **[Song control](/docs/chatbot/song-control)** - Spotify integration with queue, voteskip, wrongsong.
+
+## Anatomy of a command
+
+Every chatbot command has:
+
+| Field | Purpose |
+| --- | --- |
+| `name` | The trigger word (e.g. `8ball`). Lumia matches `{prefix}{name}` against the first token of a chat message. The prefix defaults to `!` and is configurable. |
+| `userLevels` | Which user tiers can run it (broadcaster, mod, vip, subscriber, follower, anyone). |
+| `chatbot.message` | The response template - gets resolved through the variable system and posted back to chat. |
+| `tts.message` | Optional TTS message. |
+| `lights`, `hfx`, etc. | Optional side effects on overlays, lights, sound, etc. (configured via the command editor tabs). |
+| `cooldown` | Per-user or global cooldown (seconds). |
+| `systemType` | Set on **system commands** to pick up game-specific behaviour (e.g. `roulette`, `duel`). User commands leave this null. |
+
+## System vs user commands
+
+- **System commands** are shipped as defaults (`!so`, `!commands`, `!8ball`, `!roulette`, …). They have a `systemType` and their behaviour is partially driven by Lumia itself, for example `!roulette` always runs the roulette game regardless of the `chatbot.message` template.
+- **User commands** are anything you (or your mods via `!command add`) create. They have no `systemType`. Their behaviour is entirely defined by the configured response and any action tabs.
+
+You can edit a default's response, user-level gating, and cooldown freely. You can disable it. You can rename it. The `systemType` is what carries the underlying behaviour - you generally shouldn't touch that.
+
+## How a chat message becomes a command run
+
+The pipeline is roughly:
+
+1. **Inbound chat event** - a chat message arrives from Twitch, YouTube, Kick, Facebook, TikTok, or a connected plugin.
+2. **Command match** - the first message token is matched against the chatbot command list.
+3. **Mod-management check** - if the token is `!command`, `!addcom`, `!editcom`, `!delcom`, or `!commands`, the mod-management handler fires instead. See [Mod management](/docs/chatbot/mod-management).
+4. **User-level gating** - the message sender's badges/role is matched against the command's `userLevels`. Fail means silent skip.
+5. **Cooldown check** - per-user and global cooldowns are checked.
+6. **Conditions** - any configured conditions on the command's "Conditions" tab are evaluated.
+7. **System dispatch** - if the command has a `systemType`, the matching built-in behaviour runs (game logic, mod actions, etc.).
+8. **Template resolution** - `chatbot.message` and any side-effect templates are run through the variable resolver.
+9. **Side effects** - chatbot reply posted to chat; lights, HFX, sound, etc. fire as configured.
+
+## Building your own command
+
+In the LumiaStream UI: Home → Commands → Chatbot Commands → Add. You get:
+
+- A name field
+- A response template (full variable + SE-syntax support)
+- Tabs for lights, sound, TTS, HFX, OBS actions, custom JS, etc.
+- A user-level picker
+- A cooldown picker
+
+The response template can use any variable function from the [variable functions reference](/docs/variable-functions). The most common patterns:
+
+```text
+!cracked   → {{coalesce={{message}},{{username}}}} is {{random=1-100}}% cracked.
+!so        → Check out {{message}}, last seen playing {{lookup_user_game={{message}}}} at https://twitch.tv/{{message}}
+!hug       → {{username}} hugs {{coalesce={{message}},a viewer}}.
+```
+
+## Programmatic management
+
+Lumia ships mod-side `!command add/edit/delete` so mods don't need UI access. See [Mod management](/docs/chatbot/mod-management) for the syntax. Programmatically (e.g. from a Custom JS action), use the variable functions:
+
+```text
+{{add_chatbot_command=newcmd,Hello from the future}}
+{{edit_chatbot_command=newcmd,Updated response}}
+{{delete_chatbot_command=newcmd}}
+```

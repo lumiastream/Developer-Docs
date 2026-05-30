@@ -1,0 +1,94 @@
+---
+sidebar_position: 38
+id: alert-twitch-session-followers
+title: Session Followers
+description: "reached {{total}} followers"
+---
+
+# Session Followers
+
+- **Alert key:** `twitch-sessionFollowers`
+- **Source:** Twitch
+- **Event list label:** Total Followers `{{total}}`
+
+## Default message template
+
+```text
+Reached {{total}} followers
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{total}}` | `data.extraSettings.total` | Hype train current total |
+| `{{previousTotal}}` | `data.extraSettings.previousTotal` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 10 Total Followers
+
+```json
+{
+  "alert": "twitch-sessionFollowers",
+  "dynamic": {
+    "value": 10,
+    "total": 10,
+    "previousTotal": 5
+  },
+  "extraSettings": {
+    "total": 10,
+    "previousTotal": 5
+  }
+}
+```
+
+### 50 Total Followers
+
+```json
+{
+  "alert": "twitch-sessionFollowers",
+  "dynamic": {
+    "value": 50,
+    "total": 50,
+    "previousTotal": 2
+  },
+  "extraSettings": {
+    "total": 50,
+    "previousTotal": 2
+  }
+}
+```
+
+### 100 Total Followers
+
+```json
+{
+  "alert": "twitch-sessionFollowers",
+  "dynamic": {
+    "value": 100,
+    "total": 100,
+    "previousTotal": 50
+  },
+  "extraSettings": {
+    "total": 100,
+    "previousTotal": 50
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `GREATER_NUMBER` - Total Session Followers is greater than or equal to
+- `COUNT_IS_MULTIPLE_OF` - Total Session Followers is a multiple of
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

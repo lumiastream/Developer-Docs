@@ -1,0 +1,57 @@
+---
+sidebar_position: 2
+id: alert-facebook-fan
+title: Fan
+description: became a fan
+---
+
+# Fan
+
+- **Alert key:** `facebook-fan`
+- **Source:** Facebook
+- **Event list label:** Fan
+
+## Default message template
+
+```text
+{{username}} became a fan
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### New Fan
+
+```json
+{
+  "alert": "facebook-fan",
+  "dynamic": {
+    "value": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

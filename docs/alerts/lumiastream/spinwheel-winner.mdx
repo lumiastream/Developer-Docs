@@ -1,0 +1,67 @@
+---
+sidebar_position: 12
+id: alert-lumiastream-spinwheel-winner
+title: Spinwheel Winner
+description: "Congratulations {{spinwheel_winner}} for winning {{spinwheel_item}}!"
+---
+
+# Spinwheel Winner
+
+- **Alert key:** `lumiastream-spinwheelWinner`
+- **Source:** Lumia
+- **Event list label:** Raffle Stop
+
+## Default message template
+
+```text
+Congratulations {{spinwheel_winner}} for winning {{spinwheel_item}}!
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{spinwheel_winner}}` | `data.extraSettings.spinwheel_winner` | Username of user who spinned the spinwheel |
+| `{{spinwheel_item}}` | `data.extraSettings.spinwheel_item` | Name of the item that spinwheel landed on |
+| `{{spinwheel_item_id}}` | `data.extraSettings.spinwheel_item_id` | Id of the item that spinwheel landed on |
+| `{{spinwheel_item_image}}` | `data.extraSettings.spinwheel_item_image` | Image of the item that spinwheel landed on |
+| `{{spinwheel_item_quantity_remaining}}` | `data.extraSettings.spinwheel_item_quantity_remaining` | Quantity remaining of the item that spinwheel landed on |
+| `{{spinwheel_item_quantity_initial}}` | `data.extraSettings.spinwheel_item_quantity_initial` | Initial quantity of the item that spinwheel landed on |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Light Bulbs
+
+```json
+{
+  "alert": "lumiastream-spinwheelWinner",
+  "dynamic": {
+    "value": "Light Bulbs"
+  },
+  "extraSettings": {
+    "spinwheel_winner": "Lumia Stream",
+    "spinwheel_item": "Light Bulbs",
+    "spinwheel_item_id": "123",
+    "spinwheel_item_image": "https://storage.lumiastream.com/overlays/2/946e20c5-35da-44f6-94cb-fe833c71d10b.gif",
+    "spinwheel_item_quantity_remaining": 2,
+    "spinwheel_item_quantity_initial": 4
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

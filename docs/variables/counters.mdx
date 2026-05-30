@@ -1,0 +1,85 @@
+---
+sidebar_position: 3
+id: counters
+slug: /counters
+title: Counters
+description: Long-lived named numbers that mutate through commands and overlay events. Includes the cumulative emote auto-tracking system.
+---
+
+# Counters
+
+Counters are long-lived named numbers managed by Lumia. They're the right primitive for "track running stats during the stream", things like death counters, "today I will" counters, sub goal progress, etc.
+
+The Bot Counters panel in the LumiaStream UI shows every counter and lets you reset / set values manually.
+
+## Read and write
+
+| Operation | Function call |
+| --- | --- |
+| Read | `{{NAME}}` (works directly if the counter exists) |
+| Read (defensive) | `{{counter=NAME}}` |
+| Increment by 1 | `{{counter=NAME,+1}}` |
+| Decrement by 1 | `{{counter=NAME,-1}}` |
+| Increment / decrement by N | `{{counter=NAME,+N}}` / `{{counter=NAME,-N}}` |
+| Set to N | `{{counter=NAME,=N}}` |
+
+## Auto-create
+
+If the counter doesn't exist yet, the first `counter=NAME` call creates it with value 0. No manual setup needed.
+
+## Alternate syntax
+
+These dollar-style forms work as-is and share state with the same store:
+
+| Form | Same as |
+| --- | --- |
+| `$(count NAME)`, `${count NAME}` | `{{counter=NAME,+1}}` |
+| `$(count NAME N)`, `${count NAME N}` | `{{counter=NAME,=N}}` |
+| `$(getcount NAME)`, `${getcount NAME}` | `{{NAME}}` |
+
+A counter created via `$(count deaths)` is the same counter you can read via `{{deaths}}` or mutate via `{{counter=deaths,+5}}`.
+
+## Examples
+
+```text
+That is death #{{counter=deaths,+1}}. Pain.
+Sub hype! We're now at {{counter=subgoal}} subs.
+!command add !resetwins The wins have been reset to {{counter=wins,=0}}.
+{{counter=subgoal,+3}} Lumia just gifted 3 subs - total now {{subgoal}}.
+```
+
+## Auto-tracked emote counters
+
+Lumia automatically tracks per-emote usage. Every chat message gets scanned for known emotes and increments a hidden counter named `emote_count_<NAME>`. You can read these with the convenience function:
+
+```text
+"{{message}}" used {{emote_use_count={{message}}}} times
+Kappa appearances: {{emote_use_count=Kappa}}
+```
+
+Internally, `{{emote_use_count=KEKW}}` resolves to `{{emote_count_KEKW}}` - they're the same counter, just exposed under a friendlier name in templates.
+
+## Cumulative vs. session
+
+Lumia distinguishes two scopes:
+
+- **Session counters** - reset when the stream session ends. Most SE session variables (`session_subscriber_count`, `session_donation_amount`) are session-scoped.
+- **Cumulative / chatbot counters** - persist across sessions until explicitly reset. The `counter=…` family is cumulative by default.
+
+To explicitly reset a cumulative counter at stream start, wire a Lumia automation with a "stream live" trigger that runs `{{counter=NAME,=0}}`.
+
+## When to use what
+
+| Need | Reach for |
+| --- | --- |
+| Track a stat across many streams | `{{counter=NAME}}` |
+| Track a stat just this stream | Use a session system variable, or reset the counter at stream start |
+| Count emote usage | `{{emote_use_count=NAME}}` - auto-tracked |
+| Aggregate across multiple counters | `{{sum_variables=counter1,counter2}}` |
+| Use a counter inside math | `{{math={{counter=deaths}}*100}}` |
+
+## See also
+
+- [Variable functions → Counters](./variable-functions#counters) - the function reference
+- [Recent lists](./recent-lists) - for lists of recent events instead of a single number
+- [Goals](./goals) - for "progress toward N" patterns paired with a goal system variable

@@ -12,14 +12,16 @@
 		"serve": "docusaurus serve",
 		"write-translations": "docusaurus write-translations",
 		"write-heading-ids": "docusaurus write-heading-ids",
-		"typecheck": "tsc"
+		"typecheck": "tsc",
+		"generate:alerts": "node ./scripts/generate-alert-pages.mjs",
+		"check:alerts": "node ./scripts/generate-alert-pages.mjs && git diff --exit-code docs/alerts"
 	},
 	"dependencies": {
 		"@docusaurus/core": "^3.8.1",
 		"@docusaurus/plugin-client-redirects": "^3.8.1",
 		"@docusaurus/preset-classic": "^3.8.1",
-		"@lumiastream/lumia-translations": "1.16.0",
-		"@lumiastream/lumia-types": "3.4.5",
+		"@lumiastream/lumia-translations": "1.16.5",
+		"@lumiastream/lumia-types": "3.6.3",
 		"@mdx-js/react": "^3.1.0",
 		"@svgr/webpack": "^5.5.0",
 		"clsx": "^1.1.1",

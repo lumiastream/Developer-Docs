@@ -1,0 +1,73 @@
+---
+sidebar_position: 1
+id: alert-tiktok-battle-end
+title: Battle End
+description: ended a battle
+---
+
+# Battle End
+
+- **Alert key:** `tiktok-battleEnd`
+- **Source:** TikTok
+- **Event list label:** Battle End
+
+## Default message template
+
+```text
+Battle ended: {{battleLabel}} ({{result}})
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{battleId}}` | `data.extraSettings.battleId` | TikTok battle ID |
+| `{{battleLabel}}` | `data.extraSettings.battleLabel` | TikTok battle label, usually creator vs opponent |
+| `{{creatorUsername}}` | `data.extraSettings.creatorUsername` | TikTok battle creator username |
+| `{{opponentUsername}}` | `data.extraSettings.opponentUsername` | TikTok battle opponent username |
+| `{{creatorScore}}` | `data.extraSettings.creatorScore` | TikTok battle creator score |
+| `{{opponentScore}}` | `data.extraSettings.opponentScore` | TikTok battle opponent score |
+| `{{result}}` | `data.extraSettings.result` | No description available yet. |
+| `{{winnerUsername}}` | `data.extraSettings.winnerUsername` | No description available yet. |
+| `{{loserUsername}}` | `data.extraSettings.loserUsername` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Battle End
+
+```json
+{
+  "alert": "tiktok-battleEnd",
+  "dynamic": {
+    "value": "win"
+  },
+  "extraSettings": {
+    "battleId": "1",
+    "battleLabel": "lumiastream vs rivalstream",
+    "creatorUsername": "lumiastream",
+    "opponentUsername": "rivalstream",
+    "creatorScore": 1200,
+    "opponentScore": 900,
+    "result": "win",
+    "winnerUsername": "lumiastream",
+    "loserUsername": "rivalstream"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_SELECTION` - Result is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

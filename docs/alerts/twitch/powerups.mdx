@@ -1,0 +1,98 @@
+---
+sidebar_position: 30
+id: alert-twitch-powerups
+title: Powerups
+description: "redeemed {{type}} for {{amount}} bits"
+---
+
+# Powerups
+
+- **Alert key:** `twitch-powerups`
+- **Source:** Twitch
+- **Event list label:** Powerups
+- **Carries alert image:** yes (`extraSettings.contentImage`)
+
+## Default message template
+
+```text
+{{username}} redeemed {{type}} and cheered {{amount}} bits. They said {{message}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{type}}` | `data.extraSettings.type` | No description available yet. |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{reward_id}}` | `data.extraSettings.reward_id` | No description available yet. |
+| `{{powerup_source}}` | `data.extraSettings.powerup_source` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Gigantify powerup
+
+```json
+{
+  "alert": "twitch-powerups",
+  "dynamic": {
+    "value": 100,
+    "name": "gigantify_an_emote"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "type": "gigantify_an_emote",
+    "amount": 100,
+    "contentImage": "https://static-cdn.jtvnw.net/twitch-power-ups/gigantify_an_emote/black/v1/default_2x.png",
+    "message": "",
+    "reward_id": "",
+    "powerup_source": ""
+  }
+}
+```
+
+### Celebration powerup
+
+```json
+{
+  "alert": "twitch-powerups",
+  "dynamic": {
+    "value": 500,
+    "name": "celebration"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "type": "celebration",
+    "amount": 500,
+    "contentImage": "https://static-cdn.jtvnw.net/twitch-power-ups/celebration/black/v1/default_2x.png",
+    "message": "",
+    "reward_id": "",
+    "powerup_source": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME` - Username is equal to
+- `EQUAL_SELECTION` - Custom Powerup Selection
+- `EQUAL_STRING` - Custom Powerup Title is equal to
+- `EQUAL_NUMBER` - Bits Amount is equal to
+- `GREATER_NUMBER` - Bits Amount is greater than or equal to
+- `EQUAL_VARIABLE` - Variable is equal to
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

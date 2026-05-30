@@ -1,0 +1,49 @@
+---
+sidebar_position: 17
+id: alert-lumiastream-tournament-winner
+title: Tournament Winner
+description: "Congratulations {{tournament_winner}} for winning {{tournament_title}}!"
+---
+
+# Tournament Winner
+
+- **Alert key:** `lumiastream-tournamentWinner`
+- **Source:** Lumia
+- **Event list label:** Tournament Winner
+
+## Default message template
+
+```text
+Congratulations {{tournament_winner}} for winning {{tournament_title}}!
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{tournament_title}}` | `data.extraSettings.tournament_title` | No description available yet. |
+| `{{tournament_description}}` | `data.extraSettings.tournament_description` | No description available yet. |
+| `{{tournament_game}}` | `data.extraSettings.tournament_game` | No description available yet. |
+| `{{tournament_format}}` | `data.extraSettings.tournament_format` | No description available yet. |
+| `{{tournament_state}}` | `data.extraSettings.tournament_state` | No description available yet. |
+| `{{tournament_participants_count}}` | `data.extraSettings.tournament_participants_count` | No description available yet. |
+| `{{tournament_entry_command}}` | `data.extraSettings.tournament_entry_command` | No description available yet. |
+| `{{tournament_winner}}` | `data.extraSettings.tournament_winner` | No description available yet. |
+| `{{tournament_winner_avatar}}` | `data.extraSettings.tournament_winner_avatar` | No description available yet. |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{platform}}` | `data.extraSettings.platform` | The streaming platform this message is coming from |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

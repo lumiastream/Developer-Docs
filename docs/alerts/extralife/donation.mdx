@@ -1,0 +1,103 @@
+---
+sidebar_position: 1
+id: alert-extralife-donation
+title: Donation
+description: "tipped {{currencySymbol}}{{amount}} \"{{message}}\""
+---
+
+# Donation
+
+- **Alert key:** `extralife-donation`
+- **Source:** Extra Life
+
+## Default message template
+
+```text
+{{username}} just tipped {{currencySymbol}}{{amount}}. They said {{message}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{currency}}` | `data.extraSettings.currency` | The currency used |
+| `{{currencySymbol}}` | `data.extraSettings.currencySymbol` | The currency symbol used |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### $100
+
+```json
+{
+  "alert": "extralife-donation",
+  "dynamic": {
+    "value": 100,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 100,
+    "currency": "USD",
+    "currencySymbol": ""
+  }
+}
+```
+
+### $200
+
+```json
+{
+  "alert": "extralife-donation",
+  "dynamic": {
+    "value": 200,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 200,
+    "currency": "USD",
+    "currencySymbol": ""
+  }
+}
+```
+
+### $300
+
+```json
+{
+  "alert": "extralife-donation",
+  "dynamic": {
+    "value": 300,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 300,
+    "currency": "USD",
+    "currencySymbol": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_CURRENCY_NUMBER` - Donation Amount is equal to
+- `GREATER_CURRENCY_NUMBER` - Donation Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

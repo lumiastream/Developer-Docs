@@ -1,0 +1,73 @@
+---
+sidebar_position: 2
+id: mod-management
+title: Mod management
+description: Mods can add, edit, or delete chatbot commands directly from chat. Supports both short aliases (!addcom) and verb form (!command add).
+---
+
+# Mod management
+
+Mods and the broadcaster can manage chatbot commands directly from chat, no dashboard access required. Lumia recognises both the short-alias form and a verb-form variant.
+
+## Syntax
+
+| Chat input | Action |
+| --- | --- |
+| `!addcom !name response text…` | Add a chatbot command |
+| `!editcom !name new response…` | Replace the response of an existing command |
+| `!delcom !name` | Remove a chatbot command |
+| `!command add !name response text…` | Add (verb form) |
+| `!command edit !name response text…` | Edit (verb form) |
+| `!command delete !name` | Delete (verb form) |
+
+The triggers `!command`, `!commands`, and `!cmd` are equivalent.
+
+## User-level gating
+
+Only **moderator** and **broadcaster** roles can run these. Anyone else triggering one gets a "permission denied" toast (the chatbot doesn't reply in chat to avoid leaking gating info to viewers).
+
+Role detection works across every supported platform (Twitch, Kick, YouTube, Facebook, TikTok). The role check looks at:
+
+- The badge/role string the platform attaches to the chat event
+- The `mod` / `broadcaster` / `isSelf` flags Lumia sets per platform
+- For Twitch specifically: the `broadcaster`, `moderator`, and `vip` badges
+
+## Response templates
+
+Stored responses can use any of the template syntax Lumia supports. The mod-management handler doesn't translate the response ahead of time, it stores exactly what the mod typed and resolves at render time. That means you can read the command back later and still see the original form.
+
+```text
+!command add !cracked {{coalesce={{message}},{{username}}}} is {{random=1-100}}% cracked.
+!command add !so Check out {{message}}, last seen playing {{lookup_user_game={{message}}}} at https://twitch.tv/{{message}}
+!command add !subcount {{username}} currently has {{total_subscriber_count}} subscribers
+!command add !funfacts {{read_url=https://twitch.center/customapi/quote?token=7b212850&no_id=1}}
+```
+
+## Command names
+
+- The leading `!` on the command name is optional in `!addcom !X`, both `!addcom !cracked …` and `!addcom cracked …` work. The handler normalises by prepending `!` if missing.
+- Existing commands are matched case-insensitively. Adding a command that already exists (case-insensitive) results in the response being **replaced** rather than failing.
+- For mod-add via chat, the de-facto behaviour is "edit instead of duplicate" since case-insensitive collisions hit the existing entry.
+
+## What gets seeded
+
+A command added via `!command add` ends up with:
+
+- The chosen name
+- The response in `chatbot.message`
+- `chatbot.on: true` (the chatbot reply is enabled by default)
+- Default user level (anyone)
+- Default cooldown (none)
+- All other action tabs (lights, HFX, etc.) left at template defaults
+
+The mod can refine the user-level, cooldown, or add side-effects later via the dashboard.
+
+## Underlying variable functions
+
+The chat-side handler is a wrapper around the same variable functions you can use in any template:
+
+- `{{add_chatbot_command=NAME,RESPONSE}}`
+- `{{edit_chatbot_command=NAME,RESPONSE}}`
+- `{{delete_chatbot_command=NAME}}`
+
+These are available in Custom JS, in other chatbot command responses, and in Lumia actions. The chat-side handler is just sugar that parses `!command add !X Y` into the underlying call.

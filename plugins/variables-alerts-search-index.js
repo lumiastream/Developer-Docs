@@ -5,7 +5,7 @@ const { AllVariables, LumiaAlertConfigs } = require("@lumiastream/lumia-types");
 const enTrans = require("@lumiastream/lumia-translations/src/translations/en.translations.json");
 
 const SOURCE = "variables-alerts-index";
-const VARIABLES_DOC_URL = "/docs/variables";
+const VARIABLES_DOC_URL = "/docs/display-variables";
 
 const chatCommandTypes = [
   "command",

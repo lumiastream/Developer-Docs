@@ -1,0 +1,8 @@
+{
+	"label": "Twitter",
+	"position": 32,
+	"link": {
+		"type": "doc",
+		"id": "alerts-twitter-index"
+	}
+}

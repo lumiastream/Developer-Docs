@@ -1,0 +1,61 @@
+---
+sidebar_position: 1
+id: alert-spotify-song-paused
+title: Song Paused
+description: paused
+---
+
+# Song Paused
+
+- **Alert key:** `spotify-songPaused`
+- **Source:** Spotify
+- **Event list label:** Song Paused
+
+## Default message template
+
+```text
+Song {{name}} paused
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{name}}` | `data.extraSettings.name` | Name of user |
+| `{{uri}}` | `data.extraSettings.uri` | URI |
+| `{{image}}` | `data.extraSettings.image` | Image URL |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Song paused
+
+```json
+{
+  "alert": "spotify-songPaused",
+  "dynamic": {
+    "value": "Lumia Dream"
+  },
+  "extraSettings": {
+    "name": "Lumia Dream",
+    "uri": "https://open.spotify.com/track/3vBn6l5T2AWm4NlqNWE43f",
+    "image": "https://lh3.googleusercontent.com/hxcNF4a-5MZqN9HmIyPMlVm6AzQ6CI0MmisFqZTglun4VJ2Ghli4lvyQpJS2oeqjnT8a0S2EAWklTo14=w544-h544-l90-rj"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Name is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

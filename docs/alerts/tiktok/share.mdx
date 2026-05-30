@@ -1,0 +1,63 @@
+---
+sidebar_position: 13
+id: alert-tiktok-share
+title: Share
+description: shared your stream
+---
+
+# Share
+
+- **Alert key:** `tiktok-share`
+- **Source:** TikTok
+- **Event list label:** Shared
+
+## Default message template
+
+```text
+{{username}} shared your stream
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### New Share
+
+```json
+{
+  "alert": "tiktok-share",
+  "dynamic": {
+    "value": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "userId": "",
+    "displayname": "",
+    "avatar": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

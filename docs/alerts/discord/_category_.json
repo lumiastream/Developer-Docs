@@ -1,0 +1,8 @@
+{
+	"label": "Discord",
+	"position": 20,
+	"link": {
+		"type": "doc",
+		"id": "alerts-discord-index"
+	}
+}

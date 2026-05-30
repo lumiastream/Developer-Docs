@@ -1,0 +1,110 @@
+---
+sidebar_position: 18
+id: alert-tiktok-total-likes
+title: Total Likes
+description: "reached {{totalLikeCount}} likes"
+---
+
+# Total Likes
+
+- **Alert key:** `tiktok-totalLikes`
+- **Source:** TikTok
+- **Event list label:** Total Likes `{{totalLikeCount}}`
+
+## Default message template
+
+```text
+Reached {{totalLikeCount}} likes
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{userLikeCount}}` | `data.extraSettings.userLikeCount` | No description available yet. |
+| `{{totalLikeCount}}` | `data.extraSettings.totalLikeCount` | No description available yet. |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 1000 Total Likes
+
+```json
+{
+  "alert": "tiktok-totalLikes",
+  "dynamic": {
+    "value": 1000,
+    "amount": 1000
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "userLikeCount": 200,
+    "totalLikeCount": 1000,
+    "amount": 1000,
+    "userId": "",
+    "displayname": ""
+  }
+}
+```
+
+### 5000 Total Likes
+
+```json
+{
+  "alert": "tiktok-totalLikes",
+  "dynamic": {
+    "value": 5000,
+    "amount": 5000
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "userLikeCount": 200,
+    "totalLikeCount": 5000,
+    "amount": 5000,
+    "userId": "",
+    "displayname": ""
+  }
+}
+```
+
+### 25000 Total Likes
+
+```json
+{
+  "alert": "tiktok-totalLikes",
+  "dynamic": {
+    "value": 25000,
+    "amount": 25000
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "userLikeCount": 200,
+    "totalLikeCount": 25000,
+    "amount": 25000,
+    "userId": "",
+    "displayname": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `GREATER_NUMBER` - Total Like Count is greater than or equal to
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

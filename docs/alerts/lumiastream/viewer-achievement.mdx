@@ -1,0 +1,48 @@
+---
+sidebar_position: 19
+id: alert-lumiastream-viewer-achievement
+title: Viewer Achievement
+description: "{{username}} unlocked the {{achievement_name}} achievement!"
+---
+
+# Viewer Achievement
+
+- **Alert key:** `lumiastream-viewerAchievement`
+- **Source:** Lumia
+- **Event list label:** Viewer Achievement
+
+## Default message template
+
+```text
+{{username}} unlocked the {{achievement_name}} achievement!
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{platform}}` | `data.extraSettings.platform` | The streaming platform this message is coming from |
+| `{{achievement_id}}` | `data.extraSettings.achievement_id` | Achievement id |
+| `{{achievement_name}}` | `data.extraSettings.achievement_name` | Achievement name |
+| `{{achievement_description}}` | `data.extraSettings.achievement_description` | Achievement description |
+| `{{achievements_completed}}` | `data.extraSettings.achievements_completed` | Achievements completed count |
+| `{{achievements_total}}` | `data.extraSettings.achievements_total` | Achievements total count |
+| `{{achievements_percent}}` | `data.extraSettings.achievements_percent` | Achievement completion percentage |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_SELECTION` - Achievement Name
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

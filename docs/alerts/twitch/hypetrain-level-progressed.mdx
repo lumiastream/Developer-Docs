@@ -1,0 +1,143 @@
+---
+sidebar_position: 23
+id: alert-twitch-hypetrain-level-progressed
+title: Hypetrain Level Progressed
+description: "Hype train progressed to level {{level}}"
+---
+
+# Hypetrain Level Progressed
+
+- **Alert key:** `twitch-hypetrainLevelProgressed`
+- **Source:** Twitch
+- **Event list label:** Hype train leveled up
+
+## Default message template
+
+```text
+Hype train progressed to level {{level}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{level}}` | `data.extraSettings.level` | Hype train current level |
+| `{{total}}` | `data.extraSettings.total` | Hype train current total |
+| `{{progress}}` | `data.extraSettings.progress` | Hype train current progress |
+| `{{goal}}` | `data.extraSettings.goal` | Hype train current goal |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Level 1
+
+```json
+{
+  "alert": "twitch-hypetrainLevelProgressed",
+  "dynamic": {
+    "value": 1,
+    "amount": 1
+  },
+  "extraSettings": {
+    "level": 1,
+    "total": 0,
+    "progress": 0,
+    "goal": 5,
+    "amount": 1
+  }
+}
+```
+
+### Level 2
+
+```json
+{
+  "alert": "twitch-hypetrainLevelProgressed",
+  "dynamic": {
+    "value": 2,
+    "amount": 2
+  },
+  "extraSettings": {
+    "level": 2,
+    "total": 100,
+    "progress": 100,
+    "goal": 5,
+    "amount": 2
+  }
+}
+```
+
+### Level 3
+
+```json
+{
+  "alert": "twitch-hypetrainLevelProgressed",
+  "dynamic": {
+    "value": 3,
+    "amount": 3
+  },
+  "extraSettings": {
+    "level": 3,
+    "total": 100,
+    "progress": 100,
+    "goal": 5,
+    "amount": 3
+  }
+}
+```
+
+### Level 4
+
+```json
+{
+  "alert": "twitch-hypetrainLevelProgressed",
+  "dynamic": {
+    "value": 4,
+    "amount": 4
+  },
+  "extraSettings": {
+    "level": 4,
+    "total": 100,
+    "progress": 100,
+    "goal": 5,
+    "amount": 4
+  }
+}
+```
+
+### Level 5
+
+```json
+{
+  "alert": "twitch-hypetrainLevelProgressed",
+  "dynamic": {
+    "value": 5,
+    "amount": 5
+  },
+  "extraSettings": {
+    "level": 5,
+    "total": 100,
+    "progress": 100,
+    "goal": 5,
+    "amount": 5
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_NUMBER` - Level is equal to
+- `GREATER_NUMBER` - Level is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,45 @@
+---
+sidebar_position: 3
+id: alert-meld-stream-starting
+title: Stream Starting
+description: Meld Stream Starting alert payload reference.
+---
+
+# Stream Starting
+
+- **Alert key:** `meld-streamStarting`
+- **Source:** Meld
+
+## Default message template
+
+```text
+{{name}} is starting
+```
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Stream Starting
+
+```json
+{
+  "alert": "meld-streamStarting",
+  "dynamic": {
+    "value": "Go Bright"
+  },
+  "extraSettings": {}
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,163 @@
+---
+sidebar_position: 3
+id: alert-youtube-gift-members
+title: Gift Members
+description: "gifted {{giftAmount}} {{tier}} members to {{recipients}}"
+---
+
+# Gift Members
+
+- **Alert key:** `youtube-giftMembers`
+- **Source:** YouTube
+- **Event list label:** Gifted `{{giftAmount}}` members
+
+## Default message template
+
+```text
+{{gifter}} gifted {{giftAmount}} {{tier}} members to {{recipients}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{tier}}` | `data.extraSettings.tier` | Tier gift |
+| `{{giftAmount}}` | `data.extraSettings.giftAmount` | Amount gifted by user |
+| `{{recipients}}` | `data.extraSettings.recipients` | Users being gifted the gift subscription. Comma separated list of usernames |
+| `{{recipientsRaw}}` | `data.extraSettings.recipientsRaw` | Users being gifted the gift subscription. Raw array of usernames, avatar, and userId. mainly used for custom code and custom overlays. Can be accessed with dot notation e.g. `{{recipientsRaw.0.avatar}}` to get the first users avatar |
+| `{{gifter}}` | `data.extraSettings.gifter` | The username of the one who gifted |
+| `{{totalGifts}}` | `data.extraSettings.totalGifts` | Gifts total count |
+| `{{subMonths}}` | `data.extraSettings.subMonths` | How many months the user has been subbed for |
+| `{{streakMonths}}` | `data.extraSettings.streakMonths` | How many months the user has been subbed for in a row |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{subPlan}}` | `data.extraSettings.subPlan` | Subs plan value (1000, 2000, 3000) |
+| `{{subPlanName}}` | `data.extraSettings.subPlanName` | Subs plan value name (Tier 1, Tier 2, Tier 3) |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Gift 1 Member
+
+```json
+{
+  "alert": "youtube-giftMembers",
+  "dynamic": {
+    "value": "1",
+    "giftAmount": 1
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "gifter": "lumiastream",
+    "message": "Great Stream",
+    "recipients": "worldlights",
+    "recipientsRaw": [
+      {
+        "username": "worldlights",
+        "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures",
+        "userId": "123",
+        "userLevels": {
+          "subscriber": true
+        }
+      }
+    ],
+    "giftAmount": 1,
+    "totalGifts": 1,
+    "subMonths": 1,
+    "tier": "Tier 1",
+    "subPlan": "1",
+    "subPlanName": "My Day ones",
+    "displayname": "",
+    "streakMonths": ""
+  }
+}
+```
+
+### Gift 5 Members
+
+```json
+{
+  "alert": "youtube-giftMembers",
+  "dynamic": {
+    "value": "1",
+    "giftAmount": 5
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "gifter": "lumiastream",
+    "message": "Great Stream",
+    "recipients": "worldlights,lumiastream,lumiatwitch,lumiayoutube,rgblumia",
+    "recipientsRaw": [
+      {
+        "username": "worldlights",
+        "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures",
+        "userId": "123",
+        "userLevels": {
+          "subscriber": true
+        }
+      },
+      {
+        "username": "lumiastream",
+        "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures",
+        "userId": "123",
+        "userLevels": {
+          "subscriber": true
+        }
+      },
+      {
+        "username": "lumiatwitch",
+        "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures",
+        "userId": "123",
+        "userLevels": {
+          "subscriber": true
+        }
+      },
+      {
+        "username": "worldlights",
+        "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures",
+        "userId": "123",
+        "userLevels": {
+          "subscriber": true
+        }
+      },
+      {
+        "username": "rgblumia",
+        "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures",
+        "userId": "123",
+        "userLevels": {
+          "subscriber": true
+        }
+      }
+    ],
+    "giftAmount": 5,
+    "totalGifts": 5,
+    "subMonths": 1,
+    "tier": "Tier 1",
+    "subPlan": "1",
+    "subPlanName": "My Day ones",
+    "displayname": "",
+    "streakMonths": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `GIFT_SUB_EQUAL` - Gift Members Amount is equal to
+- `GIFT_SUB_GREATER` - Gift Members Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

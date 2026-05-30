@@ -1,0 +1,57 @@
+---
+sidebar_position: 4
+id: alert-streamlabs-primegift
+title: Primegift
+description: sent a prime gift
+---
+
+# Primegift
+
+- **Alert key:** `streamlabs-primegift`
+- **Source:** Streamlabs
+- **Event list label:** Prime Gift
+
+## Default message template
+
+```text
+{{username}} sent a prime gift
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### New Prime Gift
+
+```json
+{
+  "alert": "streamlabs-primegift",
+  "dynamic": {
+    "value": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Username is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

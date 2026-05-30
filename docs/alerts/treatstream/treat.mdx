@@ -1,0 +1,59 @@
+---
+sidebar_position: 1
+id: alert-treatstream-treat
+title: Treat
+description: "sent {{treat}} treat"
+---
+
+# Treat
+
+- **Alert key:** `treatstream-treat`
+- **Source:** TreatStream
+- **Event list label:** Treat
+
+## Default message template
+
+```text
+{{username}} sent {{treat}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{treat}}` | `data.extraSettings.treat` | Treat sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Lumia Treats
+
+```json
+{
+  "alert": "treatstream-treat",
+  "dynamic": {
+    "value": "Lumia Treats"
+  },
+  "extraSettings": {
+    "treat": "Lumia Treats",
+    "username": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Treat is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

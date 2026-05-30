@@ -1,0 +1,79 @@
+---
+sidebar_position: 9
+id: alert-fourthwall-subscription-expired
+title: Subscription Expired
+description: "subscription ended with {{subscriptionType}}"
+---
+
+# Subscription Expired
+
+- **Alert key:** `fourthwall-subscriptionExpired`
+- **Source:** Fourthwall
+- **Event list label:** Subscription Ended
+
+## Default message template
+
+```text
+{{username}} subscription ended
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{email}}` | `data.extraSettings.email` | Email of user |
+| `{{currency}}` | `data.extraSettings.currency` | The currency used |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{interval}}` | `data.extraSettings.interval` | The interval of the alert, such as monthly, yearly, etc. |
+| `{{id}}` | `data.extraSettings.id` | No description available yet. |
+| `{{subscriptionType}}` | `data.extraSettings.subscriptionType` | No description available yet. |
+| `{{tierId}}` | `data.extraSettings.tierId` | No description available yet. |
+| `{{variantId}}` | `data.extraSettings.variantId` | No description available yet. |
+| `{{createdAt}}` | `data.extraSettings.createdAt` | No description available yet. |
+| `{{raw}}` | `data.extraSettings.raw` | The raw data that comes in through the platform for the alert. This is useful for custom code when data is needed that we don't provide by default. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Ended
+
+```json
+{
+  "alert": "fourthwall-subscriptionExpired",
+  "dynamic": {
+    "value": 100,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "amount": 100,
+    "currency": "USD",
+    "interval": "MONTHLY",
+    "subscriptionType": "CANCELLED",
+    "email": "",
+    "id": "",
+    "tierId": "",
+    "variantId": "",
+    "createdAt": "",
+    "raw": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_CURRENCY_NUMBER` - Donation Amount is equal to
+- `GREATER_CURRENCY_NUMBER` - Donation Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

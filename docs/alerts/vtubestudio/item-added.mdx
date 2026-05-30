@@ -1,0 +1,56 @@
+---
+sidebar_position: 5
+id: alert-vtubestudio-item-added
+title: Item Added
+description: Vtubestudio Item Added alert payload reference.
+---
+
+# Item Added
+
+- **Alert key:** `vtubestudio-itemAdded`
+- **Source:** Vtubestudio
+
+## Default message template
+
+```text
+{{name}} item added
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{name}}` | `data.extraSettings.name` | Name of user |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### Item Add
+
+```json
+{
+  "alert": "vtubestudio-itemAdded",
+  "dynamic": {
+    "value": "Bulbs"
+  },
+  "extraSettings": {
+    "name": "Bulbs"
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_STRING` - Item is equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

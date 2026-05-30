@@ -1,0 +1,42 @@
+---
+sidebar_position: 20
+id: alert-lumiastream-viewerqueue-ended
+title: Viewerqueue Ended
+description: "Viewer Queue {{viewerqueue_title}} Ended!"
+---
+
+# Viewerqueue Ended
+
+- **Alert key:** `lumiastream-viewerqueueEnded`
+- **Source:** Lumia
+- **Event list label:** Viewer Queue Ended
+
+## Default message template
+
+```text
+Viewer Queue {{viewerqueue_title}} Ended!
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{viewerqueue_title}}` | `data.extraSettings.viewerqueue_title` | Viewer queue title |
+| `{{viewerqueue_entry_command}}` | `data.extraSettings.viewerqueue_entry_command` | Viewer queue entry command e.g: !joinq |
+| `{{viewerqueue_entries}}` | `data.extraSettings.viewerqueue_entries` | Viewer queue entries list separated by comma e.g viewer1,viewer2,viewer3 |
+| `{{viewerqueue_players}}` | `data.extraSettings.viewerqueue_players` | Viewer queue selected players list separated by comma e.g player1,player2,player3 |
+| `{{viewerqueue_entries_count}}` | `data.extraSettings.viewerqueue_entries_count` | Viewer queue entries count |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

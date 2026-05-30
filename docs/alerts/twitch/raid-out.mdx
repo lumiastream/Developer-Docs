@@ -1,0 +1,101 @@
+---
+sidebar_position: 36
+id: alert-twitch-raid-out
+title: Raid Out
+description: "raided out {{username}} with {{viewers}} viewers"
+---
+
+# Raid Out
+
+- **Alert key:** `twitch-raidOut`
+- **Source:** Twitch
+- **Event list label:** Raid Out
+
+## Default message template
+
+```text
+You raided {{username}} with {{viewers}} viewers
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{viewers}}` | `data.extraSettings.viewers` | Viewers count |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 10 viewers
+
+```json
+{
+  "alert": "twitch-raidOut",
+  "dynamic": {
+    "value": 10,
+    "amount": 10
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "viewers": 10,
+    "amount": 10
+  }
+}
+```
+
+### 50 viewers
+
+```json
+{
+  "alert": "twitch-raidOut",
+  "dynamic": {
+    "value": 50,
+    "amount": 50
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "viewers": 50,
+    "amount": 50
+  }
+}
+```
+
+### 100 viewers
+
+```json
+{
+  "alert": "twitch-raidOut",
+  "dynamic": {
+    "value": 100,
+    "amount": 100
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "viewers": 100,
+    "amount": 100
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `GREATER_NUMBER` - Raid Viewers is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

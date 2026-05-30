@@ -1,0 +1,44 @@
+---
+sidebar_position: 1
+id: alert-youtube-entrance
+title: Entrance
+description: Entrance
+---
+
+# Entrance
+
+- **Alert key:** `youtube-entrance`
+- **Source:** YouTube
+- **Event list label:** Entrance
+
+## Default message template
+
+```text
+Welcome {{username}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_USER_LEVEL`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

@@ -1,0 +1,69 @@
+---
+sidebar_position: 4
+id: recent-lists
+slug: /recent-lists
+title: Recent lists
+description: The RECENT_* family - comma-separated lists of recent events, with parallel _AMOUNT companions where applicable.
+---
+
+# Recent lists
+
+Lumia tracks recent events as comma-separated lists. Each list variable has a names string and (for events with monetary or count metadata) a parallel amounts string. Each list persists as a template variable across runs until rewritten.
+
+## Available lists
+
+| Names variable | Parallel amounts |
+| --- | --- |
+| `{{recent_followers}}` | - |
+| `{{recent_subscribers}}` | - |
+| `{{recent_hosts}}` | - |
+| `{{recent_raiders}}` | `{{recent_raiders_amount}}` |
+| `{{recent_cheers}}` | `{{recent_cheers_amount}}` |
+| `{{recent_tips}}` | `{{recent_tips_amount}}` |
+| `{{recent_superchats}}` | `{{recent_superchats_amount}}` |
+| `{{recent_charity_donations}}` | `{{recent_charity_donations_amount}}` |
+
+## Format
+
+Lists are comma-separated strings. Each entry is a username. When entries carry an amount (cheers, tips, raids, etc.), the parallel `*_AMOUNT` variable is also comma-separated and 1:1 with the names list by index.
+
+Example after a session with three raiders:
+
+```text
+{{recent_raiders}}        → "alice, bob, charlie"
+{{recent_raiders_amount}} → "120, 45, 8"
+```
+
+## Usage in chat
+
+Just drop them into a message:
+
+```text
+Last few raiders: {{recent_raiders}}
+Recent supporters: {{recent_tips}}
+```
+
+## Usage in overlays
+
+The Label layer supports both `labeltext` and `labellist` types. For lists, use `labellist` and the layer renders them as a scrolling marquee:
+
+```text
+value: "Recent Followers: {{recent_followers}}"
+```
+
+The label-and-goal-presets in module.config.json ship presets for the most-used list variables - pick "Recent Followers" or "Recent Tips" from the labels picker and the template is pre-filled.
+
+## Pairing with chat templates
+
+If you want both name and amount in one rendered line, use the `arg`-style indexing on the lists isn't possible (they're strings, not arrays). Instead, run separate writes:
+
+```text
+Most recent raid: from a viewer at {{twitch_last_raider}} with {{twitch_last_raider_amount}} viewers
+```
+
+That uses the single-value `LAST_RAIDER` variables instead of the recent-list pair. The list is for "show me the last N", the single-value var is for "show me the most recent one".
+
+## See also
+
+- [Variable functions](./variable-functions) - the underlying machinery
+- [Counters](./counters) - for numeric accumulators instead of lists

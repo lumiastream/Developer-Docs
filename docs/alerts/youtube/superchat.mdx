@@ -1,0 +1,113 @@
+---
+sidebar_position: 16
+id: alert-youtube-superchat
+title: Superchat
+description: "super chatted {{currencySymbol}}{{amount}}"
+---
+
+# Superchat
+
+- **Alert key:** `youtube-superchat`
+- **Source:** YouTube
+- **Event list label:** Super Chat
+
+## Default message template
+
+```text
+{{username}} just super chatted with {{currencySymbol}}{{amount}}. They said {{message}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{currency}}` | `data.extraSettings.currency` | The currency used |
+| `{{currencySymbol}}` | `data.extraSettings.currencySymbol` | The currency symbol used |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 100
+
+```json
+{
+  "alert": "youtube-superchat",
+  "dynamic": {
+    "value": 100,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "LumiaStream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 100,
+    "currency": "USD",
+    "currencySymbol": "",
+    "message": ""
+  }
+}
+```
+
+### 200
+
+```json
+{
+  "alert": "youtube-superchat",
+  "dynamic": {
+    "value": 200,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "LumiaStream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 200,
+    "currency": "USD",
+    "currencySymbol": "",
+    "message": ""
+  }
+}
+```
+
+### 300
+
+```json
+{
+  "alert": "youtube-superchat",
+  "dynamic": {
+    "value": 300,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "LumiaStream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "amount": 300,
+    "currency": "USD",
+    "currencySymbol": "",
+    "message": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_CURRENCY_NUMBER` - Super Chat Amount is equal to
+- `GREATER_CURRENCY_NUMBER` - Super Chat Amount is greater than or equal to
+- `EQUAL_USERNAME`
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type

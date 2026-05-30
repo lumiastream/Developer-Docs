@@ -1,0 +1,99 @@
+---
+sidebar_position: 47
+id: alert-twitch-watch-streak
+title: Watch Streak
+description: "reached a watch streak of {{streak_count}} and earned {{amount}} points"
+---
+
+# Watch Streak
+
+- **Alert key:** `twitch-watchStreak`
+- **Source:** Twitch
+- **Event list label:** Watch Streak
+
+## Default message template
+
+```text
+{{username}} reached a watch streak of {{streak_count}} and earned {{amount}} points
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
+| `{{streak_count}}` | `data.extraSettings.streak_count` | No description available yet. |
+| `{{channel_points_awarded}}` | `data.extraSettings.channel_points_awarded` | No description available yet. |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{message}}` | `data.extraSettings.message` | The remaining message after removing the command from the raw message |
+| `{{system_message}}` | `data.extraSettings.system_message` | No description available yet. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### 3 stream streak
+
+```json
+{
+  "alert": "twitch-watchStreak",
+  "dynamic": {
+    "value": 3,
+    "username": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "streak_count": 3,
+    "channel_points_awarded": 300,
+    "amount": 300,
+    "userId": "",
+    "displayname": "",
+    "message": "",
+    "system_message": ""
+  }
+}
+```
+
+### 10 stream streak
+
+```json
+{
+  "alert": "twitch-watchStreak",
+  "dynamic": {
+    "value": 10,
+    "username": "lumiastream"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
+    "streak_count": 10,
+    "channel_points_awarded": 1000,
+    "amount": 1000,
+    "userId": "",
+    "displayname": "",
+    "message": "",
+    "system_message": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_USERNAME`
+- `EQUAL_NUMBER` - Watch Streak Count is equal to
+- `GREATER_NUMBER` - Watch Streak Count is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type
