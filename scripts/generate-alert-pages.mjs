@@ -323,6 +323,26 @@ function renderRootIndex(platformGroups) {
 	return lines.join('\n');
 }
 
+function renderExplorerPage() {
+	return [
+		'---',
+		'sidebar_position: -1',
+		'id: alert-explorer',
+		'title: Alert Explorer',
+		'description: Live, searchable preview of every alert payload Lumia emits. Pick a platform, pick an alert, inspect the exact fields your overlay receives.',
+		'---',
+		'',
+		'import { AllPlatformsAlertExplorer } from "@site/src/components/AlertExplorer";',
+		'',
+		'# Alert Explorer',
+		'',
+		"Pick a platform, search for an alert, and inspect the exact payload your overlay receives in `Overlay.on('alert', (data) => …)`. Template variables like `{{username}}` and `{{amount}}` map to the same keys under `data.extraSettings`.",
+		'',
+		'<AllPlatformsAlertExplorer />',
+		'',
+	].join('\n');
+}
+
 function generate() {
 	if (existsSync(alertsDir)) rmSync(alertsDir, { recursive: true });
 	mkdirSync(alertsDir, { recursive: true });
@@ -345,6 +365,7 @@ function generate() {
 	});
 
 	writeFileSync(resolve(alertsDir, 'index.md'), renderRootIndex(byPlatform));
+	writeFileSync(resolve(alertsDir, 'explorer.mdx'), renderExplorerPage());
 
 	let alertCount = 0;
 	for (const [platform, alerts] of byPlatform) {
