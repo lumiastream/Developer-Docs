@@ -1,0 +1,118 @@
+---
+sidebar_position: 1
+id: triggering
+title: Triggering TTS
+description: Every surface that can fire TTS - REST API, chatbot commands, alerts, Custom JS, plugins, and variable functions.
+---
+
+# Triggering TTS
+
+## REST API
+
+The fastest way to speak a message from any external app or script.
+
+```bash
+POST http://localhost:39231/api/send?token=YOUR_TOKEN
+```
+
+```json
+{
+  "type": "tts",
+  "params": {
+    "value": "Wow, this tutorial is just way too cool"
+  }
+}
+```
+
+With a specific voice and volume:
+
+```json
+{
+  "type": "tts",
+  "params": {
+    "value": "Hello from the API",
+    "voice": "Brian",
+    "volume": 75
+  }
+}
+```
+
+`voice` matches either the voice's `id` or `label` from the [voices list](/docs/tts/voices). `volume` is 0–100 and applies on Windows only.
+
+See [Get a token](/docs/get-a-token) if you don't have a token yet.
+
+## Chatbot commands
+
+Add a TTS tab to any chatbot command in the Lumia UI. The message field supports the full variable system:
+
+```text
+{{username}} just subscribed for {{subMonths}} months!
+```
+
+The voice and volume set on the command override the global defaults for that specific firing.
+
+## Alerts
+
+Every alert has a TTS tab in the alert editor. The message resolves against the alert's event variables — `{{username}}`, `{{amount}}`, `{{message}}`, etc. — the same ones available in the alert's display text.
+
+When sending an alert via the REST API you can override the TTS message in `extraSettings`:
+
+```json
+{
+  "type": "send-alert",
+  "params": {
+    "value": "twitch-subscriber",
+    "extraSettings": {
+      "username": "lumiastream",
+      "tts": "lumiastream just subscribed!"
+    }
+  }
+}
+```
+
+## Custom JavaScript
+
+From a Custom JS action, use `lumia.tts()` to speak a string directly:
+
+```js
+await lumia.tts({
+  message: `Welcome back, ${lumia.getVariable('username')}!`,
+  voice: 'Brian',
+  volume: 80,
+});
+```
+
+The call resolves when the message is queued (not when it finishes playing). To wait for playback to finish before continuing the action chain, set `waitForTts: true` on the command's TTS tab in the UI.
+
+## Variable function
+
+You can fire TTS inline in any template using the `speak` variable function:
+
+```text
+{{speak=Hello from a variable function}}
+```
+
+This works anywhere variables are resolved — chatbot responses, alert text, overlay templates.
+
+## Plugin SDK
+
+From a plugin, use `this.lumia.tts()`:
+
+```js
+await this.lumia.tts({
+  message: 'ElevenLabs audio ready',
+  voice: 'default',
+  volume: 90,
+});
+```
+
+For plugins that generate their own audio (ElevenLabs, TTS Monster, etc.), use `this.lumia.playAudio()` instead — those plugins intercept the normal TTS pipeline and produce audio bytes directly. See the [ElevenLabs TTS example](/docs/plugin-sdk/examples/elevenlabs-tts) for the full pattern.
+
+## Muting TTS
+
+| Method | Effect |
+| --- | --- |
+| `!disablesfx` in chat | Mutes TTS, HFX audio, and AudioManager globally. Mod/broadcaster only. |
+| `!enablesfx` in chat | Re-enables the above. |
+| `{{set_sfx_muted=true}}` in a template | Same as `!disablesfx`, triggerable from anywhere. |
+| `{{set_sfx_muted=false}}` in a template | Same as `!enablesfx`. |

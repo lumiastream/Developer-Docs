@@ -15,7 +15,7 @@ The [REST API](/docs/rest/clone-the-repo) is the fastest way to control Lumia fr
 - Fire any Lumia command by name
 - Push a light color with exact duration, brightness, and transition
 - Trigger any alert (follow, sub, donation, raid, etc.)
-- Send a TTS message
+- [Send a TTS message](/docs/tts/triggering) — choose a voice, set volume, and fire from any surface
 - Start or stop stream mode
 - Update template variables
 - Manage loyalty points

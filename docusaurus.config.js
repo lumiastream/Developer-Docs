@@ -137,6 +137,12 @@ const darkCodeTheme = themes.dracula;
               activeBasePath: "docs/alerts",
             },
             {
+              to: "/docs/tts",
+              label: "TTS",
+              position: "left",
+              activeBasePath: "docs/tts",
+            },
+            {
               to: "/docs/custom-code/what-is-custom-javascript",
               label: "Custom code",
               position: "left",

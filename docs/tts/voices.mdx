@@ -1,0 +1,98 @@
+---
+sidebar_position: 2
+id: voices
+title: Voices
+description: System voices, Lumia cloud voices, marketplace voices, and plugin-powered voices like ElevenLabs and TTS Monster.
+---
+
+# Voices
+
+Lumia supports four voice sources. They can be mixed freely — a follow alert uses Brian, a sub alert uses a marketplace voice, and a chatbot command uses a system voice.
+
+## System voices
+
+The OS speech synthesizer — macOS has Siri voices, Windows has Narrator voices. System voices are always available with no network call. Quality varies by OS and installed language packs.
+
+Voice `id` and `label` values come from your machine. Retrieve the full list at runtime via the [Get Settings](/docs/rest/get-settings) endpoint:
+
+```bash
+GET http://localhost:39231/api/settings?token=YOUR_TOKEN
+```
+
+The voice list is at `data.options.tts.values.voices`. Each entry has:
+
+```json
+{
+  "id": "Agnes",
+  "label": "Agnes",
+  "language": "en_US"
+}
+```
+
+Pass the `id` or `label` as the `voice` field in any TTS call.
+
+## Lumia cloud voices
+
+Lumia's hosted voice set — powered by Amazon Polly — gives you high-quality voices without any third-party account. Available to all Lumia users.
+
+Well-known cloud voices:
+
+| Voice | Language |
+| --- | --- |
+| Brian | en-GB |
+| Amy | en-GB |
+| Emma | en-GB |
+| Joanna | en-US |
+| Kimberly | en-US |
+| Salli | en-US |
+| Justin | en-US |
+| Joey | en-US |
+| Nicole | en-AU |
+| Russell | en-AU |
+
+These are referenced by name in the voice picker and in API calls. Pass the voice name exactly as shown.
+
+## Marketplace voices
+
+The Lumia voice marketplace hosts community-uploaded voices. Browse and install them from the Lumia settings panel. Once installed, a marketplace voice appears in the voice picker alongside system and cloud voices.
+
+Marketplace voices are referenced by their `id` from the settings voice list. Because they route through Lumia's hosted TTS proxy, they require an active internet connection.
+
+## Plugin voices (ElevenLabs, TTS Monster, and others)
+
+Plugin voices bypass the standard TTS pipeline entirely. The plugin:
+
+1. Intercepts the TTS request.
+2. Sends the text to an external service (ElevenLabs API, TTS Monster API, etc.).
+3. Receives audio bytes back.
+4. Calls `this.lumia.playAudio()` to play them through Lumia.
+
+Installing a plugin like ElevenLabs TTS or TTS Monster makes its voices available in the Lumia voice picker for every command and alert. No code change needed — configure the API key in the plugin settings, pick the voice.
+
+See the example plugins:
+- [ElevenLabs TTS](/docs/plugin-sdk/examples/elevenlabs-tts)
+- [TTS Monster](/docs/plugin-sdk/examples/tts-monster)
+
+## Random voice
+
+Pass `"random"` as the voice to select a random English voice from the available cloud pool on each firing:
+
+```json
+{
+  "type": "tts",
+  "params": {
+    "value": "Random voice every time!",
+    "voice": "random"
+  }
+}
+```
+
+## Checking available voices at runtime
+
+```bash
+GET http://localhost:39231/api/settings?token=YOUR_TOKEN
+```
+
+Parse `data.options.tts.values.voices` for the full list of `{ id, label, language }` entries installed on the current machine.
+
+To list only cloud voices, filter for entries where `source === 'cloud'`. Marketplace voices have `source === 'marketplace'`.
