@@ -1,0 +1,51 @@
+---
+sidebar_position: 0
+id: overview
+slug: /tts
+title: TTS overview
+description: How Lumia's TTS system works - voices, sources, queue, and every surface you can trigger it from.
+---
+
+# TTS overview
+
+Lumia has a built-in text-to-speech engine that all parts of the system share — alerts, chatbot commands, custom JavaScript actions, the REST API, WebSockets, and plugins. Anything that can produce a string can also speak it.
+
+## Sections
+
+- **[Triggering TTS](/docs/tts/triggering)** - every surface that can fire TTS: REST API, chatbot, alerts, Custom JS, plugins.
+- **[Voices](/docs/tts/voices)** - system voices, Lumia cloud voices, marketplace voices, ElevenLabs/TTS Monster plugins.
+- **[Expressive markup](/docs/tts/expressive-markup)** - pause tags, sound tags, paragraph breaks, and punctuation guide.
+- **[Queue and playback](/docs/tts/queue)** - how the TTS queue works, queue lanes, skip, mute, and `waitForTts`.
+
+## How TTS works
+
+Every TTS request goes through the same pipeline regardless of where it originates:
+
+1. The message is resolved through the [variable system](/docs/variables) — `{{username}}`, `{{amount}}`, `{{counter=deaths}}`, etc. are all substituted before speech synthesis.
+2. The voice is resolved: if the request specifies a voice, that wins; if not, the command's configured default is used; if there's no command-level default, the global TTS voice setting applies.
+3. The resolved message is handed to the TTS engine based on the voice source:
+   - **System** — the OS speech synthesizer (no network call, always available).
+   - **Cloud** — Lumia's hosted Polly-backed voices (Brian, Amy, Joanna, etc.).
+   - **Marketplace** — community voices from the Lumia voice marketplace.
+   - **Plugin** — a plugin such as ElevenLabs TTS or TTS Monster intercepts and generates audio.
+4. The audio is dispatched to the configured output device and placed into the TTS queue (or plays immediately if `skipQueue` is set).
+
+## Where TTS appears in the UI
+
+Every chatbot command, alert, and automation action has a TTS tab. The fields are:
+
+| Field | What it does |
+| --- | --- |
+| **Message** | Template string spoken aloud. Supports full variable syntax. |
+| **Voice** | Which voice to use. Leave blank to inherit the global default. |
+| **Volume** | 0–100. Windows only; macOS uses the system volume. |
+| **Delay** | Milliseconds to wait before speaking. |
+| **Wait for TTS** | Pause the action pipeline until TTS finishes playing. |
+
+## Quick paths
+
+- Just want to fire TTS from code or an external app? → [Triggering TTS](/docs/tts/triggering)
+- Want to pick or add a voice? → [Voices](/docs/tts/voices)
+- Want natural-sounding delivery with pauses and sounds? → [Expressive markup](/docs/tts/expressive-markup)
+- Need to control queue order or skip? → [Queue and playback](/docs/tts/queue)
+- Mute all TTS globally? → `{{set_sfx_muted=true}}` in any template or from the chatbot with `!disablesfx`

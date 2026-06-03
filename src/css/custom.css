@@ -26,3 +26,13 @@
 html[data-theme='dark'] .docusaurus-highlight-code-line {
 	background-color: rgba(0, 0, 0, 0.3);
 }
+
+/* data-mode=embed comes from ?docusaurus-data-mode=embed, used by the Overlay-UI docs iframe */
+html[data-mode='embed'] {
+	--ifm-navbar-height: 0px;
+}
+
+html[data-mode='embed'] .navbar,
+html[data-mode='embed'] .footer {
+	display: none;
+}

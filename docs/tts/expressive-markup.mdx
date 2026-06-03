@@ -1,0 +1,91 @@
+---
+sidebar_position: 4
+id: expressive-markup
+title: Expressive markup
+description: Pause tags, sound tags, paragraph breaks, and punctuation - everything that shapes how Lumia TTS delivers speech.
+---
+
+# Expressive markup
+
+Lumia's marketplace and cloud voices support a set of markup controls that shape timing, pacing, and vocal character. These work in any TTS message field - chatbot commands, alerts, automations, and the REST API.
+
+## Pause tags
+
+Insert `<#X#>` between words or sentences to add a timed pause. `X` is the duration in seconds (decimals allowed).
+
+```text
+Chat, listen closely<#0.75#> this part matters.
+The sun is shining<#0.5#> perfect for a walk.
+I knew this would happen (sighs)<#0.4#> but here we are.
+```
+
+Pause tags must sit between words or sentences. Do not stack them back to back.
+
+## Sound tags
+
+Add natural vocal sounds inside the spoken text by wrapping the tag name in parentheses.
+
+| Tag | Sound |
+| --- | --- |
+| `(laughs)` | Laughter |
+| `(chuckle)` | Short laugh |
+| `(coughs)` | Cough |
+| `(clear-throat)` | Throat clear |
+| `(groans)` | Groan |
+| `(breath)` | Breath |
+| `(pant)` | Panting |
+| `(inhale)` | Inhale |
+| `(exhale)` | Exhale |
+| `(gasps)` | Gasp |
+| `(sniffs)` | Sniff |
+| `(sighs)` | Sigh |
+| `(burps)` | Burp |
+| `(lip-smacking)` | Lip smack |
+| `(humming)` | Hum |
+| `(hissing)` | Hiss |
+| `(emm)` | Filler "mm" sound |
+| `(sneezes)` | Sneeze |
+
+Examples:
+
+```text
+No way (laughs), chat actually did it!
+Give me one second (breath) okay, we are ready.
+I knew this would happen (sighs)<#0.4#> but here we are.
+```
+
+## Paragraph breaks
+
+Use a line break to separate longer reads into natural sections. The model uses the paragraph structure for pacing.
+
+```text
+Welcome in, traveler.
+<#0.6#>
+The next quest starts now.
+```
+
+Good uses: live reactions, character reads, roleplay, announcements, sponsor reads, cinematic alerts.
+
+## Punctuation guide
+
+Punctuation shapes delivery without needing explicit tags. Use it intentionally.
+
+| Mark | Effect | Example |
+| --- | --- | --- |
+| `.` | Neutral stop, natural pause | `It's a good day.` |
+| `,` | Light pause, keeps flow smooth | `Yes, I think so, maybe.` |
+| `!` | Energy, emotion, surprise | `That's incredible!` |
+| `?` | Rising intonation | `Are you serious?` |
+| `...` | Hesitation or reflective tone | `I... I'm not sure.` |
+| `—` | Dramatic pause or emphasis | `You know what — forget it.` |
+| `:` / `;` | Subtle pause linking ideas | `Remember this: stay calm.` |
+| `()` | Quieter, side comment tone | `That's right (just between us).` |
+| `"` | Slight pitch shift at quote boundaries | `He said, 'Let's go!'` |
+
+Overusing `!` or `...` makes speech sound unnatural. Combine punctuation with `<#X#>` pauses and sound tags for expressive, human-like delivery.
+
+## Which voices support expressive markup
+
+Expressive markup works with **Lumia marketplace voices** and **Lumia cloud voices**. System voices (OS speech synthesizer) do not interpret these tags - they are passed through as literal text and will be read aloud as written.
+
+Plugin voices (ElevenLabs, TTS Monster, etc.) handle markup according to their own API. Check the relevant plugin documentation.

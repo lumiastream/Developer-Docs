@@ -1,0 +1,68 @@
+---
+sidebar_position: 3
+id: queue
+title: Queue and playback
+description: How TTS messages queue, how to use queue lanes, how to skip the queue or wait for playback, and how to control muting.
+---
+
+# Queue and playback
+
+## How the queue works
+
+TTS messages do not interrupt each other by default. Each message is placed at the end of the main queue and plays in the order it arrives. If a sub alert fires while a donation TTS is still playing, the sub TTS waits.
+
+The queue is in-memory and resets when Lumia restarts. Messages already playing are not affected by a restart.
+
+## Queue lanes
+
+Lumia supports multiple independent queue lanes: `main`, `lane-1` through `lane-9`. Each lane has its own playback position — messages in `lane-1` don't wait for `main` to finish.
+
+This is useful for separating alert TTS from chatbot TTS, or giving high-priority messages their own lane that isn't blocked by a backlog.
+
+Configure the lane on the command or alert's default settings tab in the UI (the `queueLane` field). Lane assignment is per-command — you can't override the lane from the REST API on a per-call basis, only at command-configuration time.
+
+## Skipping the queue
+
+To play a TTS message immediately regardless of what's in the queue, enable **Skip queue** on the command's default settings tab. Skip-queue messages interrupt the current playback and play right away.
+
+This is intentionally a UI configuration rather than a per-call API parameter, so the behavior is consistent and doesn't require every caller to specify it.
+
+## Waiting for TTS before continuing
+
+When a command has multiple actions in a chain (TTS, then lights, then a chatbot reply), the default is to fire all of them concurrently. Enable **Wait for TTS** on the TTS tab to pause the action chain until the current TTS finishes.
+
+Use this for:
+- Syncing a light effect to the end of a spoken phrase
+- Making sure a follow-up chatbot reply posts after the TTS plays, not during
+- Sequencing multiple TTS messages back-to-back
+
+## Delay
+
+Set a **Delay** (milliseconds) on the TTS tab to wait before the message enters the queue. Useful for syncing TTS to a visual alert that takes a moment to render.
+
+## Muting globally
+
+| Method | Effect |
+| --- | --- |
+| `!disablesfx` in chat | Pauses TTS, HFX audio, and AudioManager. Mod/broadcaster only. |
+| `!enablesfx` in chat | Resumes the above. |
+| `{{set_sfx_muted=true}}` | Same effect from any template, action, or custom JS. |
+| `{{set_sfx_muted=false}}` | Re-enable from a template. |
+
+Global mute does not clear the queue — messages queued while muted play when muting is lifted.
+
+## Output device
+
+TTS plays through the **TTS output device** configured in Lumia settings. Retrieve the current device and available options from the settings endpoint:
+
+```bash
+GET http://localhost:39231/api/settings?token=YOUR_TOKEN
+```
+
+The current device is at `data.options.tts.values.currentDevice`. Available devices are at `data.options.tts.values.devices`. Device selection is a global setting; it can't be overridden per call.
+
+## Volume
+
+Volume is a 0–100 integer passed in any TTS call. On **Windows** it controls the audio output level directly. On **macOS** the volume parameter is ignored — use the system volume instead.
+
+Per-call volume takes precedence over the command-level default. The command-level default takes precedence over the global TTS volume setting.
