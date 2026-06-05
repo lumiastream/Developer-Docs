@@ -44,10 +44,8 @@ Set a **Delay** (milliseconds) on the TTS tab to wait before the message enters 
 
 | Method | Effect |
 | --- | --- |
-| `!disablesfx` in chat | Pauses TTS, HFX audio, and AudioManager. Mod/broadcaster only. |
-| `!enablesfx` in chat | Resumes the above. |
-| `{{set_sfx_muted=true}}` | Same effect from any template, action, or custom JS. |
-| `{{set_sfx_muted=false}}` | Re-enable from a template. |
+| `{{set_sfx_muted=true}}` | Pauses TTS, HFX audio, and AudioManager. Use in any template, action, custom JS, or bind it to your own chatbot command. |
+| `{{set_sfx_muted=false}}` | Resumes the above. |
 
 Global mute does not clear the queue — messages queued while muted play when muting is lifted.
 

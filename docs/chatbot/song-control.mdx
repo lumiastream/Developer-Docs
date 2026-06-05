@@ -2,96 +2,39 @@
 sidebar_position: 4
 id: song-control
 title: Song control
-description: Spotify integration - !song, !skip, !songrequest, voteskip lifecycle, wrongsong tracking, and the requester registry.
+description: Spotify integration - !song and !songrequest defaults, plus the song-queue and vote-skip building-block variable functions.
 ---
 
 # Song control
 
-Lumia integrates with Spotify (and other supported music services) for chat-driven song control. Defaults cover the common SE workflow: request, queue display, skip, vote-skip, "wrong song" cleanup.
+Lumia integrates with Spotify (and other supported music services) for chat-driven song control. Two commands ship as defaults - `!song` and `!songrequest` - and two variable functions (`{{song_queue}}`, `{{song_voteskip_start}}`) are available to bind to your own commands.
 
 ## Currently playing
 
 `!song` - replies with the current track and artist. Reads from the active music service. If no song is playing, the configured offline response fires.
 
-`!play` / `!songpause` - resume / pause playback.
-
-`!volume <0-100>` - set volume.
-
-`!skip` / `!next` - instant skip (mod / broadcaster only).
+The underlying variables are `{{spotify_now_playing_song}}` and `{{spotify_now_playing_artist}}`, so you can format the reply however you like.
 
 ## Song requests
 
-`!songrequest <query>` - search and queue a track.
+`!songrequest <query>` - search for a track and add it to the queue.
 
 1. The query is sent to Spotify search.
-2. Top match is added to the play queue.
-3. The (requester, trackId, trackName) tuple is recorded in the request registry keyed by requester username.
-4. Reply confirms the queued track.
+2. The top match is added to **Spotify's own play queue** via the native queue API.
+3. The reply confirms the queued track.
 
-### Requester registry
+Because requests go straight into Spotify's native queue, Lumia does not maintain a separate, mutable request registry - there is no per-request "remove" or "clear" in Spotify mode. To reorder or clear, use Spotify directly.
 
-Lumia tracks who requested what so `!wrongsong` and `!removesong` work without needing an external moderator. The registry is held in memory and resets on Lumia restart.
+## Building-block functions
 
-| Variable function | Effect |
-| --- | --- |
-| `{{remove_recent_song_request=USERNAME}}` | Removes the most recent request from a user. Backs `!wrongsong`. |
-| `{{remove_last_song_request}}` | Removes the most recent request from anyone. Backs `!removesong`. |
-| `{{clear_recent_song_requests}}` | Wipes the registry. Backs `!srclear`. |
-| `{{recent_song_requests=N}}` | Returns the last N requests, formatted as `"Track - requester"`. Backs `!songqueue`. |
-
-The registry only knows about songs added via `!songrequest`. Tracks you queue directly in Spotify aren't tracked.
-
-## Vote-skip
-
-`!voteskip` opens or votes in a vote-skip. Defaults:
-
-- Threshold: 5 votes
-- Window: 60 seconds
-- One active vote-skip at a time
-
-First call → opens the vote, casts the caller's vote.
-Subsequent calls within the window → each adds one vote.
-When the threshold is reached → Lumia skips the song and replies.
-Window expires → vote silently dies; next `!voteskip` opens a fresh one.
+These functions are not bound to a default command, but you can drop them into any custom chatbot command, template, or action.
 
 | Variable function | Effect |
 | --- | --- |
-| `{{start_voteskip}}` | Open or vote. Returns a status string for the chatbot reply. |
-| `{{cancel_voteskip}}` | Wipe the active vote. |
-| `{{voteskip_count}}` | Current vote count for the active vote. |
+| `{{song_queue}}` | Returns the recent song requests as `Queue: track, track, …`, or `No queued song requests` when empty. |
+| `{{song_voteskip_start}}` | Starts a vote-skip and returns `Vote-skip started. Type !yes to vote`. Viewers then vote by typing `!yes`. |
 
-## Wrong-song flow
-
-The classic SE pattern: viewer types `!songrequest some query`, gets a wrong match (Spotify search misfires), types `!wrongsong` to remove it. Lumia's default reaches into the requester registry, finds the caller's most recent entry, and removes it from the play queue.
-
-Internally:
-
-```text
-!wrongsong   → {{remove_recent_song_request={{username}}}}
-```
-
-If the requester has no tracked requests in the registry, the function returns an empty string and the chatbot reply falls through to the configured "nothing to remove" fallback.
-
-## Mod cleanup
-
-| Command | Effect |
-| --- | --- |
-| `!removesong` | Remove the most recent tracked request from anyone. |
-| `!srclear` | Wipe the entire requester registry. Doesn't touch the Spotify play queue itself. |
-
-`!srclear` is intentionally registry-only - it stops `!wrongsong` from acting on old requests but leaves the queue intact. To clear the queue itself, use Spotify's UI.
-
-## Permissions
-
-Music control defaults:
-
-| Command | User level |
-| --- | --- |
-| `!song`, `!songqueue` | anyone |
-| `!songrequest`, `!wrongsong`, `!voteskip` | anyone |
-| `!skip`, `!next`, `!play`, `!songpause`, `!volume`, `!removesong`, `!srclear` | mod + broadcaster |
-
-Override any of these via the command's User Level picker.
+To expose them in chat, make a command whose response is the function - e.g. a `!songqueue` command with the response `{{song_queue}}`, or a `!voteskip` command with `{{song_voteskip_start}}`.
 
 ## Service support
 
@@ -101,4 +44,4 @@ Spotify is the primary integration. Other supported services (where applicable):
 - Pretzel
 - YouTube Music (limited - currently-playing only)
 
-Song requests specifically require a service that exposes a search + queue API. That's Spotify-only at the moment. The currently-playing variable family resolves against whichever service Lumia is connected to.
+Song requests specifically require a service that exposes a search + queue API. That's Spotify-only at the moment. The currently-playing variables resolve against whichever service Lumia is connected to.

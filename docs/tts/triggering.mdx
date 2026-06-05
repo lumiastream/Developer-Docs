@@ -112,7 +112,5 @@ For plugins that generate their own audio (ElevenLabs, TTS Monster, etc.), use `
 
 | Method | Effect |
 | --- | --- |
-| `!disablesfx` in chat | Mutes TTS, HFX audio, and AudioManager globally. Mod/broadcaster only. |
-| `!enablesfx` in chat | Re-enables the above. |
-| `{{set_sfx_muted=true}}` in a template | Same as `!disablesfx`, triggerable from anywhere. |
-| `{{set_sfx_muted=false}}` in a template | Same as `!enablesfx`. |
+| `{{set_sfx_muted=true}}` | Mutes TTS, HFX audio, and AudioManager globally. Use in a template, action, custom JS, or bind it to your own chatbot command. |
+| `{{set_sfx_muted=false}}` | Re-enables the above. |

@@ -65,9 +65,10 @@ Functions are grouped below by **what they do**, not by which platform they orig
 | --- | --- |
 | `{{arg=N[,word\|emote]}}` | The Nth whitespace-separated token of `{{message}}`. Optional `word` or `emote` validator. |
 | `{{get_var_from_msg=NAME}}` | Read a key=value pair from the message body. |
-| `{{user_watchtime=USER}}` | Watch time for a user, from loyalty tracking. |
 | `{{lookup_user=USER}}` | Returns the user's profile string. |
-| `{{user_has_role=ROLE}}` | "true"/"false" - check if the caller has a role (`mod`, `vip`, `subscriber`). |
+| `{{user_has_role=ROLE}}` | Check if the caller has a role (`mod`, `vip`, `subscriber`). Returns the username when true / blank when false; add `,yesno` (`{{user_has_role=mod,yesno}}`) for `Yes`/`No`. |
+| `{{user_top_role}}` | The caller's highest role label - `Broadcaster`, `Moderator`, `VIP`, `Subscriber`, `Follower`, or `Viewer`. |
+| `{{user_rank}}` | The caller's position on the all-time loyalty leaderboard. |
 | `{{is_first_chatter}}` | "true" if this is the user's first message of the session. |
 | `{{get_user_loyalty_points=USER}}` | The user's current loyalty point balance. |
 | `{{viewer_profile_summary}}` | Compact viewer-engagement summary for the caller. |
@@ -121,7 +122,6 @@ See [Counters](./counters) for the full pattern. The TL;DR:
 | `{{setgame=NAME}}` | Update the stream category. Twitch + Kick. |
 | `{{set_alerts_paused=true\|false}}` | Toggle the global alerts-paused flag. |
 | `{{set_sfx_muted=true\|false}}` | Mute TTS + HFX audio + `AudioManager.play`. |
-| `{{toggle_automation=NAME,enable\|disable}}` | Enable/disable a Lumia automation. |
 | `{{bot_status}}` | Render a "Bot connected to: …" summary. |
 
 ## Loyalty

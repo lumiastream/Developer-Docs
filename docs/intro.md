@@ -122,7 +122,7 @@ npx lumia-plugin build ./my_plugin --out ./my_plugin.lumiaplugin
 
 ### Chatbot commands
 
-Lumia ships [60+ default chatbot commands](/docs/chatbot/default-commands) out of the box — `!so`, `!roulette`, `!duel`, `!voteskip`, `!songrequest`, and more. You can add, edit, and delete commands from chat using [mod management](/docs/chatbot/mod-management) (`!addcom`, `!editcom`, `!delcom`), or programmatically from any template using variable functions:
+Lumia ships [44 default chatbot commands](/docs/chatbot/default-commands) out of the box — `!so`, `!roulette`, `!duel`, `!points`, `!songrequest`, and more. You can add, edit, and delete commands from chat using [mod management](/docs/chatbot/mod-management) (`!addcom`, `!editcom`, `!delcom`), or programmatically from any template using variable functions:
 
 ```text
 {{add_chatbot_command=mycommand,Hello from a variable function!}}

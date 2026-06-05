@@ -2,12 +2,12 @@
 sidebar_position: 1
 id: default-commands
 title: Default commands
-description: The 60+ chatbot commands Lumia ships with, grouped by purpose. Every default is editable - rename, disable, or change the response freely.
+description: The chatbot commands Lumia ships with, grouped by purpose. Every default is editable - rename, disable, or change the response freely.
 ---
 
 # Default commands
 
-Lumia ships with 60+ default chatbot commands seeded into every new install.
+Lumia ships with 44 default chatbot commands seeded into every new install.
 
 All defaults are editable in the UI. Renaming, disabling, or changing the user-level restriction works the same way as any user-created chatbot command. The seeded message is just a starting template, overwrite it freely.
 
@@ -20,20 +20,17 @@ All defaults are editable in the UI. Renaming, disabling, or changing the user-l
 | `!command` | Help for the mod-side `!command add\|edit\|delete` workflow. |
 | `!uptime` | Stream uptime, with custom offline message. |
 | `!followage [user]` | How long the user has been following on Twitch. |
-| `!accountage [user] [platform]` | Account age for the caller or named user. Defaults to the platform the call was made on (Twitch, Kick, YouTube). |
+| `!accountage [user] [platform]` | Account age for the caller or named user. Resolved from the platform's API - Twitch and YouTube only; other platforms return blank. |
 | `!isHere` | Triggers presence detection / entrance logic. |
 | `!chatstats` | Highlights a random recent chatter. |
-| `!watchtime [user]` | Loyalty watch time for the caller or named user. |
 | `!8ball <question>` | Random magic 8-ball answer from the classic 20. |
 | `!quote` | Random quote from zenquotes.io. |
 | `!when <date>` | Countdown to the supplied date. |
 | `!emotes` | List the channel emotes available on the caller's platform. |
-| `!emotecount <emote>` | How many times the named emote has been used since Lumia started tracking. |
 | `!bot` | Show which chat sites the Lumia bot is connected to. |
 | `!tip` | All-time donation total. |
 | `!leaderboard` | Public loyalty leaderboard URL. |
 | `!top [N]` | Top N (up to 10) loyalty point holders rendered in chat. |
-| `!level [user]` | Loyalty rank for the caller or named user. |
 | `!queue` | First 10 viewers in the active join queue. |
 
 ## Stream control (mod / broadcaster)
@@ -42,19 +39,12 @@ All defaults are editable in the UI. Renaming, disabling, or changing the user-l
 | --- | --- |
 | `!setgame <name>` | Updates the stream category on every connected platform that supports it (Twitch, Kick). |
 | `!settitle <text>` | Updates the stream title on every connected platform (Twitch, Kick, YouTube). |
-| `!alerts on\|off` / `!pause` / `!pauseAlerts` | Pause or resume Lumia alerts globally. |
-| `!module <name> <enable\|disable>` | Toggle a Lumia automation by name. |
-| `!timer enable\|disable <name>` | Same as `!module`, with the verb in front. |
-| `!disablesfx` / `!enablesfx` | Mute / un-mute Lumia sound effects - covers TTS, HFX audio, and the general AudioManager. |
 
 ## Moderation
 
 | Command | Behaviour |
 | --- | --- |
 | `!vanish` | Self-timeout for 1 second on the platform you typed from. |
-| `!nuke <lookback> <action> <pattern>` | Bulk-moderate matching users across every platform they spoke on. Action is `delete`, `ban`, or a timeout duration in seconds. |
-| `!nukeusername <user> [delete\|ban\|seconds]` | Bulk-moderate every recent message from a single user. |
-| `!permit <user> [seconds]` | Let a user post links for N seconds (default 60) bypassing the chat filter. |
 | `!filesay <url>` | Fetch a URL and post each line to chat. Capped at 50 lines, 1s/line. |
 
 ## Counters
@@ -80,6 +70,7 @@ See [Games](./games) for the full lifecycle of each.
 | Command | Behaviour |
 | --- | --- |
 | `!raffle` / `!joinq` / `!tournament` | Join the active raffle / queue / tournament. |
+| `!leaveq` | Leave the viewer join queue. |
 | `!sraffle` | Start a sub-only raffle. |
 | `!cancelraffle` | Cancel the active raffle. |
 | `!cancelduel` | Cancel all pending duels. |
@@ -102,15 +93,7 @@ See [Song control](./song-control) for the full song-request workflow.
 | Command | Behaviour |
 | --- | --- |
 | `!song` | Currently playing Spotify track + artist. |
-| `!skip` / `!next` | Skip the current Spotify song. |
-| `!play` / `!songpause` | Resume / pause Spotify playback. |
-| `!volume <0-100>` | Set Spotify volume. |
-| `!songrequest <query>` | Search and add a song to the Spotify queue. Tracks the requester for `!wrongsong`. |
-| `!songqueue` | Show the last 5 song requests. |
-| `!removesong` | Remove the most recently tracked request. |
-| `!srclear` | Clear all tracked song requests. |
-| `!voteskip` | Start or vote in a vote-skip. Threshold defaults to 5 votes, 60s window. |
-| `!wrongsong` | Remove your most recent song request. |
+| `!songrequest <query>` | Search and add a song to the Spotify queue. |
 
 ## How seeding works
 
