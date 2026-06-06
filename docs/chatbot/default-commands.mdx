@@ -42,9 +42,16 @@ All defaults are editable in the UI. Renaming, disabling, or changing the user-l
 
 ## Moderation
 
+Restricted to mods and the broadcaster by default.
+
 | Command | Behaviour |
 | --- | --- |
 | `!vanish` | Self-timeout for 1 second on the platform you typed from. |
+| `!permit <user> [seconds]` | Let a user post a link without it being removed for N seconds (default 60). |
+| `!nuke <lookback> <action> <pattern>` | Bulk-remove recent messages matching a phrase across platforms. Action is `delete`, `ban`, or a timeout in seconds. |
+| `!nukeusername <user> [delete\|ban\|seconds]` | Bulk-remove a single user's recent messages across platforms. |
+| `!lockdown` / `!shield` | Enable Twitch Shield Mode (and followers-only) to lock chat down during a raid. Twitch only. |
+| `!unlock` / `!unshield` | Lift the lockdown — turn Shield Mode back off. |
 | `!filesay <url>` | Fetch a URL and post each line to chat. Capped at 50 lines, 1s/line. |
 
 ## Counters

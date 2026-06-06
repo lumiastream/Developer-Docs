@@ -1,20 +1,20 @@
 ---
-sidebar_position: 43
-id: alert-twitch-shoutout-receive
-title: Shoutout Receive
-description: shoutout
+sidebar_position: 51
+id: alert-twitch-warned
+title: Warned
+description: "{{username}} was warned for {{reason}}"
 ---
 
-# Shoutout Receive
+# Warned
 
-- **Alert key:** `twitch-shoutoutReceive`
+- **Alert key:** `twitch-warned`
 - **Source:** Twitch
-- **Event list label:** Shoutout
+- **Event list label:** Warning
 
 ## Default message template
 
 ```text
-{{username}} sent you a shoutout
+{{username}} was warned
 ```
 
 ## Template variables
@@ -26,29 +26,29 @@ Use any of these in alert text, TTS, or chat templates. The same names appear un
 | `{{username}}` | `data.extraSettings.username` | The username of the sender |
 | `{{userId}}` | `data.extraSettings.userId` | The user ID of the sender |
 | `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
-| `{{avatar}}` | `data.extraSettings.avatar` | The url of the avatar of the sender for a message |
-| `{{viewer_count}}` | `data.extraSettings.viewer_count` | No description available yet. |
-| `{{started_at}}` | `data.extraSettings.started_at` | ISO String of the time this alert was triggered |
+| `{{moderator}}` | `data.extraSettings.moderator` | No description available yet. |
+| `{{reason}}` | `data.extraSettings.reason` | Ban Reason, e.g. this will get the reason when using /ban [username] [reason] |
+| `{{chat_rules_cited}}` | `data.extraSettings.chat_rules_cited` | No description available yet. |
 
 ## Example payloads
 
 Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
 
-### Shoutout Receive
+### User Warned
 
 ```json
 {
-  "alert": "twitch-shoutoutReceive",
+  "alert": "twitch-warned",
   "dynamic": {
     "value": "lumiastream"
   },
   "extraSettings": {
     "username": "lumiastream",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2b1fa336-f9b2-42cf-bd2c-98675da74982-profile_image-70x70.png",
-    "displayname": "LumiaStream",
     "userId": "1234",
-    "viewer_count": 100,
-    "started_at": "2022-07-26T17:00:03.17106713Z"
+    "displayname": "LumiaStream",
+    "moderator": "modname",
+    "reason": "Breaking chat rules",
+    "chat_rules_cited": "Be respectful"
   }
 }
 ```

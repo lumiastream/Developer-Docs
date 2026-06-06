@@ -7,7 +7,7 @@ description: Every alert Lumia emits for Twitch.
 
 # Twitch alerts
 
-47 alerts available. Each page documents the message template, payload fields, and example scenarios.
+52 alerts available. Each page documents the message template, payload fields, and example scenarios.
 
 | Alert | Description |
 | --- | --- |
@@ -51,10 +51,15 @@ description: Every alert Lumia emits for Twitch.
 | [Session Followers](./session-followers.mdx) | reached `{{total}}` followers |
 | [Session Gift Subscriptions](./session-gift-subscriptions.mdx) | reached `{{total}}` gift subscriptions |
 | [Session Subs](./session-subs.mdx) | reached `{{total}}` subscribers |
+| [Shield Mode Ended](./shield-mode-ended.mdx) | Shield mode ended by `{{username}}` |
+| [Shield Mode Started](./shield-mode-started.mdx) | Shield mode started by `{{username}}` |
 | [Shoutout Receive](./shoutout-receive.mdx) | shoutout |
 | [Stream Live](./stream-live.mdx) | - |
 | [Stream Offline](./stream-offline.mdx) | - |
 | [Subscriber](./subscriber.mdx) | subscribed with a `{{tier}}` sub |
+| [Suspicious User Message](./suspicious-user-message.mdx) | `{{username}}` (`{{low_trust_status}}`) sent a message |
+| [Suspicious User Updated](./suspicious-user-updated.mdx) | `{{username}}` updated to `{{low_trust_status}}` by `{{moderator}}` |
 | [Timeout](./timeout.mdx) | timed out |
 | [Timeout Over](./timeout-over.mdx) | time out over |
+| [Warned](./warned.mdx) | `{{username}}` was warned for `{{reason}}` |
 | [Watch Streak](./watch-streak.mdx) | reached a watch streak of `{{streak_count}}` and earned `{{amount}}` points |
