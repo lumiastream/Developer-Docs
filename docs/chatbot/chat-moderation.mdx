@@ -1,0 +1,141 @@
+---
+sidebar_position: 5
+id: chat-moderation
+title: Chat moderation commands
+description: The five built-in moderation commands — !permit, !nuke, !nukeusername, !lockdown, and !unlock — their syntax, options, and how to customise them.
+---
+
+# Chat moderation commands
+
+Lumia ships five moderation commands as defaults. All are restricted to **moderator** and **broadcaster** roles by default. Each is a full chatbot command — you can rename it, change the user-level gating, adjust cooldowns, and edit the response message in Chatbot Commands. Behaviour is driven by the `systemType` and is tunable via the command's **Options** tab (`systemOptions`).
+
+## !permit
+
+```
+!permit <user> [seconds]
+```
+
+Temporarily allows a user to post a link without it being removed by the link-protection filter. Useful during giveaways or when a mod wants to let a specific user share something.
+
+- If `seconds` is omitted, the permit lasts for the `durationSeconds` value in the command's Options tab (default: 60 seconds).
+- An override like `!permit streamername 120` grants 120 seconds regardless of the default.
+- Permits are per-user, per-Lumia-session. They reset on restart.
+
+| systemOptions field | Purpose |
+| --- | --- |
+| `durationSeconds` | Default permit window (seconds). Per-use override beats this. |
+| `permitMessage` | Chat reply when a permit is granted. `{{permit_result}}` in the response template resolves to this. |
+| `invalidInput` | Reply when no username is given. |
+
+The chatbot reply template defaults to `{{permit_result}}`, which resolves to `permitMessage` on success or `invalidInput` on bad input.
+
+## !nuke
+
+```
+!nuke <lookback> <action> <pattern>
+!nuke <pattern>
+```
+
+Bulk-removes recent messages matching a phrase across all connected platforms.
+
+Arguments (all optional — omitted values fall back to `systemOptions` defaults):
+
+| Argument | Values | Notes |
+| --- | --- | --- |
+| `lookback` | Number of seconds | How far back to scan. Omit to use `defaultLookbackSeconds`. |
+| `action` | `delete` · `ban` · a number | `delete` removes the message. `ban` bans the sender. A number timeouts the sender for that many seconds. Omit to use `defaultAction`. |
+| `pattern` | Any text | The phrase to match (case-insensitive substring). Required. |
+
+Examples:
+
+```
+!nuke spam                   → delete messages containing "spam" in the last 60s (default)
+!nuke 120 delete spamword    → delete matches in the last 2 minutes
+!nuke 30 ban hater           → ban every user who said "hater" in the last 30s
+!nuke 60 30 linkspammer      → 30-second timeout for each matched sender
+```
+
+| systemOptions field | Purpose |
+| --- | --- |
+| `defaultLookbackSeconds` | Fallback look-back window when not supplied in chat. |
+| `defaultAction` | Fallback action (`delete`, `ban`, or a timeout in seconds). |
+| `resultMessage` | Chat reply after the nuke completes. `{{nuke_result}}` resolves to the count of affected messages. |
+| `invalidInput` | Reply when the pattern is missing. |
+
+`!nuke` scans **all connected platforms** simultaneously — messages from Twitch, Kick, YouTube, etc. are matched and the action is applied on whichever platform each message originated from.
+
+## !nukeusername
+
+```
+!nukeusername <user> [action]
+```
+
+Removes all recent messages from a single user across connected platforms, then optionally bans or timeouts them.
+
+| Argument | Values | Notes |
+| --- | --- | --- |
+| `user` | Username | Required. |
+| `action` | `delete` · `ban` · a number | Optional. Omit to use `defaultAction`. `delete` removes messages only (no further action on the user). |
+
+Examples:
+
+```
+!nukeusername badactor           → delete all recent messages from badactor (default action)
+!nukeusername badactor ban       → delete messages + ban
+!nukeusername badactor 60        → delete messages + 60s timeout
+```
+
+| systemOptions field | Purpose |
+| --- | --- |
+| `defaultLookbackSeconds` | How far back to scan for the user's messages. |
+| `defaultAction` | Fallback action when omitted in chat. |
+| `resultMessage` | Chat reply. `{{nuke_result}}` resolves to the count of removed messages. |
+| `invalidInput` | Reply when no username is given. |
+
+## !lockdown / !shield
+
+```
+!lockdown
+!shield
+```
+
+Enables Twitch Shield Mode on your channel. Shield Mode blocks new and risky accounts from chatting during a raid.
+
+If **Also enable followers-only chat during lockdown** is toggled on in Settings → Chat Moderation → Shield Mode, followers-only mode is also applied at the same time.
+
+- `!lockdown` and `!shield` are aliases — both trigger the same command.
+- **Twitch only.** On other platforms the command no-ops and the reply says so.
+- The current Shield Mode state is shown in Settings → Chat Moderation → Shield Mode with a live toggle (synced to Twitch on mount and on window focus).
+
+| systemOptions field | Purpose |
+| --- | --- |
+| `resultMessage` | Chat reply when lockdown is enabled. `{{lockdown_result}}` resolves to this. |
+
+## !unlock / !unshield
+
+```
+!unlock
+!unshield
+```
+
+Lifts the lockdown — turns Shield Mode (and followers-only if it was enabled) back off.
+
+- `!unlock` and `!unshield` are aliases.
+- **Twitch only.**
+
+| systemOptions field | Purpose |
+| --- | --- |
+| `resultMessage` | Chat reply when lockdown is lifted. `{{lockdown_result}}` resolves to this. |
+
+## Automatic lockdown triggers
+
+Lockdown can also be triggered automatically — without a chat command — in two ways:
+
+- **Follow-bot spike detection** — if a burst of new follows exceeds the threshold configured in Settings → Chat Moderation → Follow-Bot, lockdown engages automatically and follow alerts are suppressed for the spike window.
+- **Auto-enable after stream ends** — the slider in Settings → Chat Moderation → Shield Mode schedules lockdown N minutes after you go offline, to protect your channel while you're away.
+
+Both paths use the same `setLockdown` code path as the chat commands, so the Shield Mode state in the UI stays in sync.
+
+## User-level gating
+
+All five commands default to **moderator + broadcaster** only. You can widen or narrow this in the command editor's user-level picker the same way you would any other command. Viewers who don't meet the level requirement get a silent skip — no chat reply.
