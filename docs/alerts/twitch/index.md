@@ -7,7 +7,7 @@ description: Every alert Lumia emits for Twitch.
 
 # Twitch alerts
 
-52 alerts available. Each page documents the message template, payload fields, and example scenarios.
+53 alerts available. Each page documents the message template, payload fields, and example scenarios.
 
 | Alert | Description |
 | --- | --- |
@@ -36,6 +36,7 @@ description: Every alert Lumia emits for Twitch.
 | [Hypetrain Level Progressed](./hypetrain-level-progressed.mdx) | Hype train progressed to level `{{level}}` |
 | [Hypetrain Progressed](./hypetrain-progressed.mdx) | Hype train progressed to `{{progress}}` |
 | [Hypetrain Started](./hypetrain-started.mdx) | Hype train started |
+| [Modiversary](./modiversary.mdx) | celebrated their `{{months}}` month modiversary |
 | [Points](./points.mdx) | redeemed `{{command}}` for `{{amount}}` points |
 | [Poll Ended](./poll-ended.mdx) | Poll `{{poll_title}}` ended! The winning choice is: `{{poll_winning_title}}` with a total of `{{poll_winning_votes}}` votes |
 | [Poll Progressed](./poll-progressed.mdx) | Poll `{{poll_title}}` updated and the current leader is `{{poll_winning_title}}` |
