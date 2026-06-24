@@ -675,6 +675,28 @@ Allowed values are:
 
 When declared, Lumia routes these commands to `modCommand(type, value)` in your plugin runtime.
 
+### Heart rate source support
+
+If your plugin reads a live heart rate (BPM) — from a wearable, a Bluetooth heart-rate monitor, or a third-party API — declare it as a heart-rate source:
+
+```json
+{
+	"config": {
+		"hasHeartrate": true
+	}
+}
+```
+
+`config.hasHeartrate` is a boolean flag. When `true`, Lumia treats your plugin like the built-in HypeRate/Pulsoid integrations and shows the heart-rate **zone** Alerts UI (Pulse levels) for it instead of plain alerts.
+
+The flag is only the UI half. To feed the shared heart-rate system, call `updateHeartRate(bpm)` from your runtime whenever a new reading arrives:
+
+```js
+await this.lumia.updateHeartRate(bpm);
+```
+
+That single call drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate zone alerts, calorie tracking, and Studio heart-rate light reactions — the same pipeline the native heart-rate integrations use. See `updateHeartRate` in the [API Reference](./api-reference).
+
 Settings support the same field types as action fields, plus three settings-only structured types: `named_map` (labeled name-to-value rows), `json` (raw JSON editor), and `roi` (region-of-interest coordinates). Settings also support `disabled: true` to render a field read-only in PluginAuth.
 
 Use `named_map` instead of a freeform `textarea` when users should define multiple named entries (for example `sound name -> file`, `feed name -> URL`).

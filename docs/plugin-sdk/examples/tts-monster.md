@@ -1,5 +1,5 @@
 ---
-sidebar_position: 20
+sidebar_position: 19
 title: "TTS Monster Example"
 ---
 
@@ -17,7 +17,7 @@ Generate TTS Monster speech audio and play it through Lumia Stream.
 | Plugin ID | `tts_monster` |
 | Category | `audio` |
 | Lumia Version | `^9.0.0` |
-| Settings | 3 |
+| Settings | 5 |
 | Actions | 1 |
 | Variables | 0 |
 | Alerts | 0 |

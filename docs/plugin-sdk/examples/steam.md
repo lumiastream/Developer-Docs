@@ -1,5 +1,5 @@
 ---
-sidebar_position: 17
+sidebar_position: 16
 title: "Steam Example"
 ---
 
@@ -19,7 +19,7 @@ Track Steam profile status, current/recent games, and achievements in Lumia with
 | Lumia Version | `^9.0.0` |
 | Settings | 4 |
 | Actions | 1 |
-| Variables | 13 |
+| Variables | 15 |
 | Alerts | 5 |
 
 ## Key Files

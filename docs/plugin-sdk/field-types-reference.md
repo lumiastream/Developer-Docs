@@ -225,11 +225,6 @@ Dropdown selection from predefined options.
 - `allowVariables` - Enable template variable insertion (action fields)
 - `dynamicOptions` - Allow runtime option updates from plugin code (settings and actions)
 
-When options are provided dynamically via `lumia.updateActionFieldOptions(...)` or `lumia.updateSettingsFieldOptions(...)`, each option may also include:
-- `helperText` - Optional secondary text
-- `imageUrl` - Optional thumbnail/icon for UIs that support image rendering
-- `searchText` - Optional extra text used for autocomplete search
-
 ---
 
 #### Multi-select with `select`
@@ -791,7 +786,6 @@ Settings fields do not expose variable insertion in the UI.
 - **`min`/`max` location differs**: For action fields, use top-level `min`/`max`; for settings fields, use `validation.min`/`validation.max`. Both are accepted but the canonical location differs.
 - **`multiple: true` changes the value shape**: When `multiple` is enabled on `select`, the stored value is always an array even if one item is selected. Set `defaultValue` to an array accordingly.
 - **`dynamicOptions` requires a runtime call**: Declaring `dynamicOptions: true` on a field does nothing on its own — your plugin must call `lumia.updateActionFieldOptions(...)` or `lumia.updateSettingsFieldOptions(...)` to populate the options.
-- **Dynamic options can include images**: If your runtime provides `imageUrl` on dynamic select options, compatible Lumia UIs can render thumbnails next to each option.
 
 ## See Also
 
