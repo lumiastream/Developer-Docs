@@ -1,5 +1,8 @@
 ---
+title: Lumia Stream Developer Docs
 sidebar_position: 1
+description: Build integrations, overlays, plugins, alerts, and stream automation for Lumia Stream.
+image: /img/social/developer-docs.png
 ---
 
 # Lumia Stream Developer Docs

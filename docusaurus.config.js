@@ -37,6 +37,10 @@ const darkCodeTheme = themes.dracula;
               to: "/docs/custom-overlays/custom-overlays-documentation",
               from: ["/custom-overlays", "/docs/custom-overlays"],
             },
+            {
+              to: "/docs/mcp/setup",
+              from: ["/mcp", "/docs/mcp"],
+            },
           ],
         },
       ],
@@ -68,42 +72,13 @@ const darkCodeTheme = themes.dracula;
     themeConfig:
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
+        image: "https://storage.lumiastream.com/lumia-stream-banner-website-seo.png",
         metadata: [
-          // Twitter Card
-          { name: "twitter:card", content: "summary_large_image" },
           { name: "twitter:site", content: "@lumiastream" },
-          {
-            name: "twitter:title",
-            content: "Lumia Stream Developer Documentation",
-          },
-          {
-            name: "twitter:description",
-            content:
-              "Official developer documentation for Lumia Stream. Build powerful integrations and custom experiences with our API, WebSocket, and overlay tools.",
-          },
-          {
-            name: "twitter:image",
-            content:
-              "https://storage.lumiastream.com/lumia-stream-banner-website-seo.png",
-          },
 
           // Open Graph
           { property: "og:type", content: "website" },
-          {
-            property: "og:title",
-            content: "Lumia Stream Developer Documentation",
-          },
-          {
-            property: "og:description",
-            content:
-              "Official developer documentation for Lumia Stream. Build powerful integrations and custom experiences with our API, WebSocket, and overlay tools.",
-          },
-          {
-            property: "og:image",
-            content:
-              "https://storage.lumiastream.com/lumia-stream-banner-website-seo.png",
-          },
-          { property: "og:url", content: "https://dev.lumiastream.com" },
+          { property: "og:site_name", content: "Lumia Stream Developer Documentation" },
         ],
         navbar: {
           title: "Lumia Stream Developers",
@@ -190,6 +165,10 @@ const darkCodeTheme = themes.dracula;
                 {
                   label: "Websockets",
                   to: "/docs/websockets/clone-the-repo",
+                },
+                {
+                  label: "MCP",
+                  to: "/docs/mcp/setup",
                 },
               ],
             },

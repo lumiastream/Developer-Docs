@@ -5,7 +5,7 @@ description: Client-specific Lumia Stream MCP setup for Claude, Cursor, Codex, V
 
 # Client Setup
 
-Start with the [quickstart](./setup.md), then use the section for your client. Prefer the embedded HTTP config when your client supports Streamable HTTP MCP servers with headers. Use `npx` stdio everywhere else.
+Start with the [quickstart](./setup.mdx), then use the section for your client. Prefer the embedded HTTP config when your client supports Streamable HTTP MCP servers with headers. Use `npx` stdio everywhere else.
 
 ## Claude Desktop
 

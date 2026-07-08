@@ -1,6 +1,9 @@
 ---
-title: Overview
+title: Plugin SDK
+sidebar_label: Overview
 sidebar_position: 1
+description: Build Lumia Stream marketplace plugins with manifests, settings, actions, events, overlays, TTS, lights, and integrations.
+image: /img/social/plugin-sdk.png
 ---
 
 # Lumia Stream Plugin SDK

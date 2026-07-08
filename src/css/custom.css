@@ -36,3 +36,11 @@ html[data-mode='embed'] .navbar,
 html[data-mode='embed'] .footer {
 	display: none;
 }
+
+.social-preview-image {
+	border: 1px solid var(--ifm-color-emphasis-200);
+	border-radius: 8px;
+	display: block;
+	margin: 1.25rem 0 1.75rem;
+	width: 100%;
+}
