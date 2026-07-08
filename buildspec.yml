@@ -1,4 +1,7 @@
 version: 0.2
+env:
+  parameter-store:
+    GITHUB_TOKEN: /lumia/npm/github-packages-token
 phases:
   install:
     runtime-versions:
