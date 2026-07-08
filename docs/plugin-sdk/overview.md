@@ -68,28 +68,28 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 
 ## Lifecycle Hooks
 
-- `onload()` – invoked when the plugin is enabled inside Lumia Stream.
-- `onunload()` – called when your plugin is disabled or unloaded.
-- `onupdate(oldVersion, newVersion)` – triggered after version upgrades.
-- `onsettingsupdate(settings, previousSettings)` – called whenever settings change.
-- `actions(config)` – handle custom actions invoked from Lumia automations.  
+- `onload()`: invoked when the plugin is enabled inside Lumia Stream.
+- `onunload()`: called when your plugin is disabled or unloaded.
+- `onupdate(oldVersion, newVersion)`: triggered after version upgrades.
+- `onsettingsupdate(settings, previousSettings)`: called whenever settings change.
+- `actions(config)`: handle custom actions invoked from Lumia automations.  
   **Note:** action parameters are provided via `action.value`. Use `const params = action.value;`.  
   Optionally return `{ newlyPassedVariables, shouldStop }` to pass variables (any value type) to subsequent actions or stop the current action chain.
-- `aiPrompt(config)` – optional AI prompt handler used when `config.hasAI` is enabled in your manifest.
-- `aiModels(config?)` – optional AI model provider used by Lumia model pickers when `config.hasAI` is enabled.
-- `chatbot(config)` – optional native chatbot handler used when `config.hasChatbot` is enabled in your manifest.
-- `modCommand(type, value)` – optional moderation handler used when `config.modcommandOptions` is declared in your manifest.
-- `searchLights(config)` – optional hook for lights plugins to return discoverable devices in the auth UI.
-- `addLight(config)` – optional hook for manual light add flows; return the updated light list.
-- `removeLight(config)` – optional hook for manual light removal flows; return the updated light list.
-- `searchPlugs(config)` – optional hook for plug/accessory plugins to return discoverable plugs in the auth UI.
-- `addPlug(config)` – optional hook for manual plug add flows; return the updated plug list.
-- `removePlug(config)` – optional hook for manual plug removal flows; return the updated plug list.
-- `searchThemes(config)` – optional hook for lights plugins to return Studio theme options (array or `{ scenes|effects|presets }` object).
-- `onLightChange(config)` – optional runtime hook for light updates and Studio theme executions (`config.rawConfig.theme` when invoked from themes).
-- `onPlugChange(config)` – optional runtime hook for plug state updates (`config` includes `brand`, `devices`, `state`, `rawConfig`).
-- `onCustomAuthDisplaySignal(config)` – optional hook to handle signals sent from `config.custom_auth_display` UI.
-- `onCustomAuthDisplayClose(config)` – optional hook called whenever the custom auth modal closes (button, backdrop, escape, or signal close).
+- `aiPrompt(config)`: optional AI prompt handler used when `config.hasAI` is enabled in your manifest.
+- `aiModels(config?)`: optional AI model provider used by Lumia model pickers when `config.hasAI` is enabled.
+- `chatbot(config)`: optional native chatbot handler used when `config.hasChatbot` is enabled in your manifest.
+- `modCommand(type, value)`: optional moderation handler used when `config.modcommandOptions` is declared in your manifest.
+- `searchLights(config)`: optional hook for lights plugins to return discoverable devices in the auth UI.
+- `addLight(config)`: optional hook for manual light add flows; return the updated light list.
+- `removeLight(config)`: optional hook for manual light removal flows; return the updated light list.
+- `searchPlugs(config)`: optional hook for plug/accessory plugins to return discoverable plugs in the auth UI.
+- `addPlug(config)`: optional hook for manual plug add flows; return the updated plug list.
+- `removePlug(config)`: optional hook for manual plug removal flows; return the updated plug list.
+- `searchThemes(config)`: optional hook for lights plugins to return Studio theme options (array or `{ scenes|effects|presets }` object).
+- `onLightChange(config)`: optional runtime hook for light updates and Studio theme executions (`config.rawConfig.theme` when invoked from themes).
+- `onPlugChange(config)`: optional runtime hook for plug state updates (`config` includes `brand`, `devices`, `state`, `rawConfig`).
+- `onCustomAuthDisplaySignal(config)`: optional hook to handle signals sent from `config.custom_auth_display` UI.
+- `onCustomAuthDisplayClose(config)`: optional hook called whenever the custom auth modal closes (button, backdrop, escape, or signal close).
 
 For networked plugins, add an explicit disconnect flow, use capped retry backoff, and set connection state to disconnected when retry limits are reached so polling does not run forever.
 
@@ -257,13 +257,13 @@ Plugins execute in an isolated **Node.js** process (no browser DOM). Use Node-co
 
 ## Scripts
 
-- `npm run build` – compile the SDK to the `dist` folder.
-- `npm run lint` – type-check the source without emitting output.
-- `npm run package-docs` – rebuild the GPT knowledge pack in `gpt-knowledge/lumia-plugin-sdk-docs`.
-- `npm run sync:developer-docs` – sync core SDK docs and generated example pages into `../Developer-Docs/docs/plugin-sdk` (no manual copy/paste).
-- `npm run sync:skills` – refresh Codex skill docs snapshot, Claude skill docs snapshot, and Cursor rules together.
-- `npm run validate:skills` – validate Codex skill + Claude skill + Copilot instructions + Gemini instructions + Cursor rule version alignment.
-- `npm run update:skills -- --target <plugin-path>` – pull latest skill files (Claude/Copilot/Gemini/Cursor, optional Codex) from `main`.
+- `npm run build`: compile the SDK to the `dist` folder.
+- `npm run lint`: type-check the source without emitting output.
+- `npm run package-docs`: rebuild the GPT knowledge pack in `gpt-knowledge/lumia-plugin-sdk-docs`.
+- `npm run sync:developer-docs`: sync core SDK docs and generated example pages into `../Developer-Docs/docs/plugin-sdk` (no manual copy/paste).
+- `npm run sync:skills`: refresh Codex skill docs snapshot, Claude skill docs snapshot, and Cursor rules together.
+- `npm run validate:skills`: validate Codex skill + Claude skill + Copilot instructions + Gemini instructions + Cursor rule version alignment.
+- `npm run update:skills -- --target <plugin-path>`: pull latest skill files (Claude/Copilot/Gemini/Cursor, optional Codex) from `main`.
 
 ## CLI Helpers
 
@@ -363,18 +363,18 @@ npx lumia-plugin skills codex --codex-home "$CODEX_HOME"
 
 ## Examples
 
-- `examples/base_plugin` – Showcase JavaScript template used by `npx lumia-plugin create`.
-- `examples/divoom_pixoo` – Device plugin that sends text, GIFs, drawings, and controls to Divoom Pixoo displays.
-- `examples/elevenlabs_tts` – Audio plugin that generates ElevenLabs speech/music and plays it through Lumia.
-- `examples/eveonline` – EVE Online integration that syncs character status, wallet, location, and activity from ESI.
-- `examples/minecraft_server` – Game plugin that monitors Minecraft Java server status/player changes.
-- `examples/ntfy` – App plugin that subscribes to ntfy topics and triggers Lumia alerts/variables.
-- `examples/ollama` – App plugin that queries a local Ollama server and exposes prompt helpers for templates.
-- `examples/openrgb` – Lights plugin that controls OpenRGB devices and profile actions from Lumia.
-- `examples/rumble` – Platforms plugin that tracks Rumble livestream state, engagement, and chat metadata.
-- `examples/sound_trigger_alert` – Sound Trigger Alert example that matches a user-uploaded reference sound against live capture and triggers Lumia alerts.
-- `examples/settings_field_showcase` – Reference plugin demonstrating all supported settings field types.
-- `examples/steam` – Steam integration that tracks profile status, games, and achievements with optional alerts/actions.
+- `examples/base_plugin`: Showcase JavaScript template used by `npx lumia-plugin create`.
+- `examples/divoom_pixoo`: Device plugin that sends text, GIFs, drawings, and controls to Divoom Pixoo displays.
+- `examples/elevenlabs_tts`: Audio plugin that generates ElevenLabs speech/music and plays it through Lumia.
+- `examples/eveonline`: EVE Online integration that syncs character status, wallet, location, and activity from ESI.
+- `examples/minecraft_server`: Game plugin that monitors Minecraft Java server status/player changes.
+- `examples/ntfy`: App plugin that subscribes to ntfy topics and triggers Lumia alerts/variables.
+- `examples/ollama`: App plugin that queries a local Ollama server and exposes prompt helpers for templates.
+- `examples/openrgb`: Lights plugin that controls OpenRGB devices and profile actions from Lumia.
+- `examples/rumble`: Platforms plugin that tracks Rumble livestream state, engagement, and chat metadata.
+- `examples/sound_trigger_alert`: Sound Trigger Alert example that matches a user-uploaded reference sound against live capture and triggers Lumia alerts.
+- `examples/settings_field_showcase`: Reference plugin demonstrating all supported settings field types.
+- `examples/steam`: Steam integration that tracks profile status, games, and achievements with optional alerts/actions.
 
 ## License
 

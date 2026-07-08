@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const lunr = require("lunr");
 const { AllVariables, LumiaAlertConfigs } = require("@lumiastream/lumia-types");
-const enTrans = require("@lumiastream/lumia-translations/src/translations/en.translations.json");
+const enTrans = require("@lumiapriv/lumia-translations/src/translations/en.translations.json");
 
 const SOURCE = "variables-alerts-index";
 const VARIABLES_DOC_URL = "/docs/display-variables";

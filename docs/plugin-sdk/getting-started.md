@@ -12,7 +12,7 @@ This guide walks you through creating your first Lumia Stream plugin from scratc
 - Basic understanding of JavaScript
 - The Lumia Stream desktop app for local testing
 
-> **Runtime constraint:** Lumia plugins run in a Node.js process, not a browser. Avoid browser globals (`window`, `document`, `localStorage`, `XMLHttpRequest`) and browser-only packages — see [What Does Not Work](#what-does-not-work-browser-apis) below for details.
+> **Runtime constraint:** Lumia plugins run in a Node.js process, not a browser. Avoid browser globals (`window`, `document`, `localStorage`, `XMLHttpRequest`) and browser-only packages; see [What Does Not Work](#what-does-not-work-browser-apis) below for details.
 
 ## SDK CLI Helpers
 

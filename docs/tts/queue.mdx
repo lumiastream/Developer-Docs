@@ -15,11 +15,11 @@ The queue is in-memory and resets when Lumia restarts. Messages already playing 
 
 ## Queue lanes
 
-Lumia supports multiple independent queue lanes: `main`, `lane-1` through `lane-9`. Each lane has its own playback position — messages in `lane-1` don't wait for `main` to finish.
+Lumia supports multiple independent queue lanes: `main`, `lane-1` through `lane-9`. Each lane has its own playback position; messages in `lane-1` don't wait for `main` to finish.
 
 This is useful for separating alert TTS from chatbot TTS, or giving high-priority messages their own lane that isn't blocked by a backlog.
 
-Configure the lane on the command or alert's default settings tab in the UI (the `queueLane` field). Lane assignment is per-command — you can't override the lane from the REST API on a per-call basis, only at command-configuration time.
+Configure the lane on the command or alert's default settings tab in the UI (the `queueLane` field). Lane assignment is per-command; you can't override the lane from the REST API on a per-call basis, only at command-configuration time.
 
 ## Skipping the queue
 
@@ -47,7 +47,7 @@ Set a **Delay** (milliseconds) on the TTS tab to wait before the message enters 
 | `{{set_sfx_muted=true}}` | Pauses TTS, HFX audio, and AudioManager. Use in any template, action, custom JS, or bind it to your own chatbot command. |
 | `{{set_sfx_muted=false}}` | Resumes the above. |
 
-Global mute does not clear the queue — messages queued while muted play when muting is lifted.
+Global mute does not clear the queue; messages queued while muted play when muting is lifted.
 
 ## Output device
 
@@ -61,6 +61,6 @@ The current device is at `data.options.tts.values.currentDevice`. Available devi
 
 ## Volume
 
-Volume is a 0–100 integer passed in any TTS call. On **Windows** it controls the audio output level directly. On **macOS** the volume parameter is ignored — use the system volume instead.
+Volume is a 0–100 integer passed in any TTS call. On **Windows** it controls the audio output level directly. On **macOS** the volume parameter is ignored; use the system volume instead.
 
 Per-call volume takes precedence over the command-level default. The command-level default takes precedence over the global TTS volume setting.

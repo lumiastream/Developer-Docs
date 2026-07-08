@@ -2,12 +2,12 @@
 sidebar_position: 5
 id: chat-moderation
 title: Chat moderation commands
-description: The five built-in moderation commands — !permit, !nuke, !nukeusername, !lockdown, and !unlock — their syntax, options, and how to customise them.
+description: The five built-in moderation commands (!permit, !nuke, !nukeusername, !lockdown, and !unlock) their syntax, options, and how to customise them.
 ---
 
 # Chat moderation commands
 
-Lumia ships five moderation commands as defaults. All are restricted to **moderator** and **broadcaster** roles by default. Each is a full chatbot command — you can rename it, change the user-level gating, adjust cooldowns, and edit the response message in Chatbot Commands. Behaviour is driven by the `systemType` and is tunable via the command's **Options** tab (`systemOptions`).
+Lumia ships five moderation commands as defaults. All are restricted to **moderator** and **broadcaster** roles by default. Each is a full chatbot command; you can rename it, change the user-level gating, adjust cooldowns, and edit the response message in Chatbot Commands. Behaviour is driven by the `systemType` and is tunable via the command's **Options** tab (`systemOptions`).
 
 ## !permit
 
@@ -38,7 +38,7 @@ The chatbot reply template defaults to `{{permit_result}}`, which resolves to `p
 
 Bulk-removes recent messages matching a phrase across all connected platforms.
 
-Arguments (all optional — omitted values fall back to `systemOptions` defaults):
+Arguments (all optional; omitted values fall back to `systemOptions` defaults):
 
 | Argument | Values | Notes |
 | --- | --- | --- |
@@ -62,7 +62,7 @@ Examples:
 | `resultMessage` | Chat reply after the nuke completes. `{{nuke_result}}` resolves to the count of affected messages. |
 | `invalidInput` | Reply when the pattern is missing. |
 
-`!nuke` scans **all connected platforms** simultaneously — messages from Twitch, Kick, YouTube, etc. are matched and the action is applied on whichever platform each message originated from.
+`!nuke` scans **all connected platforms** simultaneously; messages from Twitch, Kick, YouTube, etc. are matched and the action is applied on whichever platform each message originated from.
 
 ## !nukeusername
 
@@ -103,7 +103,7 @@ Enables Twitch Shield Mode on your channel. Shield Mode blocks new and risky acc
 
 If **Also enable followers-only chat during lockdown** is toggled on in Settings → Chat Moderation → Shield Mode, followers-only mode is also applied at the same time.
 
-- `!lockdown` and `!shield` are aliases — both trigger the same command.
+- `!lockdown` and `!shield` are aliases; both trigger the same command.
 - **Twitch only.** On other platforms the command no-ops and the reply says so.
 - The current Shield Mode state is shown in Settings → Chat Moderation → Shield Mode with a live toggle (synced to Twitch on mount and on window focus).
 
@@ -118,7 +118,7 @@ If **Also enable followers-only chat during lockdown** is toggled on in Settings
 !unshield
 ```
 
-Lifts the lockdown — turns Shield Mode (and followers-only if it was enabled) back off.
+Lifts the lockdown: turns Shield Mode (and followers-only if it was enabled) back off.
 
 - `!unlock` and `!unshield` are aliases.
 - **Twitch only.**
@@ -129,13 +129,13 @@ Lifts the lockdown — turns Shield Mode (and followers-only if it was enabled) 
 
 ## Automatic lockdown triggers
 
-Lockdown can also be triggered automatically — without a chat command — in two ways:
+Lockdown can also be triggered automatically, without a chat command, in two ways:
 
-- **Follow-bot spike detection** — if a burst of new follows exceeds the threshold configured in Settings → Chat Moderation → Follow-Bot, lockdown engages automatically and follow alerts are suppressed for the spike window.
-- **Auto-enable after stream ends** — the slider in Settings → Chat Moderation → Shield Mode schedules lockdown N minutes after you go offline, to protect your channel while you're away.
+- **Follow-bot spike detection**: if a burst of new follows exceeds the threshold configured in Settings → Chat Moderation → Follow-Bot, lockdown engages automatically and follow alerts are suppressed for the spike window.
+- **Auto-enable after stream ends**: the slider in Settings → Chat Moderation → Shield Mode schedules lockdown N minutes after you go offline, to protect your channel while you're away.
 
 Both paths use the same `setLockdown` code path as the chat commands, so the Shield Mode state in the UI stays in sync.
 
 ## User-level gating
 
-All five commands default to **moderator + broadcaster** only. You can widen or narrow this in the command editor's user-level picker the same way you would any other command. Viewers who don't meet the level requirement get a silent skip — no chat reply.
+All five commands default to **moderator + broadcaster** only. You can widen or narrow this in the command editor's user-level picker the same way you would any other command. Viewers who don't meet the level requirement get a silent skip, no chat reply.

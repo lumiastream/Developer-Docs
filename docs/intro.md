@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Lumia Stream Developer Docs
 
-Lumia Stream is a streaming automation platform that connects lights, devices, streaming platforms, games, and tools into a single control surface. These docs cover every surface that's open to developers — from a simple REST call to a full marketplace plugin.
+Lumia Stream is a streaming automation platform that connects lights, devices, streaming platforms, games, and tools into a single control surface. These docs cover every surface that's open to developers, from a simple REST call to a full marketplace plugin.
 
 ## What you can build
 
@@ -15,7 +15,7 @@ The [REST API](/docs/rest/clone-the-repo) is the fastest way to control Lumia fr
 - Fire any Lumia command by name
 - Push a light color with exact duration, brightness, and transition
 - Trigger any alert (follow, sub, donation, raid, etc.)
-- [Send a TTS message](/docs/tts/triggering) — choose a voice, set volume, and fire from any surface
+- [Send a TTS message](/docs/tts/triggering): choose a voice, set volume, and fire from any surface
 - Start or stop stream mode
 - Update template variables
 - Manage loyalty points
@@ -29,7 +29,7 @@ The [WebSocket API](/docs/websockets/clone-the-repo) streams every event Lumia r
 
 - Chat messages from Twitch, YouTube, Kick, Facebook, TikTok
 - Chat commands and channel point redeems
-- All alert events — follows, subs, donations, cheers, raids, hosts, superchats, charity donations, gift subs, and more
+- All alert events: follows, subs, donations, cheers, raids, hosts, superchats, charity donations, gift subs, and more
 - Stream live / offline transitions
 - Custom events your own integrations emit
 
@@ -41,18 +41,18 @@ This is the right surface when you want to build your own alert system, sync ext
 
 ```js
 Overlay.on('alert', (data) => {
-  // data.alert    — alert name, e.g. "twitch-subscriber"
-  // data.extraSettings — the full payload for that alert
+  // data.alert: alert name, e.g. "twitch-subscriber"
+  // data.extraSettings: the full payload for that alert
 })
 ```
 
 Every alert has a documented payload shape in the [Alert Explorer](/docs/alerts/alert-explorer) and the [Alerts](/docs/alerts) reference. Overlays also subscribe to display variables, so labels like "latest sub", "top tipper", and "stream uptime" update automatically without any polling.
 
-Overlays can be wired to chatbot commands via [chat triggers](/docs/overlays/chat-triggers) — viewers type `!kappagen` in chat and your overlay fires an emote burst, no chatbot command configuration needed.
+Overlays can be wired to chatbot commands via [chat triggers](/docs/overlays/chat-triggers); viewers type `!kappagen` in chat and your overlay fires an emote burst, no chatbot command configuration needed.
 
 ### Write custom logic with JavaScript actions
 
-[Custom JavaScript](/docs/custom-code/what-is-custom-javascript) runs inside Lumia actions — the same action pipeline that fires lights, alerts, TTS, and OBS. You get a sandboxed Node.js-like environment with access to Lumia's helper API:
+[Custom JavaScript](/docs/custom-code/what-is-custom-javascript) runs inside Lumia actions, the same action pipeline that fires lights, alerts, TTS, and OBS. You get a sandboxed Node.js-like environment with access to Lumia's helper API:
 
 ```js
 // Read and write template variables
@@ -74,12 +74,12 @@ Custom JS is the right tool when you need branching logic, external API calls, o
 
 ### Use the template variable system
 
-[Variables](/docs/variables) are the connective tissue of Lumia. Any text field — chatbot messages, alert text, TTS, overlay labels, goal targets — accepts `{{variable}}` placeholders that resolve to live values at render time.
+[Variables](/docs/variables) are the connective tissue of Lumia. Any text field (chatbot messages, alert text, TTS, overlay labels, goal targets) accepts `{{variable}}` placeholders that resolve to live values at render time.
 
 There are two kinds:
 
-- **Display variables** — read live state: `{{total_follower_count}}`, `{{twitch_current_viewer_count}}`, `{{latest_subscriber}}`, `{{spotify_current_song}}`, and [hundreds more](/docs/display-variables).
-- **Variable functions** — callable helpers: `{{random=1-100}}`, `{{counter=deaths,+1}}`, `{{read_url=https://api.example.com}}`, `{{math={{counter=deaths}}*2}}`, [and many more](/docs/variable-functions).
+- **Display variables**: read live state: `{{total_follower_count}}`, `{{twitch_current_viewer_count}}`, `{{latest_subscriber}}`, `{{spotify_current_song}}`, and [hundreds more](/docs/display-variables).
+- **Variable functions**: callable helpers: `{{random=1-100}}`, `{{counter=deaths,+1}}`, `{{read_url=https://api.example.com}}`, `{{math={{counter=deaths}}*2}}`, [and many more](/docs/variable-functions).
 
 Variables work in chatbot responses, TTS, alert text, overlay labels, goals, and custom JavaScript templates.
 
@@ -122,7 +122,7 @@ npx lumia-plugin build ./my_plugin --out ./my_plugin.lumiaplugin
 
 ### Chatbot commands
 
-Lumia ships [44 default chatbot commands](/docs/chatbot/default-commands) out of the box — `!so`, `!roulette`, `!duel`, `!points`, `!songrequest`, and more. You can add, edit, and delete commands from chat using [mod management](/docs/chatbot/mod-management) (`!addcom`, `!editcom`, `!delcom`), or programmatically from any template using variable functions:
+Lumia ships [44 default chatbot commands](/docs/chatbot/default-commands) out of the box: `!so`, `!roulette`, `!duel`, `!points`, `!songrequest`, and more. You can add, edit, and delete commands from chat using [mod management](/docs/chatbot/mod-management) (`!addcom`, `!editcom`, `!delcom`), or programmatically from any template using variable functions:
 
 ```text
 {{add_chatbot_command=mycommand,Hello from a variable function!}}
@@ -136,8 +136,12 @@ Every command response is a template string with full variable and function supp
 | --- | --- |
 | REST API (HTTP) | `39231` |
 | REST API (HTTPS) | `39232` |
-| WebSocket / Overlays (HTTP) | `39222` |
-| WebSocket / Overlays (HTTPS) | `39223` |
+| WebSocket API (`ws://`) | `39231` |
+| WebSocket API (`wss://`) | `39232` |
+| Overlays / Decks web server (HTTP) | `39222` |
+| Overlays / Decks web server (HTTPS) | `39223` |
+
+The WebSocket API shares the REST ports; connect to `ws://127.0.0.1:39231/api?token=your_token` (see [Listen to events](/docs/websockets/listen-to-events)). Ports `39222`/`39223` serve Lumia's built-in overlay browser sources and deck web interface, not the developer API.
 
 All REST and WebSocket connections authenticate with a token. Generate yours in Lumia Stream → Settings → API, or follow the [Get a token](/docs/get-a-token) guide.
 

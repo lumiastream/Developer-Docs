@@ -31,7 +31,7 @@ The `manifest.json` file is the heart of your Lumia Stream plugin. It defines me
 
 ### Basic Information
 
-- **`id`** (string): Unique identifier for your plugin. Use letters, numbers, or underscores—no spaces or hyphens.
+- **`id`** (string): Unique identifier for your plugin. Use letters, numbers, or underscores, no spaces or hyphens.
 - **`name`** (string): Human-readable plugin name.
 - **`version`** (string): Semantic version (e.g., "1.0.0").
 - **`author`** (string): Plugin author name.
@@ -87,24 +87,24 @@ Each ID must reference a public + approved marketplace overlay.
 
 The Lumia marketplace recognises the following categories (strings are case-sensitive):
 
-- **`system`** – Core Lumia features and internal tooling
-- **`platforms`** – Streaming platform integrations (Twitch, YouTube, Kick, etc.)
-- **`apps`** – Third-party app integrations
-- **`lights`** – General lighting control providers
-- **`switch`** – Smart switch and relay integrations
-- **`deck`** – Control deck hardware and software
-- **`protocols`** – Network or automation protocols (OSC, MIDI, etc.)
-- **`keylight`** – Key light devices
-- **`devices`** – Miscellaneous hardware integrations
-- **`utilities`** – General purpose utilities and helpers
-- **`overlays`** – Overlay and visual experiences
-- **`audio`** – Audio processing and sound integrations
-- **`chat`** – Chat interaction tools
-- **`development`** – Development, testing, and debugging utilities
+- **`system`**: Core Lumia features and internal tooling
+- **`platforms`**: Streaming platform integrations (Twitch, YouTube, Kick, etc.)
+- **`apps`**: Third-party app integrations
+- **`lights`**: General lighting control providers
+- **`switch`**: Smart switch and relay integrations
+- **`deck`**: Control deck hardware and software
+- **`protocols`**: Network or automation protocols (OSC, MIDI, etc.)
+- **`keylight`**: Key light devices
+- **`devices`**: Miscellaneous hardware integrations
+- **`utilities`**: General purpose utilities and helpers
+- **`overlays`**: Overlay and visual experiences
+- **`audio`**: Audio processing and sound integrations
+- **`chat`**: Chat interaction tools
+- **`development`**: Development, testing, and debugging utilities
 
 ### Lights configuration (for lights category)
 
-If your plugin provides lights, add a `config.lights` block so the PluginAuth UI can render discovery/manual-add controls and a selection list. Lights are saved by the Lumia UI—plugins should not mutate light state directly.
+If your plugin provides lights, add a `config.lights` block so the PluginAuth UI can render discovery/manual-add controls and a selection list. Lights are saved by the Lumia UI; plugins should not mutate light state directly.
 
 ```json
 {
@@ -677,7 +677,7 @@ When declared, Lumia routes these commands to `modCommand(type, value)` in your 
 
 ### Heart rate source support
 
-If your plugin reads a live heart rate (BPM) — from a wearable, a Bluetooth heart-rate monitor, or a third-party API — declare it as a heart-rate source:
+If your plugin reads a live heart rate (BPM), from a wearable, a Bluetooth heart-rate monitor, or a third-party API, declare it as a heart-rate source:
 
 ```json
 {
@@ -695,7 +695,7 @@ The flag is only the UI half. To feed the shared heart-rate system, call `update
 await this.lumia.updateHeartRate(bpm);
 ```
 
-That single call drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate zone alerts, calorie tracking, and Studio heart-rate light reactions — the same pipeline the native heart-rate integrations use. See `updateHeartRate` in the [API Reference](./api-reference).
+That single call drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate zone alerts, calorie tracking, and Studio heart-rate light reactions, the same pipeline the native heart-rate integrations use. See `updateHeartRate` in the [API Reference](./api-reference).
 
 Settings support the same field types as action fields, plus three settings-only structured types: `named_map` (labeled name-to-value rows), `json` (raw JSON editor), and `roi` (region-of-interest coordinates). Settings also support `disabled: true` to render a field read-only in PluginAuth.
 
@@ -812,7 +812,7 @@ Action fields support: `text`, `datetime`, `email`, `url`, `number`, `textarea`,
 
 Key action-field behaviors:
 
-- Set `allowVariables: true` to enable `{{variable}}` insertion on a field. When omitted, variables are disabled — including on `select` fields with `allowTyping`.
+- Set `allowVariables: true` to enable `{{variable}}` insertion on a field. When omitted, variables are disabled, including on `select` fields with `allowTyping`.
 - Set `allowTyping: true` on `select` to allow custom typed values alongside dropdown options.
 - Set `multiple: true` on `select` to allow multi-value selection (value becomes an array).
 - `allowTyping` and `multiple` can be combined on the same `select` field.
@@ -897,13 +897,13 @@ Optional alert defaults can be provided under `defaults` to control how Lumia in
 
 Use `variationConditions` when an alert can fire with multiple sub-types (for example, different tiers of a subscription or thresholds of a donation) and you want creators to configure each variation independently.
 
-- **`type`** – One of the condition identifiers exposed by `LumiaVariationConditions` (see `lumia-types/src/alert.types.ts:6`). Examples: `EQUAL_SELECTION`, `GIFT_SUB_EQUAL`, `GREATER_NUMBER`, `RANDOM`.
-- **`description`** _(optional)_ – Helper text shown in the Lumia UI.
-- **`dynamicOptions`** _(optional, `EQUAL_SELECTION` only)_ – When `true`, Lumia shows dropdown suggestions but also allows typed custom values.
-- **`selections`** _(optional)_ – Only used with `EQUAL_SELECTION`; supplies the dropdown values the creator can pick from.
-  - **`label`** – How the option appears in the Lumia UI.
-  - **`value`** – The literal tier/value you expect to receive at runtime (compared against `dynamic.value`).
-  - **`message`** _(optional)_ – Override for `defaultMessage` when this variation is active.
+- **`type`**: One of the condition identifiers exposed by `LumiaVariationConditions` (see `lumia-types/src/alert.types.ts:6`). Examples: `EQUAL_SELECTION`, `GIFT_SUB_EQUAL`, `GREATER_NUMBER`, `RANDOM`.
+- **`description`** _(optional)_: Helper text shown in the Lumia UI.
+- **`dynamicOptions`** _(optional, `EQUAL_SELECTION` only)_: When `true`, Lumia shows dropdown suggestions but also allows typed custom values.
+- **`selections`** _(optional)_: Only used with `EQUAL_SELECTION`; supplies the dropdown values the creator can pick from.
+  - **`label`**: How the option appears in the Lumia UI.
+  - **`value`**: The literal tier/value you expect to receive at runtime (compared against `dynamic.value`).
+  - **`message`** _(optional)_: Override for `defaultMessage` when this variation is active.
 
 Example manifest entry with variations:
 
@@ -972,12 +972,12 @@ If you need multiple variation comparisons, trigger separate alerts with the app
 
 Use variation generation when Lumia should build many alert variations from plugin-managed data instead of having the creator add them one by one.
 
-- **`variationGeneration`** _(optional)_ – Configures the modal shown before generation runs.
-  - **`title`** _(optional)_ – Modal title.
-  - **`description`** _(optional)_ – Helper text shown above the form.
-  - **`buttonLabel`** _(optional)_ – Label used for the alert-page button.
-  - **`generateLabel`** _(optional)_ – Label used for the modal submit button.
-  - **`fields`** _(optional)_ – Uses the same `PluginFormField[]` schema as other plugin forms, so you can declare checkboxes, inputs, selects, sliders, and other supported field types.
+- **`variationGeneration`** _(optional)_: Configures the modal shown before generation runs.
+  - **`title`** _(optional)_: Modal title.
+  - **`description`** _(optional)_: Helper text shown above the form.
+  - **`buttonLabel`** _(optional)_: Label used for the alert-page button.
+  - **`generateLabel`** _(optional)_: Label used for the modal submit button.
+  - **`fields`** _(optional)_: Uses the same `PluginFormField[]` schema as other plugin forms, so you can declare checkboxes, inputs, selects, sliders, and other supported field types.
 
 Example manifest entry:
 

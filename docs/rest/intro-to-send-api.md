@@ -67,4 +67,23 @@ The valid types for using the send api:
 - overlay-set-layer-position
 - overlay-set-content
 
+---
+
+## Errors
+
+On up-to-date versions of Lumia, requests that can be rejected upfront return a structured JSON error you can branch on:
+
+```json
+{
+	"status": 404,
+	"code": "not_found",
+	"message": "No chat-command named \"blu\" exists. Call GET /api/retrieve to list valid values."
+}
+```
+
+- `unknown_type` (400) — the `type` isn't a valid Send API type.
+- `not_found` (404) — the named command, scene, theme, or animation doesn't exist in this user's setup. Checked before anything is queued, so a bad name never runs.
+
+Other failures keep their existing plain-text messages with a 400 status. Older versions of Lumia return `{ "message": true, "status": 200 }` even for names that don't exist, so don't rely on these errors when supporting old installs — check the [meta endpoint](./get-settings.md#api-capabilities) for the `name-validation` feature.
+
 Check next how to use each type and what are the required values to be sent

@@ -7,11 +7,11 @@ description: System voices, Lumia cloud voices, marketplace voices, and plugin-p
 
 # Voices
 
-Lumia supports four voice sources. They can be mixed freely — a follow alert uses Brian, a sub alert uses a marketplace voice, and a chatbot command uses a system voice.
+Lumia supports four voice sources. They can be mixed freely; a follow alert uses Brian, a sub alert uses a marketplace voice, and a chatbot command uses a system voice.
 
 ## System voices
 
-The OS speech synthesizer — macOS has Siri voices, Windows has Narrator voices. System voices are always available with no network call. Quality varies by OS and installed language packs.
+The OS speech synthesizer: macOS has Siri voices, Windows has Narrator voices. System voices are always available with no network call. Quality varies by OS and installed language packs.
 
 Voice `id` and `label` values come from your machine. Retrieve the full list at runtime via the [Get Settings](/docs/rest/get-settings) endpoint:
 
@@ -33,7 +33,7 @@ Pass the `id` or `label` as the `voice` field in any TTS call.
 
 ## Lumia cloud voices
 
-Lumia's hosted voice set — powered by Amazon Polly — gives you high-quality voices without any third-party account. Available to all Lumia users.
+Lumia's hosted voice set, powered by Amazon Polly, gives you high-quality voices without any third-party account. Available to all Lumia users.
 
 Well-known cloud voices:
 
@@ -67,7 +67,7 @@ Plugin voices bypass the standard TTS pipeline entirely. The plugin:
 3. Receives audio bytes back.
 4. Calls `this.lumia.playAudio()` to play them through Lumia.
 
-Installing a plugin like ElevenLabs TTS or TTS Monster makes its voices available in the Lumia voice picker for every command and alert. No code change needed — configure the API key in the plugin settings, pick the voice.
+Installing a plugin like ElevenLabs TTS or TTS Monster makes its voices available in the Lumia voice picker for every command and alert. No code change needed: configure the API key in the plugin settings, pick the voice.
 
 See the example plugins:
 - [ElevenLabs TTS](/docs/plugin-sdk/examples/elevenlabs-tts)

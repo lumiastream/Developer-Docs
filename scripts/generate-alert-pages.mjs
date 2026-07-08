@@ -10,7 +10,7 @@ const alertsDir = resolve(projectRoot, 'docs/alerts');
 const lumiaTypesEntry = resolve(projectRoot, 'node_modules/@lumiastream/lumia-types/dist/esm/index.js');
 const { LumiaAlertConfigs } = await import(pathToFileURL(lumiaTypesEntry).href);
 
-const enTransPath = resolve(projectRoot, 'node_modules/@lumiastream/lumia-translations/src/translations/en.translations.json');
+const enTransPath = resolve(projectRoot, 'node_modules/@lumiapriv/lumia-translations/src/translations/en.translations.json');
 const enTrans = JSON.parse(readFileSync(enTransPath, 'utf8'));
 
 const PLATFORM_LABELS = {

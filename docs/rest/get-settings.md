@@ -218,4 +218,45 @@ An example response would look like this:
 
 As you can see the reponse list contains a lot of informaion because, and the main reason is because every user will have a different setup adn you should never rely on a command existing in one place every time.
 
+---
+
+## Slim mode
+
+The full response includes complete overlay configurations, which can run to megabytes on setups with many overlays. If you only need the command/alert/scene/light lists, add `slim=true`:
+
+```
+GET http://localhost:39231/api/retrieve?token=your_token&slim=true
+```
+
+Slim mode replaces `options.overlays`, `options.overlayLayers`, `options.overlayAssets`, and `options.indistinctLayers` with `{ "count": n }` objects and leaves everything else unchanged. Over the Websocket, send `{ "retrieve": true, "slim": true }` for the same effect.
+
+:::tip
+
+Slim mode requires an up-to-date Lumia Stream. On older versions the parameter is ignored and the full payload is returned, so it degrades safely.
+
+:::
+
+---
+
+## API capabilities
+
+To find out what the connected Lumia Stream supports, call the meta endpoint:
+
+```
+GET http://localhost:39231/api/meta?token=your_token
+```
+
+```json
+{
+	"status": 200,
+	"name": "lumia-stream",
+	"version": "9.1.0",
+	"apiVersion": 2,
+	"startedAt": 1783487000000,
+	"features": ["meta", "retrieve-slim", "structured-errors", "name-validation", "ws-command-responses"]
+}
+```
+
+Older versions of Lumia return a 404 here — treat that as `apiVersion: 1` with none of the listed features.
+
 Next page we will go in depth for each command that you can trigger and how to trigger them
