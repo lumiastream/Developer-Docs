@@ -1,13 +1,68 @@
 ---
+title: Lumia Stream MCP Server
 sidebar_position: 1
-description: Quickstart for connecting Claude, Cursor, Codex, VS Code, or another Model Context Protocol client to Lumia Stream.
+description: Connect Claude, Cursor, Codex, VS Code, and other MCP clients to Lumia Stream for AI-assisted lights, alerts, chat, overlays, stream tools, and live state.
+image: /img/social/mcp-server.png
+keywords:
+  - Lumia Stream MCP
+  - Model Context Protocol
+  - AI assistant stream tools
+  - Claude MCP
+  - Cursor MCP
+  - Codex MCP
 ---
+
+import Head from "@docusaurus/Head";
+
+export const pageUrl = "https://dev.lumiastream.com/docs/mcp/setup";
+export const previewImage = "https://dev.lumiastream.com/img/social/mcp-server.png";
+export const pageDescription = "Connect Claude, Cursor, Codex, VS Code, and other MCP clients to Lumia Stream for AI-assisted lights, alerts, chat, overlays, stream tools, and live state.";
+export const setupJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "HowTo",
+	name: "Connect Lumia Stream to an MCP client",
+	description: pageDescription,
+	url: pageUrl,
+	image: previewImage,
+	totalTime: "PT5M",
+	tool: [
+		{ "@type": "HowToTool", name: "Lumia Stream" },
+		{ "@type": "HowToTool", name: "An MCP client" }
+	],
+	step: [
+		{
+			"@type": "HowToStep",
+			name: "Enable the Developers API",
+			text: "Open Settings -> API in Lumia Stream and enable the Developers API."
+		},
+		{
+			"@type": "HowToStep",
+			name: "Copy an MCP config",
+			text: "Copy the embedded HTTP or npx stdio MCP configuration from Lumia Stream."
+		},
+		{
+			"@type": "HowToStep",
+			name: "Add the server to your client",
+			text: "Paste the configuration into your MCP client and restart or refresh the client."
+		}
+	]
+};
+
+<Head>
+	<meta name="twitter:title" content="Lumia Stream MCP Server" />
+	<meta name="twitter:description" content={pageDescription} />
+	<meta name="twitter:image" content={previewImage} />
+	<meta property="og:type" content="article" />
+	<script type="application/ld+json">{JSON.stringify(setupJsonLd)}</script>
+</Head>
 
 # Lumia Stream MCP Server
 
 The Lumia Stream MCP server lets an AI assistant control Lumia Stream with natural language. It can read your setup, control lights and studio scenes, trigger commands and alerts, speak through TTS, post to chat, manage stream tools, update variables, and react to live events.
 
 The server is a thin wrapper over Lumia's local [Send API](../rest/intro-to-send-api.md) and event stream. Lumia still does the real work; MCP only gives your assistant a structured tool interface.
+
+<img className="social-preview-image" src="/img/social/mcp-server.png" alt="Lumia Stream MCP Server preview" />
 
 ## Pick a connection
 

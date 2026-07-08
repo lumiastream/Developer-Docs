@@ -5,7 +5,7 @@ description: Real things you can do with the Lumia Stream MCP server. Control li
 
 # Use Cases & Examples
 
-Once the [MCP server is connected](./setup.md), you talk to your AI assistant in plain language and it drives Lumia Stream for you. It reads your setup with `get_settings`, then calls the right tool.
+Once the [MCP server is connected](./setup.mdx), you talk to your AI assistant in plain language and it drives Lumia Stream for you. It reads your setup with `get_settings`, then calls the right tool.
 
 Every setup is different, so the assistant checks what you actually have before acting; the command and scene names below are just illustrations.
 
