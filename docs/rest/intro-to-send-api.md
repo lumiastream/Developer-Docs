@@ -62,9 +62,53 @@ The valid types for using the send api:
 - tts
 - update-variable-value
 - get-variable-value
+- create-chatbot-command
+- update-chatbot-command
+- delete-chatbot-command
 - overlay-set-visibility
 - overlay-set-layer-visibility
 - overlay-set-layer-position
 - overlay-set-content
+- change-stream-title
+- change-current-category
+- create-stream-marker
+- clip
+- send-announcement
+- run-commercial
+- set-slow-mode
+- set-subscriber-mode
+- set-follow-mode
+- set-emotes-mode
+- create-poll
+- end-poll
+- create-prediction
+- end-prediction
+- clear-chat
+- pin-message
+- unpin-message
+- add-moderator
+- remove-moderator
+- song-request
+- set-counter-value
+- get-loyalty-points
+
+---
+
+## Errors
+
+On up-to-date versions of Lumia, requests that can be rejected upfront return a structured JSON error you can branch on:
+
+```json
+{
+	"status": 404,
+	"code": "not_found",
+	"message": "No chat-command named \"blu\" exists. Call GET /api/retrieve to list valid values."
+}
+```
+
+- `unknown_type` (400) — the `type` isn't a valid Send API type.
+- `not_found` (404) — the named command, scene, theme, or animation doesn't exist in this user's setup. Checked before anything is queued, so a bad name never runs.
+
+Other failures keep their existing plain-text messages with a 400 status. Older versions of Lumia return `{ "message": true, "status": 200 }` even for names that don't exist, so don't rely on these errors when supporting old installs — check the [meta endpoint](./get-settings.md#api-capabilities) for the `name-validation` feature.
 
 Check next how to use each type and what are the required values to be sent

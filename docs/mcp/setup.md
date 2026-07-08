@@ -1,0 +1,117 @@
+---
+sidebar_position: 1
+description: Quickstart for connecting Claude, Cursor, Codex, VS Code, or another Model Context Protocol client to Lumia Stream.
+---
+
+# Lumia Stream MCP Server
+
+The Lumia Stream MCP server lets an AI assistant control Lumia Stream with natural language. It can read your setup, control lights and studio scenes, trigger commands and alerts, speak through TTS, post to chat, manage stream tools, update variables, and react to live events.
+
+The server is a thin wrapper over Lumia's local [Send API](../rest/intro-to-send-api.md) and event stream. Lumia still does the real work; MCP only gives your assistant a structured tool interface.
+
+## Pick a connection
+
+There are two supported ways to connect:
+
+| Connection | Best when | Needs |
+| --- | --- | --- |
+| Embedded HTTP | Your client supports Streamable HTTP MCP servers with headers, and your Lumia API settings show **Copy MCP Config (No Install)**. | Lumia Stream running with the Developers API enabled. |
+| `npx` stdio | Your client only supports local stdio MCP servers, you are on an older Lumia version, or HTTP headers are hard to configure in your client. | Node.js 20 or newer, plus Lumia Stream running with the Developers API enabled. |
+
+Both expose the same tools. The embedded HTTP endpoint updates with the app. The `npx` server updates from the published `@lumiastream/mcp` package.
+
+## Prerequisites
+
+- Lumia Stream running on the machine the MCP server can reach.
+- The Developers API enabled in **Settings -> API**.
+- Your API token from **Settings -> API**.
+- [Node.js](https://nodejs.org) 20 or newer if you use the `npx` stdio setup.
+
+## Get your token
+
+1. Open **Settings -> API** in Lumia Stream.
+2. Check **Enable Developers API**.
+3. Copy one of the MCP configs:
+   - **Copy MCP Config (No Install)** for embedded HTTP.
+   - **Copy MCP Config** for `npx` stdio.
+
+The snippets below use the default port, `39231`. If your API settings page shows a different port, update both the HTTP URL and `LUMIA_PORT`.
+
+:::warning
+
+The MCP server uses the same token as the REST API. Treat it like a password. Do not commit a real token to `.mcp.json`, `.vscode/mcp.json`, `~/.codex/config.toml`, or any shared project file. Use placeholders or local environment variables for team examples.
+
+:::
+
+## Embedded HTTP quickstart
+
+Use this when your client accepts an HTTP MCP server URL and authorization headers.
+
+```json
+{
+	"mcpServers": {
+		"lumia-stream": {
+			"type": "http",
+			"url": "http://localhost:39231/api/mcp",
+			"headers": {
+				"Authorization": "Bearer your_token_here"
+			}
+		}
+	}
+}
+```
+
+For Claude Code, the same setup is one command:
+
+```bash
+claude mcp add --transport http lumia-stream http://localhost:39231/api/mcp --header "Authorization: Bearer your_token_here"
+```
+
+The endpoint accepts MCP requests as POST requests. Opening `http://localhost:39231/api/mcp` in a browser sends GET and returns `405`; that is expected and does not mean MCP is broken.
+
+## `npx` stdio quickstart
+
+Use this when your client launches local MCP servers.
+
+```json
+{
+	"mcpServers": {
+		"lumia-stream": {
+			"command": "npx",
+			"args": ["-y", "@lumiastream/mcp"],
+			"env": {
+				"LUMIA_TOKEN": "your_token_here",
+				"LUMIA_PORT": "39231"
+			}
+		}
+	}
+}
+```
+
+Every stdio client boils down to the same values:
+
+- command: `npx`
+- arguments: `-y`, `@lumiastream/mcp`
+- environment: `LUMIA_TOKEN=your_token_here`
+- optional environment: `LUMIA_HOST`, `LUMIA_PORT`, `LUMIA_SECURE`
+
+## Verify
+
+After saving the config, restart or refresh your MCP client and ask:
+
+> "What can you see in my Lumia setup?"
+
+The assistant should call `get_settings`. If that works, try:
+
+> "What's my stream status right now?"
+
+The assistant should call `get_state`.
+
+If tools do not appear or calls fail, see [Troubleshooting](./troubleshooting.md).
+
+## Next steps
+
+- [Client setup](./clients.md): exact setup for Claude Desktop, Claude Code, Cursor, Codex, VS Code, Windsurf, Gemini CLI, and other clients.
+- [Configuration](./configuration.md): environment variables, HTTP headers, remote hosts, and token handling.
+- [Tools](./tools.md): the current Lumia MCP tool catalog and safety notes.
+- [Use cases and examples](./examples.md): prompts and concrete tool-call examples.

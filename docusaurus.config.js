@@ -119,6 +119,12 @@ const darkCodeTheme = themes.dracula;
               activeBaseRegex: "docs/(intro)?$",
             },
             {
+              to: "/docs/mcp/setup",
+              position: "left",
+              label: "MCP",
+              activeBasePath: "docs/mcp",
+            },
+            {
               to: "/docs/variables",
               position: "left",
               label: "Variables",

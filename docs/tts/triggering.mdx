@@ -53,7 +53,7 @@ The voice and volume set on the command override the global defaults for that sp
 
 ## Alerts
 
-Every alert has a TTS tab in the alert editor. The message resolves against the alert's event variables — `{{username}}`, `{{amount}}`, `{{message}}`, etc. — the same ones available in the alert's display text.
+Every alert has a TTS tab in the alert editor. The message resolves against the alert's event variables (`{{username}}`, `{{amount}}`, `{{message}}`, etc.), the same ones available in the alert's display text.
 
 When sending an alert via the REST API you can override the TTS message in `extraSettings`:
 
@@ -92,7 +92,7 @@ You can fire TTS inline in any template using the `speak` variable function:
 {{speak=Hello from a variable function}}
 ```
 
-This works anywhere variables are resolved — chatbot responses, alert text, overlay templates.
+This works anywhere variables are resolved: chatbot responses, alert text, overlay templates.
 
 ## Plugin SDK
 
@@ -106,7 +106,7 @@ await this.lumia.tts({
 });
 ```
 
-For plugins that generate their own audio (ElevenLabs, TTS Monster, etc.), use `this.lumia.playAudio()` instead — those plugins intercept the normal TTS pipeline and produce audio bytes directly. See the [ElevenLabs TTS example](/docs/plugin-sdk/examples/elevenlabs-tts) for the full pattern.
+For plugins that generate their own audio (ElevenLabs, TTS Monster, etc.), use `this.lumia.playAudio()` instead; those plugins intercept the normal TTS pipeline and produce audio bytes directly. See the [ElevenLabs TTS example](/docs/plugin-sdk/examples/elevenlabs-tts) for the full pattern.
 
 ## Muting TTS
 

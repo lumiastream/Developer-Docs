@@ -8,7 +8,7 @@ description: How Lumia's TTS system works - voices, sources, queue, and every su
 
 # TTS overview
 
-Lumia has a built-in text-to-speech engine that all parts of the system share — alerts, chatbot commands, custom JavaScript actions, the REST API, WebSockets, and plugins. Anything that can produce a string can also speak it.
+Lumia has a built-in text-to-speech engine that all parts of the system share: alerts, chatbot commands, custom JavaScript actions, the REST API, WebSockets, and plugins. Anything that can produce a string can also speak it.
 
 ## Sections
 
@@ -21,13 +21,13 @@ Lumia has a built-in text-to-speech engine that all parts of the system share �
 
 Every TTS request goes through the same pipeline regardless of where it originates:
 
-1. The message is resolved through the [variable system](/docs/variables) — `{{username}}`, `{{amount}}`, `{{counter=deaths}}`, etc. are all substituted before speech synthesis.
+1. The message is resolved through the [variable system](/docs/variables); `{{username}}`, `{{amount}}`, `{{counter=deaths}}`, etc. are all substituted before speech synthesis.
 2. The voice is resolved: if the request specifies a voice, that wins; if not, the command's configured default is used; if there's no command-level default, the global TTS voice setting applies.
 3. The resolved message is handed to the TTS engine based on the voice source:
-   - **System** — the OS speech synthesizer (no network call, always available).
-   - **Cloud** — Lumia's hosted Polly-backed voices (Brian, Amy, Joanna, etc.).
-   - **Marketplace** — community voices from the Lumia voice marketplace.
-   - **Plugin** — a plugin such as ElevenLabs TTS or TTS Monster intercepts and generates audio.
+   - **System**: the OS speech synthesizer (no network call, always available).
+   - **Cloud**: Lumia's hosted Polly-backed voices (Brian, Amy, Joanna, etc.).
+   - **Marketplace**: community voices from the Lumia voice marketplace.
+   - **Plugin**: a plugin such as ElevenLabs TTS or TTS Monster intercepts and generates audio.
 4. The audio is dispatched to the configured output device and placed into the TTS queue (or plays immediately if `skipQueue` is set).
 
 ## Where TTS appears in the UI

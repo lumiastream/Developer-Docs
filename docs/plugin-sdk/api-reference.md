@@ -18,36 +18,36 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 
 ### Lifecycle Methods
 
-- **`onload()`** – called when the plugin is enabled. Initialise resources, timers, or external connections here.
-- **`onunload()`** – invoked when the plugin is disabled. Clean up timers, close sockets, and release resources.
-- **`onupdate(oldVersion, newVersion)`** – triggered after a version upgrade. Optional.
-- **`onsettingsupdate(settings, previousSettings)`** – called after settings change. Optional.
-- **`aiPrompt(config): Promise<string | object | void> | string | object | void`** – optional AI prompt handler. Enabled by declaring `config.hasAI` in the manifest.
-- **`aiModels(config?): Promise<Array<{ value, name? }> | string[] | { models: [...] } | void>`** – optional AI model list provider used by Lumia AI model pickers.
-- **`chatbot(config): Promise<boolean | void> | boolean | void`** – optional native chatbot handler. Enabled by declaring `config.hasChatbot` in the manifest.
-- **`modCommand(type, value): Promise<boolean | void> | boolean | void`** – optional moderation handler. Enabled by declaring `config.modcommandOptions` in the manifest.
-- **`searchLights(config?): Promise<any>`** – optional discovery hook for lights plugins. Return a list of devices for the auth UI.
-- **`addLight(config): Promise<any>`** – optional manual-add hook for lights plugins. Return the updated list.
-- **`removeLight(config): Promise<any>`** – optional manual-remove hook for lights plugins. Return the updated list.
-- **`searchPlugs(config?): Promise<any>`** – optional discovery hook for plug/accessory plugins. Return a list of plugs for the auth UI.
-- **`addPlug(config): Promise<any>`** – optional manual-add hook for plug/accessory plugins. Return the updated list.
-- **`removePlug(config): Promise<any>`** – optional manual-remove hook for plug/accessory plugins. Return the updated list.
-- **`searchThemes(config?): Promise<any>`** – optional Studio theme discovery hook for lights plugins. Return an array or an object containing `scenes`, `effects`, and/or `presets`.
-- **`onLightChange(config): Promise<void>`** – optional hook fired when Lumia sends color/brightness updates for lights owned by your plugin (`config` includes `brand`, `lights`, `color`, `brightness`, `power`, `transition`, `rawConfig`).  
+- **`onload()`**: called when the plugin is enabled. Initialise resources, timers, or external connections here.
+- **`onunload()`**: invoked when the plugin is disabled. Clean up timers, close sockets, and release resources.
+- **`onupdate(oldVersion, newVersion)`**: triggered after a version upgrade. Optional.
+- **`onsettingsupdate(settings, previousSettings)`**: called after settings change. Optional.
+- **`aiPrompt(config): Promise<string | object | void> | string | object | void`**: optional AI prompt handler. Enabled by declaring `config.hasAI` in the manifest.
+- **`aiModels(config?): Promise<Array<{ value, name? }> | string[] | { models: [...] } | void>`**: optional AI model list provider used by Lumia AI model pickers.
+- **`chatbot(config): Promise<boolean | void> | boolean | void`**: optional native chatbot handler. Enabled by declaring `config.hasChatbot` in the manifest.
+- **`modCommand(type, value): Promise<boolean | void> | boolean | void`**: optional moderation handler. Enabled by declaring `config.modcommandOptions` in the manifest.
+- **`searchLights(config?): Promise<any>`**: optional discovery hook for lights plugins. Return a list of devices for the auth UI.
+- **`addLight(config): Promise<any>`**: optional manual-add hook for lights plugins. Return the updated list.
+- **`removeLight(config): Promise<any>`**: optional manual-remove hook for lights plugins. Return the updated list.
+- **`searchPlugs(config?): Promise<any>`**: optional discovery hook for plug/accessory plugins. Return a list of plugs for the auth UI.
+- **`addPlug(config): Promise<any>`**: optional manual-add hook for plug/accessory plugins. Return the updated list.
+- **`removePlug(config): Promise<any>`**: optional manual-remove hook for plug/accessory plugins. Return the updated list.
+- **`searchThemes(config?): Promise<any>`**: optional Studio theme discovery hook for lights plugins. Return an array or an object containing `scenes`, `effects`, and/or `presets`.
+- **`onLightChange(config): Promise<void>`**: optional hook fired when Lumia sends color/brightness updates for lights owned by your plugin (`config` includes `brand`, `lights`, `color`, `brightness`, `power`, `transition`, `rawConfig`).  
   For Studio theme-triggered updates, selected theme values are available in `config.rawConfig.theme`.
-- **`onPlugChange(config): Promise<void>`** – optional hook fired when Lumia sends plug state updates for plugs owned by your plugin (`config` includes `brand`, `devices`, `state`, `rawConfig`).
-- **`onCustomAuthDisplaySignal(config): Promise<any>`** – optional hook fired when your custom auth display sends `signal(type, payload)`.
-- **`onCustomAuthDisplayClose(config): Promise<void> | void`** – optional hook fired when the custom auth modal closes (manual close, backdrop/escape, or signal close).
+- **`onPlugChange(config): Promise<void>`**: optional hook fired when Lumia sends plug state updates for plugs owned by your plugin (`config` includes `brand`, `devices`, `state`, `rawConfig`).
+- **`onCustomAuthDisplaySignal(config): Promise<any>`**: optional hook fired when your custom auth display sends `signal(type, payload)`.
+- **`onCustomAuthDisplayClose(config): Promise<void> | void`**: optional hook fired when the custom auth modal closes (manual close, backdrop/escape, or signal close).
 
 ### Action Handling
 
-- **`actions(config)`** – process action executions defined in the manifest. Optional.  
+- **`actions(config)`**: process action executions defined in the manifest. Optional.  
   **Note:** action parameters are provided via `action.value`. Use `const params = action.value;`.
 - `actions(config)` may optionally return:
-  - `newlyPassedVariables?: Record<string, unknown>` – merged into runtime `extraSettings` for subsequent actions in the same chain.
+  - `newlyPassedVariables?: Record<string, unknown>`: merged into runtime `extraSettings` for subsequent actions in the same chain.
     - Keys must be prefixed with your plugin id (`<pluginId>_key`).
     - Unprefixed keys are ignored by Lumia.
-  - `shouldStop?: boolean` – when `true`, Lumia stops processing the remaining actions in that chain.
+  - `shouldStop?: boolean`: when `true`, Lumia stops processing the remaining actions in that chain.
 
 ```js
 // optional action return payload
@@ -63,7 +63,7 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 
 ### Variable Functions
 
-- **`variableFunction(config)`** – resolve a template variable function defined in `config.variableFunctions`. Return a string to replace the template, or `{ value, variables }` to also expose extra values.
+- **`variableFunction(config)`**: resolve a template variable function defined in `config.variableFunctions`. Return a string to replace the template, or `{ value, variables }` to also expose extra values.
 
 ```js
 // config shape
@@ -86,22 +86,22 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 
 ### Convenience Properties
 
-- **`settings`** – getter/setter for all plugin settings. Setting this replaces the entire settings object.
-- **`manifest`** – read-only manifest supplied by Lumia Stream.
-- **`lumia`** – typed access to the Lumia Stream runtime API (`ILumiaAPI`).
+- **`settings`**: getter/setter for all plugin settings. Setting this replaces the entire settings object.
+- **`manifest`**: read-only manifest supplied by Lumia Stream.
+- **`lumia`**: typed access to the Lumia Stream runtime API (`ILumiaAPI`).
 
 ### Helper Methods
 
-- **`updateSettings(updates: Record<string, any>): void`** – merge new settings values with the existing ones.
-- **`validateAuth(data: any): Promise<boolean | string | { ok: boolean; message?: string }>`** – override to validate custom authentication flows. Return `true` for success, `false` for failure, a string to show a failure message, or `{ ok, message }` for explicit status + message.
-- **`refreshAuth<T>(data: T): Promise<T>`** – override to refresh credentials when required.
+- **`updateSettings(updates: Record<string, any>): void`**: merge new settings values with the existing ones.
+- **`validateAuth(data: any): Promise<boolean | string | { ok: boolean; message?: string }>`**: override to validate custom authentication flows. Return `true` for success, `false` for failure, a string to show a failure message, or `{ ok, message }` for explicit status + message.
+- **`refreshAuth<T>(data: T): Promise<T>`**: override to refresh credentials when required.
 
 ## Lumia API (`ILumiaAPI`)
 
 ### Connection
 
-- **`updateConnection(state: boolean): Promise<void>`** – notify Lumia Stream that the plugin connection has changed.
-- **`getConnectionState(): boolean`** – check the last reported connection state.
+- **`updateConnection(state: boolean): Promise<void>`**: notify Lumia Stream that the plugin connection has changed.
+- **`getConnectionState(): boolean`**: check the last reported connection state.
 
 Connection lifecycle guidance for networked plugins:
 
@@ -114,16 +114,16 @@ Connection lifecycle guidance for networked plugins:
 
 ### Settings
 
-- **`getSettings(): Record<string, any>`** – get the current settings object.
-- **`setSettings(settings: Record<string, any>): void`** – replace all settings.
-- **`updateSettings(updates: Record<string, any>): void`** – merge changes into the existing settings.
+- **`getSettings(): Record<string, any>`**: get the current settings object.
+- **`setSettings(settings: Record<string, any>): void`**: replace all settings.
+- **`updateSettings(updates: Record<string, any>): void`**: merge changes into the existing settings.
 
 ### Shared Resources
 
-- **`acquireShared<T>(key: string, factory?: () => T | Promise<T>, options?: { dispose?: (resource: T) => void | Promise<void> }): Promise<T>`** – acquire a shared runtime resource in the plugin host process.
-- **`releaseShared(key: string): Promise<boolean>`** – release one plugin reference for a shared resource key.
-- **`acquireSharedNoble(options?: { key?: string }): Promise<PluginSharedNobleClient>`** – acquire the shared `@abandonware/noble` BLE runtime with plugin-scoped scan/listener controls.
-- **`releaseSharedNoble(options?: { key?: string }): Promise<boolean>`** – release one plugin reference for the shared noble runtime.
+- **`acquireShared<T>(key: string, factory?: () => T | Promise<T>, options?: { dispose?: (resource: T) => void | Promise<void> }): Promise<T>`**: acquire a shared runtime resource in the plugin host process.
+- **`releaseShared(key: string): Promise<boolean>`**: release one plugin reference for a shared resource key.
+- **`acquireSharedNoble(options?: { key?: string }): Promise<PluginSharedNobleClient>`**: acquire the shared `@abandonware/noble` BLE runtime with plugin-scoped scan/listener controls.
+- **`releaseSharedNoble(options?: { key?: string }): Promise<boolean>`**: release one plugin reference for the shared noble runtime.
 
 Use shared resources for heavyweight runtimes (OpenCV, ONNX, native SDK bridges) so multiple plugins can reuse one initialized instance.  
 For BLE, prefer `acquireSharedNoble` so plugins do not fight over adapter scanning state.
@@ -131,57 +131,57 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 
 `PluginSharedNobleClient` exposes:
 
-- **`getNoble(): any`** – raw noble module instance.
-- **`getState(): string`** – last observed adapter state.
-- **`isScanning(): boolean`** – whether shared runtime is currently scanning.
-- **`waitForPoweredOn(timeoutMs?: number): Promise<string>`** – wait until adapter is ready.
-- **`onDiscover(listener): () => void`** – subscribe to discovered peripherals.
-- **`onStateChange(listener): () => void`** – subscribe to adapter state changes.
-- **`startScanning(options?: { serviceUuids?: string[]; allowDuplicates?: boolean }): Promise<boolean>`** – start this plugin's scan request.
-- **`stopScanning(): Promise<boolean>`** – stop this plugin's scan request.
+- **`getNoble(): any`**: raw noble module instance.
+- **`getState(): string`**: last observed adapter state.
+- **`isScanning(): boolean`**: whether shared runtime is currently scanning.
+- **`waitForPoweredOn(timeoutMs?: number): Promise<string>`**: wait until adapter is ready.
+- **`onDiscover(listener): () => void`**: subscribe to discovered peripherals.
+- **`onStateChange(listener): () => void`**: subscribe to adapter state changes.
+- **`startScanning(options?: { serviceUuids?: string[]; allowDuplicates?: boolean }): Promise<boolean>`**: start this plugin's scan request.
+- **`stopScanning(): Promise<boolean>`**: stop this plugin's scan request.
 
 ### OAuth
 
-- **`refreshOAuthToken(options: { refreshToken: string; applicationId?: number; secondaryAccount?: boolean }): Promise<{ accessToken?: string; refreshToken?: string; raw?: any }>`** – refresh an OAuth access token via Lumia's server. Provider is inferred from the plugin ID. Returns the new token payload.
+- **`refreshOAuthToken(options: { refreshToken: string; applicationId?: number; secondaryAccount?: boolean }): Promise<{ accessToken?: string; refreshToken?: string; raw?: any }>`**: refresh an OAuth access token via Lumia's server. Provider is inferred from the plugin ID. Returns the new token payload.
 
 ### Variables
 
-- **`setVariable(name: string, value: any): Promise<void>`** – store a variable that other Lumia features can consume.
-- **`getVariable(name: string): Promise<any>`** – read a stored variable value (await the result).
+- **`setVariable(name: string, value: any): Promise<void>`**: store a variable that other Lumia features can consume.
+- **`getVariable(name: string): Promise<any>`**: read a stored variable value (await the result).
 
 ### Heart Rate
 
-- **`updateHeartRate(bpm: number): Promise<void>`** – push a live heart-rate reading (beats per minute) into Lumia's shared heart-rate system. This makes your plugin a first-class heart-rate source, exactly like the built-in HypeRate and Pulsoid integrations: the value drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate **zone** alerts, calorie tracking, and Studio heart-rate light reactions. Call it every time a new reading arrives. Pair it with `"hasHeartrate": true` in your manifest `config` (see the [Manifest Guide](./manifest-guide)) so Lumia also shows the heart-rate zone Alerts UI for your plugin.
+- **`updateHeartRate(bpm: number): Promise<void>`**: push a live heart-rate reading (beats per minute) into Lumia's shared heart-rate system. This makes your plugin a first-class heart-rate source, exactly like the built-in HypeRate and Pulsoid integrations: the value drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate **zone** alerts, calorie tracking, and Studio heart-rate light reactions. Call it every time a new reading arrives. Pair it with `"hasHeartrate": true` in your manifest `config` (see the [Manifest Guide](./manifest-guide)) so Lumia also shows the heart-rate zone Alerts UI for your plugin.
 
 ### Commands
 
-- **`callCommand(name: string, variableValues?: any): Promise<any>`** – execute another Lumia command and optionally pass variable values.
-- **`getAllCommands(params?: { onlyOn?: boolean }): Promise<any>`** – fetch available commands.
+- **`callCommand(name: string, variableValues?: any): Promise<any>`**: execute another Lumia command and optionally pass variable values.
+- **`getAllCommands(params?: { onlyOn?: boolean }): Promise<any>`**: fetch available commands.
 
 ### Dynamic UI Options
 
-- **`updateActionFieldOptions({ actionType, fieldKey, options }): Promise<boolean>`** – update action dropdown options at runtime.
-- **`updateSettingsFieldOptions({ fieldKey, options }): Promise<boolean>`** – update settings dropdown options at runtime (used with `dynamicOptions` fields in PluginAuth).
+- **`updateActionFieldOptions({ actionType, fieldKey, options }): Promise<boolean>`**: update action dropdown options at runtime.
+- **`updateSettingsFieldOptions({ fieldKey, options }): Promise<boolean>`**: update settings dropdown options at runtime (used with `dynamicOptions` fields in PluginAuth).
 
 ### Alerts & Chat
 
-- **`triggerAlert(options: PluginTriggerAlertOptions): Promise<boolean>`** – trigger an alert. Options include the alert identifier and optional payload. `showInEventList` defaults to `false`; set it to `true` only when users should see those plugin-triggered events in Event List (usually streaming platform/event-source plugins).
-- **`displayChat(options: PluginDisplayChatOptions): void`** – display chat content inside Lumia Stream chatboxes and overlays.
-- **`chatbot(options: { message: string; site?: string | string[]; color?: string; chatAsSelf?: boolean }): Promise<boolean>`** – send a message through the Lumia chatbot system.
+- **`triggerAlert(options: PluginTriggerAlertOptions): Promise<boolean>`**: trigger an alert. Options include the alert identifier and optional payload. `showInEventList` defaults to `false`; set it to `true` only when users should see those plugin-triggered events in Event List (usually streaming platform/event-source plugins).
+- **`displayChat(options: PluginDisplayChatOptions): void`**: display chat content inside Lumia Stream chatboxes and overlays.
+- **`chatbot(options: { message: string; site?: string | string[]; color?: string; chatAsSelf?: boolean }): Promise<boolean>`**: send a message through the Lumia chatbot system.
 
 ### Overlay & Visuals
 
-- **`overlaySendCustomContent(options: { layer: string; codeId: string; content: any }): Promise<boolean>`** – push custom overlay content.
-- **`sendColor(options: { lights?: string[]; color: string | any; power?: boolean; brightness?: number; transition?: number }): Promise<boolean>`** – control connected lighting devices.
-- **`getLights(): Promise<any>`** – retrieve current light information.
+- **`overlaySendCustomContent(options: { layer: string; codeId: string; content: any }): Promise<boolean>`**: push custom overlay content.
+- **`sendColor(options: { lights?: string[]; color: string | any; power?: boolean; brightness?: number; transition?: number }): Promise<boolean>`**: control connected lighting devices.
+- **`getLights(): Promise<any>`**: retrieve current light information.
 - _Light management note_: Lights are saved via the PluginAuth UI. Implement `searchLights`/`addLight` (and optionally `removeLight`) to manage auth UI devices, and handle runtime updates in `onLightChange`; plugins should not mutate live light state directly.
 - _Plug management note_: Plugs are saved via the PluginAuth UI. Implement `searchPlugs`/`addPlug` (and optionally `removePlug`) to manage auth UI devices, and handle runtime updates in `onPlugChange`; plugins should not mutate plug state directly.
 - _Studio themes note_: If your plugin exposes themes/modes, implement `searchThemes` and set `config.themeConfig` in the manifest so Lumia knows where to place returned options (`scenes`, `effects`, `presets`).
 
 ### Audio & Speech
 
-- **`playAudio(options: { path: string; volume?: number; waitForAudioToStop?: boolean }): Promise<boolean>`** – play an audio file. Await the promise if you need to wait for playback to finish.
-- **`tts(options: { message: string; voice?: string; volume?: number }): Promise<boolean>`** – trigger text-to-speech playback.
+- **`playAudio(options: { path: string; volume?: number; waitForAudioToStop?: boolean }): Promise<boolean>`**: play an audio file. Await the promise if you need to wait for playback to finish.
+- **`tts(options: { message: string; voice?: string; volume?: number }): Promise<boolean>`**: trigger text-to-speech playback.
 
 `playAudio` notes:
 
@@ -217,14 +217,14 @@ await this.lumia.playAudio({
 
 ### Files & Persistence
 
-- **`writeFile(options: { path: string; message: string; append?: boolean; value?: string }): Promise<boolean>`** – write or append to a file.
-- **`readFile(path: string): Promise<string | boolean>`** – read a file's contents. Returns `false` on failure.
+- **`writeFile(options: { path: string; message: string; append?: boolean; value?: string }): Promise<boolean>`**: write or append to a file.
+- **`readFile(path: string): Promise<string | boolean>`**: read a file's contents. Returns `false` on failure.
 
 ### UX Helpers
 
-- **`showToast(options: { message: string; time?: number; type?: "info" | "success" | "warning" | "warn" | "error" }): Promise<boolean>`** – display a toast notification within Lumia Stream.  
+- **`showToast(options: { message: string; time?: number; type?: "info" | "success" | "warning" | "warn" | "error" }): Promise<boolean>`**: display a toast notification within Lumia Stream.  
   `time` is in **milliseconds**.
-- **`prompt(options: { title?: string; message?: string; inputLabel?: string; inputPlaceholder?: string; confirmLabel?: string; showCancelButton?: boolean; inputType?: "text" | "password" }): Promise<{ value: string } | null>`** – open a SweetAlert input prompt. Returns `{ value }` on confirm or `null` if cancelled/failed.
+- **`prompt(options: { title?: string; message?: string; inputLabel?: string; inputPlaceholder?: string; confirmLabel?: string; showCancelButton?: boolean; inputType?: "text" | "password" }): Promise<{ value: string } | null>`**: open a SweetAlert input prompt. Returns `{ value }` on confirm or `null` if cancelled/failed.
   Example:
   ```js
   const result = await lumia.prompt({
@@ -238,18 +238,18 @@ await this.lumia.playAudio({
     // use result.value
   }
   ```
-- **`log(params: { message?: any; level?: "info" | "warn" | "warning" | "error" | "success" | "debug"; type?: ... } | string | number, type?: "info" | "warn" | "warning" | "error" | "success" | "debug"): Promise<boolean>`** – write to the plugin host console (visible in plugin host logs). Supports either object form (`{ message, level/type }`) or positional form (`message, type`).
-- **`dashboardLog(params: { message?: any; level?: "info" | "warn" | "warning" | "error" | "success" | "debug"; type?: ... } | string | number, type?: "info" | "warn" | "warning" | "error" | "success" | "debug"): Promise<boolean>`** – write a plugin message into Lumia Stream's dashboard log feed (the main app log panel). Also supports object or positional severity.
-- **`addLog(...)`** – deprecated alias of `log(...)`.
+- **`log(params: { message?: any; level?: "info" | "warn" | "warning" | "error" | "success" | "debug"; type?: ... } | string | number, type?: "info" | "warn" | "warning" | "error" | "success" | "debug"): Promise<boolean>`**: write to the plugin host console (visible in plugin host logs). Supports either object form (`{ message, level/type }`) or positional form (`message, type`).
+- **`dashboardLog(params: { message?: any; level?: "info" | "warn" | "warning" | "error" | "success" | "debug"; type?: ... } | string | number, type?: "info" | "warn" | "warning" | "error" | "success" | "debug"): Promise<boolean>`**: write a plugin message into Lumia Stream's dashboard log feed (the main app log panel). Also supports object or positional severity.
+- **`addLog(...)`**: deprecated alias of `log(...)`.
 
 ### Integration Helpers
 
 `ILumiaAPI.integration` exposes:
 
-- **`getId(): string`** – current integration identifier.
-- **`getConfig(): Record<string, any>`** – read integration configuration.
-- **`isConnected(): boolean`** – whether the integration reports a connected state.
-- **`isEnabled(): boolean`** – whether the integration is enabled.
+- **`getId(): string`**: current integration identifier.
+- **`getConfig(): Record<string, any>`**: read integration configuration.
+- **`isConnected(): boolean`**: whether the integration reports a connected state.
+- **`isEnabled(): boolean`**: whether the integration is enabled.
 
 ### Payload Shapes
 

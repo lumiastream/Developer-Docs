@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import { LumiaAlertConfigs } from "@lumiastream/lumia-types";
-import { enTrans } from "@lumiastream/lumia-translations";
+import { enTrans } from "@lumiapriv/lumia-translations";
 
 export const chatCommandTypes = [
   "command",
