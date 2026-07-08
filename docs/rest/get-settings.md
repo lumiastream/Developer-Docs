@@ -253,7 +253,7 @@ GET http://localhost:39231/api/meta?token=your_token
 	"version": "9.1.0",
 	"apiVersion": 2,
 	"startedAt": 1783487000000,
-	"features": ["meta", "retrieve-slim", "structured-errors", "name-validation", "ws-command-responses"]
+	"features": ["meta", "retrieve-slim", "structured-errors", "name-validation", "ws-command-responses", "ws-subscriptions", "ws-keepalive", "mcp"]
 }
 ```
 

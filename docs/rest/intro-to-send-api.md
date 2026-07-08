@@ -62,10 +62,35 @@ The valid types for using the send api:
 - tts
 - update-variable-value
 - get-variable-value
+- create-chatbot-command
+- update-chatbot-command
+- delete-chatbot-command
 - overlay-set-visibility
 - overlay-set-layer-visibility
 - overlay-set-layer-position
 - overlay-set-content
+- change-stream-title
+- change-current-category
+- create-stream-marker
+- clip
+- send-announcement
+- run-commercial
+- set-slow-mode
+- set-subscriber-mode
+- set-follow-mode
+- set-emotes-mode
+- create-poll
+- end-poll
+- create-prediction
+- end-prediction
+- clear-chat
+- pin-message
+- unpin-message
+- add-moderator
+- remove-moderator
+- song-request
+- set-counter-value
+- get-loyalty-points
 
 ---
 

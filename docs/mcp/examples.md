@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 6
 description: Real things you can do with the Lumia Stream MCP server. Control lights, trigger commands and alerts, speak on stream, and drive overlays, all in plain language.
 ---
 
@@ -8,6 +8,8 @@ description: Real things you can do with the Lumia Stream MCP server. Control li
 Once the [MCP server is connected](./setup.md), you talk to your AI assistant in plain language and it drives Lumia Stream for you. It reads your setup with `get_settings`, then calls the right tool.
 
 Every setup is different, so the assistant checks what you actually have before acting; the command and scene names below are just illustrations.
+
+For anything public or destructive, tell your assistant to ask before it acts. That includes chat posts, TTS, moderation, commercials, polls, predictions, and clearing chat.
 
 ## Control your lights
 
@@ -53,6 +55,20 @@ Custom variables are how overlays, commands, and custom code share state. Your a
 
 Any overlay bound to that variable updates live.
 
+## Create commands on the fly
+
+Chatbot commands are unlimited on every plan, and the assistant can manage them for you mid-stream:
+
+> "Make a !socials command that links my Twitter and TikTok.": `manage_chatbot_command` creates it, live in chat within a second.
+
+> "Update !socials to add my Discord too.": updates just the reply text.
+
+> "Chat keeps asking about my keyboard. Make a command for it with a 30 second cooldown."
+
+> "Delete the !socials command.": built-in system commands are protected; your own are fair game.
+
+It can also flip anything on or off by kind — "disable my channel-point reward called blue" uses `set_command_state`, which pauses the actual reward on Twitch too.
+
 ## Talk to chat and moderate
 
 > "Post in my chat: thanks for the raid, everyone!": `send_chat_message` (as the bot, or as yourself).
@@ -87,6 +103,138 @@ The assistant runs `set_color` and `set_variable` together.
 
 That becomes `set_color` + `speak` + `trigger_command`, in order.
 
+## Concrete tool-call examples
+
+Most clients show tool calls in their own UI. These examples show the inputs the assistant should choose after it has checked your setup.
+
+### Find and run a command
+
+**You:** "What commands do I have that are good for a raid?"
+
+The assistant discovers command names:
+
+```json
+{
+	"tool": "get_settings",
+	"arguments": {
+		"section": "commands"
+	}
+}
+```
+
+Then it can run the exact command name you choose:
+
+```json
+{
+	"tool": "trigger_command",
+	"arguments": {
+		"name": "raid-hype",
+		"kind": "chat-command",
+		"extraSettings": {
+			"username": "RaiderName"
+		}
+	}
+}
+```
+
+### Test an alert with data
+
+**You:** "Simulate a 1,000-bit cheer from Ahad."
+
+```json
+{
+	"tool": "trigger_alert",
+	"arguments": {
+		"name": "twitch-bits",
+		"extraSettings": {
+			"username": "Ahad",
+			"bits": 1000
+		}
+	}
+}
+```
+
+### Flash lights and update a counter
+
+**You:** "I just died. Flash red and add one to my death counter."
+
+```json
+{
+	"tool": "set_color",
+	"arguments": {
+		"hex": "#ff0000",
+		"brightness": 100,
+		"duration": 3000,
+		"transition": 150
+	}
+}
+```
+
+The assistant reads the current value, adds one, then writes it back:
+
+```json
+{
+	"tool": "get_variable",
+	"arguments": {
+		"name": "death_count"
+	}
+}
+```
+
+```json
+{
+	"tool": "set_variable",
+	"arguments": {
+		"name": "death_count",
+		"value": 6
+	}
+}
+```
+
+### Create a temporary chatbot command
+
+**You:** "Make a !keyboard command with a 30 second cooldown."
+
+```json
+{
+	"tool": "manage_chatbot_command",
+	"arguments": {
+		"action": "create",
+		"name": "keyboard",
+		"message": "I'm using a custom mechanical keyboard today.",
+		"cooldown_seconds": 30,
+		"enabled": true
+	}
+}
+```
+
+### Wait for the next follower
+
+**You:** "Watch for the next Twitch follow and then thank them in chat."
+
+```json
+{
+	"tool": "wait_for_event",
+	"arguments": {
+		"type": "follow",
+		"origin": "twitch",
+		"timeout_seconds": 300
+	}
+}
+```
+
+If an event arrives, the assistant can use the returned name in a chat message:
+
+```json
+{
+	"tool": "send_chat_message",
+	"arguments": {
+		"platform": "twitch",
+		"message": "Thanks for the follow, NewFollower!"
+	}
+}
+```
+
 ## A worked example
 
 **You:** "It's raid o'clock. What do I have to celebrate with?"
@@ -101,8 +249,9 @@ That becomes `set_color` + `speak` + `trigger_command`, in order.
 
 - **Ask what's available first.** "What commands and scenes do I have?" grounds everything else and avoids guessing names.
 - **Refer to things loosely.** The assistant matches "the blue command" or "my hype alert" to the real names from your settings.
+- **Confirm risky actions.** Public chat, TTS, moderation, commercials, polls, predictions, and clear-chat actions affect viewers immediately.
 - **Keep the app running.** The server talks to Lumia on `localhost`, so Lumia must be open with the API enabled.
 
 ## Quick macros
 
-Your client also exposes ready-made routines as prompts (slash-commands in most clients): **start_stream**, **brb**, **hype**, **wind_down**, and **thank_new_followers**. Trigger one and the assistant runs the whole sequence with the tools above. More at [github.com/lumiastream/mcp](https://github.com/lumiastream/mcp).
+Your client also exposes ready-made routines as prompts (slash-commands in most clients): **start_stream**, **brb**, **hype**, **wind_down**, and **thank_new_followers**. Trigger one and the assistant runs the whole sequence with the tools above. For the full catalog, see [Tools](./tools.md).
