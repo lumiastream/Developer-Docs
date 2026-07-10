@@ -21,7 +21,7 @@
     "@docusaurus/core": "^3.8.1",
     "@docusaurus/plugin-client-redirects": "^3.8.1",
     "@docusaurus/preset-classic": "^3.8.1",
-    "@lumiapriv/lumia-translations": "1.21.1",
+    "@lumiapriv/lumia-translations": "2.0.0",
     "@lumiastream/lumia-types": "3.9.5",
     "@mdx-js/react": "^3.1.0",
     "@svgr/webpack": "^5.5.0",
