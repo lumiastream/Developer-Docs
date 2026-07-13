@@ -31,7 +31,7 @@ The `manifest.json` file is the heart of your Lumia Stream plugin. It defines me
 
 ### Basic Information
 
-- **`id`** (string): Unique identifier for your plugin. Use letters, numbers, or underscores, no spaces or hyphens.
+- **`id`** (string): Unique identifier for your plugin. Use letters, numbers, or underscores—no spaces or hyphens.
 - **`name`** (string): Human-readable plugin name.
 - **`version`** (string): Semantic version (e.g., "1.0.0").
 - **`author`** (string): Plugin author name.
@@ -87,24 +87,24 @@ Each ID must reference a public + approved marketplace overlay.
 
 The Lumia marketplace recognises the following categories (strings are case-sensitive):
 
-- **`system`**: Core Lumia features and internal tooling
-- **`platforms`**: Streaming platform integrations (Twitch, YouTube, Kick, etc.)
-- **`apps`**: Third-party app integrations
-- **`lights`**: General lighting control providers
-- **`switch`**: Smart switch and relay integrations
-- **`deck`**: Control deck hardware and software
-- **`protocols`**: Network or automation protocols (OSC, MIDI, etc.)
-- **`keylight`**: Key light devices
-- **`devices`**: Miscellaneous hardware integrations
-- **`utilities`**: General purpose utilities and helpers
-- **`overlays`**: Overlay and visual experiences
-- **`audio`**: Audio processing and sound integrations
-- **`chat`**: Chat interaction tools
-- **`development`**: Development, testing, and debugging utilities
+- **`system`** – Core Lumia features and internal tooling
+- **`platforms`** – Streaming platform integrations (Twitch, YouTube, Kick, etc.)
+- **`apps`** – Third-party app integrations
+- **`lights`** – General lighting control providers
+- **`switch`** – Smart switch and relay integrations
+- **`deck`** – Control deck hardware and software
+- **`protocols`** – Network or automation protocols (OSC, MIDI, etc.)
+- **`keylight`** – Key light devices
+- **`devices`** – Miscellaneous hardware integrations
+- **`utilities`** – General purpose utilities and helpers
+- **`overlays`** – Overlay and visual experiences
+- **`audio`** – Audio processing and sound integrations
+- **`chat`** – Chat interaction tools
+- **`development`** – Development, testing, and debugging utilities
 
 ### Lights configuration (for lights category)
 
-If your plugin provides lights, add a `config.lights` block so the PluginAuth UI can render discovery/manual-add controls and a selection list. Lights are saved by the Lumia UI; plugins should not mutate light state directly.
+If your plugin provides lights, add a `config.lights` block so the PluginAuth UI can render discovery/manual-add controls and a selection list. Lights are saved by the Lumia UI—plugins should not mutate light state directly.
 
 ```json
 {
@@ -359,11 +359,50 @@ For complete behavior details (including `visibleIf`, fallback rules, and shorth
 
 Avoid adding settings that exist only for testing or debugging. Keep settings user-facing and essential.
 
+### Tutorials (`settings_tutorial` & `actions_tutorial`)
+
 If you provide `settings_tutorial` (markdown or a relative `.md` file path), it renders as a setup guide in the auth screen.
 
 To provide a tutorial that is specific to actions, use `actions_tutorial` (markdown or a relative `.md` file path). When present, it renders in the Actions editor.
 
-Populate both tutorials with clear, step-by-step instructions that a first-time user can follow without guesswork.
+Populate both tutorials with clear, step-by-step instructions that a first-time user can follow without guesswork. Prefer the relative-file form (`"settings_tutorial": "./settings_tutorial.md"`) for anything longer than a few paragraphs — the file ships inside your plugin package and keeps `manifest.json` readable.
+
+From Lumia Stream 9.2, tutorials render in a full reader: users can open the tutorial in its own window (pinnable on top of other apps), switch between dark and light reading backgrounds, resize text, toggle line wrapping and line numbers in code, and navigate long guides from an auto-generated table of contents. Do not compress a guide to fit a sidebar — complete, detailed, step-by-step tutorials are encouraged, including full source files inline.
+
+#### Headings become navigation
+
+`##` and `###` headings build the table of contents in the tutorial window, and scrolling highlights the current section. Structure long tutorials as a short intro followed by numbered step headings:
+
+```md
+## Set up your device
+
+### 1. Install the firmware
+### 2. Join it to Wi-Fi
+### 3. Add it in Lumia
+```
+
+#### Code blocks
+
+Fenced code blocks render as cards with an automatic **Copy** button and syntax highlighting. Set the fence language to enable highlighting. Supported languages: `ini`, `cpp`, `c`, `bash`, `javascript`, `typescript`, `json`, `yaml`, `xml`/`html`, `css`, `python`, plus aliases (`arduino` → `cpp`, `toml`/`conf` → `ini`, `sh`/`zsh` → `bash`).
+
+Name a file by adding `title="relative/path.ext"` to the fence info string:
+
+````md
+```ini title="platformio.ini"
+[env:esp32dev]
+platform = espressif32
+```
+````
+
+- The value **must be wrapped in double quotes** — `title=platformio.ini` without quotes is silently ignored.
+- Titled blocks show a filename chip in the card header and get a per-file **Download** button.
+- When a tutorial contains titled blocks, the reader adds a **Download project files** button that zips every titled block using its path (`title="src/main.cpp"` creates a `src/` folder in the zip). Give each file of a multi-file project a titled fence with its real relative path and users can download a ready-to-open project.
+
+This makes "flash this firmware" or "run this script" plugins practical: embed the complete, buildable source files in the tutorial and users copy or download them without leaving Lumia. Long listings (a few hundred lines) are fine — code cards scroll internally instead of stretching the page.
+
+#### Section separator caveat
+
+Lines consisting of `---` are treated as tutorial section separators wherever they appear — **including inside code fences**. Do not put `---` lines in code samples (YAML document markers, ini dividers); restructure the sample instead.
 
 Tutorials can include local images bundled with the plugin. Reference them with a relative path and they will resolve from the plugin root at runtime:
 
@@ -677,7 +716,7 @@ When declared, Lumia routes these commands to `modCommand(type, value)` in your 
 
 ### Heart rate source support
 
-If your plugin reads a live heart rate (BPM), from a wearable, a Bluetooth heart-rate monitor, or a third-party API, declare it as a heart-rate source:
+If your plugin reads a live heart rate (BPM) — from a wearable, a Bluetooth heart-rate monitor, or a third-party API — declare it as a heart-rate source:
 
 ```json
 {
@@ -695,7 +734,7 @@ The flag is only the UI half. To feed the shared heart-rate system, call `update
 await this.lumia.updateHeartRate(bpm);
 ```
 
-That single call drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate zone alerts, calorie tracking, and Studio heart-rate light reactions, the same pipeline the native heart-rate integrations use. See `updateHeartRate` in the [API Reference](./api-reference).
+That single call drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate zone alerts, calorie tracking, and Studio heart-rate light reactions — the same pipeline the native heart-rate integrations use. See `updateHeartRate` in the [API Reference](./api-reference).
 
 Settings support the same field types as action fields, plus three settings-only structured types: `named_map` (labeled name-to-value rows), `json` (raw JSON editor), and `roi` (region-of-interest coordinates). Settings also support `disabled: true` to render a field read-only in PluginAuth.
 
@@ -812,7 +851,7 @@ Action fields support: `text`, `datetime`, `email`, `url`, `number`, `textarea`,
 
 Key action-field behaviors:
 
-- Set `allowVariables: true` to enable `{{variable}}` insertion on a field. When omitted, variables are disabled, including on `select` fields with `allowTyping`.
+- Set `allowVariables: true` to enable `{{variable}}` insertion on a field. When omitted, variables are disabled — including on `select` fields with `allowTyping`.
 - Set `allowTyping: true` on `select` to allow custom typed values alongside dropdown options.
 - Set `multiple: true` on `select` to allow multi-value selection (value becomes an array).
 - `allowTyping` and `multiple` can be combined on the same `select` field.
@@ -897,13 +936,13 @@ Optional alert defaults can be provided under `defaults` to control how Lumia in
 
 Use `variationConditions` when an alert can fire with multiple sub-types (for example, different tiers of a subscription or thresholds of a donation) and you want creators to configure each variation independently.
 
-- **`type`**: One of the condition identifiers exposed by `LumiaVariationConditions` (see `lumia-types/src/alert.types.ts:6`). Examples: `EQUAL_SELECTION`, `GIFT_SUB_EQUAL`, `GREATER_NUMBER`, `RANDOM`.
-- **`description`** _(optional)_: Helper text shown in the Lumia UI.
-- **`dynamicOptions`** _(optional, `EQUAL_SELECTION` only)_: When `true`, Lumia shows dropdown suggestions but also allows typed custom values.
-- **`selections`** _(optional)_: Only used with `EQUAL_SELECTION`; supplies the dropdown values the creator can pick from.
-  - **`label`**: How the option appears in the Lumia UI.
-  - **`value`**: The literal tier/value you expect to receive at runtime (compared against `dynamic.value`).
-  - **`message`** _(optional)_: Override for `defaultMessage` when this variation is active.
+- **`type`** – One of the condition identifiers exposed by `LumiaVariationConditions` (see `lumia-types/src/alert.types.ts:6`). Examples: `EQUAL_SELECTION`, `GIFT_SUB_EQUAL`, `GREATER_NUMBER`, `RANDOM`.
+- **`description`** _(optional)_ – Helper text shown in the Lumia UI.
+- **`dynamicOptions`** _(optional, `EQUAL_SELECTION` only)_ – When `true`, Lumia shows dropdown suggestions but also allows typed custom values.
+- **`selections`** _(optional)_ – Only used with `EQUAL_SELECTION`; supplies the dropdown values the creator can pick from.
+  - **`label`** – How the option appears in the Lumia UI.
+  - **`value`** – The literal tier/value you expect to receive at runtime (compared against `dynamic.value`).
+  - **`message`** _(optional)_ – Override for `defaultMessage` when this variation is active.
 
 Example manifest entry with variations:
 
@@ -972,12 +1011,12 @@ If you need multiple variation comparisons, trigger separate alerts with the app
 
 Use variation generation when Lumia should build many alert variations from plugin-managed data instead of having the creator add them one by one.
 
-- **`variationGeneration`** _(optional)_: Configures the modal shown before generation runs.
-  - **`title`** _(optional)_: Modal title.
-  - **`description`** _(optional)_: Helper text shown above the form.
-  - **`buttonLabel`** _(optional)_: Label used for the alert-page button.
-  - **`generateLabel`** _(optional)_: Label used for the modal submit button.
-  - **`fields`** _(optional)_: Uses the same `PluginFormField[]` schema as other plugin forms, so you can declare checkboxes, inputs, selects, sliders, and other supported field types.
+- **`variationGeneration`** _(optional)_ – Configures the modal shown before generation runs.
+  - **`title`** _(optional)_ – Modal title.
+  - **`description`** _(optional)_ – Helper text shown above the form.
+  - **`buttonLabel`** _(optional)_ – Label used for the alert-page button.
+  - **`generateLabel`** _(optional)_ – Label used for the modal submit button.
+  - **`fields`** _(optional)_ – Uses the same `PluginFormField[]` schema as other plugin forms, so you can declare checkboxes, inputs, selects, sliders, and other supported field types.
 
 Example manifest entry:
 
@@ -1276,7 +1315,7 @@ The SDK includes manifest validation. Common validation errors:
 5. **Validation**: Use validation rules to prevent user errors
 6. **Documentation**: Include comprehensive descriptions and examples
 7. **Testing**: Test your manifest with the validation tools
-8. **Tutorials**: Provide clear `settings_tutorial` and `actions_tutorial` steps
+8. **Tutorials**: Provide detailed `settings_tutorial` and `actions_tutorial` guides — structured headings for the table of contents, language-tagged code fences, and `title="path"` fences for downloadable files (see the Tutorials section)
 9. **No Test Controls**: Avoid test-only settings and actions
 10. **Retry Discipline**: Implement a disconnect flow, use exponential backoff with a retry cap, mark the plugin disconnected when retries are exhausted, and pause polling until an explicit reconnect trigger
 11. **Minimal Logs**: Log errors and explicit user actions only

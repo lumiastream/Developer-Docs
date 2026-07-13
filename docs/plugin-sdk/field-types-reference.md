@@ -785,7 +785,7 @@ Settings fields do not expose variable insertion in the UI.
 - **`named_map`, `json`, `roi` are settings-only**: These structured types are not available in action fields.
 - **`min`/`max` location differs**: For action fields, use top-level `min`/`max`; for settings fields, use `validation.min`/`validation.max`. Both are accepted but the canonical location differs.
 - **`multiple: true` changes the value shape**: When `multiple` is enabled on `select`, the stored value is always an array even if one item is selected. Set `defaultValue` to an array accordingly.
-- **`dynamicOptions` requires a runtime call**: Declaring `dynamicOptions: true` on a field does nothing on its own; your plugin must call `lumia.updateActionFieldOptions(...)` or `lumia.updateSettingsFieldOptions(...)` to populate the options.
+- **`dynamicOptions` requires a runtime call**: Declaring `dynamicOptions: true` on a field does nothing on its own — your plugin must call `lumia.updateActionFieldOptions(...)` or `lumia.updateSettingsFieldOptions(...)` to populate the options.
 
 ## See Also
 
