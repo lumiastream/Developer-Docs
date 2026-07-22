@@ -2,8 +2,7 @@
 sidebar_position: 0
 id: alerts-index
 title: Alerts
-description: Explore every Lumia alert by platform, with payload examples and template variables for stream automation.
-image: /img/social/alerts.png
+description: Every alert Lumia emits, grouped by platform. Each alert has its own page with payload examples and template variables.
 ---
 
 # Alerts

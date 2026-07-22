@@ -736,6 +736,52 @@ await this.lumia.updateHeartRate(bpm);
 
 That single call drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate zone alerts, calorie tracking, and Studio heart-rate light reactions — the same pipeline the native heart-rate integrations use. See `updateHeartRate` in the [API Reference](./api-reference).
 
+### TTS voice provider support
+
+If your plugin can synthesize speech (an ElevenLabs-style API, a local engine, etc.), declare it as a TTS voice provider so your voices appear in Lumia's **native** Text-to-Speech voice picker — everywhere native TTS runs (alerts, chatbox/event-list read-aloud, the `!tts` command, and TTS actions):
+
+```json
+{
+	"config": {
+		"hasTtsVoices": true,
+		"ttsVoiceSource": { "label": "ElevenLabs" }
+	}
+}
+```
+
+`config.hasTtsVoices` is a boolean flag. `config.ttsVoiceSource.label` is the optional group label shown before your voices in the picker (defaults to your plugin name).
+
+The flag is only the declaration. Implement two runtime hooks:
+
+- `ttsVoices(config?)` — return the voices Lumia should list: `[{ id, name, language?, previewUrl? }]`. Lumia calls this when your plugin loads; call `this.lumia.refreshTtsVoices()` to make Lumia re-pull after the user sets an API key or your list changes.
+- `synthesizeTts({ voiceId, message, volume? })` — render audio for the chosen voice and return `{ audio, mime }` (base64) or `{ audioUrl }` (a `data:` / `https:` URL). Lumia plays it through the native TTS pipeline (local speakers or the overlay).
+
+See `ttsVoices`, `synthesizeTts`, and `refreshTtsVoices` in the [API Reference](./api-reference).
+
+### Song request source support
+
+If your plugin fronts a music service or player (SoundCloud, Apple Music, a local player, …), declare it as a song-request source so it can act as the playback target for Lumia's native song-request system (the `!sr` command, queue, approvals, and overlay):
+
+```json
+{
+	"config": {
+		"hasSongRequests": true,
+		"songRequest": {
+			"label": "SoundCloud",
+			"supportsSearch": true,
+			"supportsSkip": true,
+			"supportsPause": true,
+			"supportsVolume": true,
+			"supportsQueue": true
+		}
+	}
+}
+```
+
+`config.hasSongRequests` is a boolean flag. `config.songRequest` carries the capability details, all optional: `label` defaults to your plugin name, and `supportsQueue: true` means your app owns the queue (Lumia hands off every approved request) while `false` means Lumia drives one track at a time.
+
+The declaration is one half. Implement `resolveSongRequest` plus the transport hooks you support (`playSongRequest`, `enqueueSongRequest`, `skipSongRequest`, …), and report playback back through the `lumia` bridge: `songRequestNowPlaying`, `songRequestEnded`, and `updateSongRequestQueue`. Plugins can also submit requests into the queue from any playback mode with `addSongRequest`. See the [API Reference](./api-reference).
+
 Settings support the same field types as action fields, plus three settings-only structured types: `named_map` (labeled name-to-value rows), `json` (raw JSON editor), and `roi` (region-of-interest coordinates). Settings also support `disabled: true` to render a field read-only in PluginAuth.
 
 Use `named_map` instead of a freeform `textarea` when users should define multiple named entries (for example `sound name -> file`, `feed name -> URL`).

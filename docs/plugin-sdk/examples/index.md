@@ -7,6 +7,7 @@ title: Examples
 Browse the plugin SDK examples:
 
 - [Chat Summarizer](./chat-summarizer) - Summarizes chat on an interval and highlights users by category.
+- [Demo Song Source](./song-request-source) - Example song-request source plugin: resolves viewer requests to fake tracks and simulates playback so you can test the full song-request round trip.
 - [Divoom Pixoo](./divoom-pixoo) - Send text, GIFs, drawings, and device controls to Divoom Pixoo LED displays over Wi-Fi.
 - [ElevenLabs TTS](./elevenlabs-tts) - Generate ElevenLabs speech or music audio and play it through Lumia Stream.
 - [EVE Online](./eveonline) - Pull EVE Online character status, wallet, location, and activity from ESI into Lumia.

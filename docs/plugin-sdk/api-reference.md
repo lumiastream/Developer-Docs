@@ -24,6 +24,12 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 - **`onsettingsupdate(settings, previousSettings)`** – called after settings change. Optional.
 - **`aiPrompt(config): Promise<string | object | void> | string | object | void`** – optional AI prompt handler. Enabled by declaring `config.hasAI` in the manifest.
 - **`aiModels(config?): Promise<Array<{ value, name? }> | string[] | { models: [...] } | void>`** – optional AI model list provider used by Lumia AI model pickers.
+- **`ttsVoices(config?): Promise<Array<{ id, name, language?, previewUrl? }> | { voices: [...] } | void>`** – optional TTS voice list provider. Enabled by declaring `config.hasTtsVoices` in the manifest; the returned voices appear in Lumia's native TTS voice picker. **Throw** on a transient failure (e.g. your upstream API errors) so Lumia keeps the previously-listed voices; return `[]` only to genuinely clear them (e.g. the user removed their API key).
+- **`synthesizeTts({ voiceId, message, volume? }): Promise<{ audio, mime? } | { audioUrl } | string | void>`** – optional TTS synthesizer called when one of your voices is chosen. Return base64 `audio` (with optional `mime`) or a ready-to-play `audioUrl` (`data:` / `https:`).
+- **`resolveSongRequest({ query, requesterUsername?, requesterPlatform? }): Promise<{ id, title, artist?, thumbnailUrl?, url?, durationSeconds?, requesterUsername? } | null>`** – optional song-request resolver for source plugins (declared via `config.hasSongRequests` / `config.songRequest`). Map a viewer's query to a track from your service; return `null` when nothing matches so Lumia can reject the request.
+- **`enqueueSongRequest(track): Promise<void>`** – optional song-request hand-off hook: add a resolved track to your app's queue.
+- **`playSongRequest(track): Promise<void>`** – optional song-request hand-off hook: start playing a resolved track immediately.
+- **`skipSongRequest()` / `pauseSongRequest()` / `resumeSongRequest()` / `setSongRequestVolume(volume)` / `clearSongRequestQueue()`** – optional transport hooks Lumia forwards from its dashboard, overlay, and chat song commands when your plugin is the active song-request source. Declare only the capabilities you support via `config.songRequest` (see the [Manifest Guide](./manifest-guide)).
 - **`chatbot(config): Promise<boolean | void> | boolean | void`** – optional native chatbot handler. Enabled by declaring `config.hasChatbot` in the manifest.
 - **`modCommand(type, value): Promise<boolean | void> | boolean | void`** – optional moderation handler. Enabled by declaring `config.modcommandOptions` in the manifest.
 - **`searchLights(config?): Promise<any>`** – optional discovery hook for lights plugins. Return a list of devices for the auth UI.
@@ -152,6 +158,14 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 ### Heart Rate
 
 - **`updateHeartRate(bpm: number): Promise<void>`** – push a live heart-rate reading (beats per minute) into Lumia's shared heart-rate system. This makes your plugin a first-class heart-rate source, exactly like the built-in HypeRate and Pulsoid integrations: the value drives the `{{heart_rate}}` overlay variable, the Pulse heart-rate **zone** alerts, calorie tracking, and Studio heart-rate light reactions. Call it every time a new reading arrives. Pair it with `"hasHeartrate": true` in your manifest `config` (see the [Manifest Guide](./manifest-guide)) so Lumia also shows the heart-rate zone Alerts UI for your plugin.
+- **`refreshTtsVoices(): Promise<void>`** – ask Lumia to re-pull your `ttsVoices()` list. Call it after the user sets an API key or your available voices change, so the native TTS voice picker updates without a plugin reload. Pair it with `"hasTtsVoices": true` in your manifest `config` (see the [Manifest Guide](./manifest-guide)).
+
+### Song Requests
+
+- **`addSongRequest({ query, requesterUsername? }): Promise<{ accepted: boolean; reason?: string }>`** – submit a song request into Lumia's native queue (the same pipeline as the `!sr` chat command). The request plays through the streamer's configured playback mode. On rejection, `reason` explains why (requests disabled, queue full, throttled, disallowed source, …).
+- **`songRequestNowPlaying(track): Promise<void>`** – report the track your source just started playing. Applies when the streamer has selected your plugin as the song-request playback source: Lumia updates its now-playing state, the `{{songrequest_now_playing_*}}` variables, and the song-request overlay. Safe to call on every player poll — repeated reports of the same track are deduped.
+- **`songRequestEnded(trackId?): Promise<void>`** – report that the current track finished playing. Lumia clears its now-playing state and, when it drives your player track-by-track (`supportsQueue: false`), hands you the next queued track via your `playSongRequest` hook. Pass the track id when known.
+- **`updateSongRequestQueue(tracks): Promise<void>`** – report your source's upcoming queue so Lumia prunes requests that already played or were removed on your side. An empty array is treated as a transient snapshot and ignored.
 
 ### Commands
 
