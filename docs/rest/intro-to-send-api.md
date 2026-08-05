@@ -108,6 +108,7 @@ On up-to-date versions of Lumia, requests that can be rejected upfront return a 
 
 - `unknown_type` (400) — the `type` isn't a valid Send API type.
 - `not_found` (404) — the named command, scene, theme, or animation doesn't exist in this user's setup. Checked before anything is queued, so a bad name never runs.
+- `command_disabled` (409) — the named command exists but is turned off, or sits in a disabled folder. Applies to `chat-command`, `chatbot-command`, `twitch-points`, `twitch-extension` and `kick-points`. Previously these returned a success and then silently did nothing.
 
 Other failures keep their existing plain-text messages with a 400 status. Older versions of Lumia return `{ "message": true, "status": 200 }` even for names that don't exist, so don't rely on these errors when supporting old installs — check the [meta endpoint](./get-settings.md#api-capabilities) for the `name-validation` feature.
 

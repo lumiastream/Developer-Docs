@@ -135,7 +135,7 @@ POST http://localhost:39231/api/send?token=your_token
 
 Timeout a user on the channel
 
-`duration` is how many minutes they should be timed out for
+`duration` is how long they should be timed out for, in **seconds** on Twitch and YouTube. The value is passed to the platform untouched, so Kick is the exception — its API takes `duration` in **minutes**. Omit it and it defaults to `10`.
 `name` is the reason of why they were timed out
 
 ```bash
