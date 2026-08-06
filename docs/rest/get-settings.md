@@ -253,10 +253,37 @@ GET http://localhost:39231/api/meta?token=your_token
 	"version": "9.1.0",
 	"apiVersion": 2,
 	"startedAt": 1783487000000,
-	"features": ["meta", "retrieve-slim", "structured-errors", "name-validation", "ws-command-responses", "ws-subscriptions", "ws-keepalive", "mcp"]
+	"features": ["meta", "retrieve-slim", "structured-errors", "name-validation", "ws-command-responses", "ws-subscriptions", "ws-keepalive", "mcp", "premium"]
 }
 ```
 
 Older versions of Lumia return a 404 here — treat that as `apiVersion: 1` with none of the listed features.
+
+## Subscription tier
+
+The `data.premium` field in the `/retrieve` response above tells you whether the user has a Lumia Stream Premium subscription. If that is the only thing you need, there is also a dedicated endpoint so you don't have to pull the whole settings payload:
+
+```
+GET http://localhost:39231/api/premium?token=your_token
+```
+
+```json
+{
+	"status": 200,
+	"data": {
+		"premium": true
+	}
+}
+```
+
+This value is **informational only**. Lumia does not reject API commands based on it, and you should not treat it as a security boundary. It is there so your integration can adapt — hide a control that drives a premium-only Lumia feature, show a note in your own UI, or pick a different default.
+
+To react to it changing without polling, listen for the [`premium` websocket event](../websockets/listen-to-events.md#premium); Lumia pushes one whenever it re-checks the subscription.
+
+:::tip
+
+Check for the `premium` entry in the meta endpoint's `features` array before calling `GET /api/premium`. Older versions of Lumia return a 404 — fall back to reading `data.premium` from `/retrieve`.
+
+:::
 
 Next page we will go in depth for each command that you can trigger and how to trigger them

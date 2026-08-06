@@ -124,6 +124,26 @@ Connection lifecycle guidance for networked plugins:
 - If you gate refreshes with an in-flight promise (for example `_refreshPromise`), clear it in `finally`.
 - Add stale lock recovery so a hung request cannot block all future polls.
 
+### Subscription tier
+
+- **`isPremium(): Promise<boolean>`** – whether the user currently has a Lumia Stream Premium subscription.
+
+This is **informational only**. Lumia does not block any plugin API call based on it, and you should not treat it as a security boundary. Use it to tailor what your plugin offers — hide a feature that depends on a premium-only Lumia capability, surface a note in your settings UI, or pick a different default.
+
+```ts
+async onload() {
+  const premium = await this.lumia.isPremium();
+  if (!premium) {
+    this.lumia.showToast({
+      message: 'Studio themes need Lumia Premium — falling back to plain colors.',
+      type: 'warn',
+    });
+  }
+}
+```
+
+The value is re-read from the host on every call, so it stays correct after the user upgrades mid-session without a plugin reload.
+
 ### Settings
 
 - **`getSettings(): Record<string, any>`** – get the current settings object.

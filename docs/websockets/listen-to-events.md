@@ -94,6 +94,7 @@ If you used our Websockets in the past you may remember slash-style types such a
 | `command` | A viewer triggered one of your chat commands |
 | `alert` | An alert fired (the alert name is in `event`) |
 | `states` | One of Lumia's core states changed |
+| `premium` | Lumia re-checked the user's subscription tier |
 | `modqueue_list` | The moderation queue was updated |
 | `chat_platform_register` | A plugin registered a custom chat platform |
 
@@ -182,6 +183,20 @@ Pushed whenever one of Lumia's core states changes:
 ```
 
 `on` (Lumia light control), `streamMode`, and `fuze` are `1` or `0`. `listenId` identifies the current Lumia account.
+
+### premium
+
+Pushed whenever Lumia re-checks the user's subscription tier — at startup, on its periodic re-check, and right after an upgrade — so you don't have to poll [`GET /api/premium`](../rest/get-settings.md#subscription-tier):
+
+```json
+{
+	"origin": "lumiastream",
+	"type": "premium",
+	"data": { "premium": true }
+}
+```
+
+Informational only. Lumia does not reject API commands based on this value; use it to adapt what your integration exposes.
 
 ### modqueue_list
 

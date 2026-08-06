@@ -139,6 +139,8 @@ this.lumia.displayChat({
 
 `showInEventList` should stay `false` for most plugins. Enable it only when users expect those plugin-triggered events in Event List (typically streaming platform/event-source plugins).
 
+`await this.lumia.isPremium()` tells you whether the user is on Lumia Stream Premium. It is informational only — no plugin API call is blocked on it — but it lets you hide or adapt features that depend on premium-only Lumia capabilities.
+
 `playAudio` tips:
 
 - Prefer file paths, `file://` URLs, normal `http(s)` URLs, or `data:audio/...` URLs.
