@@ -111,6 +111,7 @@ The valid types for sending an alert are:
 - tiktok-like
 - tiktok-gift
 - tiktok-share
+- tiktok-streamLive
 - tiktok-streamEnd
 - tiktok-newVideo
 - kick-firstChatter

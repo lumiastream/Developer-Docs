@@ -18,7 +18,7 @@ Browse by platform below, or open the [Alert Explorer](/docs/display-variables#a
 | [YouTube](./youtube/index.md) | 18 |
 | [Kick](./kick/index.md) | 14 |
 | [Facebook](./facebook/index.md) | 11 |
-| [TikTok](./tiktok/index.md) | 19 |
+| [TikTok](./tiktok/index.md) | 20 |
 | [Lumia](./lumiastream/index.md) | 21 |
 | [Streamlabs](./streamlabs/index.md) | 5 |
 | [StreamElements](./streamelements/index.md) | 1 |

@@ -7,7 +7,7 @@ description: Every alert Lumia emits for TikTok.
 
 # TikTok alerts
 
-19 alerts available. Each page documents the message template, payload fields, and example scenarios.
+20 alerts available. Each page documents the message template, payload fields, and example scenarios.
 
 | Alert | Description |
 | --- | --- |
@@ -26,6 +26,7 @@ description: Every alert Lumia emits for TikTok.
 | [Share](./share.mdx) | shared your stream |
 | [Shop Purchase](./shop-purchase.mdx) | triggered live shopping |
 | [Stream End](./stream-end.mdx) | stream ended |
+| [Stream Live](./stream-live.mdx) | stream is now live |
 | [Super Fan](./super-fan.mdx) | became a Super Fan |
 | [Super Fan Box](./super-fan-box.mdx) | triggered a Super Fan box |
 | [Total Likes](./total-likes.mdx) | reached `{{totalLikeCount}}` likes |
