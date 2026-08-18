@@ -222,7 +222,7 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 ### Audio & Speech
 
 - **`playAudio(options: { path: string; volume?: number; waitForAudioToStop?: boolean }): Promise<boolean>`** – play an audio file. Await the promise if you need to wait for playback to finish.
-- **`tts(options: { message: string; voice?: string; volume?: number }): Promise<boolean>`** – trigger text-to-speech playback.
+- **`tts(options: { message: string; voice?: string; volume?: number; speed?: number }): Promise<boolean>`** – trigger text-to-speech playback. `speed` is a percentage of the voice's normal talking speed (20–200, default 100) and works for system, cloud, marketplace and plugin voices alike.
 
 `playAudio` notes:
 
