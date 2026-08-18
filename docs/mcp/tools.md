@@ -33,6 +33,27 @@ The `lumia://settings` resource mirrors `get_settings` for clients that can read
 - `manage_chatbot_command`: create, update, or delete a chatbot command. Chatbot commands are unlimited on every plan.
 - `set_command_state`: enable or disable a command or folder. Platform reward state syncs where Lumia supports it.
 
+## Actions
+
+- `get_action_catalog`: list every action `run_actions` can execute and the exact `value` shape each one expects.
+- `run_actions`: run a list of actions in order — the same building blocks commands and alerts are made of.
+
+`run_actions` reaches far more of Lumia than the individual tools: every core Lumia action, every overlay action, outbound HTTP requests, and every connected integration or plugin (Twitch, OBS, Spotify, and so on), plus control-flow steps (`delay`, `conditional`, `loop`, `randomGroup`, `stop`).
+
+Each action needs a `base` naming the system that runs it and a `type` naming the action; control-flow steps are type-driven and need no `base`. Across `lumia` and `overlay` actions, `value.value` is the target or name and `value.message` is the content or payload — read the catalog before building a list rather than guessing shapes.
+
+```json
+{
+	"actions": [
+		{ "base": "lumia", "type": "chatbot", "value": { "message": "Starting in 5!" } },
+		{ "type": "delay", "delay": 5000 },
+		{ "base": "lumia", "type": "setColor", "value": { "rgb": { "r": 255, "g": 0, "b": 0 }, "lights": {} } }
+	]
+}
+```
+
+The `lumia://actions/catalog` resource mirrors `get_action_catalog` for clients that can read MCP resources.
+
 ## Chat, voice, and moderation
 
 - `send_chat_message`: post to live chat as the bot or as the streamer.
@@ -93,5 +114,6 @@ Some tools have public or destructive effects. For production streams, tell your
 | Moderation | `moderate_user`, `delete_message`, `clear_chat`, `pin_message`, and `manage_moderator` require the connected platform account to have permission. |
 | Twitch-only live actions | Clips, stream markers, commercials, polls, and predictions are Twitch-only and require the channel to be live. Announcements, chat modes, clear chat, pinned messages, and moderator management also target Twitch. |
 | Twitch/Kick stream info | `set_stream_info` supports Twitch and Kick; YouTube stream info is not supported by this tool. |
+| Arbitrary code | `run_actions` rejects `code`, `writeToFile`, and anything under the `commandRunner` or `inputEvents` bases, including inside nested branches. To run those, put them in a Lumia command and call `trigger_command`. |
 | Chat bot dependency | `send_chat_message` requires the platform to be connected and the Lumia chat bot to be enabled. |
 | Session-scoped items | `end_poll` and `end_prediction` target polls/predictions that Lumia created and can still identify in the current session. |
