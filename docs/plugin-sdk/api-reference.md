@@ -264,7 +264,11 @@ await this.lumia.playAudio({
 ### UX Helpers
 
 - **`showToast(options: { message: string; time?: number; type?: "info" | "success" | "warning" | "warn" | "error" }): Promise<boolean>`** – display a toast notification within Lumia Stream.  
-  `time` is in **milliseconds**.
+  `time` is in **milliseconds**, not seconds — `time: 6` is a 6ms flash, not 6 seconds.
+  Omit it to use the host default of **8000ms**, which is the right choice most of the time.
+  Values below **2000ms** are raised to 2000ms by the host (with a console warning), so a
+  toast can always be read. Pick a duration to suit the message: ~4000-5000ms for info and
+  success, longer for errors the user needs to act on.
 - **`prompt(options: { title?: string; message?: string; inputLabel?: string; inputPlaceholder?: string; confirmLabel?: string; showCancelButton?: boolean; inputType?: "text" | "password" }): Promise<{ value: string } | null>`** – open a SweetAlert input prompt. Returns `{ value }` on confirm or `null` if cancelled/failed.
   Example:
   ```js

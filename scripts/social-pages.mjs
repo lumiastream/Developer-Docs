@@ -18,7 +18,7 @@ export const socialPages = [
     description:
       "Connect Claude, Cursor, Codex, VS Code, and other MCP clients to Lumia Stream for AI-assisted lights, alerts, chat, overlays, stream tools, and live state.",
     image: "mcp-server.png",
-    code: ["get_state()", "send_command()", "send_tts()", "listen_for_events()"],
+    code: ["get_settings", "trigger_command", "set_color", "wait_for_event"],
   },
   {
     id: "variables",
@@ -67,7 +67,7 @@ export const socialPages = [
   },
   {
     id: "rest-api",
-    route: "/docs/rest/clone-the-repo",
+    route: "/docs/rest/quickstart",
     title: "REST API",
     imageTitle: "REST API",
     description: "Control Lumia Stream from apps, games, and scripts with local HTTP endpoints for commands, alerts, colors, TTS, and overlays.",
@@ -76,7 +76,7 @@ export const socialPages = [
   },
   {
     id: "websocket-api",
-    route: "/docs/websockets/clone-the-repo",
+    route: "/docs/websockets/quickstart",
     title: "WebSocket API",
     imageTitle: "WebSocket API",
     description: "Listen to live Lumia chat, alert, command, and stream-state events over WebSockets, or send API commands through the socket.",

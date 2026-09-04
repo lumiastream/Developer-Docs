@@ -1,12 +1,16 @@
 ---
 title: REST API
-sidebar_label: Clone the repo
+sidebar_label: Quickstart
 sidebar_position: 1
 description: Control Lumia Stream from apps, games, and scripts with local HTTP endpoints for commands, alerts, colors, TTS, and overlays.
 image: /img/social/rest-api.png
 ---
 
-# Clone the repo
+# REST API Quickstart
+
+The fastest way to see the REST API working is to clone a demo project, paste in your token, and run it. Pick your language below.
+
+If you would rather go straight to the endpoints, skip to [Intro to the Send API](./intro-to-send-api.md).
 
 ## Javascript
 

@@ -1,12 +1,16 @@
 ---
 title: WebSocket API
-sidebar_label: Clone the repo
+sidebar_label: Quickstart
 sidebar_position: 1
 description: Listen to live Lumia chat, alert, command, and stream-state events over WebSockets, or send API commands through the socket.
 image: /img/social/websocket-api.png
 ---
 
-# Clone the repo
+# WebSocket API Quickstart
+
+The fastest way to see the WebSocket API working is to clone a demo project, paste in your token, and run it. Pick your language below.
+
+If you would rather go straight to the protocol, skip to [Listen to events](./listen-to-events.md).
 
 ## Javascript
 

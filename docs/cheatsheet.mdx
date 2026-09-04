@@ -217,8 +217,24 @@ The Emote Alert and Hype Train layers both support a `chatTrigger` config:
 
 See [Chat triggers](./overlays/chat-triggers) for the pattern and how to build it into your own layers.
 
+## Ask an AI assistant instead
+
+With the [MCP server](./mcp/setup) connected, these are prompts rather than snippets:
+
+| Say this | It calls |
+| --- | --- |
+| "What commands and scenes do I have?" | `get_settings` |
+| "Set my lights to a warm sunset." | `set_color` |
+| "Test my follower alert." | `trigger_alert` |
+| "Set my death counter to 5." | `set_variable` |
+| "Make a !socials command linking my Twitter and TikTok." | `manage_chatbot_command` |
+| "Watch for the next follower and thank them by name." | `wait_for_event` + `send_chat_message` |
+
+See the [tool reference](./mcp/tools) for all 43 tools.
+
 ## I'm new - where do I go next?
 
 - Want the full variable reference? → [Platform Variables](./variables)
 - Building a custom overlay? → [Custom Overlays](./custom-overlays/custom-overlays-documentation)
 - Writing custom JavaScript? → [Custom JavaScript](./custom-code/what-is-custom-javascript)
+- Want an AI assistant to run it? → [MCP Server](./mcp/setup)

@@ -1,5 +1,6 @@
 ---
-sidebar_position: 5
+title: Troubleshooting
+sidebar_position: 6
 description: Troubleshoot Lumia Stream MCP connection, authentication, tool visibility, launch, and platform-permission issues.
 ---
 
@@ -13,8 +14,9 @@ If that fails, use the table below.
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| Tools do not appear in the client | Client has not restarted, config was saved in the wrong file, or the server failed to launch. | Restart or refresh the client. Confirm the config path for that client in [Client setup](./clients.md). |
+| Tools do not appear in the client | Client has not restarted, config was saved in the wrong file, or the server failed to launch. | Restart or refresh the client (fully quit it, don't just close the window). Confirm the config path for that client in [Client setup](./clients.md). |
 | `npx` or `command not found` | The MCP client did not inherit your shell PATH. | Replace `npx` with its full path from `which npx`. On Windows, use `cmd` with args `/c`, `npx`, `-y`, `@lumiastream/mcp`. |
+| `npx` starts but exits immediately, log shows `npx [options]` usage text | The client picked up an old `npx` (very common with nvm) that doesn't understand the `-y` flag, so it printed its help and quit. | Put the full path to a Node 20+ `npx` in `command` — find it with `nvm which 22` or `ls ~/.nvm/versions/node`. Or switch to the HTTP config, which needs no Node. |
 | `npx` starts but exits immediately | Node.js is older than 20, or the first `npx` package download failed because of network/proxy restrictions. | Install Node.js 20 or newer. If the client supports HTTP, use **Copy MCP Config (No Install)**. Otherwise run `npx -y @lumiastream/mcp` once in a terminal to warm the cache or configure npm proxy settings. |
 | `npx -y @lumiastream/mcp` does not launch in a client | The client has trouble resolving the package binary. | Try command `npx` with args `-y`, `-p`, `@lumiastream/mcp`, `lumia-mcp`. |
 | `401` or unauthorized | API disabled, wrong token, or old token after reset. | Enable **Settings -> API**, copy the current token, and update the MCP config. |

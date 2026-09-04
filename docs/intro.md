@@ -13,7 +13,7 @@ Lumia Stream is a streaming automation platform that connects lights, devices, s
 
 ### Trigger anything with the REST API
 
-The [REST API](/docs/rest/clone-the-repo) is the fastest way to control Lumia from an external app, game, or script. One POST to `http://localhost:39231/api/send` can:
+The [REST API](/docs/rest/quickstart) is the fastest way to control Lumia from an external app, game, or script. One POST to `http://localhost:39231/api/send` can:
 
 - Fire any Lumia command by name
 - Push a light color with exact duration, brightness, and transition
@@ -28,7 +28,7 @@ The API runs locally on port `39231` (HTTP) or `39232` (HTTPS). Authentication i
 
 ### React to everything with WebSockets
 
-The [WebSocket API](/docs/websockets/clone-the-repo) streams every event Lumia receives in real time. Subscribe once and you get:
+The [WebSocket API](/docs/websockets/quickstart) streams every event Lumia receives in real time. Subscribe once and you get:
 
 - Chat messages from Twitch, YouTube, Kick, Facebook, TikTok
 - Chat commands and channel point redeems
@@ -37,6 +37,16 @@ The [WebSocket API](/docs/websockets/clone-the-repo) streams every event Lumia r
 - Custom events your own integrations emit
 
 This is the right surface when you want to build your own alert system, sync external state to stream events, or trigger logic in a game engine or application without polling.
+
+### Hand the controls to an AI assistant
+
+The [MCP server](/docs/mcp/setup) exposes Lumia to any Model Context Protocol client — Claude, Cursor, Codex, VS Code Copilot, Windsurf, Gemini CLI. Your assistant reads your actual setup and then drives it in plain language:
+
+> "I just died. Flash my lights red and bump my death counter."
+
+That becomes `set_color` plus `set_variable`. There are [43 tools](/docs/mcp/tools) covering lights, studio scenes, commands, alerts, chat, TTS, moderation, stream management, overlays, variables, and a live event feed the assistant can wait on. `run_actions` covers anything the individual tools don't.
+
+Setup is a single config paste — no code. See [MCP setup](/docs/mcp/setup).
 
 ### Display live data with custom overlays
 
@@ -152,8 +162,9 @@ All REST and WebSocket connections authenticate with a token. Generate yours in 
 
 | Goal | Start here |
 | --- | --- |
-| Trigger Lumia from a game or external app | [REST API](/docs/rest/clone-the-repo) |
-| React to stream events in real time | [WebSockets](/docs/websockets/clone-the-repo) |
+| Trigger Lumia from a game or external app | [REST API](/docs/rest/quickstart) |
+| Let an AI assistant control your stream | [MCP Server](/docs/mcp/setup) |
+| React to stream events in real time | [WebSockets](/docs/websockets/quickstart) |
 | Build a browser-source overlay | [Custom Overlays](/docs/custom-overlays/custom-overlays-documentation) |
 | Add scripting logic to an action | [Custom JavaScript](/docs/custom-code/what-is-custom-javascript) |
 | Use or look up a template variable | [Variables](/docs/variables) |

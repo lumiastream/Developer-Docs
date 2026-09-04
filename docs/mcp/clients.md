@@ -1,127 +1,224 @@
 ---
+title: Client Setup
 sidebar_position: 2
-description: Client-specific Lumia Stream MCP setup for Claude, Cursor, Codex, VS Code, Windsurf, Gemini CLI, and generic MCP clients.
+description: Step-by-step Lumia Stream MCP setup for Claude Desktop, Codex and ChatGPT Desktop, and Cursor, with screenshots.
 ---
 
 # Client Setup
 
-Start with the [quickstart](./setup.mdx), then use the section for your client. Prefer the embedded HTTP config when your client supports Streamable HTTP MCP servers with headers. Use `npx` stdio everywhere else.
+This page walks through the three clients most Lumia streamers use, in full detail. Start with the [quickstart](./setup.mdx) if you haven't enabled the API yet, then follow the section for your client.
 
-## Claude Desktop
+Using something else? Skip to [Any other MCP client](#any-other-mcp-client) at the bottom.
 
-Claude Desktop commonly uses the stdio `mcpServers` config.
+## Before you begin
 
-1. Open **Settings -> Developer -> Edit Config**.
-2. Paste the copied `mcpServers` block into `claude_desktop_config.json`.
-3. If the file already has an `mcpServers` object, add `lumia-stream` inside it instead of pasting a second `mcpServers` key.
-4. Restart Claude Desktop.
+You need three things from Lumia Stream, and they're all on one page.
 
-Default config paths:
+1. Open Lumia Stream.
+2. In the sidebar, go to **Settings → API**.
+3. Check **Enable Developers API**.
+4. Note the **port** (default `39231`) and copy your **token**.
 
-- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+![Lumia Stream Settings, API section, showing the Enable Developers API checkbox, the token field, and the two Copy MCP Config buttons](/img/mcp/lumia-api-settings.png)
 
-## Claude Code
+That page also has two copy buttons that build the config for you:
 
-Embedded HTTP:
+| Button | Gives you | Use it when |
+| --- | --- | --- |
+| **Copy MCP Config (No Install)** | An HTTP config pointing at `http://localhost:39231/api/mcp` | Your client supports MCP servers over HTTP with headers. Nothing to install. |
+| **Copy MCP Config** | An `npx` config that runs `@lumiastream/mcp` | Your client only launches local programs, or HTTP doesn't work. Needs Node.js 20+. |
 
-```bash
-claude mcp add --transport http lumia-stream http://localhost:39231/api/mcp --header "Authorization: Bearer your_token_here"
-```
+:::warning Your token is a password
 
-Stdio:
-
-```bash
-claude mcp add lumia-stream --env LUMIA_TOKEN=your_token_here -- npx -y @lumiastream/mcp
-```
-
-By default, Claude Code registers the server for the current project. Add `--scope user` to make it available everywhere.
-
-You can also paste JSON:
-
-```bash
-claude mcp add-json lumia-stream '{"command":"npx","args":["-y","@lumiastream/mcp"],"env":{"LUMIA_TOKEN":"your_token_here"}}'
-```
-
-Verify with:
-
-```bash
-claude mcp list
-```
-
-:::warning
-
-Only commit `.mcp.json` to a project if it contains placeholders or environment-variable references. Do not commit your real Lumia token.
+It's the same token as the REST API. Anyone who has it can control your stream. Don't paste it into a file you commit to a repo, and don't show it on stream while you're setting this up.
 
 :::
 
-## Cursor
+:::info Keep Lumia running
 
-1. Open **Cursor Settings -> MCP**. In newer builds this may be under **Tools & Integrations**.
-2. Choose **New MCP Server**. Cursor opens `~/.cursor/mcp.json`.
-3. Paste the copied stdio `mcpServers` block and save.
-4. Return to MCP settings and refresh. The server shows a green dot once it starts.
+The MCP server talks to Lumia on your own machine. If Lumia Stream is closed, the tools will connect but every call will fail.
 
-For a project-only server, create `.cursor/mcp.json` in the project instead.
+:::
 
-## Codex
+## Claude Desktop
 
-Codex stores MCP configuration in `~/.codex/config.toml`. The CLI and IDE extension share this config; the desktop app can also configure custom MCP servers from its MCP settings.
+Claude Desktop reads MCP servers from a JSON file, and shows each one's status in its Developer settings.
 
-### Codex app
+### Step 1: Open Settings
 
-Open MCP settings and choose **Connect to a custom MCP**. If your Codex build offers HTTP transport, use:
+Click your name at the bottom-left of the sidebar and choose **Settings**, or just press **Cmd+,** (**Ctrl+,** on Windows).
 
-| Field | Value |
-| --- | --- |
-| Name | `Lumia MCP` |
-| Transport tab | **HTTP** |
-| URL | `http://localhost:39231/api/mcp` |
-| Header | `Authorization` = `Bearer your_token_here` |
+![The Claude Desktop account menu open with the Settings option](/img/mcp/claude-desktop-menu.png)
 
-Otherwise use stdio:
+### Step 2: Open the config file
 
-| Field | Value |
-| --- | --- |
-| Name | `Lumia MCP` |
-| Transport tab | **STDIO** |
-| Command to launch | `npx` |
-| Arguments | Add two arguments: `-y`, then `@lumiastream/mcp` |
-| Environment variables | `LUMIA_TOKEN` = your token |
-| Environment variable passthrough | Leave empty |
-| Working directory | Leave empty |
+In the Settings window, scroll the left sidebar to the **Desktop app** group and click **Developer**. You'll see a **Local MCP servers** panel. Click **Edit config**.
 
-If the app reports `command not found`, it did not inherit your shell PATH. Replace `npx` with the full path from:
+![Claude Desktop Developer settings showing the Local MCP servers panel and the Edit config button](/img/mcp/claude-desktop-developer-tab.png)
+
+That opens `claude_desktop_config.json` in your default editor, creating it if it doesn't exist yet:
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+### Step 3: Paste the config
+
+Paste what you copied from Lumia. If the file was empty, it should end up looking exactly like this:
+
+```json
+{
+	"mcpServers": {
+		"lumia-stream": {
+			"command": "npx",
+			"args": ["-y", "@lumiastream/mcp"],
+			"env": {
+				"LUMIA_TOKEN": "your_token_here",
+				"LUMIA_PORT": "39231"
+			}
+		}
+	}
+}
+```
+
+:::caution If you already have other MCP servers
+
+Don't paste a second `mcpServers` block — that's invalid JSON and Claude will silently ignore the whole file. Add `lumia-stream` *inside* the existing object instead:
+
+```json
+{
+	"mcpServers": {
+		"some-other-server": { "command": "..." },
+		"lumia-stream": {
+			"command": "npx",
+			"args": ["-y", "@lumiastream/mcp"],
+			"env": { "LUMIA_TOKEN": "your_token_here" }
+		}
+	}
+}
+```
+
+Note the comma after the previous server's closing brace.
+
+:::
+
+Save the file.
+
+:::danger Using nvm? Use a full path to npx
+
+This is the most common reason the server shows **Failed**. Claude Desktop doesn't run your shell's startup files, so it often picks up whichever `npx` nvm made the default — frequently a very old one. Old `npx` doesn't understand the `-y` flag, so it prints its own help text and exits immediately.
+
+Check what you'd be handing it:
+
+```bash
+npx --version && node --version
+```
+
+If Node is older than 20, put the full path to a modern `npx` in `command` instead:
+
+```json
+"command": "/Users/you/.nvm/versions/node/v22.22.3/bin/npx"
+```
+
+Find yours with `nvm which 22` or `ls ~/.nvm/versions/node`. Simplest alternative: use the **Copy MCP Config (No Install)** HTTP config, which doesn't involve Node at all.
+
+:::
+
+### Step 4: Fully restart Claude
+
+Closing the window is not enough — Claude keeps running in the background and won't reload the config.
+
+- **macOS**: press **Cmd+Q**, or choose **Claude → Quit Claude**. Then reopen it.
+- **Windows**: quit from the system tray icon, then reopen it.
+
+### Step 5: Check that it connected
+
+Go back to **Settings → Developer**. The **Local MCP servers** panel lists `lumia-stream` with its command, arguments, and current state. A healthy server shows no error; a broken one shows **Failed** with a **View logs** button.
+
+Its tools also appear in chat under the **Add files, connectors, and more** button at the bottom-left of the message box, via **Connectors → Manage connectors**.
+
+Then ask Claude:
+
+> "What can you see in my Lumia setup?"
+
+It should call `get_settings` and describe your commands, alerts, lights, and scenes.
+
+### If it says Failed
+
+Click **View logs**, or read them directly:
+
+```bash
+tail -n 40 ~/Library/Logs/Claude/mcp-server-lumia-stream.log
+```
+
+On Windows the same logs are in `%APPDATA%\Claude\logs`. `mcp.log` covers connections — it also prints the exact `npx` path Claude chose, which is how you catch the nvm problem above. `mcp-server-lumia-stream.log` has the server's own output.
+
+The usual causes, in order of how often they happen:
+
+| What you see in the log | Cause | Fix |
+| --- | --- | --- |
+| A wall of `npx [options]` usage text, then the server exits | Old `npx` that doesn't support `-y` | Use a full path to a Node 20+ `npx`, as above |
+| `command not found` | Claude can't find `npx` at all | Use the full path from `which npx` |
+| The file appears to be ignored entirely | Invalid JSON — usually a missing or extra comma | Re-check the config, especially if you added a second server |
+| Server starts, but every tool call fails | Lumia is closed, the API is off, or the token is stale | Re-check **Settings → API** in Lumia |
+
+See [Troubleshooting](./troubleshooting.md) for the rest.
+
+## Codex and ChatGPT Desktop
+
+Codex and the ChatGPT desktop app share the same MCP configuration. You can set it up through a settings panel or through `~/.codex/config.toml` — they end up in the same place.
+
+### ChatGPT Desktop app
+
+1. Open **Settings** and find the **MCP servers** panel.
+2. Choose to add a server, and give it the name `lumia-stream`.
+3. If your build offers an **HTTP** transport, use it:
+
+   | Field | Value |
+   | --- | --- |
+   | Name | `lumia-stream` |
+   | Transport | **HTTP** |
+   | URL | `http://localhost:39231/api/mcp` |
+   | Header | `Authorization` = `Bearer your_token_here` |
+
+4. Otherwise choose **STDIO**:
+
+   | Field | Value |
+   | --- | --- |
+   | Name | `lumia-stream` |
+   | Transport | **STDIO** |
+   | Command to launch | `npx` |
+   | Arguments | Two separate arguments: `-y`, then `@lumiastream/mcp` |
+   | Environment variables | `LUMIA_TOKEN` = your token |
+   | Environment variable passthrough | Leave empty |
+   | Working directory | Leave empty |
+
+5. Save, then enable the server in the list.
+
+:::caution "command not found" when using STDIO
+
+The app doesn't always inherit your shell's `PATH`, so it can't find `npx`. Run this in a terminal:
 
 ```bash
 which npx
 ```
 
+Then paste the full path it prints (something like `/usr/local/bin/npx`) into the **Command to launch** field instead of just `npx`.
+
+:::
+
+### Codex IDE extension
+
+Open the extension's **gear menu** and use its MCP server management screen. The fields are the same as the ChatGPT desktop app above, and it writes to the same `~/.codex/config.toml`.
+
 ### Codex CLI
 
-HTTP via `config.toml`:
-
-```toml
-[mcp_servers.lumia-stream]
-url = "http://localhost:39231/api/mcp"
-bearer_token_env_var = "LUMIA_TOKEN"
-```
-
-Start Codex with `LUMIA_TOKEN` set in the environment. If this is a private local config, Codex also supports static headers:
-
-```toml
-[mcp_servers.lumia-stream]
-url = "http://localhost:39231/api/mcp"
-http_headers = { "Authorization" = "Bearer your_token_here" }
-```
-
-Stdio:
+The fastest route is one command:
 
 ```bash
 codex mcp add lumia-stream --env LUMIA_TOKEN=your_token_here -- npx -y @lumiastream/mcp
 ```
 
-Or edit `~/.codex/config.toml`:
+Or edit `~/.codex/config.toml` yourself. For the `npx` setup:
 
 ```toml
 [mcp_servers.lumia-stream]
@@ -132,49 +229,64 @@ args = ["-y", "@lumiastream/mcp"]
 LUMIA_TOKEN = "your_token_here"
 ```
 
-Verify with:
+For the HTTP setup, reading the token from your environment:
+
+```toml
+[mcp_servers.lumia-stream]
+url = "http://localhost:39231/api/mcp"
+bearer_token_env_var = "LUMIA_TOKEN"
+```
+
+Start Codex with `LUMIA_TOKEN` set. If the config file is private to your machine, you can hardcode the header instead:
+
+```toml
+[mcp_servers.lumia-stream]
+url = "http://localhost:39231/api/mcp"
+http_headers = { "Authorization" = "Bearer your_token_here" }
+```
+
+Check it worked:
 
 ```bash
 codex mcp list
 ```
 
-## VS Code Copilot Agent Mode
+You can also run `/mcp` inside Codex to see connected servers and their tools.
 
-Create `.vscode/mcp.json` in your workspace, or run **MCP: Add Server** from the Command Palette.
+## Cursor
 
-VS Code uses `servers` as the root key:
+### Step 1: Open MCP settings
 
-Embedded HTTP with a secure prompt for the token:
+Open **Cursor Settings** and go to the **Customize** page in the sidebar, where MCP servers are listed and can be enabled or disabled.
+
+You can also edit the file directly, which is often quicker:
+
+- **All projects**: `~/.cursor/mcp.json`
+- **This project only**: `.cursor/mcp.json` in your project root
+
+### Step 2: Add the server
+
+Cursor supports both connection types. Try HTTP first — there's nothing to install:
 
 ```json
 {
-	"inputs": [
-		{
-			"type": "promptString",
-			"id": "lumia-token",
-			"description": "Lumia API token",
-			"password": true
-		}
-	],
-	"servers": {
+	"mcpServers": {
 		"lumia-stream": {
-			"type": "http",
 			"url": "http://localhost:39231/api/mcp",
 			"headers": {
-				"Authorization": "Bearer ${input:lumia-token}"
+				"Authorization": "Bearer your_token_here"
 			}
 		}
 	}
 }
 ```
 
-Stdio:
+If that doesn't connect, use `npx` instead:
 
 ```json
 {
-	"servers": {
+	"mcpServers": {
 		"lumia-stream": {
-			"type": "stdio",
 			"command": "npx",
 			"args": ["-y", "@lumiastream/mcp"],
 			"env": {
@@ -185,51 +297,54 @@ Stdio:
 }
 ```
 
-Start the server from the inline **Start** action in the file or the trust prompt. The tools appear in Copilot Chat agent mode. Avoid hardcoding real tokens in workspace files that may be committed.
+Save the file.
 
-## Windsurf
+:::caution Don't commit your token
 
-Open **Windsurf Settings -> Cascade -> MCP** and view the raw config, or edit the file directly:
+If you used `.cursor/mcp.json` inside a project, add it to `.gitignore`. Pushing a real token to a repo means anyone who can read that repo can control your stream.
 
-- macOS/Linux: `~/.codeium/windsurf/mcp_config.json`
-- Windows: `%USERPROFILE%\.codeium\windsurf\mcp_config.json`
+:::
 
-Paste the copied stdio `mcpServers` block, save, and refresh the MCP list in Cascade.
+### Step 3: Check that it connected
 
-## Gemini CLI
+Return to the MCP settings and refresh the list. `lumia-stream` should show as connected, with its tools listed.
 
-Add the copied stdio `mcpServers` block to:
+If it doesn't, open the Output panel with **Cmd+Shift+U** (**Ctrl+Shift+U** on Windows) and pick **MCP Logs** from the dropdown. That panel shows server startup, tool calls, and the actual error.
 
-- user config: `~/.gemini/settings.json`
-- project config: `.gemini/settings.json`
+Then ask in chat:
 
-Run `/mcp` inside Gemini CLI to confirm the server connected and to list tools.
+> "What can you see in my Lumia setup?"
 
 ## Any other MCP client
 
-For embedded HTTP, provide:
+Any MCP client needs the same handful of values. For an HTTP server:
 
-- type/transport: `http` or Streamable HTTP
-- URL: `http://localhost:39231/api/mcp`
-- header: `Authorization: Bearer your_token_here`
+- **Transport**: `http` (sometimes called Streamable HTTP)
+- **URL**: `http://localhost:39231/api/mcp`
+- **Header**: `Authorization: Bearer your_token_here`
 
-For stdio, provide:
+For a local (stdio) server:
 
-- command: `npx`
-- arguments: `-y`, `@lumiastream/mcp`
-- environment variable: `LUMIA_TOKEN=your_token_here`
+- **Command**: `npx`
+- **Arguments**: `-y` and `@lumiastream/mcp`
+- **Environment**: `LUMIA_TOKEN=your_token_here`
 
-If the client cannot launch `npx` directly on Windows, set:
+On Windows, if the client can't launch `npx` directly, use command `cmd` with arguments `/c`, `npx`, `-y`, `@lumiastream/mcp`.
 
-- command: `cmd`
-- arguments: `/c`, `npx`, `-y`, `@lumiastream/mcp`
+Claude Code registers the server with a single command:
+
+```bash
+claude mcp add --transport http lumia-stream http://localhost:39231/api/mcp --header "Authorization: Bearer your_token_here"
+```
 
 ## After connecting
 
-Ask your assistant:
+Try a read-only question first, so nothing reaches your viewers:
 
 > "Call `get_settings` and summarize what Lumia tools are available."
 
-Then try a read-only status check:
+Then a live status check:
 
 > "Call `get_state` and tell me whether any platforms are live."
+
+Once both work, see [What you can do](./examples.md) for what to try next, or the [Tool reference](./tools.md) for all 43 tools.

@@ -1,5 +1,6 @@
 ---
-sidebar_position: 3
+title: Configuration
+sidebar_position: 5
 description: Lumia Stream MCP configuration, environment variables, HTTP headers, token handling, and remote-host setup.
 ---
 

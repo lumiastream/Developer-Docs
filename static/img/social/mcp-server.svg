@@ -40,10 +40,10 @@
     <circle cx="820" cy="194" r="7" fill="#FF3598"/>
     <text x="858" y="202" fill="#F1B7C9" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">lumia-stream docs</text>
 
-    <text x="773" y="269" fill="#FF9FC5" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="24">get_state()</text>
-    <text x="773" y="316" fill="#FF7294" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="24">send_command()</text>
-    <text x="773" y="363" fill="#FF9B87" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="24">send_tts()</text>
-    <text x="773" y="410" fill="#F0DDE5" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="24">listen_for_events()</text>
+    <text x="773" y="269" fill="#FF9FC5" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="24">get_settings</text>
+    <text x="773" y="316" fill="#FF7294" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="24">trigger_command</text>
+    <text x="773" y="363" fill="#FF9B87" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="24">set_color</text>
+    <text x="773" y="410" fill="#F0DDE5" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="24">wait_for_event</text>
   </g>
 
   <path d="M735 512H1103" stroke="#FFFFFF" stroke-opacity="0.12"/>

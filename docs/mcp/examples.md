@@ -1,9 +1,11 @@
 ---
-sidebar_position: 6
+title: What You Can Do
+sidebar_label: What You Can Do
+sidebar_position: 3
 description: Real things you can do with the Lumia Stream MCP server. Control lights, trigger commands and alerts, speak on stream, and drive overlays, all in plain language.
 ---
 
-# Use Cases & Examples
+# What You Can Do
 
 Once the [MCP server is connected](./setup.mdx), you talk to your AI assistant in plain language and it drives Lumia Stream for you. It reads your setup with `get_settings`, then calls the right tool.
 
@@ -254,4 +256,4 @@ If an event arrives, the assistant can use the returned name in a chat message:
 
 ## Quick macros
 
-Your client also exposes ready-made routines as prompts (slash-commands in most clients): **start_stream**, **brb**, **hype**, **wind_down**, and **thank_new_followers**. Trigger one and the assistant runs the whole sequence with the tools above. For the full catalog, see [Tools](./tools.md).
+Your client also exposes ready-made routines as prompts (slash-commands in most clients): **start_stream**, **brb**, **hype**, **wind_down**, and **thank_new_followers**. Trigger one and the assistant runs the whole sequence with the tools above. For every tool and its parameters, see the [Tool reference](./tools.md).

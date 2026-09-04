@@ -41,6 +41,22 @@ const darkCodeTheme = themes.dracula;
               to: "/docs/mcp/setup",
               from: ["/mcp", "/docs/mcp"],
             },
+            {
+              to: "/docs/rest/quickstart",
+              from: ["/rest", "/docs/rest", "/docs/rest/clone-the-repo"],
+            },
+            {
+              to: "/docs/rest/next-steps",
+              from: ["/docs/rest/congratulations"],
+            },
+            {
+              to: "/docs/websockets/quickstart",
+              from: ["/websockets", "/docs/websockets", "/docs/websockets/clone-the-repo"],
+            },
+            {
+              to: "/docs/websockets/next-steps",
+              from: ["/docs/websockets/congratulations"],
+            },
           ],
         },
       ],
@@ -160,11 +176,11 @@ const darkCodeTheme = themes.dracula;
                 },
                 {
                   label: "Rest",
-                  to: "/docs/rest/clone-the-repo",
+                  to: "/docs/rest/quickstart",
                 },
                 {
                   label: "Websockets",
-                  to: "/docs/websockets/clone-the-repo",
+                  to: "/docs/websockets/quickstart",
                 },
                 {
                   label: "MCP",
