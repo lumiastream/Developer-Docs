@@ -17,7 +17,6 @@ This section is the reference for everything chatbot-related.
 ## Sections in this section
 
 - **[Default commands](/docs/chatbot/default-commands)** - the 60+ shipped defaults grouped by category.
-- **[Mod management](/docs/chatbot/mod-management)** - `!command add` / `!editcom` / `!delcom` from chat.
 - **[Games](/docs/chatbot/games)** - Roulette, Duel, Slots, Bet, Bingo, Votekick.
 - **[Song control](/docs/chatbot/song-control)** - Spotify integration with queue, voteskip, wrongsong.
 - **[Chat moderation commands](/docs/chatbot/chat-moderation)** - `!permit`, `!nuke`, `!nukeusername`, `!lockdown`, `!unlock`: syntax, options, and customisation.
@@ -49,13 +48,12 @@ The pipeline is roughly:
 
 1. **Inbound chat event** - a chat message arrives from Twitch, YouTube, Kick, Facebook, TikTok, or a connected plugin.
 2. **Command match** - the first message token is matched against the chatbot command list.
-3. **Mod-management check** - if the token is `!command`, `!addcom`, `!editcom`, `!delcom`, or `!commands`, the mod-management handler fires instead. See [Mod management](/docs/chatbot/mod-management).
-4. **User-level gating** - the message sender's badges/role is matched against the command's `userLevels`. Fail means silent skip.
-5. **Cooldown check** - per-user and global cooldowns are checked.
-6. **Conditions** - any configured conditions on the command's "Conditions" tab are evaluated.
-7. **System dispatch** - if the command has a `systemType`, the matching built-in behaviour runs (game logic, mod actions, etc.).
-8. **Template resolution** - `chatbot.message` and any side-effect templates are run through the variable resolver.
-9. **Side effects** - chatbot reply posted to chat; lights, HFX, sound, etc. fire as configured.
+3. **User-level gating** - the message sender's badges/role is matched against the command's `userLevels`. Fail means silent skip.
+4. **Cooldown check** - per-user and global cooldowns are checked.
+5. **Conditions** - any configured conditions on the command's "Conditions" tab are evaluated.
+6. **System dispatch** - if the command has a `systemType`, the matching built-in behaviour runs (game logic, mod actions, etc.).
+7. **Template resolution** - `chatbot.message` and any side-effect templates are run through the variable resolver.
+8. **Side effects** - chatbot reply posted to chat; lights, HFX, sound, etc. fire as configured.
 
 ## Building your own command
 
@@ -77,7 +75,7 @@ The response template can use any variable function from the [variable functions
 
 ## Programmatic management
 
-Lumia ships mod-side `!command add/edit/delete` so mods don't need UI access. See [Mod management](/docs/chatbot/mod-management) for the syntax. Programmatically (e.g. from a Custom JS action), use the variable functions:
+Commands can be created, updated, and removed programmatically (e.g. from a Custom JS action or another command's response) using the variable functions:
 
 ```text
 {{add_chatbot_command=newcmd,Hello from the future}}

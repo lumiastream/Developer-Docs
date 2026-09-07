@@ -26,6 +26,10 @@ const darkCodeTheme = themes.dracula;
         {
           redirects: [
             {
+              to: "/docs/chatbot",
+              from: ["/docs/chatbot/mod-management"],
+            },
+            {
               to: "/docs/variables",
               from: ["/variables"],
             },
