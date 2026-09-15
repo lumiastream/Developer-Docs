@@ -901,6 +901,7 @@ Key action-field behaviors:
 - Set `allowTyping: true` on `select` to allow custom typed values alongside dropdown options.
 - Set `multiple: true` on `select` to allow multi-value selection (value becomes an array).
 - `allowTyping` and `multiple` can be combined on the same `select` field.
+- Set `visibleIf: { "key": "<otherFieldKey>", "equals": <value | [values]> }` to only show a field when another field of the same action holds that value (for example, show a `light` picker only when `target` is `"light"`). `hidden: true` never renders the field. Both are render-only: the field's value stays in the action payload.
 
 For full property lists and examples see [Field Types Reference](./field-types-reference).
 

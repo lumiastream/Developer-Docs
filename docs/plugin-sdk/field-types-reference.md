@@ -667,11 +667,59 @@ In this example:
   "max": 100,                  // Optional: Numeric and slider style fields
   "step": 1,                   // Optional: Slider/number increment
   "options": [],               // Optional: Select fields
+  "hidden": false,             // Optional: Do not render this field in the action editor
+  "visibleIf": {               // Optional: Conditional visibility
+    "key": "target",
+    "equals": ["brand", "light"]
+  },
   "validation": {              // Optional
     "pattern": "^[a-z]+$",
     "min": 0,
     "max": 100
   }
+}
+```
+
+`visibleIf` on action fields uses the same syntax and match rules as settings `visibleIf` (see above), except that `visibleIf.key` refers to another field of the **same action**. The comparison uses the value the user currently sees in that field, so a controlling field that still shows its `defaultValue` counts as having that value.
+
+Hidden fields keep whatever value they hold; the action payload still includes them. Treat them as "not applicable" in your `actions()` handler based on the controlling field.
+
+#### Example: Target-dependent fields
+
+Show `brand` only when the target is a brand or an individual light, and `light` only for an individual light:
+
+```json
+{
+  "type": "set_light_color",
+  "label": "Set Light Color",
+  "fields": [
+    {
+      "key": "target",
+      "label": "Target",
+      "type": "select",
+      "defaultValue": "all",
+      "options": [
+        { "label": "All Lights", "value": "all" },
+        { "label": "Brand", "value": "brand" },
+        { "label": "Individual Light", "value": "light" }
+      ]
+    },
+    {
+      "key": "brand",
+      "label": "Brand",
+      "type": "select",
+      "dynamicOptions": true,
+      "visibleIf": { "key": "target", "equals": ["brand", "light"] }
+    },
+    {
+      "key": "light",
+      "label": "Light",
+      "type": "select",
+      "dynamicOptions": true,
+      "visibleIf": { "key": "target", "equals": "light" }
+    },
+    { "key": "color", "label": "Color", "type": "color", "defaultValue": "#ff0000" }
+  ]
 }
 ```
 
@@ -786,6 +834,7 @@ Settings fields do not expose variable insertion in the UI.
 - **`min`/`max` location differs**: For action fields, use top-level `min`/`max`; for settings fields, use `validation.min`/`validation.max`. Both are accepted but the canonical location differs.
 - **`multiple: true` changes the value shape**: When `multiple` is enabled on `select`, the stored value is always an array even if one item is selected. Set `defaultValue` to an array accordingly.
 - **`dynamicOptions` requires a runtime call**: Declaring `dynamicOptions: true` on a field does nothing on its own — your plugin must call `lumia.updateActionFieldOptions(...)` or `lumia.updateSettingsFieldOptions(...)` to populate the options.
+- **`visibleIf` only affects rendering**: A field hidden by `visibleIf` (or `hidden: true`) is still part of the saved action value. Do not rely on it being absent from the payload — check the controlling field instead.
 
 ## See Also
 
