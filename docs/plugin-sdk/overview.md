@@ -88,9 +88,11 @@ Every plugin requires a `manifest.json` file that describes your plugin, its met
 - `searchPlugs(config)` – optional hook for plug/accessory plugins to return discoverable plugs in the auth UI.
 - `addPlug(config)` – optional hook for manual plug add flows; return the updated plug list.
 - `removePlug(config)` – optional hook for manual plug removal flows; return the updated plug list.
+- `searchKeylights(config)` / `addKeylight(config)` / `removeKeylight(config)` – the same trio for key lights (white lights with brightness + colour temperature, like an Elgato Key Light).
 - `searchThemes(config)` – optional hook for lights plugins to return Studio theme options (array or `{ scenes|effects|presets }` object).
 - `onLightChange(config)` – optional runtime hook for light updates and Studio theme executions (`config.rawConfig.theme` when invoked from themes).
 - `onPlugChange(config)` – optional runtime hook for plug state updates (`config` includes `brand`, `devices`, `state`, `rawConfig`).
+- `onKeylightChange(config)` – optional runtime hook for key light updates (`config` includes `brand`, `keylights`, `state: { on?, brightness?, temperature? }`, `rawConfig`).
 - `onCustomAuthDisplaySignal(config)` – optional hook to handle signals sent from `config.custom_auth_display` UI.
 - `onCustomAuthDisplayClose(config)` – optional hook called whenever the custom auth modal closes (button, backdrop, escape, or signal close).
 
@@ -118,6 +120,13 @@ If your plugin is a plug/accessory integration:
 - implement `removePlug` if users should be able to remove manually added plugs from auth
 - implement `onPlugChange` to apply runtime on/off updates
 - add a `config.plugs` block in `manifest.json` to render plug discovery/manual-add UI
+
+If your plugin controls key lights (white streaming lights with brightness and colour temperature, no RGB):
+
+- add a `config.keylights` block in `manifest.json` (same shape as `config.plugs`)
+- implement `searchKeylights` and/or `addKeylight` (and optionally `removeKeylight`) for selection in auth
+- implement `onKeylightChange` to apply `{ on, brightness, temperature }` updates
+- Lumia lists key lights in the Control Center Keylights panel, in accessory actions and in default states — exactly like Elgato Key Lights — instead of the RGB light picker. A device with both a white key light and an RGB strip can declare `keylights` and `lights` side by side.
 
 ## Lumia API Highlights
 

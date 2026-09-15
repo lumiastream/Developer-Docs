@@ -199,6 +199,40 @@ Runtime hooks for plugs/accessories:
 
 Note: Selection and persistence are handled by the PluginAuth UI; plugins should not call `registerAccessories`/`updateChosenAccessories`.
 
+### Key lights configuration (optional for white key light integrations)
+
+Key lights are white streaming lights with brightness and colour temperature but no RGB (Elgato Key Light, Logitech Litra, …). Declare them with a `config.keylights` block, which takes exactly the same shape as `config.plugs`. Lumia then shows them in the Control Center **Keylights** panel, in accessory actions with brightness + temperature sliders, and in default states — the same treatment as Elgato Key Lights — instead of the RGB light picker.
+
+```json
+{
+	"id": "my_keylight_plugin",
+	"name": "My Key Lights",
+	"category": "keylight",
+	"config": {
+		"settings": [],
+		"keylights": {
+			"search": {
+				"buttonLabel": "Find key lights",
+				"helperText": "Runs your searchKeylights hook"
+			},
+			"displayFields": [
+				{ "key": "name", "label": "Name" },
+				{ "key": "model", "label": "Model", "fallback": "Unknown model" }
+			],
+			"emptyStateText": "No key lights yet. Plug one in and search."
+		}
+	}
+}
+```
+
+Runtime hooks for key lights:
+
+- Implement `searchKeylights` to return an array of discovered key lights for the UI to save. Each entry may carry an initial `state: { on, brightness, temperature }`.
+- Implement `addKeylight` / `removeKeylight` for manual add and remove flows and return the updated array.
+- Implement `onKeylightChange` to receive `{ brand, keylights, state: { on?, brightness?, temperature? }, rawConfig }`. Only the changed fields are present in `state`; `brightness` is 0–100 and `temperature` is kelvin.
+
+A device with both a white key light and an RGB strip (for example a Litra Beam LX) can declare `keylights` and `lights` in the same manifest and implement both hook families.
+
 ### Studio Theme Configuration (optional for lights plugins)
 
 Use `config.themeConfig` when your lights plugin supports Studio theme scenes/effects/presets.

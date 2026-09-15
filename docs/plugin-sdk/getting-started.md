@@ -210,6 +210,8 @@ If your plugin is a lights integration, implement these runtime hooks as needed:
 - `searchPlugs()` to discover plugs/accessories for auth UI selection
 - `addPlug(data)` for manual plug add flows
 - `onPlugChange(config)` to apply plug on/off updates
+- `searchKeylights()` / `addKeylight(data)` to discover or add white key lights (brightness + colour temperature) for auth UI selection
+- `onKeylightChange(config)` to apply `{ on, brightness, temperature }` key light updates
 
 When Studio themes trigger your plugin, the selected theme value is available in `config.rawConfig.theme` inside `onLightChange`.
 

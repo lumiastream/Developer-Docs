@@ -44,10 +44,12 @@ Store any dependencies, initialise locals, and always pass the parameters to the
 - **`searchPlugs(config?): Promise<any>`** – optional discovery hook for plug/accessory plugins. Return a list of plugs for the auth UI.
 - **`addPlug(config): Promise<any>`** – optional manual-add hook for plug/accessory plugins. Return the updated list.
 - **`removePlug(config): Promise<any>`** – optional manual-remove hook for plug/accessory plugins. Return the updated list.
+- **`searchKeylights(config?): Promise<any>`** / **`addKeylight(config)`** / **`removeKeylight(config)`** – the same discovery, manual-add and manual-remove hooks for key lights declared via `config.keylights`.
 - **`searchThemes(config?): Promise<any>`** – optional Studio theme discovery hook for lights plugins. Return an array or an object containing `scenes`, `effects`, and/or `presets`.
 - **`onLightChange(config): Promise<void>`** – optional hook fired when Lumia sends color/brightness updates for lights owned by your plugin (`config` includes `brand`, `lights`, `color`, `brightness`, `power`, `transition`, `rawConfig`).  
   For Studio theme-triggered updates, selected theme values are available in `config.rawConfig.theme`.
 - **`onPlugChange(config): Promise<void>`** – optional hook fired when Lumia sends plug state updates for plugs owned by your plugin (`config` includes `brand`, `devices`, `state`, `rawConfig`).
+- **`onKeylightChange(config): Promise<void>`** – optional hook fired when Lumia sends key light updates for key lights owned by your plugin. `config.keylights` (alias `config.devices`) lists the targeted key lights and `config.state` is `{ on?: boolean; brightness?: number /* 0-100 */; temperature?: number /* kelvin */ }` — only the fields that changed are present, so apply each one independently. Fired by accessory actions, default states and the Control Center Keylights sliders.
 - **`onCustomAuthDisplaySignal(config): Promise<any>`** – optional hook fired when your custom auth display sends `signal(type, payload)`.
 - **`onCustomAuthDisplayClose(config): Promise<void> | void`** – optional hook fired when the custom auth modal closes (manual close, backdrop/escape, or signal close).
 
@@ -217,6 +219,7 @@ By default, `acquireSharedNoble` uses the host key `bluetooth.runtime.noble.mana
 - **`getLights(): Promise<Array<{ id: string | number; name?: string; alias?: string; type: string }>>`** – retrieve current light information. Only connected, enabled integrations are listed, so an empty array means no lights are available.
 - _Light management note_: Lights are saved via the PluginAuth UI. Implement `searchLights`/`addLight` (and optionally `removeLight`) to manage auth UI devices, and handle runtime updates in `onLightChange`; plugins should not mutate live light state directly.
 - _Plug management note_: Plugs are saved via the PluginAuth UI. Implement `searchPlugs`/`addPlug` (and optionally `removePlug`) to manage auth UI devices, and handle runtime updates in `onPlugChange`; plugins should not mutate plug state directly.
+- _Key light management note_: Key lights work the same way through `config.keylights`, `searchKeylights`/`addKeylight`/`removeKeylight` and `onKeylightChange`. Lumia treats them like Elgato Key Lights (Control Center Keylights panel, accessory actions with brightness + temperature, default states) rather than RGB lights.
 - _Studio themes note_: If your plugin exposes themes/modes, implement `searchThemes` and set `config.themeConfig` in the manifest so Lumia knows where to place returned options (`scenes`, `effects`, `presets`).
 
 ### Audio & Speech
