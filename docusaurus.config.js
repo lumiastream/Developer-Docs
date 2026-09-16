@@ -225,6 +225,14 @@ const darkCodeTheme = themes.dracula;
                   href: "https://forum.lumiastream.com",
                 },
                 {
+                  label: "Supported Devices",
+                  href: "https://lumiastream.com/supported-brands",
+                },
+                {
+                  label: "Amazon Storefront",
+                  href: "https://www.amazon.com/shop/lumiastream",
+                },
+                {
                   label: "GitHub",
                   href: "https://github.com/lumiastream/Developer-Docs",
                 },

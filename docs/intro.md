@@ -9,6 +9,8 @@ image: /img/social/developer-docs.png
 
 Lumia Stream is a streaming automation platform that connects lights, devices, streaming platforms, games, and tools into a single control surface. These docs cover every surface that's open to developers, from a simple REST call to a full marketplace plugin.
 
+Need hardware to test against? The [supported devices](https://lumiastream.com/supported-brands) list covers every light, plug, and peripheral we've verified, and our [Amazon storefront](https://www.amazon.com/shop/lumiastream) collects them in one place.
+
 ## What you can build
 
 ### Trigger anything with the REST API
