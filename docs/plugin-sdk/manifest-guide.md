@@ -51,6 +51,29 @@ The `manifest.json` file is the heart of your Lumia Stream plugin. It defines me
 - **`icon`** (string): Plugin icon filename (PNG recommended).
 - **`changelog`** (string): Markdown changelog content or a relative path to a `.md` file in the plugin package.
 - **`bundle`** (object): Optional install-time bundle for commands and overlays.
+- **`isolation`** (`"shared"` | `"process"`): How Lumia runs the plugin. See [Runtime Isolation](#runtime-isolation).
+
+### Runtime Isolation
+
+By default Lumia runs each plugin in its own worker thread inside one shared plugin host process. A plugin idles at roughly 10–15 MB instead of the ~90 MB a dedicated Node process costs. Each worker has its own heap limit, so a crash, an uncaught error, `process.exit()`, or a runaway heap stops only that plugin.
+
+Lumia moves a plugin into its own dedicated process automatically when either of these is true:
+
+- the plugin ships a native addon (any `.node` file, e.g. `node-hid`, `serialport`, a vendor SDK), or
+- the entry file uses `this.lumia.acquireSharedNoble()` / `@abandonware/noble` for Bluetooth.
+
+A crash inside native code would otherwise take every shared plugin down with it.
+
+Set `isolation` only to override that detection:
+
+```json
+{
+	"isolation": "process"
+}
+```
+
+- `"process"`: always run in a dedicated process. Use this when native code is loaded some other way (downloaded at runtime, required from outside the plugin folder) or when the plugin relies on process-wide state such as `process.chdir()` or signal handlers.
+- `"shared"`: always run in the shared host, even if a `.node` file is present. Only use this if every native addon you load is safe to load in a worker (context-aware / N-API).
 
 ### Bundle Content (Optional)
 
