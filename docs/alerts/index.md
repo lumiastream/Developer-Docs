@@ -43,5 +43,6 @@ Browse by platform below, or open the [Alert Explorer](/docs/display-variables#a
 | [Pulse](./pulse/index.md) | 1 |
 | [Crowd Control](./crowdcontrol/index.md) | 1 |
 | [Twitter](./twitter/index.md) | 3 |
+| [Squarespace](./squarespace/index.md) | 1 |
 | [Vtubestudio](./vtubestudio/index.md) | 7 |
 | [Meld](./meld/index.md) | 6 |

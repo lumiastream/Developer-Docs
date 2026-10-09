@@ -1,0 +1,117 @@
+---
+sidebar_position: 1
+id: alert-squarespace-order
+title: Order
+description: "purchased {{items}}"
+---
+
+# Order
+
+- **Alert key:** `squarespace-order`
+- **Source:** Squarespace
+- **Event list label:** Order
+- **Carries alert image:** yes (`extraSettings.contentImage`)
+
+## Default message template
+
+```text
+{{username}} purchased {{items}}
+```
+
+## Template variables
+
+Use any of these in alert text, TTS, or chat templates. The same names appear under `data.extraSettings.*` when you subscribe via `Overlay.on('alert')`.
+
+| Template variable | Overlay payload field | Description |
+| --- | --- | --- |
+| `{{username}}` | `data.extraSettings.username` | The username of the sender |
+| `{{displayname}}` | `data.extraSettings.displayname` | The display name of the sender |
+| `{{items}}` | `data.extraSettings.items` | The items of the alert comma separated, such as shirt, keyblade, chaos emerald, etc. |
+| `{{itemsCount}}` | `data.extraSettings.itemsCount` | No description available yet. |
+| `{{item}}` | `data.extraSettings.item` | No description available yet. |
+| `{{amount}}` | `data.extraSettings.amount` | The amount sent |
+| `{{currency}}` | `data.extraSettings.currency` | The currency used |
+| `{{currencySymbol}}` | `data.extraSettings.currencySymbol` | The currency symbol used |
+| `{{orderNumber}}` | `data.extraSettings.orderNumber` | No description available yet. |
+| `{{orderId}}` | `data.extraSettings.orderId` | No description available yet. |
+| `{{fulfillmentStatus}}` | `data.extraSettings.fulfillmentStatus` | No description available yet. |
+| `{{channel}}` | `data.extraSettings.channel` | No description available yet. |
+| `{{contentImage}}` | `data.extraSettings.contentImage` | No description available yet. |
+| `{{orderItems}}` | `data.extraSettings.orderItems` | No description available yet. |
+| `{{raw}}` | `data.extraSettings.raw` | The raw data that comes in through the platform for the alert. This is useful for custom code when data is needed that we don't provide by default. |
+
+## Example payloads
+
+Each scenario below mirrors what Lumia emits in `Overlay.on('alert', (data) => …)`.
+
+### $25
+
+```json
+{
+  "alert": "squarespace-order",
+  "dynamic": {
+    "value": 25,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "lumiastream",
+    "items": "Lumia Stream Tee",
+    "item": "Lumia Stream Tee",
+    "itemsCount": 1,
+    "amount": 25,
+    "currency": "USD",
+    "orderNumber": "1001",
+    "currencySymbol": "",
+    "orderId": "",
+    "fulfillmentStatus": "",
+    "channel": "",
+    "contentImage": "",
+    "orderItems": "",
+    "raw": ""
+  }
+}
+```
+
+### $100
+
+```json
+{
+  "alert": "squarespace-order",
+  "dynamic": {
+    "value": 100,
+    "currency": "USD"
+  },
+  "extraSettings": {
+    "username": "lumiastream",
+    "displayname": "lumiastream",
+    "items": "Lumia Stream Tee, Hoodie, Sticker Pack",
+    "item": "Lumia Stream Tee",
+    "itemsCount": 3,
+    "amount": 100,
+    "currency": "USD",
+    "orderNumber": "1002",
+    "currencySymbol": "",
+    "orderId": "",
+    "fulfillmentStatus": "",
+    "channel": "",
+    "contentImage": "",
+    "orderItems": "",
+    "raw": ""
+  }
+}
+```
+
+## Variation conditions
+
+Dimensions you can branch on when configuring alert variations:
+
+- `RANDOM`
+- `EQUAL_CURRENCY_NUMBER` - Order Amount is equal to
+- `GREATER_CURRENCY_NUMBER` - Order Amount is greater than or equal to
+- `EQUAL_VARIABLE`
+
+## Related
+
+- [Alert Explorer](/docs/display-variables#alert-explorer) - live preview of every alert
+- [Overlay Type Definitions](/docs/custom-overlays/types#alertevent) - full `AlertEvent` TypeScript type
