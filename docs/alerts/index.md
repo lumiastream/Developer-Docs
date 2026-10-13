@@ -15,7 +15,7 @@ Browse by platform below, or open the [Alert Explorer](/docs/display-variables#a
 | Platform | Alerts |
 | --- | --- |
 | [Twitch](./twitch/index.md) | 53 |
-| [YouTube](./youtube/index.md) | 18 |
+| [YouTube](./youtube/index.md) | 19 |
 | [Kick](./kick/index.md) | 14 |
 | [Facebook](./facebook/index.md) | 11 |
 | [TikTok](./tiktok/index.md) | 20 |
