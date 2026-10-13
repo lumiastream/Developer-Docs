@@ -7,7 +7,7 @@ description: Every alert Lumia emits for YouTube.
 
 # YouTube alerts
 
-18 alerts available. Each page documents the message template, payload fields, and example scenarios.
+19 alerts available. Each page documents the message template, payload fields, and example scenarios.
 
 | Alert | Description |
 | --- | --- |
@@ -17,6 +17,7 @@ description: Every alert Lumia emits for YouTube.
 | [Gifts](./gifts.mdx) | sent x`{{comboCount}}` `{{giftName}}` worth `{{jewelsAmount}}` jewels |
 | [Like](./like.mdx) | `{{likes}}` likes on the stream |
 | [Member](./member.mdx) | just became a member with a `{{tier}}` plan |
+| [Member Milestone](./member-milestone.mdx) | reached a `{{subMonths}}` month membership milestone |
 | [Session Gift Members](./session-gift-members.mdx) | reached `{{total}}` gift members |
 | [Session Gifts](./session-gifts.mdx) | reached `{{total}}` jewels |
 | [Session Members](./session-members.mdx) | reached `{{total}}` members |
