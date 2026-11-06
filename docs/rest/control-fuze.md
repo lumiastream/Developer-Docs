@@ -45,6 +45,8 @@ Raw JSON to **toggle fuze**
 
 Raw JSON to contorl **audio sensitivity**
 
+Audio sensitivity applies to Color, Scene and Jam modes. Effects mode sets its levels automatically and ignores it.
+
 ```json
 {
   "type": "fuze-audio-sensitivity",
