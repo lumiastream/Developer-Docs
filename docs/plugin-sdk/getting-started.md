@@ -572,7 +572,7 @@ export default class EventPlugin extends Plugin {
 
 Approved creators can sell a plugin in the Lumia Marketplace. Pricing is set per plugin slug on lumiastream.com, and checkout, payouts and refunds go through the marketplace.
 
-- **Pricing applies from your next approved version.** Versions people downloaded while the plugin was free keep working for them. Users already recorded as downloaders keep access to later versions too.
+- **Pricing applies from your next approved version.** From then on every copy of the plugin needs a license. People who downloaded it from Lumia while it was free get one automatically.
 - **Paid packages are private.** Lumia only gives the `.lumiaplugin` file to signed-in owners. It is never published at a public URL.
 - **Lumia checks the license before loading a paid version.** The app checks with Lumia at startup, and a signed license works offline for up to 14 days. If the license is missing or revoked (refund, chargeback or takedown), the plugin is not loaded.
 - **Don't build your own copy protection or license checks.** Plugins that phone home, disable themselves, or obfuscate their code to hide behaviour are rejected in review. The install scan already rejects `eval`, `new Function` and similar patterns.
