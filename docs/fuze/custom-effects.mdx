@@ -1,0 +1,79 @@
+---
+sidebar_position: 1
+id: custom-effects
+title: Custom Fuze effects
+description: Build your own music-reactive Fuze effects from JSON layers and import them into Lumia Stream.
+---
+
+# Custom Fuze effects
+
+Fuze's Effects mode ships with built-in effects. You can add your own by describing them in JSON and importing them:
+
+1. Open **Studio → Fuze**, choose **Audio**, then set the mode to **Effects**.
+2. Click **More effects**, then **Import effect**.
+3. Paste the JSON or click **Load file** to pick a `.json` file, then click **Import effect**.
+
+The new effect appears as a card in the effect list and is selected straight away. To delete it, open **More effects** and click the **×** on its card. Importing an effect with the same name as one you already have replaces it. You can keep up to 20 custom effects.
+
+Custom effects are a list of pattern layers. They can't run code.
+
+## Example
+
+```json
+{
+	"name": "Neon Rain",
+	"colors": ["#00FFAA", "#0066FF"],
+	"layers": [
+		{ "pattern": "wave", "scale": 2, "react": "bands" },
+		{ "pattern": "sparkle", "colors": ["#FFFFFF"], "react": "beat", "blend": "add" }
+	]
+}
+```
+
+This draws two waves across your lights, each light following its own part of the spectrum, and adds white sparkles on every beat.
+
+To import several effects at once, paste a JSON array of effects, or an object with an `effects` array.
+
+## Effect fields
+
+| Field    | Required | Description                                                                                                                         |
+| -------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `name`   | Yes      | Shown on the effect card. Up to 40 characters.                                                                                      |
+| `layers` | Yes      | 1 to 6 layers, drawn in order.                                                                                                      |
+| `colors` | No       | Hex colors such as `"#FF00D4"`, up to 12. When set, the effect always uses these and the Colors picker is hidden. When left out, the effect uses the palette chosen in Fuze. |
+
+## Layer fields
+
+| Field     | Default   | Description                                                                                         |
+| --------- | --------- | --------------------------------------------------------------------------------------------------- |
+| `pattern` | required  | One of the patterns below.                                                                          |
+| `colors`  | effect's  | Hex colors for this layer only. `color` with a single value also works.                             |
+| `react`   | `"level"` | How the layer follows the music: `"level"` (overall loudness), `"bands"` (each light follows its own frequency band, bass on the first light), `"beat"` (flashes on beats) or `"none"`. |
+| `blend`   | `"max"`   | How the layer combines with the layers before it: `"max"` (brightest wins), `"add"` or `"multiply"`. |
+| `speed`   | `1`       | Multiplies the Fuze Speed slider for this layer. 0.05 to 10.                                       |
+| `scale`   | `1`       | Size or count, depending on the pattern. 0.1 to 20.                                                 |
+| `opacity` | `1`       | 0 to 1.                                                                                             |
+| `reverse` | `false`   | Runs the pattern from the last light to the first.                                                  |
+
+Values outside a range are clamped. Unknown fields are ignored.
+
+## Patterns
+
+| Pattern    | What it does                                                    | `scale`                     |
+| ---------- | --------------------------------------------------------------- | --------------------------- |
+| `solid`    | One color on every light.                                        | not used                    |
+| `gradient` | The colors spread across your lights and slowly drift.          | how many times colors repeat |
+| `wave`     | Bright waves moving across your lights.                         | number of waves             |
+| `pulse`    | All lights fade in and out together, stepping through colors.   | not used                    |
+| `chase`    | Every few lights lit, stepping along like a marquee.            | gap between lit lights      |
+| `sparkle`  | Random lights flash.                                             | how many sparkle            |
+| `scan`     | A spot of light sweeping back and forth.                        | how narrow the spot is      |
+| `meter`    | A level meter that fills from the first light with loudness.    | not used                    |
+| `ripple`   | Rings spread out from the middle light on each beat.            | how thin the rings are      |
+| `rainbow`  | A moving rainbow. Ignores colors.                                | how many rainbows           |
+
+The **Speed** slider is hidden when every layer is `solid`, `meter` or `ripple`, because those patterns don't move with time.
+
+## Errors
+
+If something is wrong, the import window lists each problem and imports nothing, for example `Neon Rain, layer 2: unknown pattern "laser"`. Fix the JSON and import again.
